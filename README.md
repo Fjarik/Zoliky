@@ -1,2 +1,2 @@
-# Zoliky
+# Žolíky
 Maturitní projekt - Žolíky
