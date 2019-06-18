@@ -1,0 +1,35 @@
+﻿@using ZolikyWeb.Tools
+@model ZolikyWeb.Areas.App.Models.Account.NotificationModel
+
+@using (Html.BeginForm("EditNotifications", "Account", new {Area = "App"}, FormMethod.Post)) {
+	<h3>Oznámení a notifikace</h3>
+	@Html.AntiForgeryToken()
+	<br/>
+	<ul class="list-unstyled">
+		<li class="media mb-0">
+			<div class="media-body row align-items-center">
+				<div class="col col-md-9">
+					<h5 class="mt-0 mb-1">Novinky</h5>
+					<small>Přeji si dostávat oznámení o nových funkcích.</small>
+				</div>
+				<div class="col align-self-center">
+					@Html.CheckBoxSimple(x => x.Newsletter, new {@class = "js-switch"})
+				</div>
+			</div>
+		</li>
+		<li class="media mb-0">
+			<div class="media-body row align-items-center">
+				<div class="col col-md-9">
+					<h5 class="mt-0 mb-1">Budoucí nabídky</h5>
+					<small>Přeji si automaticky odebírat budoucí nabídky a novinky.</small>
+				</div>
+				<div class="col align-self-center">
+					@Html.CheckBoxSimple(x => x.FutureNews, new {@class = "js-switch"})
+				</div>
+			</div>
+		</li>
+	</ul>
+	<div class="text-right">
+		<button type="submit" class="btn btn-primary">Uložit</button>
+	</div>
+}

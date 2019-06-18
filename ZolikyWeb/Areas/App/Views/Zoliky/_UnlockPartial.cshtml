@@ -1,0 +1,10 @@
+﻿@using ZolikyWeb.Tools
+@model SharedLibrary.Shared.ApiModels.ZolikLock
+
+@using (Html.BeginForm("Unlock", "Zoliky", new {Area = "App"}, FormMethod.Post, new {id = "unlockForm", @class = "d-inline-block c-pointer"})) {
+	@Html.AntiForgeryToken()
+	@Html.SecureHiddenFor(x => x.ZolikId)
+	<a class="zolik-change" onclick="$('#unlockForm').submit();" data-toggle="tooltip" data-placement="left" title="Odemknout žolíka">
+		<i class="mdi mdi-lock-open-outline"></i>
+	</a>
+}

@@ -1,0 +1,19 @@
+﻿@{
+	Layout = "~/Views/Shared/_LayoutMenu.cshtml";
+}
+
+@section header{
+
+	@RenderSection("header", false)
+}
+
+@RenderBody()
+
+
+@section footer {
+
+	<script type="text/javascript" src="@Url.Content("~/Scripts/tinymce/tinymce.min.js")"></script>
+
+	@RenderSection("footer", false)
+
+}

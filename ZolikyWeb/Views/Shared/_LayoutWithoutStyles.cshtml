@@ -1,0 +1,82 @@
+﻿@using System.Web.Optimization
+@using Microsoft.AspNet.Identity
+@using ZolikyWeb.Tools
+<!DOCTYPE html>
+<html lang="cs" xmlns="http://www.w3.org/1999/xhtml" class="h-100">
+<head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb#">
+	<!-- Meta -->
+	<meta charset="utf-8" />
+	<meta name="description" content="Zolikovy web" />
+	<meta name="robots" content="noindex" />
+	<meta name="authors" content="Jiri Falta & Karel Koudelka" />
+	<meta name="application-name" content="@Globals.Name" data-version="@Globals.Version.ToString(3)" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- /Meta -->
+
+	<!-- Facebook -->
+	@Html.Partial("_FacebookIcons")
+	<!-- /Facebook -->
+
+	<!-- CSS -->
+	<link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet" />
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+	@if (IsSectionDefined("styles")) {
+		@RenderSection("styles", false)
+	}
+	<!-- /CSS -->
+
+	<!-- Google Analytics -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-122582106-4"></script>
+	<script>
+		if (window.location.host === "www.new.zoliky.eu" || window.location.host === "www.zoliky.eu") {
+			window.dataLayer = window.dataLayer || [];
+
+			function gtag() { dataLayer.push(arguments); }
+
+			gtag('js', new Date());
+
+			gtag('config', 'UA-122582106-4');
+			@if (Request.IsAuthenticated) {
+				@:gtag('set', { 'user_id': '@User.Identity.GetUserId()' });
+			}
+		}
+	</script>
+	<!-- /Google Analytics -->
+
+	<!-- Icons -->
+	@Html.Partial("_Favicons")
+	<!-- /Icons -->
+
+	<!-- Header Section -->
+	@if (IsSectionDefined("header")) {
+		@RenderSection("header", false)
+	}
+	<!-- /Header Section -->
+
+	<!-- Other -->
+	<title>Žolíky - @ViewBag.Title</title>
+	<!-- /Other -->
+</head>
+<body class="h-100 fix-header fix-sidebar card-no-border" id="bodyTag">
+	<!-- Body -->
+	@RenderBody()
+	<!-- /Body -->
+
+	<!-- Scripts -->
+	@Scripts.Render("~/bundles/js/jquery")
+	@if (IsSectionDefined("scripts")) {
+		@RenderSection("scripts", false)
+	}
+	<!-- /Scripts -->
+
+	<!-- Footer Section -->
+	@if (IsSectionDefined("footer")) {
+		@RenderSection("footer", false)
+	}
+	<!-- /Footer Section -->
+
+	<!-- Other -->
+	@Html.Partial("_ToastrPartial")
+	<!-- /Other -->
+</body>
+</html>

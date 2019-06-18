@@ -1,0 +1,47 @@
+﻿@using System.Web.Optimization
+@{
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section header{
+	@RenderSection("header", false)
+	<style type="text/css">
+		.col > img, a > img {
+			max-height: 200px;
+		}
+
+		.col {
+			padding-top: 10px;
+		}
+
+		#app_header h4 {
+			line-height: inherit;
+		}
+
+		.foot {
+			position: absolute;
+			left: 50%;
+			bottom: 0;
+			transform: translateX(-50%);
+		}
+
+		#Div_First img {
+			max-height: 214px;
+			max-width: 100%;
+		}
+
+		@@media (min-width: 768px) {
+			#Div_First {
+				padding-top: 150px;
+			}
+		}
+	</style>
+}
+
+<div class="container">
+	@RenderBody()
+</div>
+
+@section footer {
+	@RenderSection("footer", false)
+}

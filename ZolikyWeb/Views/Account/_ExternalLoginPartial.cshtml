@@ -1,0 +1,31 @@
+﻿@using Microsoft.Owin.Security
+
+@*<div class="container-fluid h-100">
+	<div class="row h-100 align-items-center justify-content-center">
+		<div class="col py-4">*@
+<div class="h-100 d-flex flex-column justify-content-center align-items-center">
+	@{
+		var providers = Context.GetOwinContext().Authentication.GetExternalAuthenticationTypes().ToList();
+		if (providers.Count == 0) {
+			<div class="text-center">
+				<h3>Zde budou další možnosti přihlášení :)</h3>
+			</div>
+		} else {
+			using (Html.BeginForm("ExternalLogin", "Account",  new { r = ViewData["r"] }, FormMethod.Post, new {@class="soc-buttons"})) {
+				@Html.AntiForgeryToken()
+				int i = 0;
+				foreach (var p in providers) {
+					<button type="submit" class="btn btn-block btn-social my-3 btn-lg btn-@p.AuthenticationType.ToLower()" id="@p.AuthenticationType" name="provider" value="@p.AuthenticationType" title="Přihlašte se pomocí @p.Caption účtu" style="text-transform: none;" tabindex="@(8 + i)">
+						<span>
+							<i class="fab fa-@p.AuthenticationType.ToLower()"></i>
+						</span> Pokračovat přes @p.Caption
+					</button>
+					i++;
+				}
+			}
+		}
+	}
+</div>
+@*</div>
+		</div>
+	</div>*@

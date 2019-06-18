@@ -1,0 +1,250 @@
+﻿@using SharedLibrary.Enums
+@using ZolikyWeb.Tools
+@model ZolikyWeb.Areas.App.Models.DashboardModel
+@{
+	ViewBag.Title = "Přehled";
+	Layout = "~/Areas/App/Views/Shared/_LayoutMenu.cshtml";
+}
+
+<!-- Row -->
+<div class="row">
+	<!-- Column -->
+	<div class="col-lg-3 col-md-6">
+		<div class="card">
+			<div class="card-body">
+				<div class="d-flex flex-row" data-toggle="tooltip" data-placement="bottom" title="Včetně jokérů, černých petrů...">
+					<div class="round round-lg align-self-center round-info">
+						<i class="ti-wallet"></i>
+					</div>
+					<div class="m-l-10 align-self-center">
+						<h3 class="mb-0 font-light">
+							@Model.ZolikCount
+						</h3>
+						<h5 class="text-muted mb-0">
+							@Model.ZolikCountText
+						</h5>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- /Column -->
+	<!-- Column -->
+	<div class="col-lg-3 col-md-6">
+		<div class="card">
+			<div class="card-body">
+				<div class="d-flex flex-row">
+					<div class="round round-lg align-self-center round-warning">
+						<i class="mdi mdi-laptop-windows"></i>
+					</div>
+					<div class="m-l-10 align-self-center">
+						<h3 class="mb-0 font-light">@Model.JokerCount</h3>
+						<h5 class="text-muted mb-0">@Model.JokerCountText</h5>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- /Column -->
+	<!-- Column -->
+	<div class="col-lg-3 col-md-6">
+		<div class="card">
+			<div class="card-body">
+				<div class="d-flex flex-row">
+					<div class="round round-lg align-self-center round-success">
+						<i class="mdi mdi-trophy-award"></i>
+					</div>
+					<div class="m-l-10 align-self-center">
+						<h3 class="mb-0 font-light">@Model.Rank</h3>
+						<h5 class="text-muted mb-0">Rank</h5>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- /Column -->
+	<!-- Column -->
+	<div class="col-lg-3 col-md-6">
+		<div class="card">
+			<div class="card-body">
+				<div class="d-flex flex-row" data-toggle="tooltip" data-placement="bottom" title="@Model.GetSpecialDateText">
+					<div class="round round-lg align-self-center round-danger">
+						<i class="mdi mdi-calendar-clock"></i>
+					</div>
+					<div class="m-l-10 align-self-center">
+						<h3 class="mb-0 font-light">@Model.SpecialDateText</h3>
+						<h5 class="text-muted mb-0">@Model.SpecialDateDesc</h5>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- /Column -->
+</div>
+<!-- /Row -->
+<!-- Row -->
+<div class="row">
+	<!-- Column -->
+	@if (Model.HasZoliks) {
+		<div class="col-xlg-3 col-lg-4 col-md-5">
+			<div class="card">
+				<div class="card-body bg-info">
+					<h4 class="text-white card-title">Žolíci</h4>
+					<h6 class="card-subtitle text-white m-b-0 op-5">Zde se zobrazují nejnovější žolíci</h6>
+				</div>
+				<div class="card-body">
+					<div class="message-box contact-box">
+						<div class="message-widget contact-widget">
+							@foreach (var zolik in Model.Zoliky) {
+								<!-- Zolik -->
+								<a href="@Url.Action("Dashboard", "Zoliky", new {Area = "App", id = zolik.ID})">
+									<div class="mail-contnet">
+										<h5>@zolik.Title</h5>
+										<span class="mail-desc">(@zolik.Type.GetDescription()) @zolik.OwnerSince.ToShortDateString()</span>
+									</div>
+								</a>
+								<!-- /Zolik -->
+							}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	}
+	<!-- /Column -->
+	<!-- Column -->
+	@if (Model.IsInClass) {
+		<div class="col-xlg-3 col-lg-4 col-md-5 ">
+			<div class="card NoSelectAll">
+				<div class="card-header">
+					<div class="card-actions">
+						<a class="" data-action="collapse">
+							<i class="ti-minus"></i>
+						</a>
+						<a class="btn-minimize" data-action="expand">
+							<i class="mdi mdi-arrow-expand"></i>
+						</a>
+						<a class="btn-close" data-action="close">
+							<i class="ti-close"></i>
+						</a>
+					</div>
+					<h4 class="card-title m-b-0">Žebříček - @Model.ClassName</h4>
+				</div>
+				<div class="card-body b-t collapse show">
+					<table class="table v-middle no-border">
+						<tbody>
+							@foreach (var student in Model.LeaderboardClass) {
+								<tr>
+									<td style="width: 40px">
+										<img src="@Url.GetProfilePhotoUrl(student.ID)" width="50" height="50" class="img-circle" alt="Profilový obrázek">
+									</td>
+									<td>@student.FullName</td>
+									<td align="right">
+										<span class="label label-light-info" data-toggle="tooltip" data-placement="bottom" title="Počet žolíků">@student.ZolikCount</span>
+									</td>
+								</tr>
+							}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	}
+	<!-- /Column -->
+	<!-- Column -->
+	@if (!Model.IsPublic) {
+		<div class="col-xlg-3 col-lg-4 col-md-5 ">
+			<div class="card NoSelectAll">
+				<div class="card-header">
+					<div class="card-actions">
+						<a class="" href="@Url.Action("RefreshProfilePhotos")" target="_self" data-toggle="tooltip" data-placement="bottom" title="Přenačíst profilové obrázky" >
+							<i class="ti-reload"></i>
+						</a>
+						<a class="" data-action="collapse">
+							<i class="ti-minus"></i>
+						</a>
+						<a class="btn-minimize" data-action="expand">
+							<i class="mdi mdi-arrow-expand"></i>
+						</a>
+						<a class="btn-close" data-action="close">
+							<i class="ti-close"></i>
+						</a>
+					</div>
+					<h4 class="card-title m-b-0">Žebříček - Škola</h4>
+				</div>
+				<div class="card-body b-t collapse show">
+					<table class="table v-middle no-border">
+						<tbody>
+							@foreach (var student in Model.Leaderboard) {
+								<tr>
+									<td style="width: 40px">
+										<img src="@Url.GetProfilePhotoUrl(student.ID)" width="50" height="50" class="img-circle" alt="Profilový obrázek">
+									</td>
+									<td>@student.FullName</td>
+									<td align="right">
+										<span class="label label-light-info" data-toggle="tooltip" data-placement="bottom" title="Počet žolíků">@student.ZolikCount</span>
+									</td>
+								</tr>
+							}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	}
+	<!-- /Column -->
+	<!-- Column -->
+	<div class="col-xlg-3 col-lg-4 col-md-5">
+		<div class="card">
+			<div class="card-header">
+				<div class="card-actions">
+					<a class="" data-action="collapse">
+						<i class="ti-minus"></i>
+					</a>
+					<a class="btn-minimize" data-action="expand">
+						<i class="mdi mdi-arrow-expand"></i>
+					</a>
+					<a class="btn-close" data-action="close">
+						<i class="ti-close"></i>
+					</a>
+				</div>
+				<h4 class="card-title m-b-0">Dokončené stránky</h4>
+			</div>
+			<div class="card-body b-t collapse show">
+				<ul>
+					<li>Přehled</li>
+					<li>Žolíci</li>
+					<li>Transakce</li>
+					<li>
+						@*<span class="badge badge-info">Nové</span>*@
+						Novinky
+					</li>
+					<li>Darovat žolíka</li>
+					<li>Rozklad jokérů</li>
+					<li>Historie přihlášení</li>
+					<li>Podpora</li>
+					<li>Tutoriál: Mobilní aplikace</li>
+					<li>
+						Nastavení:
+						<ul>
+							<li>Změna profilového obrázku</li>
+							<li>Změna hesla</li>
+							<li>Soukromí</li>
+							<li>Oznámení</li>
+							<li>Externí přihlašování</li>
+							<li>Testeři</li>
+							<li>Informace</li>
+						</ul>
+					</li>
+					<li>Odhlašování</li>
+				</ul>
+				<p class="text-muted">
+					Průběh prací lze sledovat na
+					<a href="https://trello.com/b/M55QflaP" target="_blank" title="Odkaz na průběh prací">Trello.com</a>
+				</p>
+			</div>
+		</div>
+	</div>
+	<!-- /Column -->
+</div>
+<!-- /Row -->

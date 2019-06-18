@@ -1,0 +1,86 @@
+﻿@using SharedLibrary.Enums
+@using ZolikyWeb.Tools
+@model DataAccess.Models.Zolik
+@{
+	ViewBag.Title = "Rozdělení jokéra";
+	Layout = "~/Areas/App/Views/Shared/_LayoutMenu.cshtml";
+}
+
+<div class="row">
+	<div class="col">
+		<div class="card">
+			<div class="card-body">
+				<h4 class="card-title">Rozdělit</h4>
+				<h6 class="card-subtitle">Rozdělte svého jokéra na 3 až 5 žolíků</h6>
+				@using (Html.BeginForm("Split", "Zoliky", new {Area = "App"}, FormMethod.Post, new {@class = "m-t-40"})) {
+					@Html.AntiForgeryToken()
+					@Html.SecureHiddenFor(x=>x.ID)
+					<div class="form-group m-b-40">
+						<h4>Detaily žolíka</h4>
+						<div class="px-2">
+							<div class="row">
+								<div class="col-3">
+									<strong>Typ:</strong>
+								</div>
+								<div class="col-3">
+									@Model.Type.GetDescription()
+									<span id="zolikType"></span>
+								</div>
+								<div class="col-3">
+									<strong>Datum získání:</strong>
+								</div>
+								<div class="col-3">
+									@Model.OwnerSince.ToString("dd.MM.yyyy")
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-3">
+									<strong>Udělen za:</strong>
+								</div>
+								<div class="col-9">
+									@Model.Title
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="form-group text-center">
+						<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalLock" tabindex="4" title="Rozdělit">Rozdělit</button>
+					</div>
+					<div id="modalLock" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modalLockLabel" style="display: none;" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h4 class="modal-title" id="modalLockLabel">
+										Rozdělení jokéra
+										<a href="https://support.zoliky.eu/Faq" title="Nápověda" target="_blank">
+											<i class="mdi mdi-help-circle-outline"></i>
+										</a>
+									</h4>
+									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+								</div>
+								<div class="modal-body">
+									<div class="text-center mb-5">
+										<span>Opravdu si přejete rozdělit tohoto žolíka?</span>
+									</div>
+									<p>
+										Žolík:
+										<strong>@Model.Title</strong> (@Model.Type.GetDescription())
+									</p>
+									<div class="text-center mt-5">
+										<em>Tato akce je nevratná!</em>
+									</div>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-white" data-dismiss="modal">Ne</button>
+									<button type="submit" class="btn btn-info waves-effect">Ano</button>
+								</div>
+							</div>
+							<!-- /.modal-content -->
+						</div>
+						<!-- /.modal-dialog -->
+					</div>
+				}
+			</div>
+		</div>
+	</div>
+</div>

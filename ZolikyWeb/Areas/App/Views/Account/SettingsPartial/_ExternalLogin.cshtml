@@ -1,0 +1,14 @@
+﻿@using ZolikyWeb.Tools
+@model ZolikyWeb.Areas.App.Models.ExternalLoginModel
+
+@using (Html.BeginForm(Model.TargetAction, "Account", new {Area = "App"})) {
+	@Html.AntiForgeryToken()
+	@Html.SecureHiddenFor(model => model.Provider, new {
+		id = "hidden" + Model.CheckId
+	})
+
+	@Html.CheckBoxSimple(Model.Provider, Model.IsChecked, new {
+		@class = "js-switch soc",
+		id = Model.CheckId
+	})
+}

@@ -1,0 +1,15 @@
+﻿.left-sidebar {
+	transition: 0.5s;
+}
+
+.page-wrapper {
+	transition: 0.5s;
+}
+
+.topbar {
+	background: linear-gradient(90deg, #0a92ff, #40C4FF);
+}
+
+.bg-info {
+	background-color: #0a92ff;
+}

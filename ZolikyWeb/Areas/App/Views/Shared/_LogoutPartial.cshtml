@@ -1,0 +1,5 @@
+﻿@using (Html.BeginForm("Logout", "Account", new {Area = ""}, FormMethod.Post)) {
+	@Html.AntiForgeryToken()
+
+	<a class="btn btn-light"  data-click="submit" href="#">Odhlásit se</a>
+}

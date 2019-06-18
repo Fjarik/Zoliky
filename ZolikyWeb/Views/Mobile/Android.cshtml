@@ -1,0 +1,20 @@
+﻿@{
+	ViewBag.Title = "Android";
+	Layout = "~/Areas/App/Views/Shared/_LayoutDashboard.cshtml";
+	//Layout = "~/Views/Shared/Mobile/_LayoutMobile.cshtml";
+}
+
+@section header {
+	<link href="@Url.Content("~/assets/plugins/wizard/steps.css")" rel="stylesheet" />
+}
+
+<div class="container h-100 justify-content-center">
+	<div class="row h-100 align-items-center">
+		@Html.Partial("Mobile/_Android")
+	</div>
+</div>
+
+@section footer{
+	<script src="@Url.Content("~/assets/plugins/wizard/jquery.steps.min.js")"></script>
+	<script src="@Url.Content("~/assets/plugins/wizard/steps.js")"></script>
+}

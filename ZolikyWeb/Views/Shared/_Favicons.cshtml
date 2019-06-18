@@ -1,0 +1,19 @@
+﻿@using SharedLibrary.Shared
+<link rel="apple-touch-icon" sizes="180x180" href="@Url.Content("~/Content/Images/Icons/apple-touch-icon.png?v=ng9XzoogQ9")" />
+<link rel="icon" type="image/png" sizes="32x32" href="@Url.Content("~/Content/Images/Icons/favicon-32x32.png?v=ng9XzoogQ9")" />
+<link rel="icon" type="image/png" sizes="16x16" href="@Url.Content("~/Content/Images/Icons/favicon-16x16.png?v=ng9XzoogQ9")" />
+<link rel="manifest" href="@Url.Content("~/Content/Images/Icons/site.webmanifest?v=ng9XzoogQ9")" />
+<link rel="mask-icon" href="@Url.Content("~/Content/Images/Icons/safari-pinned-tab.svg?v=ng9XzoogQ9")" color="#5bbad5" />
+@if (DateTime.Now.IsChristmasTime()) {
+	<link rel="shortcut icon" href="@Url.Content("~/Content/Images/Icons/ZolikChristmas.ico?v=3eAveE6oPq")" />
+} else if (DateTime.Now.IsPrideTime()) {
+	<link rel="shortcut icon" href="@Url.Content("~/Content/Images/Icons/ZolikyIconPride.ico?v=6a89sf5432")" />
+} else {
+	<link rel="shortcut icon" href="@Url.Content("~/Content/Images/Icons/favicon.ico?v=ng9XzoogQ9")" />
+}
+<meta name="apple-mobile-web-app-title" content="Žol&iacute;ky" />
+<meta name="application-name" content="Žol&iacute;ky" />
+<meta name="msapplication-TileColor" content="#2d89ef" />
+<meta name="msapplication-TileImage" content="@Url.Content("~/Content/Images/Icons/mstile-144x144.png?v=ng9XzoogQ9")" />
+<meta name="msapplication-config" content="@Url.Content("~/Content/Images/Icons/browserconfig.xml?v=ng9XzoogQ9")" />
+<meta name="theme-color" content="#ffffff" />

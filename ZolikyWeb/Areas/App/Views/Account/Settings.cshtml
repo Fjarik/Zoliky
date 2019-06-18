@@ -1,0 +1,158 @@
+﻿@using ZolikyWeb.Areas.App.Models
+@using ZolikyWeb.Areas.App.Models.Account
+@model ZolikyWeb.Areas.App.Models.SettingsModel
+@{
+	ViewBag.Title = "Nastavení";
+	Layout = "~/Areas/App/Views/Shared/_LayoutMenu.cshtml";
+}
+
+<div class="row">
+	<div class="col">
+		<div class="card">
+			<div class="card-body">
+				<div class="vtabs">
+					<ul class="nav nav-tabs tabs-vertical" role="tablist">
+						<li class="nav-item">
+							<a class="nav-link active" data-toggle="tab" href="#settingsBasic" role="tab">
+								<span class="hidden-sm-up">
+									<i class="ti-settings"></i>
+								</span>
+								<span class="hidden-xs-down">Obecné</span>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" data-toggle="tab" href="#settingsPrivacy" role="tab">
+								<span class="hidden-sm-up">
+									<i class="ti-user"></i>
+								</span>
+								<span class="hidden-xs-down">Soukromí</span>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" data-toggle="tab" href="#settingsNotifications" role="tab">
+								<span class="hidden-sm-up">
+									<i class="ti-announcement"></i>
+								</span>
+								<span class="hidden-xs-down">Oznámení</span>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" data-toggle="tab" href="#settingsExternal" role="tab">
+								<span class="hidden-sm-up">
+									<i class="ti-facebook"></i>
+								</span>
+								<span class="hidden-xs-down">Externí účty</span>
+							</a>
+						</li>
+						@if (Model.HasTesterRights) {
+							<li class="nav-item">
+								<a class="nav-link" data-toggle="tab" href="#settingsTester" role="tab">
+									<span class="hidden-sm-up">
+										<i class="ti-ruler-pencil"></i>
+									</span>
+									<span class="hidden-xs-down">Tester</span>
+								</a>
+							</li>
+						}
+						<li class="nav-item my-4">
+							<span></span>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" data-toggle="tab" href="#settingsInfo" role="tab">
+								<span class="hidden-sm-up">
+									<i class="ti-info"></i>
+								</span>
+								<span class="hidden-xs-down">Informace</span>
+							</a>
+						</li>
+					</ul>
+					<div class="tab-content w-100">
+						<div class="tab-pane active" id="settingsBasic" role="tabpanel">
+							@Html.Partial("SettingsPartial/_ProfileSettingsPartial", Model.GeneralModel)
+						</div>
+						<div class="tab-pane" id="settingsPrivacy" role="tabpanel">
+							@Html.Partial("SettingsPartial/_PrivacyPartial", Model.PrivacyModel)
+						</div>
+						<div class="tab-pane" id="settingsNotifications" role="tabpanel">
+							@Html.Partial("SettingsPartial/_NotificationPartial", Model.NotificationModel)
+						</div>
+						<div class="tab-pane" id="settingsExternal" role="tabpanel">
+							@Html.Partial("SettingsPartial/_ExternalPartial", Model.ExternalModel)
+						</div>
+						@if (Model.HasTesterRights) {
+							<div class="tab-pane" id="settingsTester" role="tabpanel">
+								@Html.Partial("SettingsPartial/_TesterSwitchPartial", Model)
+							</div>
+						}
+						<div class="tab-pane" id="settingsInfo" role="tabpanel">
+							<div>
+								<h3>O projektu</h3>
+								<h5>Vývojáři</h5>
+								<div>Jiří Falta</div>
+								<div>Karel Koudelka</div>
+								<br />
+								<h5>Poděkování</h5>
+								<div>Michalovi Špitálskému a Adamovi Zachovalovi za Design</div>
+								<div>Všem testerům</div>
+								<div>Petrovi Zerzánovi</div>
+								<br />
+								<h5>Důležité odkazy</h5>
+								<a href="https://www.zoliky.eu/tos" target="_blank">Podmínky užití</a>,
+								<a href="https://www.zoliky.eu/pp" target="_blank">Zásady ochrany osobních údajů</a>
+								<br />
+								<br />
+								<h5>Kontakt</h5>
+								<a href="http://www.support.zoliky.eu/" target="_blank">Odkaz na podporu</a>,
+								<a href="mailto:podpora@zoliky.eu" target="_blank">podpora@@zoliky.eu</a>
+								<br />
+								<br />
+								<a href="https://www.facebook.com/TheZoliky" target="_blank">Facebook</a>,
+								<a href="https://play.google.com/store/apps/details?id=com.QuantumSociety.ZolikyMobile" target="_blank">Google play</a>,
+								<a href="https://www.microsoft.com/cs-cz/p/zoliky/9ns2bp2htcjk" target="_blank">Microsoft Store</a> a
+								<a href="https://trello.com/b/M55QflaP" target="_blank">Průběh prací</a>
+								<br />
+								<br />
+								<h5>Závěrečné ustanovení</h5>
+								<div>
+									Projekt byl vytvořen v době studia na
+									<a href="https://www.delta-skola.cz/" target="_blank">Střední škole informatiky a ekonomie - DELTA, Pardubice</a>. Vzhledem k povaze projektu je
+									<strong>přísně</strong> zakázano jeho používání za účelem vydělávání peněz.
+								</div>
+								<br />
+								<div>&copy; Žolíky 2018-@DateTime.Today.Year</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+@section styles {
+	<link rel="stylesheet" href="@Url.Content("~/assets/plugins/dropify/css/dropify.min.css")" />
+}
+
+@section footer {
+	<script type="text/javascript" src="@Url.Content("~/assets/plugins/dropify/js/dropify.min.js")"></script>
+	<script type="text/javascript">
+		window.onload = () => {
+			const id = @Model.TabId;
+			const items = $("ul.nav.nav-tabs.tabs-vertical a.nav-link");
+			$(items[id - 1]).click();
+		};
+		// Basic
+		const drEvent = $('.dropify').dropify({
+			messages: {
+				'error': 'A jéje, vyskytla se chyba'
+			},
+			tpl: {
+				filename: ''
+			}
+		});
+
+		drEvent.on("dropify.beforeClear", function(event, element){
+			return confirm("Opravdu si přejete odstranit \"" + element.filename + "\" ?");
+		});
+	</script>
+}

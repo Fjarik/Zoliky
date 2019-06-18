@@ -1,0 +1,17 @@
+﻿@{
+	ViewBag.Title = "Mobilní aplikace";
+	Layout = "~/Areas/App/Views/Shared/_LayoutMenu.cshtml";
+}
+
+@section header {
+	<link href="@Url.Content("~/assets/plugins/wizard/steps.css")" rel="stylesheet" />
+}
+
+<div class="row">
+	@Html.Partial("Mobile/_Android")
+</div>
+
+@section footer{
+	<script src="@Url.Content("~/assets/plugins/wizard/jquery.steps.min.js")"></script>
+	<script src="@Url.Content("~/assets/plugins/wizard/steps.js")"></script>
+}

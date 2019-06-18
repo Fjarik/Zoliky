@@ -1,0 +1,24 @@
+﻿@{
+	ViewBag.Title = "Úspěšná registrace";
+	Layout = "~/Views/Shared/Account/_LayoutAccount.cshtml";
+}
+
+<div class="col-12 p-5">
+	<div id="registerSuccessDiv">
+		<div class="mb-2 text-center">
+			<h3>@ViewBag.Title</h3>
+		</div>
+		<div class="row justify-content-center">
+			<img alt="Úspěch" class="img-fluid mb-2" style="height: 75%;" src="@Url.Content("~/Content/Animations/checkmark-green1.gif")" />
+			<div class="w-100"></div>
+			<div class="col-7 text-center">
+				<div class="mb-3">
+					Nyní
+					<strong>aktivujte účet</strong>
+					pomocí odkazu, který Vám byl odeslán na zadaný email.
+				</div>
+				<a href="@Url.Action("Login")" class="btn btn-info" title="Zpět na přihlášení">OK</a>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,15 @@
+﻿@{
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section header{
+	@RenderSection("header", false)
+}
+
+
+@RenderBody()
+
+
+@section footer {
+	@RenderSection("footer", false)
+}

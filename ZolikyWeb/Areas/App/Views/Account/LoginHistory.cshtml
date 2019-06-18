@@ -1,0 +1,49 @@
+﻿@using SharedLibrary.Enums
+@model IEnumerable<DataAccess.Models.UserLogin>
+@{
+	ViewBag.Title = "Historie přihlášení";
+	Layout = "~/Areas/App/Views/Shared/_LayoutMenu.cshtml";
+}
+
+<div class="row">
+	<div class="col">
+		<div class="card">
+			<div class="card-body">
+				<div class="table-responsive">
+					<table id="myTable" class="table table-bordered table-striped">
+						<thead>
+							<tr>
+								<th>Platforma</th>
+								<th>Datum</th>
+								<th>IP adresa</th>
+								<th>Status</th>
+							</tr>
+						</thead>
+						<tbody>
+							@foreach (var ent in Model) {
+								<tr>
+									<td>@ent.Project.GetDescription()</td>
+									<td>@ent.Date.ToString("dd.MM.yyyy HH:mm")</td>
+									<td>@ent.IP</td>
+									<td>@ent.Status.GetDescription()</td>
+								</tr>
+							}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+@section footer {
+
+	<script language="javascript" type="text/javascript">
+		$(function() {
+			$("#myTable").DataTable({
+				"searching": false,
+				"ordering": false
+			});
+		});
+	</script>
+}

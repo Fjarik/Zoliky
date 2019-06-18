@@ -1,0 +1,40 @@
+﻿@{
+	ViewBag.Title = "Error - 404";
+	Layout = "~/Views/Shared/_LayoutWithoutStyles.cshtml";
+}
+
+@section styles {
+	<!-- Bootstrap Core CSS -->
+	<link href="@Url.Content("~/Content/bootstrap.min.css")" rel="stylesheet" />
+	<!-- Custom CSS -->
+	<link href="@Url.Content("~/Content/Dashboard/css/style.css")" rel="stylesheet" />
+	<!-- You can change the theme colors from here -->
+	<link href="@Url.Content("~/Content/Dashboard/css/colors/blue.css")" id="theme" rel="stylesheet" />
+	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!--[if lt IE 9]>
+		<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+		<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+	<![endif]-->
+}
+
+<section id="wrapper" class="error-page">
+	<div class="error-box">
+		<div class="error-body text-center">
+			<h1>404</h1>
+			<h3 class="text-uppercase">Stránka nebyla nalezena!</h3>
+			<p class="text-muted m-t-30 m-b-30">Zdá se, že jste se snažili najít něco neexistujícího a očividně se vám to zdařilo. 🎉</p>
+			<a href="@Url.Action("Index", "Home", new {Area = ""})" class="btn btn-info btn-rounded m-b-40">Zpět na hlavní stránku</a>
+		</div>
+		<footer class="footer text-center">© Žolíky @DateTime.Today.Year</footer>
+	</div>
+</section>
+
+@section scripts {
+	<!-- ============================================================== -->
+	<!-- All Jquery -->
+	<!-- ============================================================== -->
+	<script src="@Url.Content("~/assets/plugins/jquery/jquery.min.js")"></script>
+	<!-- Bootstrap tether Core JavaScript -->
+	<script src="@Url.Content("~/Scripts/umd/popper.min.js")"></script>
+	<script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
+}

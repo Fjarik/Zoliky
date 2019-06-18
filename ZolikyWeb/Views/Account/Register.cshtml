@@ -1,0 +1,156 @@
+﻿@using hbehr.recaptcha
+@using ZolikyWeb.Tools
+@model ZolikyWeb.Models.Account.RegisterModel
+@{
+	ViewBag.Title = "Registrace";
+	Layout = "~/Views/Shared/Account/_LayoutAccount.cshtml";
+}
+
+@section header {
+	<link href="@Url.Content("~/assets/plugins/wizard/steps.css")" rel="stylesheet" />
+}
+
+<div class="col-12 p-5">
+	<div id="registerDiv" class="wizard-content">
+		<div class="mb-4 text-center">
+			<h3>@ViewBag.Title</h3>
+		</div>
+		@using (Html.BeginForm("Register", "Account", FormMethod.Post, new {id = "registerForm", @class = "validation-wizard wizard-circle", data_deactivate = true})) {
+			@Html.AntiForgeryToken()
+			<!-- Step 1 -->
+			<h6>Účet</h6>
+			<section>
+				<div class="mb-4 ">
+					@Html.NoSelectLaberFor(x => x.Email)
+
+					@Html.MaterialTextBoxFor(x => x.Email, 1, "email")
+
+					@Html.ValidationMessageFor(x => x.Email)
+				</div>
+				<div class="mb-4 ">
+					@Html.NoSelectLaberFor(x => x.Password)
+
+					@Html.MaterialPasswordFor(x => x.Password, 2, "new-password")
+
+					@Html.ValidationMessageFor(x => x.Password)
+				</div>
+				<div class="mb-4 ">
+					@Html.NoSelectLaberFor(x => x.PasswordRepeat)
+
+					@Html.MaterialPasswordFor(x => x.PasswordRepeat, 3, "new-password")
+
+					@Html.ValidationMessageFor(x => x.PasswordRepeat)
+				</div>
+			</section>
+			<!-- Step 2 -->
+			<h6>Informace</h6>
+			<section>
+				<div class="mb-4 ">
+					@Html.NoSelectLaberFor(x => x.Firstname)
+
+					@Html.MaterialTextBoxFor(x => x.Firstname, 4, "given-name")
+
+					@Html.ValidationMessageFor(x => x.Firstname)
+				</div>
+				<div class="mb-4 ">
+					@Html.NoSelectLaberFor(x => x.Lastname)
+
+					@Html.MaterialTextBoxFor(x => x.Lastname, 5, "family-name")
+
+					@Html.ValidationMessageFor(x => x.Lastname)
+				</div>
+				<div class="mb-4">
+					@Html.NoSelectLaberFor(x => x.Gender)
+
+					@Html.DropDownListFor(x => x.Gender, Model.GenderSelect, new {@class = "form-control", tabindex = 6})
+
+					@Html.ValidationMessageFor(x => x.Gender)
+				</div>
+				<div class="mb-4">
+					@Html.NoSelectLaberFor(x => x.ClassId)
+
+					@Html.DropDownListFor(x => x.ClassId, Model.ClassSelect, new {@class = "form-control", tabindex = 6})
+
+					@Html.ValidationMessageFor(x => x.ClassId)
+				</div>
+			</section>
+			<!-- Step 3 -->
+			<h6>Podmínky</h6>
+			<section>
+				<div class="mb-4 ">
+
+					@Html.NoSelectLaberFor(x => x.Username)
+					<div class="input-group mb-2">
+						@Html.MaterialTextBoxFor(x => x.Username, 8, "username")
+						<div class="input-group-append">
+							<div class="input-group-text">
+								<button class="btn btn-flat" type="button" id="btn-generate">
+									Generovat
+								</button>
+							</div>
+						</div>
+					</div>
+
+					@Html.ValidationMessageFor(x => x.Username)
+				</div>
+				<div class="row">
+					<div class="col-12 col-md-6  mb-2 pl-4">
+						* - povinné
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-12 col-md-6 mb-4">
+						<div class="custom-control custom-checkbox">
+							@Html.CheckBoxFor(x => x.TOS, new {@class = "custom-control-input", tabindex = 9})
+
+							@Html.NoSelectLaberFor(x => x.TOS, new Dictionary<string, object> {{"class", "custom-control-label"}})
+							<br />
+							@Html.ValidationMessageFor(x => x.TOS)
+						</div>
+					</div>
+					<div class="col-12 col-md-6 mb-4">
+						<div class="custom-control custom-checkbox">
+							@Html.CheckBoxFor(x => x.Newsletter, new {@class = "custom-control-input", tabindex = 10})
+
+							@Html.NoSelectLaberFor(x => x.Newsletter, new Dictionary<string, object> {{"class", "custom-control-label"}})
+
+							@Html.ValidationMessageFor(x => x.Newsletter)
+						</div>
+					</div>
+				</div>
+				<div class="row mb-4">
+					<div class="col-12 col-md-6 mb-4">
+						<div class="custom-control custom-checkbox">
+							@Html.CheckBoxFor(x => x.PP, new {@class = "custom-control-input", tabindex = 10})
+
+							@Html.NoSelectLaberFor(x => x.PP, new Dictionary<string, object> {{"class", "custom-control-label"}})
+							<br />
+							@Html.ValidationMessageFor(x => x.PP)
+						</div>
+					</div>
+					<div class="col-12 col-md-6 mb-4">
+						<div class="custom-control custom-checkbox">
+							@Html.CheckBoxFor(x => x.FutureNews, new {@class = "custom-control-input", tabindex = 10})
+
+							@Html.NoSelectLaberFor(x => x.FutureNews, new Dictionary<string, object> {{"class", "custom-control-label"}})
+
+							@Html.ValidationMessageFor(x => x.Newsletter)
+						</div>
+					</div>
+				</div>
+
+				<div class="mb-4 d-flex justify-content-center">
+					@ReCaptcha.GetCaptcha()
+				</div>
+			</section>
+			@Html.Hidden("LoginUrl", Url.Action("Login", "Account", new {Area = ""}))
+		}
+
+	</div>
+</div>
+
+
+@section footer{
+	<script src="@Url.Content("~/assets/plugins/wizard/jquery.steps.min.js")"></script>
+	<script src="@Url.Content("~/Scripts/register.js")"></script>
+}

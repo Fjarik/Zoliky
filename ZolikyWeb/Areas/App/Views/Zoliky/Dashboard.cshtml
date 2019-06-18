@@ -1,0 +1,44 @@
+﻿@using SharedLibrary.Enums
+@model IEnumerable<DataAccess.Models.Zolik>
+@{
+	ViewBag.Title = "Přehled";
+	Layout = "~/Areas/App/Views/Shared/_LayoutMenu.cshtml";
+}
+
+<div class="row">
+	<div class="col">
+		<div class="card">
+			<div class="card-body">
+				<div class="table-responsive-md">
+					<table class="table table-bordered">
+						<thead>
+							<tr>
+								<th>Přidělen za</th>
+								<th>Typ</th>
+								<th>Datum získání</th>
+								<th>Akce</th>
+							</tr>
+						</thead>
+						<tbody>
+							@foreach (var zolik in Model) {
+								<tr>
+									<td>
+										@zolik.Title
+										<span class="text-muted" data-toggle="tooltip" data-placement="bottom" title="(použít na)">
+											@(zolik.IsLocked ? $"({zolik.Lock})" : "")
+										</span>
+									</td>
+									<td>@zolik.Type.GetDescription()</td>
+									<td>@zolik.OwnerSince.ToString("dd.MM.yyyy HH:mm")</td>
+									<td>
+										@Html.Partial("_ZolikActionsPartial", zolik)
+									</td>
+								</tr>
+							}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,21 @@
+﻿@using SharedLibrary.Shared.ApiModels
+@using ZolikyWeb.Areas.App.Models.Zoliky
+@model DataAccess.Models.Zolik
+@{
+	var lockModel = new ZolikLockModel(Model);
+}
+@if (Model.IsLocked) {
+	@Html.Partial("_UnlockPartial", new ZolikLock { ZolikId = Model.ID })
+} else {
+	@Html.Partial("_LockPartial", lockModel)
+}
+@if (Model.CanBeTransfered) {
+	<a href="@Url.Action("Transfer", "Zoliky", new {Area = "App", id = Model.ID})" class="p-2 zolik-change" data-toggle="tooltip" data-placement="left" title="Poslat žolíka">
+		<i class="mdi mdi-send"></i>
+	</a>
+}
+@if (Model.IsSplittable) {
+	<a href="@Url.Action("Split", "Zoliky", new {Area = "App", id = Model.ID})" class="p-2 zolik-change" data-toggle="tooltip" data-placement="left" title="Rozdělit jokéra">
+		<i class="mdi mdi-call-split"></i>
+	</a>
+}

@@ -1,0 +1,88 @@
+﻿@using SharedLibrary.Enums
+@model DataAccess.Models.Unavailability
+@{
+	ViewBag.Title = "Probíhá údržba";
+	Layout = "~/Views/Shared/Account/_LayoutAccount.cshtml";
+}
+<div class="col-12 p-5">
+	<div id="countdown">
+		<div class="mb-4 text-center">
+			<h3>@ViewBag.Title</h3>
+		</div>
+		<h4 class="mt-1">
+			Důvod: @Model.Reason
+		</h4>
+		<div class="text-center mt-4">
+			<h5>Do spuštění zbývá:</h5>
+			<div class="row my-3">
+				<div class="col-12 col-md-6 col-lg-3">
+					<label id="LblDays" class="h1"></label>
+					<br />
+					(Dny)
+				</div>
+				<div class="col-12 col-md-6 col-lg-3">
+					<label id="LblHours" class="h1"></label>
+					<br />
+					(Hodiny)
+				</div>
+				<div class="col-12 col-md-6 col-lg-3">
+					<label id="LblMinutes" class="h1"></label>
+					<br />
+					(Minuty)
+				</div>
+				<div class="col-12 col-md-6 col-lg-3">
+					<label id="LblSeconds" class="h1"></label>
+					<br />
+					(Sekundy)
+				</div>
+			</div>
+			<div>
+				<a class="btn btn-float btn-info my-1" href="https://www.facebook.com/TheZoliky/" title="Facebook" target="_blank">
+					<i class="fab fa-facebook-f"></i>
+				</a>
+				<a class="btn btn-float btn-success my-1" href="https://www.support.zoliky.eu/" title="Podpora" target="_blank">
+					<i class="fas fa-wrench"></i>
+				</a>
+				<a class="btn btn-float btn-primary my-1" href="mailto:podpora@zoliky.eu" title="Email">
+					<i class="far fa-envelope"></i>
+				</a>
+			</div>
+		</div>
+		@Html.HiddenFor(x => x.To, new {id = "HiddenEnd"})
+	</div>
+</div>
+
+@section footer{
+	<script type="text/javascript">
+		$(function() {
+
+			let neco = setInterval(odpocet, 500);
+
+			let endTime = new Date($("#HiddenEnd").val()).getTime();
+			let days = $("#LblDays");
+			let hours = $("#LblHours");
+			let minutes = $("#LblMinutes");
+			let seconds = $("#LblSeconds");
+
+
+			function odpocet() {
+				let diff = (endTime - new Date().getTime());
+				if (diff < 0) {
+					location.reload();
+					return;
+				}
+
+				let d = Math.floor(diff / (1000 * 60 * 60 * 24));
+				let h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+				let m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+				let s = Math.floor((diff % (1000 * 60)) / 1000);
+
+				seconds.text(s);
+				minutes.text(m);
+				hours.text(h);
+				days.text(d);
+
+			}
+		});
+	</script>
+}

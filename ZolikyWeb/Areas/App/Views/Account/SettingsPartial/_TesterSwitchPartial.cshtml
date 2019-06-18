@@ -1,0 +1,26 @@
+﻿@using ZolikyWeb.Tools
+@model  ZolikyWeb.Areas.App.Models.SettingsModel
+
+@using (Html.BeginForm("SwitchTester", "Account", new {Area = "App"}, FormMethod.Post)) {
+	<h3>Pro testery</h3>
+	@Html.AntiForgeryToken()
+	<br/>
+	<ul class="list-unstyled">
+		<li class="media mb-0">
+			<div class="media-body row align-items-center">
+				<div class="col col-md-9">
+					<h5 class="mt-0 mb-1">Testerské funkce</h5>
+					<small>
+						<span class="text-warning">VAROVÁNÍ:</span> Po aktivování testerských funkcí se může aplikace chovat nestandardně.
+					</small>
+				</div>
+				<div class="col align-self-center">
+					@Html.CheckBoxSimple(x => x.IsTester, new {@class = "js-switch", data_submitOnChange = true, data_color = "#009efb"})
+				</div>
+			</div>
+		</li>
+	</ul>
+	<small class="text-muted">
+		Doporučujeme používat testerský režim pouze pro testování, nikoliv pro obvyklé používání.
+	</small>
+}

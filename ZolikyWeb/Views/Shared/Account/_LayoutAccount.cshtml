@@ -1,0 +1,115 @@
+﻿@using System.Web.Optimization
+@using hbehr.recaptcha
+@using SharedLibrary.Shared
+@using ZolikyWeb.Tools
+@{
+	Layout = "~/Views/Shared/_Layout.cshtml";
+
+	string GetPrideStyle(bool pride)
+	{
+		string style = "display:";
+		if (DateTime.Today.IsPrideTime() && pride) {
+			style = "";
+		} else {
+			style += "none;";
+		}
+		return style;
+	}
+
+}
+
+@section header{
+	@Styles.Render("~/bundles/css/account")
+	@RenderSection("header", false)
+}
+
+<div class="w-100 custom-gradient" id="accountWrapper">
+	<div class="minh-100v d-flex flex-column justify-content-evenly align-items-center">
+		<div class="text-center">
+			<a title="Zpět na hlavní stránku" href="@Url.Action("Index", "Home")">
+				<img class="zoliky-logo" alt="Logo Žolíků" style="@GetPrideStyle(false)" src="@Url.Content("~/Content/Images/Header/ZolikyHeaderWhite_1024.png")" />
+				<img class="zoliky-logo pride" alt="Hrdé logo Žolíků" style="@GetPrideStyle(true)" src="@Url.Content("~/Content/Images/Header/ZolikyHeaderPride_1024.png")" />
+			</a>
+		</div>
+		<div class="card">
+			<div class="card-body p-0">
+				<div class="progress" id="loadingBar" style="display: none;">
+					<div class="progress-bar progress-bar-indeterminate" role="progressbar"></div>
+				</div>
+				<div class="container">
+					<div class="row">
+						<div class="preloader" style="display: none;">
+							<svg class="circular" viewBox="25 25 50 50">
+								<circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" />
+							</svg>
+						</div>
+						@RenderBody()
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="text-center text-white py-3">
+			<h6>
+				&copy; Žolíky @DateTime.Today.Year |
+				<a title="Přejít na seznam změn" class="text-white" href="@Url.Action("Changelog", "Home", new {Area = ""})">v.@Globals.VersionTrunc</a>
+			</h6>
+		</div>
+	</div>
+</div>
+<!-- Settings button -->
+<a role="button" class="settingsModalButton" data-toggle="modal" data-target="#settingsModal" href="#" title="Nastavení">
+	...
+</a>
+<!-- /Settings button -->
+
+<!-- Settings modal -->
+<div class="modal fade" id="settingsModal" tabindex="-1" role="dialog" aria-labelledby="settingsModelTitle" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="settingsModelTitle">Nastavení</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="form-group">
+					<div class="custom-control custom-switch">
+						<input class="custom-control-input" id="animatedBgSwitch" type="checkbox" checked="checked">
+						<span class="custom-control-track"></span>
+						<label class="custom-control-label" for="animatedBgSwitch">Animované pozadí</label>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="custom-control custom-switch">
+						<input class="custom-control-input" id="prideLogoSwitch" type="checkbox" checked="checked">
+						<span class="custom-control-track"></span>
+						<label class="custom-control-label" for="prideLogoSwitch">"Hrdé" logo</label>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="custom-control custom-switch">
+						<input class="custom-control-input" id="soundSwitch" type="checkbox" disabled="disabled">
+						<span class="custom-control-track"></span>
+						<label class="custom-control-label" for="soundSwitch">Přehávat zvuky</label>
+					</div>
+				</div>
+				<p class="mt-4">
+					Tato stránka byla načtena @DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss").
+				</p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-danger" data-dismiss="modal">Zavřít</button>
+				<button type="button" class="btn btn-info" data-dismiss="modal" id="settingModelSave">Uložit změny</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- /Settings modal -->
+
+
+@section footer {
+	@ReCaptcha.GetCaptchaScript(ReCaptchaLanguage.Czech)
+	@Scripts.Render("~/bundles/js/account")
+	@RenderSection("footer", false)
+}

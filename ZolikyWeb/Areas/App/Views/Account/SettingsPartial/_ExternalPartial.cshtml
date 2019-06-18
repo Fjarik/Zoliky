@@ -1,0 +1,31 @@
+﻿@using ZolikyWeb.Areas.App.Models
+@model ZolikyWeb.Areas.App.Models.Account.ExternalModel
+<h3>
+	Připojené účty
+</h3>
+<br />
+<ul class="list-unstyled">
+	@foreach (var p in Model.AllProviders) {
+		<li class="media mb-0">
+			<div class="media-body row align-items-center">
+				<div class="col col-md-9">
+					<h5 class="mt-0 mb-1">@p.AuthenticationType</h5>
+					<small>Připojte svůj <strong>@p.AuthenticationType</strong> účet a budete se moct jednoduše přihlašovat</small>
+				</div>
+				<div class="col align-self-center">
+					@{
+						// Add (true) - Uživatel ještě nemá napojenou externí síť -> možnost přidání
+						bool add = Model.UserActiveProvider.All(x => x.LoginProvider != p.AuthenticationType);
+						@Html.Partial("SettingsPartial/_ExternalLogin", new ExternalLoginModel(p.AuthenticationType, add))
+					}
+				</div>
+			</div>
+		</li>
+	}
+</ul>
+<small class="text-muted">
+	Žolíky <strong>nebudou</strong> zveřejnovat žádné příspěvky Vaším jménem.
+	<em>(Jediný, k čemu mají Žolíky přístup, je token k ověření externí identity)</em>
+	<br/>
+	Připojením externího účtu souhlasíte s podmínkami daného exteního poskytovatele.
+</small>

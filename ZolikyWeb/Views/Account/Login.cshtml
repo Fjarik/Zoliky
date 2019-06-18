@@ -1,0 +1,94 @@
+﻿@using hbehr.recaptcha
+@using ZolikyWeb.Tools
+@model ZolikyWeb.Models.Account.LoginPageModel
+@{
+	ViewBag.Title = "Přihlášení";
+	Layout = "~/Views/Shared/Account/_LayoutAccount.cshtml";
+}
+
+
+<div class="col-12 col-lg-7 p-5">
+	<div class="login-div">
+		<div class="form-group">
+			<h3>@ViewBag.Title</h3>
+		</div>
+		@using (Html.BeginForm("Login", "Account", new {r = ViewBag.r ?? ""}, FormMethod.Post, new {id = "loginForm"})) {
+			@Html.AntiForgeryToken()
+			<div class="form-group">
+				@Html.NoSelectLaberFor(m => m.UName)
+
+				@Html.MaterialTextBoxFor(m => m.UName, 1, new Dictionary<string, object> {
+					{"autocomplete", "username"},
+				})
+				@Html.ValidationMessageFor(m => m.UName)
+			</div>
+			<div class="form-group">
+				@Html.NoSelectLaberFor(m => m.Password)
+
+				@Html.MaterialPasswordFor(m => m.Password, 2, new Dictionary<string, object> {
+					{"autocomplete", "current-password"},
+				})
+
+				@Html.ValidationMessageFor(m => m.Password)
+			</div>
+			<div class="d-flex justify-content-between align-items-start" style="height: 50px;">
+				<div class="my-auto pl-0">
+					<div class="custom-control custom-checkbox">
+						@Html.CheckBoxFor(m => m.RememberMe, new {
+							@class = "custom-control-input",
+							tabindex = 3
+						})
+
+						@Html.LabelFor(m => m.RememberMe, new {
+							@class = "custom-control-label cursor-pointer NoSelect"
+						})
+
+					</div>
+				</div>
+				<div class="align-self-center NoSelect">
+					<a href="@Url.Action("ForgotPassword", "Account")" tabindex="4" title="Zapomenuté heslo" class="pt-1 text-info">Zapomenuté heslo?</a>
+				</div>
+			</div>
+			<div class="text-center">
+				@ReCaptcha.GetInvisibleCaptcha("login", "Přihlásit se", ReCaptchaLanguage.Czech, expireCallback: "gExpire", additionalClasses: new[] {"btn", "btn-info", "my-4", "w-50"})
+			</div>
+			if (!ViewData.ModelState.IsValid) {
+				<div id="ErrorDiv" runat="server" class="alert alert-danger alert-dismissible fade show" role="alert" style="display: block">
+					<h5>Chyba!</h5>
+					@Html.ValidationSummary(false)
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close" tabindex="6">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+			}
+			if (Model.ShowActivationElement) {
+				<div class="alert alert-danger alert-dismissible fade show" role="alert" style="display: block">
+					<h5>Tento účet není aktivovaný</h5>
+					Aktivaci provedete otevřením odkazu, který Vám byl doručen na email zadaný při registraci. Pokud Vám žádný email nepřišel
+					<a title="Vyžádat nový aktivační email" class="alert-link" href="@Url.Action("ReSend", "Account")">vyžádejte si nový</a>.
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close" tabindex="6">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+			}
+			if (Model.ShowRegistrationErrorElement) {
+				<div class="alert alert-danger alert-dismissible fade show" role="alert" style="display: block">
+					<h5>Chyba při registraci</h5>
+					Uživatel byl úspěšně zaregistrován, ale nezdařilo se odeslat aktivační email. Kontaktujte prosím
+					<a href="https://support.zoliky.eu" target="_blank" title="Odkaz na podporu">Podporu</a> nebo zkuste
+					<a title="Vyžádat nový aktivační email" class="alert-link" href="@Url.Action("ReSend", "Account")">vyžádat nový aktivační email</a>.
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close" tabindex="6">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+			}
+			<div class="text-center pt-1 large-1">
+				Ještě nemáte účet?
+				<a title="Registrace" href="@Url.Action("Register", "Account")" class="pt-1 text-info" tabindex="7">Vytvořte si ho ihned</a>
+			</div>
+		}
+	</div>
+</div>
+<div class="col-12 col-lg-5 p-4 bg-light">
+	@Html.Partial("_ExternalLoginPartial", ViewData)
+</div>

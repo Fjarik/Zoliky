@@ -1,0 +1,8 @@
+﻿@model string
+
+@using (Html.BeginForm("Logout", "Account", new {Area = ""}, FormMethod.Post)) {
+	@Html.AntiForgeryToken()
+	<a href="#" class="@Model" data-click="submit">
+		<i class="fa fa-power-off"></i> Odhlásit se
+	</a>
+}

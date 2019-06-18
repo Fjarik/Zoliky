@@ -1,0 +1,142 @@
+﻿/*Preloader*/
+
+.preloader {
+	width: 100%;
+	height: 100%;
+	/*top: 0px;*/
+	position: absolute;
+	z-index: 99999;
+	background: #fff;
+}
+
+.preloader .cssload-speeding-wheel {
+	position: absolute;
+	top: calc(50% - 3.5px);
+	left: calc(50% - 3.5px);
+}
+
+.circular {
+	animation: rotate 2s linear infinite;
+	height: 50px;
+	transform-origin: center center;
+	width: 50px;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	margin: auto;
+}
+
+.path {
+	stroke-dasharray: 1, 200;
+	stroke-dashoffset: 0;
+	animation: dash 1.5s ease-in-out infinite, color 6s ease-in-out infinite;
+	stroke-linecap: round;
+}
+
+@keyframes rotate {
+	100% {
+		transform: rotate(360deg);
+	}
+}
+
+@keyframes dash {
+	0% {
+		stroke-dasharray: 1, 200;
+		stroke-dashoffset: 0;
+	}
+
+	50% {
+		stroke-dasharray: 89, 200;
+		stroke-dashoffset: -35px;
+	}
+
+	100% {
+		stroke-dasharray: 89, 200;
+		stroke-dashoffset: -124px;
+	}
+}
+
+@keyframes color {
+	100%,
+	0% {
+		stroke: #d62d20;
+	}
+
+	40% {
+		stroke: #0057e7;
+	}
+
+	66% {
+		stroke: #008744;
+	}
+
+	80%,
+	90% {
+		stroke: #ffa700;
+	}
+}
+
+.zoliky-logo {
+	height: 10rem;
+	width: auto;
+	/*margin: 5rem auto;*/
+}
+
+
+.settingsModalButton {
+	position: fixed;
+	left: 0;
+	bottom: 0;
+	margin-left: 0.5rem;
+	cursor: pointer;
+	color: white;
+	font-size: xx-large;
+}
+
+.settingsModalButton:active, .settingsModalButton:focus, .settingsModalButton:hover {
+	color: white;
+	text-decoration: none;
+}
+
+.pride {
+
+}
+
+@media (max-width: 576px) {
+	.settingsModalButton {
+		display: none;
+	}
+
+	.zoliky-logo {
+		max-width: 60vw;
+		height: auto;
+		margin: 1rem auto;
+	}
+}
+
+@media (min-width: 991.98px) {
+	.login-div {
+		min-width: 30rem;
+	}
+
+	.soc-buttons {
+		min-width: 19rem;
+	}
+
+	#forgotPwdDiv {
+		min-width: 25rem;
+	}
+
+	#countdown {
+		min-width: 30rem;
+	}
+
+	#registerDiv {
+		min-width: 50rem;
+	}
+	#registerSuccessDiv {
+		min-width: 30rem;
+	}
+}

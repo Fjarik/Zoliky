@@ -1,0 +1,30 @@
+﻿@using ZolikyWeb.Tools
+@model ZolikyWeb.Areas.App.Models.Account.GeneralChangeModel
+
+<h4 class="card-title">Základní údaje</h4>
+@using (Html.BeginForm("ChangeGeneral", "Account", new {Area = "App"}, FormMethod.Post, new {@class = "floating-labels mt-4", data_deactivate = true})) {
+	@Html.AntiForgeryToken()
+	<div class="form-group m-b-40">
+		@Html.MaterialTextBoxFor(x => x.Username, 1, "", includePlaceholder: false)
+		<span class="bar"></span>
+		@Html.NoSelectLaberFor(x => x.Username)
+		@Html.ValidationMessageFor(x => x.Username)
+	</div>
+	<div class="form-group m-b-40">
+		@Html.MaterialTextBoxFor(x => x.Email, 2, "", includePlaceholder: false)
+		<span class="bar"></span>
+		@Html.NoSelectLaberFor(x => x.Email)
+		@Html.ValidationMessageFor(x => x.Email)
+	</div>
+	<div class="form-group">
+		@Html.DropDownListFor(x => x.Gender, Model.GenderSelect, new {@class = "form-control p-0", tabindex = 6})
+		<span class="bar"></span>
+		@Html.NoSelectLaberFor(x => x.Gender)
+		@Html.ValidationMessageFor(x => x.Gender)
+	</div>
+	<div class="text-right" data-toggle="tooltip" title="Připravujeme">
+		<button class="btn btn-primary" type="submit" disabled="disabled">
+			Uložit
+		</button>
+	</div>
+}

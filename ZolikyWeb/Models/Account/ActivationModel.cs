@@ -1,0 +1,14 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Web;
+using ZolikyWeb.Tools;
+
+namespace ZolikyWeb.Models.Account
+{
+	public class ActivationModel : EmailModel
+	{
+		public ActivationModel() { }
+	}
+}

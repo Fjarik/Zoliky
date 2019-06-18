@@ -1,0 +1,26 @@
+﻿@using System.Web.Optimization
+@{
+	Layout = "~/Views/Shared/_LayoutWithoutStyles.cshtml";
+}
+
+@section styles {
+	@Styles.Render("~/bundles/css/bootstrap")
+	@Styles.Render("~/bundles/css/main")
+	@RenderSection("styles", false)
+}
+
+@section header{
+	@RenderSection("header", false)
+}
+
+
+@RenderBody()
+
+@section scripts {
+	@Scripts.Render("~/bundles/js/main")
+	@RenderSection("scripts", false)
+}
+
+@section footer {
+	@RenderSection("footer", false)
+}

@@ -1,0 +1,42 @@
+﻿@using ZolikyWeb.Tools
+@model ZolikyWeb.Areas.App.Models.Zoliky.ZolikLockModel
+
+<a title="Zamknout žolíka" data-toggle="modal" data-target="#modalLock" class="zolik-change">
+	<i class="mdi mdi-lock-outline"></i>
+</a>
+<div id="modalLock" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modalLockLabel" style="display: none;" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title" id="modalLockLabel">
+					Zamknout žolíka
+					<a href="https://support.zoliky.eu/Faq" title="Nápověda" target="_blank">
+						<i class="mdi mdi-help-circle-outline"></i>
+					</a>
+				</h4>
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			</div>
+			@using (Html.BeginForm("Lock", "Zoliky", new {Area = "App"}, FormMethod.Post)) {
+				<div class="modal-body">
+					<p>
+						Žolík:
+						<strong>@Model.Title</strong> (@Model.Type)
+					</p>
+					<br />
+					@Html.AntiForgeryToken()
+					@Html.SecureHiddenFor(x => x.ZolikId)
+
+					@Html.NoSelectLaberFor(x => x.Lock)
+					@Html.MaterialTextBoxFor(x => x.Lock, 1)
+					@Html.ValidationMessageFor(x => x.Lock)
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-white" data-dismiss="modal">Zavřít</button>
+					<button type="submit" class="btn btn-info waves-effect">Uzamknout</button>
+				</div>
+			}
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>

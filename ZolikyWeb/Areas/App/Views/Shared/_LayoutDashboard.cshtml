@@ -1,0 +1,111 @@
+﻿@{
+	Layout = "~/Views/Shared/_LayoutWithoutStyles.cshtml";
+}
+
+@section styles {
+	@*@Styles.Render("~/bundles/css/dashboard")*@
+	<!-- Bootstrap Core CSS -->
+	@*<link href="@Url.Content("~/assets/plugins/bootstrap/css/bootstrap.min.css")" rel="stylesheet" />*@
+	<link href="@Url.Content("~/Content/bootstrap.min.css")" rel="stylesheet" />
+	<!-- chartist CSS -->
+	@*<link href="@Url.Content("~/assets/plugins/chartist-js/dist/chartist.min.css")" rel="stylesheet" />*@
+	@*<link href="@Url.Content("~/assets/plugins/chartist-js/dist/chartist-init.css")" rel="stylesheet" />*@
+	@*<link href="@Url.Content("~/assets/plugins/chartist-plugin-tooltip-master/dist/chartist-plugin-tooltip.css")" rel="stylesheet" />*@
+	<!--This page css - Morris CSS -->
+	<link href="@Url.Content("~/assets/plugins/c3-master/c3.min.css")" rel="stylesheet" />
+	<link href="@Url.Content("~/assets/plugins/switchery/switchery.min.css")" rel="stylesheet" />
+	<!-- Custom CSS -->
+	<link href="@Url.Content("~/Content/Dashboard/css/style.css?v=5554asd5")" rel="stylesheet" />
+	<link href="@Url.Content("~/assets/plugins/footable/css/footable.core.css")" rel="stylesheet" />
+	<!-- You can change the theme colors from here -->
+	<link href="@Url.Content("~/Content/Dashboard/css/colors/blue.css")" id="theme" rel="stylesheet" />
+	<!-- Toastr -->
+	<link href="@Url.Content("~/Content/toastr.min.css")" rel="stylesheet" />
+	<!-- Own styles -->
+	<link href="@Url.Content("~/Content/Main.css")" rel="stylesheet" />
+	<link href="@Url.Content("~/Content/dashboard.css")" rel="stylesheet" />
+	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	<!--[if lt IE 9]>
+		<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+		<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+	<![endif]-->
+	@RenderSection("styles", false)
+}
+
+@section header{
+	@RenderSection("header", false)
+}
+
+<!-- ============================================================== -->
+<!-- Preloader - style you can find in spinners.css -->
+<!-- ============================================================== -->
+<div class="preloader">
+	<svg class="circular" viewBox="25 25 50 50">
+		<circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" />
+	</svg>
+</div>
+<!-- ============================================================== -->
+<!-- Main wrapper - style you can find in pages.scss -->
+<!-- ============================================================== -->
+<div id="main-wrapper" class="h-100">
+	@RenderBody()
+</div>
+<!-- ============================================================== -->
+<!-- End Wrapper -->
+<!-- ============================================================== -->
+
+@section scripts {
+	@*@Scripts.Render("~/bundles/js/dashboard")*@
+	<script src="@Url.Content("~/assets/plugins/jquery/jquery.min.js")"></script>
+	<!-- Bootstrap tether Core JavaScript -->
+	<script src="@Url.Content("~/Scripts/umd/popper.min.js")"></script>
+	@*<script src="@Url.Content("~/assets/plugins/bootstrap/js/popper.min.js")"></script>*@
+	<script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
+	@*<script src="@Url.Content("~/assets/plugins/bootstrap/js/bootstrap.min.js")"></script>*@
+
+	<!-- slimscrollbar scrollbar JavaScript -->
+	<script src="@Url.Content("~/Scripts/Dashboard/jquery.slimscroll.js")"></script>
+	<!--Wave Effects -->
+	<script src="@Url.Content("~/Scripts/Dashboard/waves.js")"></script>
+	<!--Menu sidebar -->
+	<script src="@Url.Content("~/Scripts/Dashboard/sidebarmenu.js")"></script>
+	<!--Stickey kit -->
+	<script src="@Url.Content("~/assets/plugins/sticky-kit-master/sticky-kit.min.js")"></script>
+	<script src="@Url.Content("~/assets/plugins/sparkline/jquery.sparkline.min.js")"></script>
+	<!-- Toastr -->
+	<script src="@Url.Content("~/Scripts/toastr.min.js")"></script>
+	<!--Custom JavaScript -->
+	<script src="@Url.Content("~/Scripts/Dashboard/custom.js?v=56rt4r")"></script>
+	<!-- ============================================================== -->
+	<!-- This page plugins -->
+	<!-- ============================================================== -->
+	<script src="@Url.Content("~/assets/plugins/datatables/jquery.dataTables.min.js")"></script>
+	<script src="@Url.Content("~/assets/plugins/footable/js/footable.all.min.js")"></script>
+	<script src="@Url.Content("~/assets/plugins/switchery/switchery.min.js")"></script>
+	<!-- chartist chart -->
+	@*<script src="@Url.Content("~/assets/plugins/chartist-js/dist/chartist.min.js")"></script>*@
+	@*<script src="@Url.Content("~/assets/plugins/chartist-plugin-tooltip-master/dist/chartist-plugin-tooltip.min.js")"></script>*@
+	<!--c3 JavaScript -->
+	<script src="@Url.Content("~/assets/plugins/d3/d3.min.js")"></script>
+	<script src="@Url.Content("~/assets/plugins/c3-master/c3.min.js")"></script>
+	<!-- Chart JS -->
+	@*<script src="@Url.Content("~/Scripts/Dashboard/dashboard1.js")"></script>*@
+	<!-- ============================================================== -->
+	<!-- Style switcher -->
+	<!-- ============================================================== -->
+	<script src="@Url.Content("~/assets/plugins/styleswitcher/jQuery.style.switcher.js")"></script>
+	<!-- ============================================================== -->
+	<!-- Own JS -->
+	<!-- ============================================================== -->
+	<script src="@Url.Content("~/Scripts/jquery.validate.min.js")"></script>
+	<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")"></script>
+	<script src="@Url.Content("~/Scripts/js-cookie/js.cookie-2.2.0.min.js")"></script>
+	<script src="@Url.Content("~/Scripts/main.js?v=asdf1541")"></script>
+	<script src="@Url.Content("~/Scripts/dashboard.js?v=45asdf5456")"></script>
+	@RenderSection("scripts", false)
+}
+
+@section footer {
+	@RenderSection("footer", false)
+}
