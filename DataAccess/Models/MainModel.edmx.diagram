@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="cfc689b9702e4af2acc85652c4311f83" Name="Diagram1" ZoomLevel="106">
+        <EntityTypeShape EntityType="ZoliksModel.Transaction" Width="1.5" PointX="15.75" PointY="21.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ZoliksModel.Zolik" Width="1.5" PointX="13.5" PointY="20.875" IsExpanded="true" />
+        <AssociationConnector Association="ZoliksModel.FK_Transactions_Zoliky" ManuallyRouted="false" >
+        </AssociationConnector>
+        <EntityTypeShape EntityType="ZoliksModel.Class" Width="1.5" PointX="6" PointY="15.875" />
+        <EntityTypeShape EntityType="ZoliksModel.Url" Width="1.5" PointX="6" PointY="29.375" />
+        <EntityTypeShape EntityType="ZoliksModel.Changelog" Width="1.5" PointX="3" PointY="47.25" />
+        <EntityTypeShape EntityType="ZoliksModel.News" Width="1.5" PointX="3" PointY="44.125" />
+        <EntityTypeShape EntityType="ZoliksModel.Project" Width="1.5" PointX="0.75" PointY="26.625" />
+        <AssociationConnector Association="ZoliksModel.FK_Changelogs_Projects" />
+        <AssociationConnector Association="ZoliksModel.FK_Urls_Projects" />
+        <EntityTypeShape EntityType="ZoliksModel.Price" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="ZoliksModel.Crash" Width="1.5" PointX="3" PointY="25.5" />
+        <EntityTypeShape EntityType="ZoliksModel.Image" Width="1.5" PointX="10.5" PointY="39" />
+        <EntityTypeShape EntityType="ZoliksModel.Notification" Width="1.5" PointX="3" PointY="21.25" />
+        <AssociationConnector Association="ZoliksModel.FK_Crashes_Images" />
+        <AssociationConnector Association="ZoliksModel.FK_Crashes_Projects" />
+        <EntityTypeShape EntityType="ZoliksModel.WebEvent" Width="1.5" PointX="6" PointY="22.25" />
+        <AssociationConnector Association="ZoliksModel.FK_News_Projects" />
+        <AssociationConnector Association="ZoliksModel.FK_Events_Projects" />
+        <EntityTypeShape EntityType="ZoliksModel.User" Width="1.5" PointX="8.25" PointY="19.625" />
+        <AssociationConnector Association="ZoliksModel.FK_Users_Classes" />
+        <AssociationConnector Association="ZoliksModel.FK_Crashes_Users" />
+        <AssociationConnector Association="ZoliksModel.FK_Users_Images" />
+        <AssociationConnector Association="ZoliksModel.FK_Notifications_FromUser" />
+        <AssociationConnector Association="ZoliksModel.FK_Transactions_FromUser" />
+        <AssociationConnector Association="ZoliksModel.FK_Transactions_ToUser" ManuallyRouted="false" >
+        </AssociationConnector>
+        <AssociationConnector Association="ZoliksModel.FK_Events_FromUser" />
+        <AssociationConnector Association="ZoliksModel.FK_Events_ToUser" ManuallyRouted="false" >
+        </AssociationConnector>
+        <AssociationConnector Association="ZoliksModel.FK_Zoliky_Users" />
+        <EntityTypeShape EntityType="ZoliksModel.UserLogin" Width="1.5" PointX="6" PointY="26.5" />
+        <AssociationConnector Association="ZoliksModel.FK_Logins_Projects" />
+        <AssociationConnector Association="ZoliksModel.FK_Logins_Users" />
+        <EntityTypeShape EntityType="ZoliksModel.Consent" Width="1.5" PointX="10.5" PointY="17.75" />
+        <EntityTypeShape EntityType="ZoliksModel.Term" Width="1.5" PointX="8.25" PointY="15.25" />
+        <EntityTypeShape EntityType="ZoliksModel.Token" Width="1.5" PointX="10.5" PointY="33.375" />
+        <AssociationConnector Association="ZoliksModel.FK_Consents_Terms" />
+        <AssociationConnector Association="ZoliksModel.FK_Consents_Users" />
+        <AssociationConnector Association="ZoliksModel.FK_Tokens_Users" ManuallyRouted="false" >
+        </AssociationConnector>
+        <AssociationConnector Association="ZoliksModel.FK_Notifications_Projects" />
+        <AssociationConnector Association="ZoliksModel.FK_Notifications_ToUser" ManuallyRouted="false" >
+        </AssociationConnector>
+        <EntityTypeShape EntityType="ZoliksModel.SomeHash" Width="1.5" PointX="10.5" PointY="21.125" />
+        <AssociationConnector Association="ZoliksModel.FK_SomeHashes_Users" />
+        <AssociationConnector Association="ZoliksModel.FK_Users_Password" />
+        <EntityTypeShape EntityType="ZoliksModel.Unavailability" Width="1.5" PointX="3" PointY="41.125" />
+        <AssociationConnector Association="ZoliksModel.FK_Unavailabilities_Projects" />
+        <EntityTypeShape EntityType="ZoliksModel.Achievement" Width="1.5" PointX="12.75" PointY="39" />
+        <EntityTypeShape EntityType="ZoliksModel.Rank" Width="1.5" PointX="2.75" PointY="0.75" />
+        <AssociationConnector Association="ZoliksModel.FK_Achievements_LockedImage" />
+        <AssociationConnector Association="ZoliksModel.FK_Achievements_UnlockedImage" />
+        <EntityTypeShape EntityType="ZoliksModel.Path" Width="1.5" PointX="3.75" PointY="30.875" />
+        <AssociationConnector Association="ZoliksModel.FK_Urls_Paths" />
+        <EntityTypeShape EntityType="ZoliksModel.Subject" Width="1.5" PointX="11.25" PointY="14.75" />
+        <AssociationConnector Association="ZoliksModel.FK_Zoliky_Subjects" />
+        <AssociationConnector Association="ZoliksModel.FK_Zoliky_Teacher" />
+        <AssociationConnector Association="ZoliksModel.FK_Images_Owner" />
+        <EntityTypeShape EntityType="ZoliksModel.UserSetting" Width="1.5" PointX="10.5" PointY="25.5" />
+        <AssociationConnector Association="ZoliksModel.FK_UserSettings_Projects" ManuallyRouted="false" >
+        </AssociationConnector>
+        <AssociationConnector Association="ZoliksModel.FK_Zoliky_OriginalOwner" />
+        <EntityTypeShape EntityType="ZoliksModel.Role" Width="1.5" PointX="6" PointY="19.375" />
+        <AssociationConnector Association="ZoliksModel.UserRoles" />
+        <AssociationConnector Association="ZoliksModel.ReadNotifications" ManuallyRouted="false" >
+        </AssociationConnector>
+        <AssociationConnector Association="ZoliksModel.AchievementUnlocks" />
+        <EntityTypeShape EntityType="ZoliksModel.UserLoginToken" Width="1.5" PointX="10.5" PointY="36.25" />
+        <AssociationConnector Association="ZoliksModel.FK_UserLoginTokens_Users" />
+        <AssociationConnector Association="ZoliksModel.FK_UserSettings_Users" />
+        </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
