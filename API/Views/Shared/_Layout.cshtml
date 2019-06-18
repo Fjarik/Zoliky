@@ -1,0 +1,19 @@
+﻿<!DOCTYPE html>
+<html class="w-100 h-100">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta name="Copyright" content="Žolíky - @DateTime.Today.Year" />
+	<title>Žolíky - @ViewBag.Title</title>
+	<link href="@Url.Content("~/Content/bootstrap.min.css")" rel="stylesheet" type="text/css" />
+</head>
+<body class="w-100 h-100">
+	<div class="container-fluid h-100">
+		<div class="row justify-content-center h-100 align-items-center">
+			<div class="col-auto text-center">
+				@RenderBody()
+			</div>
+		</div>
+	</div>
+</body>
+</html>
