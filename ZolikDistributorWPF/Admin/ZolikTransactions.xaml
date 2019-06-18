@@ -1,0 +1,58 @@
+﻿<controls:MetroWindow x:Class="ZolikDistributor.Admin.ZolikTransactions"
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                      xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                      xmlns:local="clr-namespace:ZolikDistributor.UserControls"
+                      mc:Ignorable="d"
+                      Initialized="ZolikTransactions_OnInitialized"
+                      Title="Žolík - Transakce" MinWidth="730" MinHeight="250" Height="450" Width="800">
+	<Grid>
+		<Grid x:Name="GridLoading" Visibility="Hidden">
+			<local:UcLoading x:Name="UcLoading" Text="Načítání..." />
+		</Grid>
+		<Grid x:Name="GridMain" Visibility="Visible">
+			<DataGrid x:Name="DataGridTransactions"
+			          ItemsSource="{Binding Transactions}"
+			          CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserSortColumns="False"
+			          CanUserResizeColumns="True" CanUserResizeRows="False"
+			          AlternationCount="2" AutoGenerateColumns="False"
+			          SelectionChanged="DataGridTransactions_OnSelectionChanged"
+			          SelectionMode="Single"
+			          HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"
+			          FontSize="18">
+				<DataGrid.RowStyle>
+					<Style TargetType="{x:Type DataGridRow}">
+						<Style.Triggers>
+							<Trigger Property="AlternationIndex" Value="0">
+								<Setter Property="Background" Value="White" />
+							</Trigger>
+							<Trigger Property="AlternationIndex" Value="1">
+								<Setter Property="Background" Value="#2995EF" />
+								<Setter Property="Foreground" Value="White" />
+							</Trigger>
+						</Style.Triggers>
+					</Style>
+				</DataGrid.RowStyle>
+				<DataGrid.Columns>
+					<DataGridTextColumn Header="Datum" IsReadOnly="True" Width="2*"
+					                    Binding="{Binding Date,StringFormat='dd.MM.yyyy HH:mm'}" />
+
+					<DataGridTextColumn Header="Od koho" IsReadOnly="True" Width="3*" Binding="{Binding From}" />
+
+					<DataGridTextColumn Header="" IsReadOnly="True" Width="*" Binding="{Binding ID,StringFormat='==>'}">
+						<DataGridTextColumn.CellStyle>
+							<Style>
+								<Setter Property="FrameworkElement.HorizontalAlignment" Value="Center" />
+							</Style>
+						</DataGridTextColumn.CellStyle>
+					</DataGridTextColumn>
+					<DataGridTextColumn Header="Komu" IsReadOnly="True" Width="3*" Binding="{Binding To}" />
+
+				</DataGrid.Columns>
+
+			</DataGrid>
+		</Grid>
+	</Grid>
+</controls:MetroWindow>

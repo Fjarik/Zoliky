@@ -1,0 +1,132 @@
+﻿<Controls:MetroWindow x:Class="ZolikDistributor.Admin.ZolikyAsignment"
+                      xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                      xmlns:local="clr-namespace:ZolikDistributor.UserControls"
+                      mc:Ignorable="d" Closing="ZolikyAsignment_OnClosing"
+                      Initialized="ZolikyAsignment_OnInitialized"
+                      Title="Zápis žolíků" Height="450" Width="800"
+                      WindowStartupLocation="CenterScreen">
+	<Grid>
+		<Grid x:Name="GridLoading" Visibility="Hidden">
+			<local:UcLoading x:Name="UcLoading" Text="Načítání..." />
+		</Grid>
+		<Grid x:Name="GridMain" Visibility="Visible">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="46" />
+				<RowDefinition Height="49*" />
+				<RowDefinition Height="30" />
+				<RowDefinition Height="30" />
+				<RowDefinition Height="137*" />
+				<RowDefinition Height="58*" />
+				<RowDefinition Height="69*"/>
+			</Grid.RowDefinitions>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="119*" />
+				<ColumnDefinition Width="119*" />
+				<ColumnDefinition Width="128*" />
+				<ColumnDefinition Width="110" />
+				<ColumnDefinition Width="79*" />
+				<ColumnDefinition Width="237*" />
+			</Grid.ColumnDefinitions>
+			<Border BorderBrush="Black" BorderThickness="0.8" Grid.Column="0" Grid.ColumnSpan="2" Margin="2" Grid.RowSpan="7" />
+
+			<Border BorderBrush="Black" BorderThickness="0.8" Grid.Column="2" Grid.ColumnSpan="4" Margin="2" Grid.Row="0"
+			        Grid.RowSpan="7" />
+			<Border BorderBrush="Black" BorderThickness="0.8" Grid.Column="2" Grid.ColumnSpan="2" Margin="5" Grid.Row="1"
+			        Grid.RowSpan="6" />
+			<Border BorderBrush="Black" BorderThickness="0.8" Grid.Column="5" Grid.ColumnSpan="1" Margin="5" Grid.Row="0"
+			        Grid.RowSpan="7" />
+
+			<Label Content="Nový žolík" HorizontalAlignment="Left" Margin="16,10,0,0" VerticalAlignment="Top" Height="46"
+			       FontSize="24" Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Width="120" />
+
+			<Label Content="Vyberte typ žolíka" HorizontalAlignment="Left" Margin="16,0,0,0" VerticalAlignment="Bottom"
+			       Grid.ColumnSpan="2" Grid.Row="1" Grid.Column="0" Height="26" Width="105" />
+
+			<RadioButton x:Name="RbJokerClassic" Content="Obyčejný" GroupName="JokerType"
+			             HorizontalAlignment="Left" Margin="16,5,0,5" Grid.Row="2" Grid.Column="0"
+			             IsChecked="True" Cursor="Hand" Width="73" />
+			<RadioButton x:Name="RbJokerJoker" Content="Joker" GroupName="JokerType" Checked="RbJokerJoker_OnChecked" Unchecked="RbJokerJoker_OnChecked"
+			             HorizontalAlignment="Left" Margin="16,5,0,5" Grid.Column="1" Grid.Row="2"
+			             IsChecked="False" Cursor="Hand" Width="52" />
+			<RadioButton x:Name="RbJokerBlack" Content="Černý Petr" GroupName="JokerType"
+			             HorizontalAlignment="Left" Margin="16,5,0,5" Grid.Row="3" Grid.Column="0"
+			             IsChecked="False" Cursor="Hand" Width="79" />
+
+			<Label Content="Za co byl žolík udělen?" HorizontalAlignment="Left" Margin="16,4,0,0" VerticalAlignment="Top"
+			       Width="191" Grid.ColumnSpan="2"
+			       Grid.Column="0" Grid.Row="4" Height="26" />
+
+			<TextBox x:Name="TxtJokerDescription" Margin="16,30,20,0" TextWrapping="Wrap"
+			         Controls:TextBoxHelper.Watermark="Popisek žolíka (3D loga, vizitky, soutěž, ...)"
+			         ToolTip="Zde zapište, za co je žolík udělen."
+			         Grid.ColumnSpan="2" Grid.Row="4" Grid.Column="0" />
+			<CheckBox x:Name="ChBoxSplit" Visibility="Hidden" IsChecked="True"
+			          Grid.Row="5" Grid.ColumnSpan="2" Grid.Column="0" HorizontalAlignment="Stretch"
+			          Margin="16,20,20,0"
+			          Content="Povolit rozdělení" Height="18" VerticalAlignment="Top" />
+
+			<Label Content="Předmět:" Height="26"
+			       VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="16,0,0,0" 
+			       Grid.Row="6" Grid.Column="0" />
+			<ComboBox x:Name="CBoxSubjects" IsReadOnly="True"
+			          Grid.Row="6" Grid.Column="1"
+			          VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="0,0,5,0"
+			          Controls:TextBoxHelper.ClearTextButton="True"
+			          Controls:TextBoxHelper.Watermark="Předmět"
+			          SelectedIndex="0" SelectionChanged="CBoxClasses_OnSelectionChanged" Height="26">
+			</ComboBox>
+
+			<Grid Grid.Column="4" Grid.Row="0" Grid.RowSpan="7">
+				<Button Content="→" HorizontalAlignment="Center" VerticalAlignment="Center" Width="75"
+				        FontSize="20" Margin="2,178,2,200" Click="BtnAddUser_Click" ToolTip="Přidat zvoleného uživatele" />
+				<Button Content="←" HorizontalAlignment="Center" VerticalAlignment="Center" Width="75"
+				        FontSize="20" Margin="2,224,2,154" Click="BtnRemoveUser_Click" ToolTip="Odebrat zvoleného uživatele" />
+				<Button Content="Odeslat" HorizontalAlignment="Center" VerticalAlignment="Bottom"
+				        Width="75" FontSize="12" Margin="2,0,2,10" Click="BtnSendZoliks_Click"
+				        ToolTip="Odebrat zvoleného uživatele" />
+			</Grid>
+
+			<TextBox x:Name="TxtSearch" TextChanged="TxtSearch_OnTextChanged"
+			         Grid.Row="0" Grid.Column="2" Margin="5,0,5,5"
+			         Controls:TextBoxHelper.ButtonCommand="{Binding TextBoxButtonCmd, Mode=OneWay}"
+			         Controls:TextBoxHelper.ClearTextButton="True"
+			         Controls:TextBoxHelper.UseFloatingWatermark="True"
+			         Controls:TextBoxHelper.Watermark="Vyhledávání" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Height="26">
+				<TextBox.InputBindings>
+					<KeyBinding Key="Return"
+					            Command="{Binding TextBoxButtonCmd, Mode=OneWay}"
+					            CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=TextBox}, Path=Text, Mode=OneWay}" />
+				</TextBox.InputBindings>
+				<TextBox.Style>
+					<Style BasedOn="{StaticResource SearchMetroTextBox}" TargetType="{x:Type TextBox}">
+						<Style.Triggers>
+							<Trigger Property="Controls:TextBoxHelper.HasText" Value="True">
+								<Setter Property="Controls:TextBoxHelper.ButtonContent" Value="r" />
+								<Setter Property="Controls:TextBoxHelper.ButtonContentTemplate" Value="{x:Null}" />
+							</Trigger>
+						</Style.Triggers>
+					</Style>
+				</TextBox.Style>
+			</TextBox>
+
+			<ComboBox x:Name="CBoxClasses" IsReadOnly="True"
+			          Grid.Row="0" Grid.Column="3"
+			          VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Margin="5,0,5,5"
+			          Controls:TextBoxHelper.ClearTextButton="True"
+			          Controls:TextBoxHelper.Watermark="Všichni"
+			          SelectedIndex="0" SelectionChanged="CBoxClasses_OnSelectionChanged" Height="26">
+				<ComboBoxItem Content="Všichni" Tag="-1" Visibility="Visible" />
+			</ComboBox>
+
+			<ListBox x:Name="ListBoxAvailableUsers" Grid.Column="2" Margin="20" Grid.Row="1" Grid.RowSpan="6"
+			         Grid.ColumnSpan="2" />
+			<ListBox x:Name="ListBoxChosenUsers" Grid.Column="5" Margin="20" Grid.Row="0" Grid.RowSpan="7" />
+
+
+		</Grid>
+	</Grid>
+</Controls:MetroWindow>
