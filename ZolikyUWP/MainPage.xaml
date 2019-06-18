@@ -1,0 +1,49 @@
+﻿<Page
+    x:Class="ZolikyUWP.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ZolikyUWP"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+	<Grid>
+
+		<NavigationView Loaded="NvSample_OnLoaded" Margin="0,12,0,0" SelectionChanged="NvSample_OnSelectionChanged"
+		            x:Name="NavMain" IsSettingsVisible="False" IsBackButtonVisible="Collapsed" AlwaysShowHeader="True"
+		            IsTabStop="False"
+					Header="Žolíky">
+			<NavigationView.MenuItems>
+				<NavigationViewItem Icon="ContactInfo" Content="Moji žolíci"  />
+				<NavigationViewItem Content="Transakce" >
+					<NavigationViewItem.Icon>
+						<SymbolIcon Symbol="57660" />
+					</NavigationViewItem.Icon>
+				</NavigationViewItem>
+				<NavigationViewItem Icon="Send" Content="Přeposílání" />
+				<NavigationViewItem Content="Kurz" >
+					<NavigationViewItem.Icon>
+						<SymbolIcon Symbol="57677" />
+					</NavigationViewItem.Icon>
+				</NavigationViewItem>
+			</NavigationView.MenuItems>
+			<Frame x:Name="ContentFrame">
+				<Frame.ContentTransitions>
+					<TransitionCollection>
+						<NavigationThemeTransition />
+					</TransitionCollection>
+				</Frame.ContentTransitions>
+
+
+			</Frame>
+			<NavigationView.PaneFooter>
+				<StackPanel Orientation="Vertical">
+					<NavigationViewItem Icon="Help" Content="Návod" />
+					<NavigationViewItem Icon="Setting" Content="Nastavení" />
+				</StackPanel>
+			</NavigationView.PaneFooter>
+		</NavigationView>
+		<!--<TextBlock x:Name="AppTitle" Style="{StaticResource CaptionTextBlockStyle}" Margin="12,8" />-->
+	</Grid>
+</Page>
