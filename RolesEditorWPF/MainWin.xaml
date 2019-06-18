@@ -1,0 +1,58 @@
+﻿<Controls:MetroWindow x:Class="RolesEditor.MainWin"
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                      xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                      xmlns:local="clr-namespace:RolesEditor"
+                      xmlns:models="clr-namespace:DataAccess.Models;assembly=DataAccess"
+                      mc:Ignorable="d"
+                      Title="Uživatelské role" MinHeight="450" Height="450" MinWidth="800" Width="800">
+	<Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="4*" />
+			<ColumnDefinition Width="1*" />
+		</Grid.ColumnDefinitions>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="50" />
+			<RowDefinition Height="*" />
+			<RowDefinition Height="50" />
+		</Grid.RowDefinitions>
+
+		<Button Grid.Row="0" Grid.Column="0" Content="Načíst uživatele" Click="BtnLoadUsers_Click" />
+
+		<ListBox x:Name="ListUsers" Grid.Row="1" Grid.Column="0" 
+				 Margin="10"
+		         SelectionChanged="ListUsers_OnSelectionChanged"
+		         Grid.RowSpan="2" />
+
+		<Grid Grid.Row="1" Grid.Column="1" Margin="10">
+			<Grid.RowDefinitions>
+				<RowDefinition />
+				<RowDefinition />
+				<RowDefinition />
+				<RowDefinition />
+				<RowDefinition />
+				<RowDefinition />
+				<RowDefinition />
+				<RowDefinition />
+				<RowDefinition />
+				<RowDefinition />
+			</Grid.RowDefinitions>
+			<CheckBox x:Name="ChBoxTeacher" Grid.Row="0" Tag="1" Content="Učitel" />
+			<CheckBox x:Name="ChBoxAdmin" Grid.Row="1" Tag="2" Content="Administrator" />
+			<CheckBox x:Name="ChBoxStudent" Grid.Row="2" Tag="3" Content="Student" />
+			<CheckBox x:Name="ChBoxTester" Grid.Row="3" Tag="4" Content="Tester" />
+			<CheckBox x:Name="ChBoxPublic" Grid.Row="4" Tag="5" Content="Veřejnost" />
+			<CheckBox x:Name="ChBoxStudentFake" Grid.Row="5" Tag="6" Content="Student (Fake)" />
+			<CheckBox x:Name="ChBoxSupport" Grid.Row="6" Tag="7" Content="Support" />
+			<CheckBox x:Name="ChBoxStudentHidden" Grid.Row="7" Tag="8" Content="Student (Skrytý)" />
+			<CheckBox x:Name="ChBoxRobot" Grid.Row="8" Tag="9" Content="Robot" />
+			<CheckBox x:Name="ChBoxDeveloper" Grid.Row="9" Tag="10" Content="Vývojář" />
+		</Grid>
+
+		<Button Grid.Row="2" Grid.Column="1" Content="Uložit" Margin="10" Click="BtnSave_Click" />
+
+
+	</Grid>
+</Controls:MetroWindow>
