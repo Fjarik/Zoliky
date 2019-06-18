@@ -1,0 +1,39 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup Label="Globals">
+    <SccProjectName>SAK</SccProjectName>
+    <SccProvider>SAK</SccProvider>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccLocalPath>SAK</SccLocalPath>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>Jiri Fata</Authors>
+    <Company>Zoliky</Company>
+    <PackageProjectUrl>https://www.zoliky.eu/</PackageProjectUrl>
+    <PackageIconUrl></PackageIconUrl>
+    <NeutralLanguage>English (United Kingdom)</NeutralLanguage>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Flurl" Version="2.8.2" />
+    <PackageReference Include="Flurl.Http" Version="2.4.2" />
+    <PackageReference Include="JetBrains.Annotations" Version="2019.1.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SharedLibrary\SharedLibrary.csproj" />
+  </ItemGroup>
+
+</Project>
