@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ApiGraphQL.GraphQL.Schemas;
 using ApiGraphQL.Repository;
-using DataAccess.Models;
+using DataAccessCore.Models;
 using GraphQL;
 using GraphQL.Server;
 using GraphQL.Server.Ui.Playground;
@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -31,14 +32,10 @@ namespace ApiGraphQL
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
-			/*services.AddDbContext<ZoliksEntities>(opt =>
-													  opt.UseSqlServer(Configuration
-																		   .GetConnectionString("sqlConString")));*/
+			services.AddDbContext<ZolikyContext>(opt =>
+													 opt.UseSqlServer(Configuration
+																		  .GetConnectionString("ZolikyContext")));
 
-			services.AddScoped<ZoliksEntities>(x =>
-												   new
-													   ZoliksEntities(Configuration
-																		  .GetConnectionString("ZoliksEntities")));
 
 			services.AddScoped<IZolikRepository, ZolikRepository>();
 
