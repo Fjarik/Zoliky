@@ -17,11 +17,12 @@ using DateTime = System.DateTime;
 
 namespace DataAccess.Models
 {
-
 #region Context
 
 	public partial class ZoliksEntities
 	{
+		public ZoliksEntities(string cString) : base(cString) { }
+
 		public static ZoliksEntities Create()
 		{
 			return new ZoliksEntities();
@@ -34,7 +35,6 @@ namespace DataAccess.Models
 			}
 			return this.GetUnavailabilities((int?) project, date).ToList();
 		}
-
 
 		public IList<GetTopStudents_Result> GetFakeStudents(bool onlyActive = true,
 															int? imageMaxSize = null,
@@ -131,7 +131,6 @@ namespace DataAccess.Models
 									settingsKey: key,
 									defaultPhotoId: Ext.DefaultProfilePhotoId);
 		}
-
 	}
 
 #endregion
@@ -165,13 +164,13 @@ namespace DataAccess.Models
 				return null;
 			}
 			return new Image() {
-								   ID = (int) this.ImageID,
-								   OwnerID = this.ID,
-								   Hash = this.Hash,
-								   Base64 = this.Base64,
-								   MIME = this.MIME,
-								   Size = (int) this.Size,
-							   };
+				ID = (int) this.ImageID,
+				OwnerID = this.ID,
+				Hash = this.Hash,
+				Base64 = this.Base64,
+				MIME = this.MIME,
+				Size = (int) this.Size,
+			};
 		}
 
 		public IImage ProfilePhoto
@@ -181,7 +180,6 @@ namespace DataAccess.Models
 		}
 
 		public GetTopStudents_Result() { }
-
 	}
 
 	public partial class Changelog : IDbObject, IDbEntity { }
@@ -357,12 +355,13 @@ namespace DataAccess.Models
 	[MetadataType(typeof(UserMetaData))]
 	public partial class User : IDbObject, IDbEntity, IEnableable, IStudent<Image>, IUser<Class, Image, Role>
 	{
-
 #region Fields
 
-		[JsonIgnore] private string _specialUsername;
+		[JsonIgnore]
+		private string _specialUsername;
 
-		[Obsolete] private bool? _hasTesterRights;
+		[Obsolete]
+		private bool? _hasTesterRights;
 
 		private List<Zolik> _zoliky;
 
