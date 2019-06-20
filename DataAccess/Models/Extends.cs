@@ -28,6 +28,10 @@ namespace DataAccess.Models
 			return new ZoliksEntities();
 		}
 
+#endregion
+
+#region Procedures
+
 		public IList<Unavailability> GetUnavailabilities(Projects project, DateTime? date = null)
 		{
 			if (date == null) {
@@ -132,6 +136,24 @@ namespace DataAccess.Models
 									defaultPhotoId: Ext.DefaultProfilePhotoId);
 		}
 	}
+
+#endregion
+
+#region Support
+
+	public partial class AnonymTicket : IDbEntity { }
+
+	public partial class AnonymTicketComment : IDbEntity { }
+
+	public partial class Ticket : IDbEntity { }
+
+	public partial class TicketCategory : IDbEntity { }
+
+	public partial class TicketComment : IDbEntity { }
+
+	public partial class FaQ : IDbEntity { }
+
+	public partial class FaqCategory : IDbEntity { }
 
 #endregion
 

@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="cfc689b9702e4af2acc85652c4311f83" Name="Diagram1" ZoomLevel="106">
+      <Diagram DiagramId="cfc689b9702e4af2acc85652c4311f83" Name="Main" ZoomLevel="106">
         <EntityTypeShape EntityType="ZoliksModel.Transaction" Width="1.5" PointX="15.75" PointY="21.125" IsExpanded="true" />
         <EntityTypeShape EntityType="ZoliksModel.Zolik" Width="1.5" PointX="13.5" PointY="20.875" IsExpanded="true" />
         <AssociationConnector Association="ZoliksModel.FK_Transactions_Zoliky" ManuallyRouted="false" >
@@ -78,6 +78,20 @@
         <AssociationConnector Association="ZoliksModel.FK_UserLoginTokens_Users" />
         <AssociationConnector Association="ZoliksModel.FK_UserSettings_Users" />
         </Diagram>
+      <Diagram DiagramId="667462baa1f84e3eb3fa1facae8a8a2d" Name="Support" >
+        <EntityTypeShape EntityType="ZoliksModel.Ticket" Width="1.5" PointX="3" PointY="1.25" />
+        <EntityTypeShape EntityType="ZoliksModel.AnonymTicketComment" Width="1.5" PointX="5.25" PointY="5.875" />
+        <EntityTypeShape EntityType="ZoliksModel.AnonymTicket" Width="1.5" PointX="3" PointY="5.25" />
+        <EntityTypeShape EntityType="ZoliksModel.FaQ" Width="1.5" PointX="10" PointY="0.875" />
+        <EntityTypeShape EntityType="ZoliksModel.FaqCategory" Width="1.5" PointX="7.75" PointY="1" />
+        <EntityTypeShape EntityType="ZoliksModel.TicketCategory" Width="1.5" PointX="0.75" PointY="4.125" />
+        <EntityTypeShape EntityType="ZoliksModel.TicketComment" Width="1.5" PointX="5.25" PointY="1.75" />
+        <AssociationConnector Association="ZoliksModel.FK_AnonymTicketComments_AnonymTicketComments" />
+        <AssociationConnector Association="ZoliksModel.FK_AnonymTickets_TicketCategories" />
+        <AssociationConnector Association="ZoliksModel.FK_FaQ_FaqCategories" />
+        <AssociationConnector Association="ZoliksModel.FK_Tickets_TicketCategories" />
+        <AssociationConnector Association="ZoliksModel.FK_TicketComments_Ticket" />
+      </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>
