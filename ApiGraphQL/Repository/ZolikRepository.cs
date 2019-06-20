@@ -2,16 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using DataAccessCore.Models;
+using DataAccess.Models;
+//using DataAccessCore.Models;
 using SharedLibrary.Shared;
 
 namespace ApiGraphQL.Repository
 {
 	public class ZolikRepository : IZolikRepository
 	{
-		private ZolikyContext _context;
+		private ZoliksEntities _context;
 
-		public ZolikRepository(ZolikyContext ctx)
+		public ZolikRepository(ZoliksEntities ctx)
 		{
 			_context = ctx;
 		}
@@ -19,7 +20,8 @@ namespace ApiGraphQL.Repository
 		public IEnumerable<Zolik> GetAll()
 		{
 			return _context.Zoliky
-						   .Where(x => x.Enabled && !x.Type.IsTesterType())
+						   .Where(x => x.Enabled)
+						   .Where(DataAccess.Extensions.NonTesterZoliks())
 						   .ToList();
 		}
 	}
