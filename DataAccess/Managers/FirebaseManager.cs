@@ -2,20 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Text;
 using System.Threading.Tasks;
+using DataAccess.Managers.New;
 using DataAccess.Models;
 using FCM.Net;
-using JetBrains.Annotations;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
-using Newtonsoft.Json;
-using SharedLibrary;
 using SharedLibrary.Enums;
 using SharedLibrary.Interfaces;
 using SharedLibrary.Shared;
 
-namespace DataAccess.Managers.New
+namespace DataAccess.Managers
 {
 	public sealed class FirebaseManager : IDisposable
 	{
@@ -97,7 +94,8 @@ namespace DataAccess.Managers.New
 			if (settings == null || settings.All(x => x.Key != key)) {
 				return false;
 			}
-			return await this.NewZolikAsync(z.Type.GetDescription().ToLower(), z.Title, fromName, z, settings.GetStringValue(key));
+			return await this.NewZolikAsync(z.Type.GetDescription().ToLower(), z.Title, fromName, z,
+											settings.GetStringValue(key));
 		}
 
 		private async Task<bool> NewZolikAsync(string type, string zTitle, string fromName, IZolik data, string token)

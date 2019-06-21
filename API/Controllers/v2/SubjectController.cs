@@ -8,6 +8,7 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using API.Tools;
 using API.Tools.Annotations;
+using DataAccess.Managers;
 using DataAccess.Managers.New;
 using DataAccess.Models;
 using Microsoft.Web.Http;
@@ -19,7 +20,7 @@ namespace API.Controllers.v2
 	[OwnAuthorize]
 	[RoutePrefix("subject")]
 	public class SubjectController : OwnApiController<SubjectManager>
-    {
+	{
 		// GET: subject/get/5
 		[HttpGet]
 		[Route("get/{id}")]

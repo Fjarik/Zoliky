@@ -1,132 +1,252 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.Entity;
-using System.Data.Entity.Migrations;
-using System.Data.Entity.Validation;
 using System.Linq;
-using DataAccess.Errors;
+using System.Threading.Tasks;
 using DataAccess.Models;
-using JetBrains.Annotations;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.Owin;
 using SharedLibrary;
 using SharedLibrary.Enums;
 
 namespace DataAccess.Managers
 {
-	public class TokenManager : IManager<Token>
+	public class TokenManager : Manager<Token>
 	{
-		ZoliksEntities _ent { get; set; }
-		private Manager _mgr;
+		/// 
+		/// Fields
+		///
+		/// 
+		/// Constructors
+		/// 
+		public TokenManager(IOwinContext context) : this(context, new ZoliksEntities()) { }
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="TokenManager"/> class.
-		/// </summary>
-		/// <param name="ent">The database entities</param>
-		/// <param name="mgr">The <see cref="Manager"/></param>
-		public TokenManager(ZoliksEntities ent, Manager mgr)
+		public TokenManager(IOwinContext context, ZoliksEntities ctx) : base(context, ctx) { }
+
+		// Methods
+
+#region Methods
+
+		/// 
+		/// Overrides
+		///
+
+#region Overrides
+
+#endregion
+
+		/// 
+		/// Own methods
+		/// 
+
+#region Static methods
+
+		public static TokenManager Create(IdentityFactoryOptions<TokenManager> options,
+										  IOwinContext context)
 		{
-			this._ent = ent;
-			this._mgr = mgr;
+			return new TokenManager(context);
 		}
 
-		/// <summary>
-		/// Selects Token by ID
-		/// </summary>
-		/// <param name="id">Token ID</param>
-		/// <exception cref="StatusCode.NotValidID" />
-		/// <exception cref="StatusCode.NotFound" />
-		/// <exception cref="StatusCode.OK" />
-		public MActionResult<Token> Select(int id)
+#endregion
+
+#region Own Methods
+
+		public async Task<MActionResult<Token>> GetByCodeAsync(string code)
 		{
-			if (id < 1) {
-				return new MActionResult<Token>(StatusCode.NotValidID);
+			if (!Guid.TryParse(code, out Guid g)) {
+				return new MActionResult<Token>(StatusCode.InvalidInput);
 			}
-			Token t = _ent.Tokens.Find(id);
-			if (t == null) {
+			return await this.GetByCodeAsync(g);
+		}
+
+		public async Task<MActionResult<Token>> GetByCodeAsync(Guid code)
+		{
+			if (code == Guid.Empty) {
+				return new MActionResult<Token>(StatusCode.InvalidInput);
+			}
+			var token = await _ctx.Tokens
+								  .AsNoTracking()
+								  .FirstOrDefaultAsync(x => x.Code == code);
+			if (token == null) {
 				return new MActionResult<Token>(StatusCode.NotFound);
 			}
-			return new MActionResult<Token>(StatusCode.OK, t);
+			return new MActionResult<Token>(StatusCode.OK, token);
 		}
 
-		public MActionResult<Token> Use(int tokenId)
+		public string GenerateCode(Token t)
+		{
+			string code = t.Code.ToString();
+
+			string purpose = "";
+			purpose = t.Type == TokenPurpose.Other ? t.Purpose : ((int) t.Type).ToString();
+			string id = t.UserID.ToString();
+
+			return string.Join("-", code, purpose, id);
+		}
+
+		public async Task<TokenResult> IsValidAsync(string toCheck)
+		{
+			var res = new TokenResult() {
+				OriginalCode = toCheck
+			};
+
+			if (string.IsNullOrWhiteSpace(toCheck)) {
+				res.Errors.Add(TokenValidationStatus.InvalidInput);
+				return res;
+			}
+
+			// toCheck: ...guid...-P51312 ({Purpose:char}{UserID})
+			// TODO: Decrypth token from toCheck
+			var array = toCheck.Split('-');
+			if (array.Length != 7) {
+				res.Errors.Add(TokenValidationStatus.InvalidToken);
+				return res;
+			}
+			var id = array.Last();
+			if (string.IsNullOrWhiteSpace(id) || !int.TryParse(id, out int userId)) {
+				res.Errors.Add(TokenValidationStatus.WrongUser);
+				return res;
+			}
+
+			string purpose = array[5];
+			if (string.IsNullOrWhiteSpace(purpose)) {
+				res.Errors.Add(TokenValidationStatus.WrongPurpose);
+				return res;
+			}
+			TokenPurpose? purposeType = null;
+			if (Enum.TryParse(purpose, out TokenPurpose type)) {
+				purposeType = type;
+			}
+
+			string guid = string.Join("-", array.Take(5));
+			if (!Guid.TryParse(guid, out Guid g)) {
+				res.Errors.Add(TokenValidationStatus.WrongUqid);
+				return res;
+			}
+
+			var tRes = await this.GetByCodeAsync(g);
+			if (!tRes.IsSuccess) {
+				res.Errors.Add(TokenValidationStatus.InvalidToken);
+				return res;
+			}
+			var token = tRes.Content;
+
+			if (token.Used) {
+				// Already used
+				res.Errors.Add(TokenValidationStatus.AlreadyUsed);
+				return res;
+			}
+
+			if (token.Expiration < DateTime.Now) {
+				// Expired
+				res.Errors.Add(TokenValidationStatus.Expired);
+				return res;
+			}
+
+			if (token.UserID != userId) {
+				// Wrong user
+				res.Errors.Add(TokenValidationStatus.WrongUser);
+				return res;
+			}
+
+			if (purposeType == null) {
+				if (!purpose.Equals(token.Purpose, StringComparison.InvariantCultureIgnoreCase)) {
+					res.Errors.Add(TokenValidationStatus.WrongPurpose);
+					return res;
+				}
+			} else {
+				if (purposeType != token.Type) {
+					// Wrong type
+					res.Errors.Add(TokenValidationStatus.WrongType);
+					return res;
+				}
+			}
+
+			if (g != token.Code) {
+				res.Errors.Add(TokenValidationStatus.NotSame);
+				return res;
+			}
+			res.Token = token;
+			return res;
+		}
+
+		public async Task<bool> UseAsync(int tokenId)
 		{
 			if (tokenId < 1) {
-				return new MActionResult<Token>(StatusCode.NotValidID);
+				return false;
 			}
-			using (ZoliksEntities ctx = new ZoliksEntities()) {
-				var token = ctx.Tokens.Find(tokenId);
-				if (token == null || token.Used) {
-					return new MActionResult<Token>(StatusCode.NotFound);
-				}
-				token.Used = true;
-				ctx.Entry(token).State = EntityState.Modified;
-				ctx.SaveChanges();
-				return new MActionResult<Token>(StatusCode.OK, token);
+			var res = await this.GetByIdAsync(tokenId);
+			if (!res.IsSuccess) {
+				return false;
 			}
+			var token = res.Content;
+			return await this.UseAsync(token);
 		}
 
-		/// <summary>
-		/// Creates the Token.
-		/// </summary>
-		/// <param name="userID">The user identifier.</param>
-		/// <param name="expiraton">The expiraton.</param>
-		/// <param name="purpose">The purpose.</param>
-		/// <exception cref="StatusCode.NotValidID" />
-		/// <exception cref="StatusCode.OK" />
-		[NotNull]
-		public MActionResult<Token> Create([NotNull] int userID, DateTime expiraton, [NotNull] string purpose)
+		public async Task<bool> UseAsync(Token token)
 		{
-			if (userID < 1 || expiraton.ToUniversalTime() <= DateTime.UtcNow || string.IsNullOrWhiteSpace(purpose)) {
+			if (token.Used) {
+				return false;
+			}
+			token.Used = true;
+			await this.SaveAsync(token);
+			return true;
+		}
+
+		public Task<MActionResult<Token>> CreateForgotPwdAsync(int userId)
+		{
+			return this.CreateAsync(userId, TokenPurpose.PasswordReset, TimeSpan.FromHours(12));
+		}
+
+		public Task<MActionResult<Token>> CreateActivationTokenAsync(int userId)
+		{
+			return this.CreateAsync(userId, TokenPurpose.Activation, TimeSpan.FromHours(20));
+		}
+
+		public Task<MActionResult<Token>> CreateAsync(int userId, string purpose = "")
+		{
+			return this.CreateAsync(userId, TokenPurpose.Other, TimeSpan.FromDays(1), purpose);
+		}
+
+		public async Task<MActionResult<Token>> CreateAsync(int userId,
+															TokenPurpose type,
+															TimeSpan expiration,
+															string purpose = "")
+		{
+			if (userId < 1) {
+				return new MActionResult<Token>(StatusCode.NotValidID);
+			}
+			if (expiration < TimeSpan.Zero ||
+				(type == TokenPurpose.Other && string.IsNullOrWhiteSpace(purpose))) {
 				return new MActionResult<Token>(StatusCode.InvalidInput);
 			}
 
-			var code = CreateGuid();
+			var c = await GenerateGuidAsync();
 
-			Token t = new Token() {
-				UserID = userID,
+			var t = new Token() {
+				UserID = userId,
+				Code = c,
 				Issue = DateTime.UtcNow,
-				Expiration = expiraton.ToUniversalTime(),
+				Expiration = DateTime.UtcNow.Add(expiration),
+				Type = type,
 				Purpose = purpose,
-				Type= TokenPurpose.Other,
-				Used = false,
-				Code = code
+				Used = false
 			};
-			Token t1 = _ent.Tokens.Add(t);
-			Save(null);
-			return new MActionResult<Token>(StatusCode.OK, t1);
+			return await base.CreateAsync(t);
 		}
 
-		private Guid CreateGuid()
+		private async Task<Guid> GenerateGuidAsync()
 		{
 			var g = Guid.NewGuid();
 
-			var exists = _ent.Tokens.Any(x => x.Code == g);
+			var exists = await _ctx.Tokens.AnyAsync(x => x.Code == g);
 			if (exists) {
-				g = CreateGuid();
+				g = await GenerateGuidAsync();
 			}
 			return g;
 		}
 
-		/// <summary>
-		/// Saves Token
-		/// </summary>
-		/// <param name="t">The Token to save</param>
-		/// <param name="throwException">if set to <c>true</c> throw exception</param>
-		/// <exception cref="DbEntityValidationException"></exception>
-		public int Save(Token t, bool throwException = true)
-		{
-			try {
-				if (t != null) {
-					_ent.Entry(t).State = EntityState.Modified;
-					_ent.Tokens.AddOrUpdate(t);
-				}
-				int changes = _ent.SaveChanges();
-				return changes;
-			} catch (DbEntityValidationException ex) {
-				if (throwException) {
-					throw new DbEntityValidationException(ex.GetExceptionMessage(), ex.EntityValidationErrors);
-				}
-				return 0;
-			}
-		}
+#endregion
+
+#endregion
 	}
 }

@@ -3,17 +3,16 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Security.Cryptography;
-using System.Text;
 using System.Threading.Tasks;
+using DataAccess.Managers.New;
 using DataAccess.Models;
-using JetBrains.Annotations;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using SharedLibrary;
 using SharedLibrary.Enums;
 
-namespace DataAccess.Managers.New
+namespace DataAccess.Managers
 {
 	public class HashManager : Manager<SomeHash>
 	{

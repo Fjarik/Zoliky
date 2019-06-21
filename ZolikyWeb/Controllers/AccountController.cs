@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.UI;
 using DataAccess;
+using DataAccess.Managers;
 using DataAccess.Managers.New;
 using DataAccess.Models;
 using hbehr.recaptcha;
@@ -27,7 +28,6 @@ namespace ZolikyWeb.Controllers
 	[AllowAnonymous]
 	public class AccountController : OwnController<UserManager>
 	{
-
 #region Fields and Properties
 
 		private SignInManager _signInManager;
@@ -73,9 +73,9 @@ namespace ZolikyWeb.Controllers
 			}
 			ViewBag.r = r;
 			var lg = new LoginPageModel() {
-											  ShowActivationElement = showActivationElement,
-											  ShowRegistrationErrorElement = showRegistrationErrorElement
-										  };
+				ShowActivationElement = showActivationElement,
+				ShowRegistrationErrorElement = showRegistrationErrorElement
+			};
 			return View(lg);
 		}
 
@@ -96,10 +96,10 @@ namespace ZolikyWeb.Controllers
 				return View(lg);
 			}
 			var logins = new Logins() {
-										  UName = lg.UName,
-										  Password = lg.Password,
-										  Project = Projects.Web,
-									  };
+				UName = lg.UName,
+				Password = lg.Password,
+				Project = Projects.Web,
+			};
 
 			var res = await Mgr.LoginAsync(logins, Request.GetIPAddress());
 
@@ -233,8 +233,8 @@ namespace ZolikyWeb.Controllers
 			var cMgr = this.GetManager<ClassManager>();
 			var classes = await cMgr.GetAllAsync();
 			var model = new RegisterModel {
-											  Classes = classes
-										  };
+				Classes = classes
+			};
 			return View(model);
 		}
 
@@ -372,8 +372,8 @@ namespace ZolikyWeb.Controllers
 			}
 
 			var model = new ChangePasswordModel() {
-													  Code = code
-												  };
+				Code = code
+			};
 			return View(model);
 		}
 
@@ -572,6 +572,5 @@ namespace ZolikyWeb.Controllers
 		*/
 
 #endregion
-
 	}
 }

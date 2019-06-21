@@ -7,8 +7,8 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using DataAccess.Managers;
 using Microsoft.AspNet.Identity.Owin;
-using DataAccess.Managers.New;
 using DataAccess.Models;
 using JetBrains.Annotations;
 using Owin;
@@ -73,7 +73,7 @@ namespace DataAccess
 		}
 
 		public static async Task<User> GetLoggedUserAsync(this System.Security.Claims.ClaimsPrincipal principal,
-			UserManager mgr)
+														  UserManager mgr)
 		{
 			if (mgr == null) {
 				return null;
@@ -125,7 +125,8 @@ namespace DataAccess
 		public static Expression<Func<User, bool>> HasSetting(string key, string value, int? projectId = null)
 		{
 			return x => x.UserSettings.Any(s =>
-				s.Key == key && s.Value.ToLower() == value.ToLower() && s.ProjectId == projectId);
+											   s.Key == key && s.Value.ToLower() == value.ToLower() &&
+											   s.ProjectId == projectId);
 		}
 
 		public static Expression<Func<Zolik, bool>> NonTesterZoliks()

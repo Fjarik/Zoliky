@@ -2,17 +2,15 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using DataAccess.Models;
-using JetBrains.Annotations;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using SharedLibrary;
 using SharedLibrary.Enums;
 using SharedLibrary.Shared;
 
-namespace DataAccess.Managers.New
+namespace DataAccess.Managers
 {
 	public class UserSettingManager : Manager<UserSetting>
 	{
@@ -71,9 +69,9 @@ namespace DataAccess.Managers.New
 		}
 
 		public Task<MActionResult<UserSetting>> EditAndSaveAsync(int userId,
-															     string key,
-															     object newValue,
-															     Projects? project = null)
+																 string key,
+																 object newValue,
+																 Projects? project = null)
 		{
 			return this.EditAndSaveAsync(userId, key, newValue.ToString(), project);
 		}

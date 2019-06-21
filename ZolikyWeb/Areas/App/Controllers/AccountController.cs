@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using DataAccess;
+using DataAccess.Managers;
 using DataAccess.Managers.New;
 using DataAccess.Models;
 using Microsoft.AspNet.Identity;

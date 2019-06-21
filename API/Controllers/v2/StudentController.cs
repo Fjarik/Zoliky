@@ -9,6 +9,7 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using API.Tools;
 using API.Tools.Annotations;
+using DataAccess.Managers;
 using DataAccess.Managers.New;
 using DataAccess.Models;
 using Microsoft.AspNet.Identity.Owin;
@@ -68,6 +69,5 @@ namespace API.Controllers.v2
 			var res = Mgr.GetFakeStudents(imageMaxSize, onlyActive);
 			return Ok(res);
 		}
-
 	}
 }

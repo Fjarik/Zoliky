@@ -8,6 +8,7 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using API.Tools;
 using API.Tools.Annotations;
+using DataAccess.Managers;
 using DataAccess.Managers.New;
 using DataAccess.Models;
 using Microsoft.Web.Http;

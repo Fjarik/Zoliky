@@ -1,59 +1,91 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity.Migrations;
-using System.Data.Entity.Validation;
-using System.Linq;
-using System.Text;
+using System.Data.Entity;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
-using DataAccess.Errors;
+using DataAccess.Managers.New;
 using DataAccess.Models;
-using JetBrains.Annotations;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.Owin;
 using SharedLibrary;
 using SharedLibrary.Enums;
+using SharedLibrary.Shared;
 
 namespace DataAccess.Managers
 {
-	public class ImageManager : IManager<Image>
+	public class ImageManager : Manager<Image>
 	{
-		private ZoliksEntities _ent;
-		private Manager _mgr;
+		/// 
+		/// Fields
+		///
+		/// 
+		/// Constructors
+		/// 
+		public ImageManager(IOwinContext context) : this(context, new ZoliksEntities()) { }
 
-		public ImageManager(ZoliksEntities ent, Manager mgr)
+		public ImageManager(IOwinContext context, ZoliksEntities ctx) : base(context, ctx) { }
+
+		// Methods
+
+#region Methods
+
+		/// 
+		/// Overrides
+		///
+
+#region Overrides
+
+#endregion
+
+		/// 
+		/// Own methods
+		/// 
+
+#region Static methods
+
+		public static ImageManager Create(IdentityFactoryOptions<ImageManager> options, IOwinContext context)
 		{
-			this._ent = ent;
-			this._mgr = mgr;
+			return new ImageManager(context);
 		}
 
+#endregion
 
-		public MActionResult<Image> Select(int id)
-		{
-			if (id < 1) {
-				return new MActionResult<Image>(StatusCode.NotValidID);
-			}
-			Image i = _ent.Images.Find(id);
-			if (i == null) {
-				return new MActionResult<Image>(StatusCode.NotFound);
-			}
-			return new MActionResult<Image>(StatusCode.OK, i);
-		}
+#region Own Methods
 
-		[NotNull]
-		public MActionResult<Image> Select(string hash)
+		public async Task<MActionResult<Image>> SelectAsync(string hash)
 		{
 			if (string.IsNullOrWhiteSpace(hash)) {
 				return new MActionResult<Image>(StatusCode.NotValidID);
 			}
-			Image i = _ent.Images.FirstOrDefault(x => x.Hash == hash);
+			Image i = await _ctx.Images.AsNoTracking().FirstOrDefaultAsync(x => x.Hash == hash);
 			if (i == null) {
 				return new MActionResult<Image>(StatusCode.NotFound);
 			}
 			return new MActionResult<Image>(StatusCode.OK, i);
 		}
 
-		[NotNull]
-		public MActionResult<Image> Create(string name, string hash, string base64, string mime, int size, int ownerId)
+		public async Task<MActionResult<Image>> CreateAsync(int ownerId, byte[] bytes,
+															string mime, string name = "Profile photo")
 		{
-			if (string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(hash) || string.IsNullOrWhiteSpace(base64) || string.IsNullOrWhiteSpace(mime) || size < 1) {
+			if (bytes.Length < 1) {
+				return new MActionResult<Image>(StatusCode.InvalidInput);
+			}
+			string hash;
+			using (SHA1CryptoServiceProvider sha1 = new SHA1CryptoServiceProvider()) {
+				hash = Convert.ToBase64String(sha1.ComputeHash(bytes));
+			}
+			var base64 = Convert.ToBase64String(bytes);
+			return await CreateAsync(ownerId, hash, base64, mime, bytes.Length, name);
+		}
+
+		private async Task<MActionResult<Image>> CreateAsync(int ownerId, string hash,
+															 string base64, string mime,
+															 int size, string name = "Profile photo")
+		{
+			if (ownerId < 1) {
+				return new MActionResult<Image>(StatusCode.NotValidID);
+			}
+
+			if (Methods.AreNullOrWhiteSpace(name, hash, base64, mime) || size < 1) {
 				return new MActionResult<Image>(StatusCode.InvalidInput);
 			}
 
@@ -66,26 +98,23 @@ namespace DataAccess.Managers
 				MIME = mime,
 				Size = size,
 			};
-			Image i1 = _ent.Images.Add(i);
-			Save(null);
-			return new MActionResult<Image>(StatusCode.OK, i1);
+			return await this.CreateAsync(i);
 		}
 
-		public int Save(Image content, bool throwException = true)
+		public async Task<int> GetSizeAsync(int imageId)
 		{
-			try {
-				if (content != null) {
-					_ent.Images.AddOrUpdate(content);
-				}
-				int changes = _ent.SaveChanges();
-				return changes;
-			} catch (DbEntityValidationException ex) {
-				if (throwException) {
-					throw new DbEntityValidationException(ex.GetExceptionMessage(), ex.EntityValidationErrors);
-				}
+			if (imageId < 1) {
 				return 0;
 			}
+			var size = (await _ctx.Images.FindAsync(imageId))?.Size;
+			if (size == null) {
+				return 0;
+			}
+			return (int) size;
 		}
 
+#endregion
+
+#endregion
 	}
 }

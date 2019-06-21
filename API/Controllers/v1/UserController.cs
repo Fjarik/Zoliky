@@ -11,6 +11,7 @@ using System.Web.Http.Description;
 using API.Tools;
 using API.Tools.Annotations;
 using DataAccess;
+using DataAccess.Managers;
 using DataAccess.Managers.New;
 using DataAccess.Models;
 using Microsoft.AspNet.Identity.Owin;

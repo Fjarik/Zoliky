@@ -12,6 +12,7 @@ using System.Web.Http.Description;
 using API.Tools;
 using API.Tools.Annotations;
 using DataAccess;
+using DataAccess.Managers;
 using DataAccess.Managers.New;
 using DataAccess.Models;
 using Microsoft.AspNet.Identity.Owin;
@@ -162,7 +163,7 @@ namespace API.Controllers.v2
 
 			byte[] bytes;
 			using (BinaryReader br = new BinaryReader(file.InputStream)) {
-				bytes = br.ReadBytes((int)file.InputStream.Length);
+				bytes = br.ReadBytes((int) file.InputStream.Length);
 			}
 
 			var userId = this.User.Identity.GetId();
@@ -177,6 +178,5 @@ namespace API.Controllers.v2
 			}
 			return Ok(true);
 		}
-
 	}
 }

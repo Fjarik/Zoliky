@@ -1,23 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.Entity;
-using System.Data.Entity.Migrations;
-using System.Data.Entity.Validation;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using DataAccess.Errors;
-using DataAccess.Managers.New.Interfaces;
 using DataAccess.Models;
-using Microsoft.AspNet.Identity;
 using Microsoft.Owin;
 using SharedLibrary;
 using SharedLibrary.Enums;
 using SharedLibrary.Interfaces;
 
-namespace DataAccess.Managers.New
+namespace DataAccess.Managers
 {
-	public class Manager<T> : BaseManager<T>, IDisposable, Interfaces.IManager<T> where T : class, IDbEntity
+	public class Manager<T> : BaseManager<T>, IDisposable, New.Interfaces.IManager<T> where T : class, IDbEntity
 	{
 #region Constructors
 

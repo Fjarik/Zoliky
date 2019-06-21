@@ -1,21 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.Data.Entity.Validation;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using DataAccess.Errors;
 using DataAccess.Managers.New.Interfaces;
 using DataAccess.Models;
-using Microsoft.Owin;
 using Microsoft.AspNet.Identity.Owin;
+using Microsoft.Owin;
 using SharedLibrary;
 using SharedLibrary.Enums;
 using SharedLibrary.Interfaces;
 
-namespace DataAccess.Managers.New
+namespace DataAccess.Managers
 {
 	public abstract class BaseManager<T> : IBaseManager<T> where T : class, IDbObject
 	{

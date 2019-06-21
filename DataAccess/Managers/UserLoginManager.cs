@@ -2,16 +2,14 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using DataAccess.Managers.New;
 using DataAccess.Models;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using SharedLibrary;
 using SharedLibrary.Enums;
 
-namespace DataAccess.Managers.New
+namespace DataAccess.Managers
 {
 	public class UserLoginManager : Manager<UserLogin>, IDisposable
 	{
@@ -76,7 +74,8 @@ namespace DataAccess.Managers.New
 			return await this.CreateAsync(uLogin);
 		}
 
-		public async Task<MActionResult<List<UserLogin>>> GetAllAsync(int userId, int count = 100, LoginStatus? status = null)
+		public async Task<MActionResult<List<UserLogin>>> GetAllAsync(int userId, int count = 100,
+																	  LoginStatus? status = null)
 		{
 			if (userId < 1) {
 				return new MActionResult<List<UserLogin>>(StatusCode.NotValidID);

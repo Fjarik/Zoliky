@@ -1,155 +1,108 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity.Migrations;
-using System.Data.Entity.Validation;
+using System.Data.Entity;
 using System.Linq;
-using DataAccess.Errors;
+using System.Threading.Tasks;
+using DataAccess.Managers.New;
 using DataAccess.Models;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.Owin;
 using SharedLibrary;
 using SharedLibrary.Enums;
+using SharedLibrary.Shared;
 
 namespace DataAccess.Managers
 {
-	public class ChangelogManager : IManager<Changelog>
+	public class ChangelogManager : Manager<Changelog>
 	{
-		private ZoliksEntities _ent;
-		private Manager _mgr;
+		/// 
+		/// Fields
+		///
+		/// 
+		/// Constructors
+		/// 
+		public ChangelogManager(IOwinContext context) : this(context, new ZoliksEntities()) { }
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="ChangelogManager"/> class.
-		/// </summary>
-		/// <param name="ent">The database entities</param>
-		/// <param name="mgr">The <see cref="Manager"/></param>
-		public ChangelogManager(ZoliksEntities ent, Manager mgr)
+		public ChangelogManager(IOwinContext context, ZoliksEntities ctx) : base(context, ctx) { }
+
+		// Methods
+
+#region Methods
+
+		/// 
+		/// Overrides
+		///
+
+#region Overrides
+
+#endregion
+
+		/// 
+		/// Own methods
+		/// 
+
+#region Static methods
+
+		public static ChangelogManager Create(IdentityFactoryOptions<ChangelogManager> options, IOwinContext context)
 		{
-			this._ent = ent;
-			this._mgr = mgr;
+			return new ChangelogManager(context);
 		}
 
-		/// <summary>
-		/// Selects Changelog by ID
-		/// </summary>
-		/// <param name="id">Changelog ID</param>
-		/// <exception cref="StatusCode.NotValidID" />
-		/// <exception cref="StatusCode.NotFound" />
-		/// <exception cref="StatusCode.OK" />
-		public MActionResult<Changelog> Select(int id)
+#endregion
+
+#region Own Methods
+
+		public Task<List<Changelog>> GetAllAsync(Projects project)
 		{
-			if (id < 1) {
+			return GetAllAsync((int) project);
+		}
+
+		private async Task<List<Changelog>> GetAllAsync(int projectId)
+		{
+			var c = await _ctx.Changelogs
+							  .AsNoTracking()
+							  .Where(x => x.ProjectID == projectId)
+							  .ToListAsync();
+			return c;
+		}
+
+		public Task<MActionResult<Changelog>> CreateAsync(int projectId,
+														  string title,
+														  string text,
+														  string version,
+														  bool visible = true)
+		{
+			return CreateAsync(projectId, title, text, version, DateTime.Now, visible);
+		}
+
+		public async Task<MActionResult<Changelog>> CreateAsync(int projectId,
+																string title,
+																string text,
+																string version,
+																DateTime publish,
+																bool visible = true)
+		{
+			if (!Enum.IsDefined(typeof(Projects), projectId)) {
 				return new MActionResult<Changelog>(StatusCode.NotValidID);
 			}
-			Changelog c = _ent.Changelogs.Find(id);
-			if (c == null) {
-				return new MActionResult<Changelog>(StatusCode.NotFound);
-			}
-			return new MActionResult<Changelog>(StatusCode.OK, c);
-		}
 
-		/// <summary>
-		/// Changelogs the of the selected project.
-		/// </summary>
-		/// <param name="projectID">The owner Project ID.</param>
-		/// <returns></returns>
-		/// <exception cref="StatusCode.NotValidID" />
-		/// <exception cref="StatusCode.OK" />
-		public MActionResult<List<Changelog>> ChangelogsOfProject(int projectID)
-		{
-			if (!_mgr.Projects.ValidID(projectID)) {
-				return new MActionResult<List<Changelog>>(StatusCode.NotValidID);
-			}
-
-			List<Changelog> c = _ent.Changelogs.Where(x => x.ProjectID == projectID).OrderBy(x => x.Date).ToList();
-			return new MActionResult<List<Changelog>>(StatusCode.OK, c);
-		}
-
-		/// <summary>
-		/// Changelogs the of the selected project.
-		/// </summary>
-		/// <param name="p">The owner Project ID.</param>
-		/// <returns></returns>
-		/// <exception cref="StatusCode.NotValidID" />
-		/// <exception cref="StatusCode.OK" />
-		public MActionResult<List<Changelog>> ChangelogsOfProject(Projects p)
-		{
-			return ChangelogsOfProject((int)p);
-		}
-
-
-		/// <summary>
-		/// Creates Changelog
-		/// </summary>
-		/// <param name="projectID">Owner project ID</param>
-		/// <param name="title">Title of changelog</param>
-		/// <param name="text">Content of changelog</param>
-		/// <param name="releaseDate">The release date of new version.</param>
-		/// <param name="versionName">Name of the version.</param>
-		/// <param name="visible">Visibility of changelog</param>
-		/// <returns></returns>
-		/// <exception cref="StatusCode.NotValidID" />
-		/// <exception cref="StatusCode.InvalidInput" />
-		/// <exception cref="StatusCode.OK" />
-		public MActionResult<Changelog> Create(int projectID, string title, string text, DateTime releaseDate, string versionName, bool visible = true)
-		{
-			if (!_mgr.Projects.ValidID(projectID)) {
-				return new MActionResult<Changelog>(StatusCode.NotValidID);
-			}
-			if (string.IsNullOrWhiteSpace(title) || string.IsNullOrWhiteSpace(text) || string.IsNullOrWhiteSpace(versionName)) {
+			if (Methods.AreNullOrWhiteSpace(title, text, version)) {
 				return new MActionResult<Changelog>(StatusCode.InvalidInput);
 			}
-			Changelog c = new Changelog()
-			{
-				ProjectID = projectID,
+
+			Changelog c = new Changelog() {
+				ProjectID = projectId,
 				Title = title,
 				Text = text,
-				Date = releaseDate,
-				Version = versionName,
+				Version = version,
 				Visible = visible,
+				Date = publish
 			};
-			Changelog c1 = _ent.Changelogs.Add(c);
-			Save(null);
-			return new MActionResult<Changelog>(StatusCode.OK, c1);
+			return await this.CreateAsync(c);
 		}
 
-		/// <summary>
-		/// Creates Changelog
-		/// </summary>
-		/// <param name="p">Owner project ID</param>
-		/// <param name="title">Title of changelog</param>
-		/// <param name="text">Content of changelog</param>
-		/// <param name="releaseDate">The release date of new version.</param>
-		/// <param name="versionName">Name of the version.</param>
-		/// <param name="visible">Visibility of changelog</param>
-		/// <returns></returns>
-		/// <exception cref="StatusCode.NotValidID" />
-		/// <exception cref="StatusCode.InvalidInput" />
-		/// <exception cref="StatusCode.OK" />
-		public MActionResult<Changelog> Create(Projects p, string title, string text, DateTime releaseDate, string versionName, bool visible = true)
-		{
-			return Create((int)p, title, text, releaseDate, versionName, visible);
-		}
+#endregion
 
-
-
-		/// <summary>
-		/// Saves Changelog
-		/// </summary>
-		/// <param name="c">The changelog to save</param>
-		/// <param name="throwException">if set to <c>true</c> throw exception</param>
-		/// <exception cref="DbEntityValidationException"></exception>
-		public int Save(Changelog c, bool throwException = true)
-		{
-			try {
-				if (c != null) {
-					_ent.Changelogs.AddOrUpdate(c);
-				}
-				int changes = _ent.SaveChanges();
-				return changes;
-			} catch (DbEntityValidationException ex) {
-				if (throwException) {
-					throw new DbEntityValidationException(ex.GetExceptionMessage(), ex.EntityValidationErrors);
-				}
-				return 0;
-			}
-		}
+#endregion
 	}
 }

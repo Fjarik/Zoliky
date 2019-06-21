@@ -1,62 +1,150 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity.Migrations;
-using System.Data.Entity.Validation;
+using System.Data.Entity;
 using System.Linq;
-using DataAccess.Errors;
+using System.Threading.Tasks;
+using DataAccess.Managers.New;
 using DataAccess.Models;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.Owin;
 using SharedLibrary;
 using SharedLibrary.Enums;
 
 namespace DataAccess.Managers
 {
-	public class ClassManager : IManager<Class>
+	public class ClassManager : Manager<Class>
 	{
-		private ZoliksEntities _ent;
-		private Manager _mgr;
+		/// 
+		/// Fields
+		///
+		/// 
+		/// Constructors
+		/// 
+		public ClassManager(IOwinContext context) : this(context, new ZoliksEntities()) { }
 
-		public ClassManager(ZoliksEntities ent, Manager mgr)
+		public ClassManager(IOwinContext context, ZoliksEntities ctx) : base(context, ctx) { }
+
+		// Methods
+
+#region Methods
+
+		/// 
+		/// Overrides
+		///
+
+#region Overrides
+
+		public override Task<List<Class>> GetAllAsync()
 		{
-			this._ent = ent;
-			this._mgr = mgr;
+			return _ctx.Classes
+					   .Where(x => x.Enabled)
+					   .OrderBy(x => x.Name)
+					   .ToListAsync();
 		}
 
-		public MActionResult<Class> Select(int id)
+#endregion
+
+		/// 
+		/// Own methods
+		/// 
+
+#region Static methods
+
+		public static ClassManager Create(IdentityFactoryOptions<ClassManager> options,
+										  IOwinContext context)
+		{
+			return new ClassManager(context);
+		}
+
+#endregion
+
+#region Own Methods
+
+		public async Task<MActionResult<Class>> CreateAsync(string name, DateTime since)
+		{
+			if (string.IsNullOrWhiteSpace(name)) {
+				return new MActionResult<Class>(StatusCode.InvalidInput);
+			}
+
+			Class c = new Class() {
+				Name = name,
+				Since = since,
+				Graduation = since.AddYears(4),
+				Enabled = true
+			};
+			return await this.CreateAsync(c);
+		}
+
+		public async Task<MActionResult<Class>> MoveClassAsync(int id)
 		{
 			if (id < 1) {
 				return new MActionResult<Class>(StatusCode.NotValidID);
 			}
-			Class c = _ent.Classes.Find(id);
-			if (c == null) {
-				return new MActionResult<Class>(StatusCode.NotFound);
+			var res = await this.GetByIdAsync(id);
+			if (!res.IsSuccess) {
+				return res;
 			}
+			var c = res.Content;
 
-			if (!c.Enabled) {
-				return new MActionResult<Class>(StatusCode.NotEnabled, c);
+			var names = c.Name.Split('.');
+			if (names.Length != 2 ||
+				!int.TryParse(names[0], out int classNumber) ||
+				string.IsNullOrWhiteSpace(names[1])) {
+				return new MActionResult<Class>(StatusCode.SeeException,
+												new FormatException("Class name is not in right format"));
 			}
+			classNumber++;
+
+			c.Name = $"{classNumber}.{names[1]}";
+			await this.SaveAsync(c);
 			return new MActionResult<Class>(StatusCode.OK, c);
 		}
 
-		public MActionResult<List<Class>> GetAll()
+		public async Task<bool> MoveClassesAsync()
 		{
-			return new MActionResult<List<Class>>(StatusCode.OK, _ent.Classes.Where(x => x.Enabled).OrderBy(x => x.Name).ToList());
-		}
-
-		public int Save(Class c, bool throwException = false)
-		{
-			try {
-				if (c != null) {
-					_ent.Classes.AddOrUpdate(c);
+			foreach (int id in _ctx.Classes.Where(x => x.Enabled).Select(x => x.ID)) {
+				var res = await this.MoveClassAsync(id);
+				if (!res.IsSuccess) {
+					return false;
 				}
-				int changes = _ent.SaveChanges();
-				return changes;
-			} catch (DbEntityValidationException ex) {
-				if (throwException) {
-					throw new DbEntityValidationException(ex.GetExceptionMessage(), ex.EntityValidationErrors);
-				}
-				return 0;
 			}
+			return true;
 		}
 
+		public async Task<bool> CheckClassAsync(int id)
+		{
+			if (id < 1) {
+				return false;
+			}
+			var res = await this.GetByIdAsync(id);
+			if (!res.IsSuccess) {
+				return false;
+			}
+			var c = res.Content;
+			if (!c.Enabled) {
+				return false;
+			}
+			if (c.Graduation < DateTime.Now) {
+				c.Enabled = false;
+				await this.SaveAsync(c);
+				return false;
+			}
+			return true;
+		}
+
+		public async Task<bool> CheckClassesAsync()
+		{
+			foreach (int id in _ctx.Classes.Where(x => x.Enabled).Select(x => x.ID)) {
+				var res = await this.CheckClassAsync(id);
+				if (!res) {
+					return false;
+				}
+			}
+			return true;
+		}
+
+#endregion
+
+#endregion
 	}
 }

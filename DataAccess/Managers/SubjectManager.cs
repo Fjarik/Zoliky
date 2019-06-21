@@ -1,19 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
+﻿using System.Data.Entity;
 using System.Threading.Tasks;
 using DataAccess.Models;
-using JetBrains.Annotations;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using SharedLibrary;
 using SharedLibrary.Enums;
 using SharedLibrary.Shared;
 
-namespace DataAccess.Managers.New
+namespace DataAccess.Managers
 {
 	public class SubjectManager : Manager<Subject>
 	{
@@ -57,9 +51,9 @@ namespace DataAccess.Managers.New
 			}
 
 			Subject i = new Subject() {
-										  Name = name,
-										  Shortcut = shortcut
-									  };
+				Name = name,
+				Shortcut = shortcut
+			};
 			return await this.CreateAsync(i);
 		}
 
@@ -76,6 +70,5 @@ namespace DataAccess.Managers.New
 #endregion
 
 #endregion
-
 	}
 }

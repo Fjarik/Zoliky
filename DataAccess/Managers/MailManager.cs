@@ -1,21 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Net;
 using System.Net.Mail;
-using System.Text;
 using System.Threading.Tasks;
-using System.Web;
+using DataAccess.Managers.New;
 using DataAccess.Models;
 using JetBrains.Annotations;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using SharedLibrary.Enums;
 using SharedLibrary.Interfaces;
-using SharedLibrary.Shared;
 
-namespace DataAccess.Managers.New
+namespace DataAccess.Managers
 {
 	public class MailManager : IDisposable
 	{

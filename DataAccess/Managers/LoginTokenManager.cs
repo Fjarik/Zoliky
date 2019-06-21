@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using DataAccess.Managers.New.Interfaces;
 using DataAccess.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
@@ -12,7 +10,7 @@ using Microsoft.Owin;
 using SharedLibrary;
 using SharedLibrary.Enums;
 
-namespace DataAccess.Managers.New
+namespace DataAccess.Managers
 {
 	public sealed class LoginTokenManager : BaseManager<UserLoginToken>, IDisposable
 	{

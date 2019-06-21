@@ -2,17 +2,14 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using DataAccess.Models;
-using JetBrains.Annotations;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using SharedLibrary;
 using SharedLibrary.Enums;
-using SharedLibrary.Shared;
 
-namespace DataAccess.Managers.New
+namespace DataAccess.Managers
 {
 	public class UnavailabilityManager : Manager<Unavailability>
 	{
@@ -73,7 +70,7 @@ namespace DataAccess.Managers.New
 		}
 
 		public MActionResult<Unavailability> GetFirst(
-			Projects project, DateTime?  when = null)
+			Projects project, DateTime? when = null)
 		{
 			var res = (when == null ? this.GetCurrent(project) : _ctx.GetUnavailabilities(project, when)).First();
 
@@ -83,7 +80,7 @@ namespace DataAccess.Managers.New
 			return new MActionResult<Unavailability>(StatusCode.OK, res);
 		}
 
-		public  MActionResult<List<Unavailability>> GetAll(
+		public MActionResult<List<Unavailability>> GetAll(
 			Projects project, DateTime? when = null)
 		{
 			var res = (when == null ? this.GetCurrent(project) : _ctx.GetUnavailabilities(project, when)).ToList();
@@ -108,7 +105,7 @@ namespace DataAccess.Managers.New
 		{
 			return _ctx.Unavailabilities
 					   .IsActive()
-					   .AnyAsync(x => x.ProjectID == (int)project);
+					   .AnyAsync(x => x.ProjectID == (int) project);
 		}
 
 #endregion
