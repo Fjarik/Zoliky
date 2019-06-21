@@ -21,7 +21,7 @@ namespace DataAccess.Models
         public System.DateTime Created { get; set; }
         public string Ip { get; set; }
     
-        public virtual User User { get; set; }
-        public virtual AnonymTicket AnonymTicket { get; set; }
+        public virtual User Admin { get; set; }
+        public virtual AnonymTicket Ticket { get; set; }
     }
 }

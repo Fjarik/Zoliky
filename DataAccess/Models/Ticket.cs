@@ -17,7 +17,7 @@ namespace DataAccess.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Ticket()
         {
-            this.TicketComments = new HashSet<TicketComment>();
+            this.Comments = new HashSet<TicketComment>();
         }
     
         public int ID { get; set; }
@@ -33,6 +33,6 @@ namespace DataAccess.Models
         public virtual User User { get; set; }
         public virtual TicketCategory TicketCategory { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<TicketComment> TicketComments { get; set; }
+        public virtual ICollection<TicketComment> Comments { get; set; }
     }
 }

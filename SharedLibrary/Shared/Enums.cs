@@ -6,6 +6,21 @@ using System.Reflection;
 // ReSharper disable once CheckNamespace
 namespace SharedLibrary.Enums
 {
+	public enum TicketStatus : int
+	{
+		[Description("Nový")] // Požadavek je nový a ještě není přiřazený podpoře
+		New = 0,
+
+		[Description("Otevřený")] // Požadavek byl přiřezen podpoře a ta na něm pracuje/již odpověděla
+		Open = 2,
+
+		[Description("Vyřešený")] // Požadavek lze znovuotevřít a připsat nové informace
+		Solved = 4,
+
+		[Description("Uzamčený")] // Požadavek je vyřešený, uzavřený a NELZE ho již otevřít (automatiky po 28 dnech)
+		Closed = 6
+	}
+
 	public enum CrashStatus : byte
 	{
 		[Description("Crash report předán vývojářům")]

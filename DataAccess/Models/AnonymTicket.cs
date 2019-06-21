@@ -17,7 +17,7 @@ namespace DataAccess.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public AnonymTicket()
         {
-            this.AnonymTicketComments = new HashSet<AnonymTicketComment>();
+            this.Comments = new HashSet<AnonymTicketComment>();
         }
     
         public int ID { get; set; }
@@ -33,7 +33,7 @@ namespace DataAccess.Models
         public string Ip { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<AnonymTicketComment> AnonymTicketComments { get; set; }
+        public virtual ICollection<AnonymTicketComment> Comments { get; set; }
         public virtual TicketCategory TicketCategory { get; set; }
         public virtual User Admin { get; set; }
     }

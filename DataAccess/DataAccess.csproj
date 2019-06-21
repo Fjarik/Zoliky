@@ -120,6 +120,7 @@
   <ItemGroup>
     <Compile Include="Errors\Errors.cs" />
     <Compile Include="Manager.cs" />
+    <Compile Include="Managers\AchievementsManager.cs" />
     <Compile Include="Managers\ChangelogManager.cs" />
     <Compile Include="Managers\ConsentManager.cs" />
     <Compile Include="Managers\CrashManager.cs" />
@@ -359,6 +360,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\RegisterAccount.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Managers\Support\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />

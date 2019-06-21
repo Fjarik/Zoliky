@@ -141,15 +141,61 @@ namespace DataAccess.Models
 
 #region Support
 
-	public partial class AnonymTicket : IDbEntity { }
+	public partial class AnonymTicket : IDbEntity
+	{
+		public DateTime LastActivity
+		{
+			get
+			{
+				if (this.Comments.Count < 1) {
+					return this.Created;
+				}
+				return this.Comments.OrderByDescending(x => x.Created).Select(x => x.Created).First();
+			}
+		}
+	}
 
-	public partial class AnonymTicketComment : IDbEntity { }
+	public partial class AnonymTicketComment : IDbEntity
+	{
+		public string Name => (this.Admin == null) ? this.Ticket?.Name : this.Admin.FullName;
+		public bool IsFromAdmin => this.UserId != null;
 
-	public partial class Ticket : IDbEntity { }
+	}
+
+	public partial class Ticket : IDbEntity
+	{
+		public string Name => this.User?.FullName;
+		public string Email => this.User?.Email;
+
+		public DateTime LastActivity
+		{
+			get
+			{
+				if (this.Comments.Count < 1) {
+					return this.Created;
+				}
+				return this.Comments.OrderByDescending(x => x.Created).Select(x => x.Created).First();
+			}
+		}
+	}
 
 	public partial class TicketCategory : IDbEntity { }
 
-	public partial class TicketComment : IDbEntity { }
+	public partial class TicketComment : IDbEntity
+	{
+		public string Name => this.User?.FullName;
+
+		public bool IsFromAdmin
+		{
+			get
+			{
+				if (this.Ticket == null) {
+					return false;
+				}
+				return this.Ticket.UserId != this.UserId;
+			}
+		}
+	}
 
 	public partial class FaQ : IDbEntity { }
 

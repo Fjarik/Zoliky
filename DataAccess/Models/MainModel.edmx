@@ -2404,7 +2404,7 @@
           <NavigationProperty Name="Admin" Relationship="ZoliksModel.FK_Tickets_Admin" FromRole="Ticket" ToRole="User" />
           <NavigationProperty Name="User" Relationship="ZoliksModel.FK_Tickets_Users" FromRole="Ticket" ToRole="User" />
           <NavigationProperty Name="TicketCategory" Relationship="ZoliksModel.FK_Tickets_TicketCategories" FromRole="Ticket" ToRole="TicketCategory" />
-          <NavigationProperty Name="TicketComments" Relationship="ZoliksModel.FK_TicketComments_Ticket" FromRole="Ticket" ToRole="TicketComment" />
+          <NavigationProperty Name="Comments" Relationship="ZoliksModel.FK_TicketComments_Ticket" FromRole="Ticket" ToRole="TicketComment" />
         </EntityType>
         <Association Name="FK_Tickets_Admin">
           <End Type="ZoliksModel.User" Role="User" Multiplicity="0..1" />
@@ -2440,8 +2440,8 @@
           <Property Name="Message" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Name="Created" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Ip" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="User" Relationship="ZoliksModel.FK_AnonymTicketComments_Admin" FromRole="AnonymTicketComment" ToRole="User" />
-          <NavigationProperty Name="AnonymTicket" Relationship="ZoliksModel.FK_AnonymTicketComments_AnonymTicketComments" FromRole="AnonymTicketComment" ToRole="AnonymTicket" />
+          <NavigationProperty Name="Admin" Relationship="ZoliksModel.FK_AnonymTicketComments_Admin" FromRole="AnonymTicketComment" ToRole="User" />
+          <NavigationProperty Name="Ticket" Relationship="ZoliksModel.FK_AnonymTicketComments_AnonymTicketComments" FromRole="AnonymTicketComment" ToRole="AnonymTicket" />
         </EntityType>
         <EntityType Name="AnonymTicket">
           <Key>
@@ -2458,7 +2458,7 @@
           <Property Name="Created" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Code" Type="Int32" Nullable="false" />
           <Property Name="Ip" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="AnonymTicketComments" Relationship="ZoliksModel.FK_AnonymTicketComments_AnonymTicketComments" FromRole="AnonymTicket" ToRole="AnonymTicketComment" />
+          <NavigationProperty Name="Comments" Relationship="ZoliksModel.FK_AnonymTicketComments_AnonymTicketComments" FromRole="AnonymTicket" ToRole="AnonymTicketComment" />
           <NavigationProperty Name="TicketCategory" Relationship="ZoliksModel.FK_AnonymTickets_TicketCategories" FromRole="AnonymTicket" ToRole="TicketCategory" />
           <NavigationProperty Name="Admin" Relationship="ZoliksModel.FK_AnonymTickets_Users" FromRole="AnonymTicket" ToRole="User" />
         </EntityType>
