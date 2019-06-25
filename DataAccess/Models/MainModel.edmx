@@ -2397,7 +2397,7 @@
           <Property Name="UserId" Type="Int32" Nullable="false" />
           <Property Name="CategoryId" Type="Int32" Nullable="false" />
           <Property Name="AdminId" Type="Int32" />
-          <Property Name="Status" Type="Int32" Nullable="false" />
+          <Property Name="Status" Type="ZoliksModel.TicketStatus" Nullable="false" />
           <Property Name="Title" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Message" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Name="Created" Type="DateTime" Nullable="false" Precision="3" />
@@ -2599,6 +2599,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EnumType Name="TicketStatus" a:ExternalTypeName="SharedLibrary.Enums.TicketStatus" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->

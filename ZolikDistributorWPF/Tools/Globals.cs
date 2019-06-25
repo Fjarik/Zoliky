@@ -4,7 +4,6 @@ using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DataAccess.Models;
 using SharedApi.Connectors.New;
 using SharedLibrary.Enums;
 using SharedLibrary.Shared.ApiModels;

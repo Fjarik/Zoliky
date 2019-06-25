@@ -18,8 +18,6 @@ namespace SharedLibrary.Interfaces
 
 		string Name { get; }
 		string Email { get; }
-		string Url { get; }
-		string ControllerName { get; }
 	}
 
 	public interface ITicket<T> : ITicket where T : ITicketComment

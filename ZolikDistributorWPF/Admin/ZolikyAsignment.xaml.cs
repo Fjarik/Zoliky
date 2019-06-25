@@ -1,5 +1,4 @@
-﻿using DataAccess;
-using MahApps.Metro.Controls;
+﻿using MahApps.Metro.Controls;
 using SharedLibrary;
 using System;
 using System.Collections.Generic;
@@ -22,7 +21,6 @@ using SharedLibrary.Enums;
 using SharedLibrary.Interfaces;
 using SharedLibrary.Shared;
 using SharedLibrary.Shared.ApiModels;
-using Zolik = DataAccess.Models.Zolik;
 
 namespace ZolikDistributor.Admin
 {
@@ -32,7 +30,6 @@ namespace ZolikDistributor.Admin
 		private List<Student> _availableStudents = new List<Student>();
 		private List<Student> _chosenUsers = new List<Student>();
 		private SharedApi.Models.User _me;
-		private Manager _mgr = new Manager();
 		public bool Changed { get; set; }
 
 		public ZolikyAsignment(SharedApi.Models.User ucitel)
@@ -201,31 +198,18 @@ namespace ZolikDistributor.Admin
 			}
 			var connector = new ZolikConnector(_me.Token);
 			foreach (var u in _chosenUsers) {
-				var z = await Task.Run(() => _mgr.Zoliky.Create(_me.ID,
-																_me.ID, 
-																u.ID, 
-																type, 
-																subjectId,
-																text, 
-																allowSplit));
-				if (!z.IsSuccess) {
-					Xceed.Wpf.Toolkit.MessageBox.Show($"Něco se nepovedlo {_me.Name}!", "Chyba", MessageBoxButton.OK,
-													  MessageBoxImage.Error);
-					ChangeLoading(false);
-					return;
-				}
+				// TODO: Opravit
+				Xceed.Wpf.Toolkit.MessageBox.Show($"Aktuálně nefunkční", "Chyba", MessageBoxButton.OK,
+												  MessageBoxImage.Error);
+				ChangeLoading(false);
 
-				Zolik zol = z.Content;
-				ZolikPackage zp = new ZolikPackage {
-					FromID = _me.ID,
-					ToID = u.ID,
-					ZolikID = zol.ID,
-					Type = TransactionAssignment.NewAssignment,
-					Message = $"Přiřazení od {_me.FullName}"
-				};
-				//bool transferProgress = _mgr.Zoliky.Transfer(zp);
-				var r = await connector.TransferAsync(zp);
-				if (!r.IsSuccess) {
+				var z = await connector.CreateAndTransferAsync(_me.ID,
+															   u.ID,
+															   type,
+															   subjectId,
+															   text,
+															   allowSplit);
+				if (!z.IsSuccess) {
 					Xceed.Wpf.Toolkit.MessageBox.Show($"Něco se nepovedlo {_me.Name}!", "Chyba", MessageBoxButton.OK,
 													  MessageBoxImage.Error);
 					ChangeLoading(false);

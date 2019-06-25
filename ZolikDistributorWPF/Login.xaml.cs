@@ -1,5 +1,4 @@
-﻿using DataAccess.Models;
-using MahApps.Metro.Controls;
+﻿using MahApps.Metro.Controls;
 using SharedLibrary;
 using System;
 using System.Threading.Tasks;
@@ -114,24 +113,6 @@ namespace ZolikDistributor
 				return;
 			}
 #endif
-
-			try {
-				using (ZoliksEntities ent = new ZoliksEntities()) {
-					var conn = ent.Database.Connection;
-					await conn.OpenAsync();
-					conn.Close();
-					conn.Dispose();
-				}
-			} catch {
-				ShowMessage("Pepčovy internety detekovány",
-							"Nelze se připojit k databázi. Jste na kabelu? \n" +
-							"\n" +
-							"\n" +
-							"Pokud ano, bežte prosím na Wi-Fi. \n" +
-							"\n" +
-							"Pokud již jste na Wi-Fi, a přesto se nedaří připojit, tak to nahlašte Správci školní sítě. Za tuto chybu vývojáři nemohou!\n");
-				return;
-			}
 
 #endregion
 

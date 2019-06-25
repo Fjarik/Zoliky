@@ -262,10 +262,6 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DataAccess\DataAccess.csproj">
-      <Project>{C8CE6B0A-0682-40EB-B533-6A140AB25216}</Project>
-      <Name>DataAccess</Name>
-    </ProjectReference>
     <ProjectReference Include="..\SharedApi\SharedApi.csproj">
       <Project>{aed5744d-99d1-4f14-8dd6-3f1d4efe4f70}</Project>
       <Name>SharedApi</Name>

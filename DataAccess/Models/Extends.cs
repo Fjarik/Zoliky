@@ -159,10 +159,9 @@ namespace DataAccess.Models
 	{
 		public string Name => (this.Admin == null) ? this.Ticket?.Name : this.Admin.FullName;
 		public bool IsFromAdmin => this.UserId != null;
-
 	}
 
-	public partial class Ticket : IDbEntity
+	public partial class Ticket : IDbEntity, ITicket
 	{
 		public string Name => this.User?.FullName;
 		public string Email => this.User?.Email;
@@ -437,9 +436,6 @@ namespace DataAccess.Models
 
 #region Get only
 
-		[Obsolete]
-		public Rank Rank => new Manager().Ranks.Select(this.XP);
-
 		public string ClassName => this.Class?.Name;
 
 		[JsonIgnore]
@@ -460,16 +456,7 @@ namespace DataAccess.Models
 		}
 
 		[Obsolete]
-		public bool HasTesterRights
-		{
-			get
-			{
-				if (this._hasTesterRights == null) {
-					_hasTesterRights = new ConsentManager().IsTermAccepted(this.ID, Terms.Testers);
-				}
-				return (bool) this._hasTesterRights;
-			}
-		}
+		public bool HasTesterRights => false;
 
 		[JsonIgnore]
 		public UserLogin LastLogin
@@ -524,64 +511,9 @@ namespace DataAccess.Models
 			set => _specialUsername = value;
 		}
 
-		[JsonIgnore]
-		[Obsolete]
-		public bool IsTesterType
-		{
-			get
-			{
-				if (this.SpecialUsername.Contains("_tester")) {
-					return true;
-				}
-				return false;
-			}
-			set
-			{
-				if (value) {
-					if (!this.SpecialUsername.Contains("_tester")) {
-						this.SpecialUsername = this.Username + "_tester";
-					}
-				} else {
-					if (this.SpecialUsername.Contains("_tester")) {
-						this.SpecialUsername = this.SpecialUsername.Replace("_tester", "");
-					}
-				}
-				RefreshZoliks();
-			}
-		}
-
-		[Obsolete]
-		public List<Zolik> Zoliky
-		{
-			get
-			{
-				if (_zoliky == null) {
-					_zoliky = this.ID > 1 ? GetZoliks() : new List<Zolik>();
-				}
-				return _zoliky;
-			}
-			set => _zoliky = value;
-		}
-
 #endregion
 
 #region Methods
-
-		[Obsolete]
-		private List<Zolik> GetZoliks()
-		{
-			MActionResult<List<Zolik>> res = new Manager().Zoliky.UsersZoliky(this.ID, this.IsTesterType);
-			if (res.IsSuccess) {
-				return res.Content;
-			}
-			return new List<Zolik>();
-		}
-
-		[Obsolete]
-		public void RefreshZoliks()
-		{
-			this._zoliky = GetZoliks();
-		}
 
 		public bool IsInRole(string role)
 		{

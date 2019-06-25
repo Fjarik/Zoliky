@@ -9,6 +9,13 @@ namespace DataAccess
 {
 	public static class DGlobals
 	{
+#region Support
+
+		public const int CodeMin = 10101;
+		public const int CodeMax = 98989;
+
+#endregion
+
 		public static string GetIPAddress(System.Web.HttpContext context)
 		{
 			string ipAddress = context.Request.ServerVariables["HTTP_X_FORWARDED_FOR"];

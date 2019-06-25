@@ -24,7 +24,7 @@ namespace DataAccess.Models
         public int UserId { get; set; }
         public int CategoryId { get; set; }
         public Nullable<int> AdminId { get; set; }
-        public int Status { get; set; }
+        public SharedLibrary.Enums.TicketStatus Status { get; set; }
         public string Title { get; set; }
         public string Message { get; set; }
         public System.DateTime Created { get; set; }

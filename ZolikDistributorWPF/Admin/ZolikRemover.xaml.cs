@@ -1,6 +1,4 @@
-﻿using DataAccess;
-using DataAccess.Models;
-using MahApps.Metro.Controls;
+﻿using MahApps.Metro.Controls;
 using SharedLibrary;
 using System;
 using System.Collections.Generic;
@@ -18,6 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using SharedApi.Connectors.New;
+using SharedApi.Models;
 using SharedLibrary.Enums;
 using SharedLibrary.Interfaces;
 using SharedLibrary.Shared.ApiModels;
@@ -30,7 +29,6 @@ namespace ZolikDistributor.Admin
 		private ReadOnlyCollection<Student> _allStudents;
 		private List<Student> _availableStudents = new List<Student>();
 		private List<Zolik> _studentsZoliks = new List<Zolik>();
-		private Manager _mgr = new Manager();
 		private Random _rnd = new Random();
 		private Student _selectedStudent;
 		private Zolik _selectedZolik;
@@ -139,14 +137,14 @@ namespace ZolikDistributor.Admin
 				Xceed.Wpf.Toolkit.MessageBox.Show("Nezdařilo se vybrat uživatele");
 				return;
 			}
-
-			var a = await Task.Run(() => _mgr.Zoliky.UsersZoliky(_selectedStudent.ID));
-			if (!a.IsSuccess) {
+			var zc = new ZolikConnector(_me.Token);
+			var a = await zc.GetUserZoliksAsync(_selectedStudent.ID, false);
+			if (!a.Any()) {
 				Xceed.Wpf.Toolkit.MessageBox.Show($"Něco se nepovedlo {_me.Name}!", "Chyba", MessageBoxButton.OK,
 												  MessageBoxImage.Error);
 				return;
 			}
-			_studentsZoliks = a.Content;
+			_studentsZoliks = a;
 			_studentsZoliks = _studentsZoliks.OrderByDescending(x => x.OwnerSince).ToList();
 			foreach (var zol in _studentsZoliks) {
 				ListBoxZoliks
@@ -166,20 +164,18 @@ namespace ZolikDistributor.Admin
 
 			TxtType.Text = _selectedZolik.Type.GetDescription();
 			TxtTitle.Text = _selectedZolik.Title;
-			TxtSubject.Text = _selectedZolik?.Subject?.Name ?? "Neznámý";
+			TxtSubject.Text = Globals.Subjects?
+								  .FirstOrDefault(x => x.ID == _selectedZolik.SubjectID)?
+								  .Name ??
+							  "Počítačová grafika";
 			TxtDate.Text = _selectedZolik.OwnerSince.ToString("dd.MM.yyyy");
 
-			if (_selectedZolik.OriginalOwner != null) {
-				var orig = _selectedZolik.OriginalOwner;
-				var text = "Neznámý";
-				if (!string.IsNullOrWhiteSpace(orig.FullName)) {
-					text = orig.FullName;
-				}
-				if (orig.Class != null) {
-					text += $" ({orig.Class.Name})";
-				}
-				TxtOriginalOwner.Text = text;
-			}
+			var originalOwner = Globals.Students?
+									.FirstOrDefault(x => x.ID == _selectedZolik.OriginalOwnerID)?
+									.FullName ??
+								"Neznámý";
+			TxtOriginalOwner.Text = originalOwner;
+
 
 			Txtreason.Text = _selectedZolik.IsLocked ? _selectedZolik.Lock : "";
 

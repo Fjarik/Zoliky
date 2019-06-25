@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Text;
 using Newtonsoft.Json;
 using SharedLibrary.Enums;
+using SharedLibrary.Interfaces;
 
 namespace SharedLibrary
 {
 	[Android.Runtime.Preserve(AllMembers = true)]
-	public class ZolikPackage
+	public class ZolikPackage : IValidable
 	{
 		public int FromID { get; set; }
 		public int ToID { get; set; }

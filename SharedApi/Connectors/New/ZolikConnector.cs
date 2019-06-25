@@ -28,6 +28,39 @@ namespace SharedApi.Connectors.New
 			}
 		}
 
+		public Task<MActionResult<Transaction>> CreateAndTransferAsync(int teacherId,
+																	   int toId,
+																	   ZolikType type,
+																	   int subjectId,
+																	   string title,
+																	   bool allowSplit)
+		{
+			var p = new ZolikCPackage() {
+				TeacherId = teacherId,
+				ToId = toId,
+				SubjectId = subjectId,
+				Type = type,
+				Title = title,
+				AllowSplit = allowSplit
+			};
+			return CreateAndTransferAsync(p);
+		}
+
+		public async Task<MActionResult<Transaction>> CreateAndTransferAsync(ZolikCPackage p)
+		{
+			if (p == null || !p.IsValid) {
+				return new MActionResult<Transaction>(StatusCode.InvalidInput);
+			}
+
+			try {
+				var a = await Request("zolik/ctransfer").PostJsonAsync(p)
+														.ReceiveJson<MActionResult<Transaction>>();
+				return a;
+			} catch (Exception ex) {
+				return new MActionResult<Transaction>(StatusCode.SeeException, ex);
+			}
+		}
+
 		public async Task<List<Zolik>> GetUserZoliksAsync(int userId,
 														  bool isTester = false,
 														  bool onlyEnabled = true)

@@ -6,8 +6,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using DataAccess;
-using DataAccess.Models;
 using JetBrains.Annotations;
 using MahApps.Metro.Controls;
 using SharedLibrary.Enums;

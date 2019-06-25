@@ -106,7 +106,7 @@ namespace API.Controllers.v1
 		}
 
 		// POST /user/getTester
-		[HttpPost]
+		/*[HttpPost]
 		[Route("getTester")]
 		public IHttpActionResult GetTesterAccount([FromBody] User u)
 		{
@@ -123,21 +123,7 @@ namespace API.Controllers.v1
 			}
 			u.IsTesterType = true;
 			return Ok(new MActionResult<User>(SharedLibrary.Enums.StatusCode.OK, u));
-		}
-
-		// POST /user/createevent
-		[HttpPost]
-		[Route("createevent")]
-		public IHttpActionResult CreateEvent(WebEvent e)
-		{
-			if (e == null || e.ToID < 1) {
-				return Ok(new MActionResult<WebEvent>(SharedLibrary.Enums.StatusCode.InvalidInput));
-			}
-
-			var a = new Manager().Events.Create((Projects) e.FromProjectID, e.FromID, e.ToID, e.Type, e.Message);
-
-			return Ok(a);
-		}
+		}*/
 
 		// POST /user/mobiletoken?token={token}
 		[HttpPost]
