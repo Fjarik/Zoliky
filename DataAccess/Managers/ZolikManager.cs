@@ -139,6 +139,22 @@ namespace DataAccess.Managers
 			return await this.CreateAsync(z);
 		}
 
+		public async Task<MActionResult<Transaction>> CreateAndTransferAsync(ZolikCPackage p,
+																			 User logged)
+		{
+			if (p == null || !p.IsValid) {
+				return new MActionResult<Transaction>(StatusCode.InvalidInput);
+			}
+
+			return await CreateAndTransferAsync(p.TeacherId,
+												p.ToId,
+												p.Type,
+												p.SubjectId,
+												p.Title,
+												logged,
+												p.AllowSplit);
+		}
+
 		public async Task<MActionResult<Transaction>> CreateAndTransferAsync(int teacherId,
 																			 int toId,
 																			 ZolikType type,

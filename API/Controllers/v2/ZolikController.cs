@@ -98,6 +98,24 @@ namespace API.Controllers.v2
 			return Ok(res);
 		}
 
+		// POST /zolik/ctransfer
+		[HttpPost]
+		[Route("ctransfer")]
+		[ResponseType(typeof(MActionResult<Transaction>))]
+		public async Task<IHttpActionResult> CTransferZolik(ZolikCPackage package)
+		{
+			if (package == null || !package.IsValid) {
+				return Ok(new MActionResult<Transaction>(SharedLibrary.Enums.StatusCode.InvalidInput));
+			}
+
+			var user = await ClaimsPrincipal.Current.GetLoggedUserAsync();
+			if (user == null || !user.IsInRolesOr(UserRoles.Teacher, UserRoles.Administrator)) {
+				return Ok(new MActionResult<Transaction>(SharedLibrary.Enums.StatusCode.InsufficientPermissions));
+			}
+			var res = await Mgr.CreateAndTransferAsync(package, user);
+			return Ok(res);
+		}
+
 		// POST /zolik/split
 		[HttpPost]
 		[Route("split")]
