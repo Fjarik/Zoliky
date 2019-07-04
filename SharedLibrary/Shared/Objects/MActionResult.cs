@@ -94,6 +94,8 @@ namespace SharedLibrary
 					return "Neplatné vstupní parametry";
 				case StatusCode.NotEnabled:
 					return "Uživatel není aktivovaný";
+				case StatusCode.EmailNotConfirmed:
+					return "Email není potvrzený";
 				case StatusCode.WrongPassword:
 					return "Neplatné jméno nebo  heslo";
 				case StatusCode.ExpiredPassword:

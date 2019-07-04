@@ -24,6 +24,7 @@ namespace DataAccess.Models
             this.OriginalZoliks = new HashSet<Zolik>();
             this.LoginTokens = new HashSet<UserLoginToken>();
             this.Logins = new HashSet<UserLogin>();
+            this.UserLogs = new HashSet<UserLog>();
         }
     
         public int ID { get; set; }
@@ -43,6 +44,7 @@ namespace DataAccess.Models
         public string Description { get; set; }
         public string VersionS { get; set; }
         public int XP { get; set; }
+        public bool EmailConfirmed { get; set; }
     
         public virtual Class Class { get; set; }
         public virtual SomeHash Password { get; set; }
@@ -61,5 +63,7 @@ namespace DataAccess.Models
         public virtual ICollection<UserLoginToken> LoginTokens { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         private ICollection<UserLogin> Logins { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        private ICollection<UserLog> UserLogs { get; set; }
     }
 }

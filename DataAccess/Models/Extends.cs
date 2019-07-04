@@ -532,6 +532,8 @@ namespace DataAccess.Models
 		}
 	}
 
+	public partial class UserLog : IDbEntity { }
+
 	public partial class UserLogin : IDbObject, IDbEntity
 	{
 		[JsonIgnore]

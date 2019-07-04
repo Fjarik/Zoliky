@@ -216,6 +216,7 @@ namespace SharedLibrary.Enums
 		AlreadyExists = 603,
 		InvalidInput = 605,
 		NotEnabled = 607,
+		EmailNotConfirmed = 608,
 		WrongPassword = 610,
 		NoPassword = 611,
 		ExpiredPassword = 613,
