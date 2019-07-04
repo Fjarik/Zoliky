@@ -23,6 +23,7 @@ namespace DataAccess.Models
             this.Achievements = new HashSet<Achievement>();
             this.OriginalZoliks = new HashSet<Zolik>();
             this.LoginTokens = new HashSet<UserLoginToken>();
+            this.Logins = new HashSet<UserLogin>();
         }
     
         public int ID { get; set; }
@@ -58,5 +59,7 @@ namespace DataAccess.Models
         public virtual ICollection<Zolik> OriginalZoliks { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserLoginToken> LoginTokens { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        private ICollection<UserLogin> Logins { get; set; }
     }
 }

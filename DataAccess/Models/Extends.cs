@@ -1,14 +1,8 @@
-﻿using SharedLibrary;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Data.Entity.Core.Objects;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Text;
-using System.Threading.Tasks;
-using DataAccess.Managers;
 using Newtonsoft.Json;
 using SharedLibrary.Enums;
 using SharedLibrary.Interfaces;
@@ -422,18 +416,6 @@ namespace DataAccess.Models
 	[MetadataType(typeof(UserMetaData))]
 	public partial class User : IDbObject, IDbEntity, IEnableable, IStudent<Image>, IUser<Class, Image, Role>
 	{
-#region Fields
-
-		[JsonIgnore]
-		private string _specialUsername;
-
-		[Obsolete]
-		private bool? _hasTesterRights;
-
-		private List<Zolik> _zoliky;
-
-#endregion
-
 #region Get only
 
 		public string ClassName => this.Class?.Name;
@@ -446,8 +428,8 @@ namespace DataAccess.Models
 				StringBuilder sb = new StringBuilder();
 				if (!string.IsNullOrWhiteSpace(this.Name)) {
 					sb.Append(this.Name);
+					sb.Append(" ");
 				}
-				sb.Append(" ");
 				if (!string.IsNullOrWhiteSpace(this.Lastname)) {
 					sb.Append(this.Lastname);
 				}
@@ -455,22 +437,10 @@ namespace DataAccess.Models
 			}
 		}
 
-		[Obsolete]
-		public bool HasTesterRights => false;
-
 		[JsonIgnore]
-		public UserLogin LastLogin
-		{
-			get
-			{
-				using (ZoliksEntities ent = new ZoliksEntities()) {
-					return ent.UserLogins
-							  .Where(x => x.UserID == this.ID)
-							  .OrderByDescending(x => x.Date)
-							  .FirstOrDefault();
-				}
-			}
-		}
+		public UserLogin LastLogin => this.Logins
+										  .OrderByDescending(x => x.Date)
+										  .FirstOrDefault();
 
 		public DateTime? LastLoginDate => this.LastLogin?.Date;
 
@@ -496,19 +466,6 @@ namespace DataAccess.Models
 		{
 			get => System.Version.Parse(this.VersionS);
 			set => this.VersionS = value.ToString();
-		}
-
-		[Obsolete]
-		public string SpecialUsername
-		{
-			get
-			{
-				if (string.IsNullOrWhiteSpace(_specialUsername)) {
-					return this.Username;
-				}
-				return _specialUsername;
-			}
-			set => _specialUsername = value;
 		}
 
 #endregion
@@ -569,6 +526,9 @@ namespace DataAccess.Models
 
 			[JsonIgnore]
 			public ICollection<UserLoginToken> LoginTokens { get; set; }
+
+			[JsonIgnore]
+			public ICollection<UserLogin> Logins { get; set; }
 		}
 	}
 

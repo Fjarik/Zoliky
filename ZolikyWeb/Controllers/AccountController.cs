@@ -546,31 +546,6 @@ namespace ZolikyWeb.Controllers
 
 #endregion
 
-		/*[HttpGet]
-		public async Task<ActionResult> Delete()
-		{
-			var id = 1128;
-			var res = await Mgr.DeleteAsync(id);
-			return RedirectToLogin();
-		}*/
-
-		/*
-		[HttpGet]
-		public async Task<ActionResult> Test()
-		{
-			var mgr = this.GetManager<UserSettingManager>();
-			var key = SettingKeys.MobileToken;
-			using (var ent = new ZoliksEntities()) {
-				foreach (var user in ent.Users
-										.Where(x => x.MobileToken.Trim() != null)
-										.Select(x => new {x.ID, x.MobileToken})) {
-					await mgr.CreateAsync(user.ID, key, user.MobileToken, true);
-				}
-			}
-			return RedirectToLogin();
-		}
-		*/
-
 #endregion
 	}
 }

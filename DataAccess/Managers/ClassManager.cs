@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using DataAccess.Managers.New;
@@ -84,7 +85,18 @@ namespace DataAccess.Managers
 			if (!res.IsSuccess) {
 				return res;
 			}
-			var c = res.Content;
+			return await MoveClassAsync(res.Content);
+		}
+
+		private async Task<MActionResult<Class>> MoveClassAsync(Class c)
+		{
+			if (c == null) {
+				return new MActionResult<Class>(StatusCode.InvalidInput);
+			}
+			var enabled = await this.CheckClassAsync(c);
+			if (!enabled) {
+				return new MActionResult<Class>(StatusCode.OK, c);
+			}
 
 			var names = c.Name.Split('.');
 			if (names.Length != 2 ||
@@ -102,7 +114,8 @@ namespace DataAccess.Managers
 
 		public async Task<bool> MoveClassesAsync()
 		{
-			foreach (int id in _ctx.Classes.Where(x => x.Enabled).Select(x => x.ID)) {
+			var classes = await _ctx.Classes.Where(x => x.Enabled).Select(x => x.ID).ToListAsync();
+			foreach (int id in classes) {
 				var res = await this.MoveClassAsync(id);
 				if (!res.IsSuccess) {
 					return false;
@@ -120,13 +133,16 @@ namespace DataAccess.Managers
 			if (!res.IsSuccess) {
 				return false;
 			}
-			var c = res.Content;
-			if (!c.Enabled) {
+			return await CheckClassAsync(res.Content);
+		}
+
+		private async Task<bool> CheckClassAsync(Class c)
+		{
+			if (c == null || !c.Enabled) {
 				return false;
 			}
 			if (c.Graduation < DateTime.Now) {
-				c.Enabled = false;
-				await this.SaveAsync(c);
+				await this.DeactivateClassAsync(c);
 				return false;
 			}
 			return true;
@@ -134,13 +150,26 @@ namespace DataAccess.Managers
 
 		public async Task<bool> CheckClassesAsync()
 		{
-			foreach (int id in _ctx.Classes.Where(x => x.Enabled).Select(x => x.ID)) {
+			var classes = await _ctx.Classes.Where(x => x.Enabled).Select(x => x.ID).ToListAsync();
+			foreach (int id in classes) {
 				var res = await this.CheckClassAsync(id);
 				if (!res) {
 					return false;
 				}
 			}
 			return true;
+		}
+
+		public async Task DeactivateClassAsync(Class c)
+		{
+			if (c == null) {
+				return;
+			}
+			c.Enabled = false;
+			await this.SaveAsync(c);
+
+			string sql = @"UPDATE [Users] SET [Enabled] = 0 WHERE [ClassID] = @classId";
+			var res = await _ctx.Database.ExecuteSqlCommandAsync(sql, new SqlParameter("classId", c.ID));
 		}
 
 #endregion

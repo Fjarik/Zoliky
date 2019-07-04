@@ -700,7 +700,6 @@ namespace DataAccess.Managers
 						  Lastname = x.Lastname,
 						  Enabled = x.Enabled,
 						  Class = x.Class,
-						  SpecialUsername = x.SpecialUsername,
 						  ProfilePhoto = includeImages ? x.ProfilePhoto : null,
 					  }).ToList();
 

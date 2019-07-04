@@ -1864,6 +1864,7 @@
           <NavigationProperty Name="Achievements" Relationship="ZoliksModel.AchievementUnlocks" FromRole="User" ToRole="Achievement" />
           <NavigationProperty Name="OriginalZoliks" Relationship="ZoliksModel.FK_Zoliky_Users" FromRole="User" ToRole="Zolik" />
           <NavigationProperty Name="LoginTokens" Relationship="ZoliksModel.FK_UserLoginTokens_Users" FromRole="User" ToRole="UserLoginToken" />
+          <NavigationProperty Name="Logins" Relationship="ZoliksModel.FK_Logins_Users" FromRole="User" ToRole="UserLogin" a:GetterAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" a:SetterAccess="Private" />
         </EntityType>
         <Association Name="FK_Users_Classes">
           <End Type="ZoliksModel.Class" Role="Class" Multiplicity="0..1" />
