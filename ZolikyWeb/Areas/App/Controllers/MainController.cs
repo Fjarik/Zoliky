@@ -52,8 +52,8 @@ namespace ZolikyWeb.Areas.App.Controllers
 				JokerCount = jokerCount,
 				Rank = rank,
 				Zoliky = top,
-				SpecialDate = new DateTime(2019, 06, 21),
-				SpecialDateDesc = "Uzavření známek",
+				SpecialDate = new DateTime(2019, 09, 02),
+				SpecialDateDesc = "Nový školní rok",
 				ClassName = className,
 				LeaderboardClass = studentsClass,
 				Leaderboard = students

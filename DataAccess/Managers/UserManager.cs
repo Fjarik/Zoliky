@@ -444,6 +444,10 @@ namespace DataAccess.Managers
 																Projects project,
 																bool recordLogin = true)
 		{
+			if (!u.EmailConfirmed) {
+				return new MActionResult<User>(StatusCode.EmailNotConfirmed, u);
+			}
+
 			if (!u.Enabled) {
 				return new MActionResult<User>(StatusCode.NotEnabled, u);
 			}
@@ -554,6 +558,7 @@ namespace DataAccess.Managers
 				ProfilePhotoID = Ext.DefaultProfilePhotoId,
 				Sex = gender,
 				VersionS = "1.0.1",
+				EmailConfirmed = false
 			};
 			foreach (var role in roles) {
 				var attached = _ctx.Roles.Attach(role);
@@ -992,6 +997,37 @@ namespace DataAccess.Managers
 			}
 
 			return new MActionResult<User>(StatusCode.OK, user);
+		}
+
+		public Task<MActionResult<User>> ConfirmEmailAsync(int userId)
+		{
+			return this.DisOrConfirmEmailAsync(userId, true);
+		}
+
+		private async Task<MActionResult<User>> DisOrConfirmEmailAsync(int userId, bool confirm)
+		{
+			if (userId < 1) {
+				return new MActionResult<User>(StatusCode.NotValidID);
+			}
+			var res = await this.GetByIdAsync(userId);
+			if (!res.IsSuccess && res.Status != StatusCode.NotEnabled) {
+				return res;
+			}
+			var user = res.Content;
+			return await this.DisOrConfirmEmailAsync(user, confirm);
+		}
+
+		private async Task<MActionResult<User>> DisOrConfirmEmailAsync(User u, bool confirm)
+		{
+			if (u == null) {
+				return new MActionResult<User>(StatusCode.InvalidInput);
+			}
+			if (u.EmailConfirmed == confirm) {
+				return new MActionResult<User>(StatusCode.OK, u);
+			}
+			u.EmailConfirmed = confirm;
+			await this.SaveAsync(u);
+			return new MActionResult<User>(StatusCode.OK, u);
 		}
 
 		public Task<MActionResult<User>> ActivateAsync(int userId)

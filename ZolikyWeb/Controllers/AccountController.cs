@@ -119,6 +119,7 @@ namespace ZolikyWeb.Controllers
 					msg = "Vašemu heslu vypršela platnost";
 					break;
 				case StatusCode.NotEnabled:
+				case StatusCode.EmailNotConfirmed:
 					lg.ShowActivationElement = true;
 					break;
 				case StatusCode.OK:
@@ -182,6 +183,7 @@ namespace ZolikyWeb.Controllers
 					msg = "Vašemu heslu vypršela platnost";
 					break;
 				case StatusCode.NotEnabled:
+				case StatusCode.EmailNotConfirmed:
 					lg.ShowActivationElement = true;
 					break;
 				case StatusCode.OK:
@@ -443,7 +445,8 @@ namespace ZolikyWeb.Controllers
 
 			var token = check.Token;
 			await tokenMgr.UseAsync(token);
-			var res = await Mgr.ActivateAsync(token.UserID);
+			var res = await Mgr.ConfirmEmailAsync(token.UserID);
+			res = await Mgr.ActivateAsync(token.UserID);
 			if (!res.IsSuccess) {
 				this.AddErrorToastMessage(res.GetStatusMessage());
 				return this.RedirectToLogin();
