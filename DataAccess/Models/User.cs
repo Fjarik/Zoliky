@@ -47,7 +47,7 @@ namespace DataAccess.Models
         public bool EmailConfirmed { get; set; }
     
         public virtual Class Class { get; set; }
-        public virtual SomeHash Password { get; set; }
+        public virtual Password Password { get; set; }
         public virtual Image ProfilePhoto { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserSetting> UserSettings { get; set; }

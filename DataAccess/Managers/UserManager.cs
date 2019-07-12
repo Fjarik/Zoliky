@@ -92,19 +92,13 @@ namespace DataAccess.Managers
 				await this.SaveAsync(u);
 
 
-				var passwords = _ctx.SomeHashes.Where(x => x.OwnerID == id);
-				_ctx.SomeHashes.RemoveRange(passwords);
+				var passwords = _ctx.Passwords.Where(x => x.OwnerID == id);
+				_ctx.Passwords.RemoveRange(passwords);
+				await _ctx.SaveChangesAsync();
 
 #endregion
 
 #region Relations
-
-				var consents = _ctx.Consents.Where(x => x.UserID == id);
-				_ctx.Consents.RemoveRange(consents);
-
-				var crashes = _ctx.Crashes.Where(x => x.UserID == id);
-				_ctx.Crashes.RemoveRange(crashes);
-				await _ctx.SaveChangesAsync();
 
 				var images = _ctx.Images.Where(x => x.OwnerID == id);
 				_ctx.Images.RemoveRange(images);

@@ -62,38 +62,6 @@
           <Property Name="Graduation" Type="date" Nullable="false" />
           <Property Name="Enabled" Type="bit" Nullable="false" />
         </EntityType>
-        <EntityType Name="Consents">
-          <Key>
-            <PropertyRef Name="UserID" />
-            <PropertyRef Name="TermID" />
-          </Key>
-          <Property Name="UserID" Type="int" Nullable="false" />
-          <Property Name="TermID" Type="int" Nullable="false" />
-          <Property Name="Accepted" Type="bit" Nullable="false" />
-          <Property Name="When" Type="datetime" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Crashes">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="ProjectID" Type="int" Nullable="false" />
-          <Property Name="ScreenshotID" Type="int" />
-          <Property Name="UserID" Type="int" />
-          <Property Name="Status" Type="tinyint" Nullable="false" />
-          <Property Name="AppVersion" Type="varchar" MaxLength="50" />
-          <Property Name="Build" Type="date" />
-          <Property Name="LastWindowName" Type="nvarchar" MaxLength="200" />
-          <Property Name="OS" Type="nvarchar" MaxLength="200" />
-          <Property Name="Is64BitOS" Type="bit" />
-          <Property Name="Is64BitApp" Type="bit" />
-          <Property Name="Date" Type="datetime" Nullable="false" />
-          <Property Name="Exception" Type="nvarchar(max)" />
-          <Property Name="Message" Type="nvarchar" MaxLength="2000" />
-          <Property Name="Email" Type="varchar" MaxLength="250" />
-          <Property Name="Log" Type="nvarchar(max)" />
-          <Property Name="Enabled" Type="bit" Nullable="false" />
-        </EntityType>
         <EntityType Name="FaQ">
           <Key>
             <PropertyRef Name="ID" />
@@ -166,22 +134,6 @@
           <Property Name="Expiration" Type="datetime" />
           <Property Name="Visible" Type="bit" Nullable="false" />
         </EntityType>
-        <EntityType Name="Paths">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Url" Type="nvarchar" MaxLength="400" />
-        </EntityType>
-        <EntityType Name="Prices">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Date" Type="datetime" Nullable="false" />
-          <Property Name="Value" Type="float" Nullable="false" />
-          <Property Name="ZolikType" Type="int" Nullable="false" />
-        </EntityType>
         <EntityType Name="Projects">
           <Key>
             <PropertyRef Name="ID" />
@@ -237,19 +189,6 @@
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="200" />
           <Property Name="Shortcut" Type="varchar" MaxLength="5" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Terms">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Title" Type="nvarchar" MaxLength="200" />
-          <Property Name="Head" Type="nvarchar(max)" />
-          <Property Name="Body" Type="nvarchar(max)" />
-          <Property Name="Footer" Type="nvarchar(max)" />
-          <Property Name="Shortcut" Type="varchar" MaxLength="10" />
-          <Property Name="Since" Type="date" Nullable="false" />
-          <Property Name="To" Type="date" />
         </EntityType>
         <EntityType Name="TicketCategories">
           <Key>
@@ -317,17 +256,6 @@
           <Property Name="Description" Type="nvarchar(max)" />
           <Property Name="From" Type="datetime" Nullable="false" />
           <Property Name="To" Type="datetime" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Urls">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="ProjectID" Type="int" Nullable="false" />
-          <Property Name="PathID" Type="int" Nullable="false" />
-          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="New" Type="nvarchar" MaxLength="200" />
-          <Property Name="Enabled" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="UserLogins">
           <Key>
@@ -524,66 +452,6 @@
             </Principal>
             <Dependent Role="AnonymTickets">
               <PropertyRef Name="AdminId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Consents_Terms">
-          <End Role="Terms" Type="Self.Terms" Multiplicity="1" />
-          <End Role="Consents" Type="Self.Consents" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Terms">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="Consents">
-              <PropertyRef Name="TermID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Consents_Users">
-          <End Role="Users" Type="Self.Users" Multiplicity="1" />
-          <End Role="Consents" Type="Self.Consents" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Users">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="Consents">
-              <PropertyRef Name="UserID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Crashes_Images">
-          <End Role="Images" Type="Self.Images" Multiplicity="0..1" />
-          <End Role="Crashes" Type="Self.Crashes" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Images">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="Crashes">
-              <PropertyRef Name="ScreenshotID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Crashes_Projects">
-          <End Role="Projects" Type="Self.Projects" Multiplicity="1" />
-          <End Role="Crashes" Type="Self.Crashes" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Projects">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="Crashes">
-              <PropertyRef Name="ProjectID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Crashes_Users">
-          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
-          <End Role="Crashes" Type="Self.Crashes" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Users">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="Crashes">
-              <PropertyRef Name="UserID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -887,30 +755,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Urls_Paths">
-          <End Role="Paths" Type="Self.Paths" Multiplicity="1" />
-          <End Role="Urls" Type="Self.Urls" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Paths">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="Urls">
-              <PropertyRef Name="PathID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Urls_Projects">
-          <End Role="Projects" Type="Self.Projects" Multiplicity="1" />
-          <End Role="Urls" Type="Self.Urls" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Projects">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="Urls">
-              <PropertyRef Name="ProjectID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_UserLoginTokens_Users">
           <End Role="Users" Type="Self.Users" Multiplicity="1" />
           <End Role="UserLoginTokens" Type="Self.UserLoginTokens" Multiplicity="*" />
@@ -1103,30 +947,24 @@
           <EntitySet Name="AnonymTicketComments" EntityType="Self.AnonymTicketComments" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AnonymTickets" EntityType="Self.AnonymTickets" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Classes" EntityType="Self.Classes" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Consents" EntityType="Self.Consents" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Crashes" EntityType="Self.Crashes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FaQ" EntityType="Self.FaQ" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FaqCategories" EntityType="Self.FaqCategories" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Changelogs" EntityType="Self.Changelogs" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Images" EntityType="Self.Images" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="News" EntityType="Self.News" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Notifications" EntityType="Self.Notifications" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Paths" EntityType="Self.Paths" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Prices" EntityType="Self.Prices" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Projects" EntityType="Self.Projects" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Ranks" EntityType="Self.Ranks" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ReadNotifications" EntityType="Self.ReadNotifications" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Roles" EntityType="Self.Roles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SomeHashes" EntityType="Self.SomeHashes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Subjects" EntityType="Self.Subjects" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Terms" EntityType="Self.Terms" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TicketCategories" EntityType="Self.TicketCategories" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TicketComments" EntityType="Self.TicketComments" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tickets" EntityType="Self.Tickets" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tokens" EntityType="Self.Tokens" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Transactions" EntityType="Self.Transactions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Unavailabilities" EntityType="Self.Unavailabilities" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Urls" EntityType="Self.Urls" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserLogins" EntityType="Self.UserLogins" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserLoginTokens" EntityType="Self.UserLoginTokens" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserLogs" EntityType="Self.UserLogs" Schema="dbo" store:Type="Tables" />
@@ -1166,26 +1004,6 @@
           <AssociationSet Name="FK_AnonymTickets_Users" Association="Self.FK_AnonymTickets_Users">
             <End Role="Users" EntitySet="Users" />
             <End Role="AnonymTickets" EntitySet="AnonymTickets" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Consents_Terms" Association="Self.FK_Consents_Terms">
-            <End Role="Terms" EntitySet="Terms" />
-            <End Role="Consents" EntitySet="Consents" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Consents_Users" Association="Self.FK_Consents_Users">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="Consents" EntitySet="Consents" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Crashes_Images" Association="Self.FK_Crashes_Images">
-            <End Role="Images" EntitySet="Images" />
-            <End Role="Crashes" EntitySet="Crashes" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Crashes_Projects" Association="Self.FK_Crashes_Projects">
-            <End Role="Projects" EntitySet="Projects" />
-            <End Role="Crashes" EntitySet="Crashes" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Crashes_Users" Association="Self.FK_Crashes_Users">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="Crashes" EntitySet="Crashes" />
           </AssociationSet>
           <AssociationSet Name="FK_Events_FromUser" Association="Self.FK_Events_FromUser">
             <End Role="Users" EntitySet="Users" />
@@ -1286,14 +1104,6 @@
           <AssociationSet Name="FK_Unavailabilities_Projects" Association="Self.FK_Unavailabilities_Projects">
             <End Role="Projects" EntitySet="Projects" />
             <End Role="Unavailabilities" EntitySet="Unavailabilities" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Urls_Paths" Association="Self.FK_Urls_Paths">
-            <End Role="Paths" EntitySet="Paths" />
-            <End Role="Urls" EntitySet="Urls" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Urls_Projects" Association="Self.FK_Urls_Projects">
-            <End Role="Projects" EntitySet="Projects" />
-            <End Role="Urls" EntitySet="Urls" />
           </AssociationSet>
           <AssociationSet Name="FK_UserLoginTokens_Users" Association="Self.FK_UserLoginTokens_Users">
             <End Role="Users" EntitySet="Users" />
@@ -1407,7 +1217,6 @@
             <End Role="Transactions" EntitySet="Transactions" />
           </AssociationSet>
           <EntitySet Name="Classes" EntityType="ZoliksModel.Class" />
-          <EntitySet Name="Urls" EntityType="ZoliksModel.Url" />
           <EntitySet Name="Changelogs" EntityType="ZoliksModel.Changelog" />
           <EntitySet Name="News" EntityType="ZoliksModel.News" />
           <EntitySet Name="Projects" EntityType="ZoliksModel.Project" />
@@ -1415,22 +1224,8 @@
             <End Role="Project" EntitySet="Projects" />
             <End Role="Changelog" EntitySet="Changelogs" />
           </AssociationSet>
-          <AssociationSet Name="FK_Urls_Projects" Association="ZoliksModel.FK_Urls_Projects">
-            <End Role="Project" EntitySet="Projects" />
-            <End Role="Url" EntitySet="Urls" />
-          </AssociationSet>
-          <EntitySet Name="Prices" EntityType="ZoliksModel.Price" />
-          <EntitySet Name="Crashes" EntityType="ZoliksModel.Crash" />
           <EntitySet Name="Images" EntityType="ZoliksModel.Image" />
           <EntitySet Name="Notifications" EntityType="ZoliksModel.Notification" />
-          <AssociationSet Name="FK_Crashes_Images" Association="ZoliksModel.FK_Crashes_Images">
-            <End Role="Image" EntitySet="Images" />
-            <End Role="Crash" EntitySet="Crashes" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Crashes_Projects" Association="ZoliksModel.FK_Crashes_Projects">
-            <End Role="Project" EntitySet="Projects" />
-            <End Role="Crash" EntitySet="Crashes" />
-          </AssociationSet>
           <EntitySet Name="WebEvents" EntityType="ZoliksModel.WebEvent" />
           <AssociationSet Name="FK_News_Projects" Association="ZoliksModel.FK_News_Projects">
             <End Role="Project" EntitySet="Projects" />
@@ -1444,10 +1239,6 @@
           <AssociationSet Name="FK_Users_Classes" Association="ZoliksModel.FK_Users_Classes">
             <End Role="Class" EntitySet="Classes" />
             <End Role="User" EntitySet="Users" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Crashes_Users" Association="ZoliksModel.FK_Crashes_Users">
-            <End Role="User" EntitySet="Users" />
-            <End Role="Crash" EntitySet="Crashes" />
           </AssociationSet>
           <AssociationSet Name="FK_Users_Images" Association="ZoliksModel.FK_Users_Images">
             <End Role="Image" EntitySet="Images" />
@@ -1486,17 +1277,7 @@
             <End Role="User" EntitySet="Users" />
             <End Role="UserLogin" EntitySet="UserLogins" />
           </AssociationSet>
-          <EntitySet Name="Consents" EntityType="ZoliksModel.Consent" />
-          <EntitySet Name="Terms" EntityType="ZoliksModel.Term" />
           <EntitySet Name="Tokens" EntityType="ZoliksModel.Token" />
-          <AssociationSet Name="FK_Consents_Terms" Association="ZoliksModel.FK_Consents_Terms">
-            <End Role="Term" EntitySet="Terms" />
-            <End Role="Consent" EntitySet="Consents" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Consents_Users" Association="ZoliksModel.FK_Consents_Users">
-            <End Role="User" EntitySet="Users" />
-            <End Role="Consent" EntitySet="Consents" />
-          </AssociationSet>
           <AssociationSet Name="FK_Tokens_Users" Association="ZoliksModel.FK_Tokens_Users">
             <End Role="User" EntitySet="Users" />
             <End Role="Token" EntitySet="Tokens" />
@@ -1510,13 +1291,13 @@
             <End Role="Notification" EntitySet="Notifications" />
           </AssociationSet>
           <FunctionImport Name="GetAllNotifications" EntitySet="Notifications" ReturnType="Collection(ZoliksModel.Notification)" />
-          <EntitySet Name="SomeHashes" EntityType="ZoliksModel.SomeHash" />
+          <EntitySet Name="Passwords" EntityType="ZoliksModel.Password" />
           <AssociationSet Name="FK_SomeHashes_Users" Association="ZoliksModel.FK_SomeHashes_Users">
             <End Role="User" EntitySet="Users" />
-            <End Role="SomeHash" EntitySet="SomeHashes" />
+            <End Role="SomeHash" EntitySet="Passwords" />
           </AssociationSet>
           <AssociationSet Name="FK_Users_SomeHashes" Association="ZoliksModel.FK_Users_Password">
-            <End Role="SomeHash" EntitySet="SomeHashes" />
+            <End Role="SomeHash" EntitySet="Passwords" />
             <End Role="User" EntitySet="Users" />
           </AssociationSet>
           <EntitySet Name="Unavailabilities" EntityType="ZoliksModel.Unavailability" />
@@ -1533,11 +1314,6 @@
           <AssociationSet Name="FK_Achievements_UnlockedImage" Association="ZoliksModel.FK_Achievements_UnlockedImage">
             <End Role="Image" EntitySet="Images" />
             <End Role="Achievement" EntitySet="Achievements" />
-          </AssociationSet>
-          <EntitySet Name="Paths" EntityType="ZoliksModel.Path" />
-          <AssociationSet Name="FK_Urls_Paths" Association="ZoliksModel.FK_Urls_Paths">
-            <End Role="Path" EntitySet="Paths" />
-            <End Role="Url" EntitySet="Urls" />
           </AssociationSet>
           <EntitySet Name="Subjects" EntityType="ZoliksModel.Subject" />
           <AssociationSet Name="FK_Zoliky_Subjects" Association="ZoliksModel.FK_Zoliky_Subjects">
@@ -1675,18 +1451,6 @@
           <Property Name="Graduation" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="Enabled" Type="Boolean" Nullable="false" />
         </EntityType>
-        <EntityType Name="Url">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" />
-          <Property Name="ProjectID" Type="Int32" Nullable="false" />
-          <Property Name="PathID" Type="Int32" Nullable="false" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="New" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="Enabled" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="OriginalPath" Relationship="ZoliksModel.FK_Urls_Paths" FromRole="Url" ToRole="Path" />
-        </EntityType>
         <EntityType Name="Changelog">
           <Key>
             <PropertyRef Name="ID" />
@@ -1734,49 +1498,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Urls_Projects">
-          <End Type="ZoliksModel.Project" Role="Project" Multiplicity="1" />
-          <End Type="ZoliksModel.Url" Role="Url" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Project">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="Url">
-              <PropertyRef Name="ProjectID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityType Name="Price">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Value" Type="Double" Nullable="false" />
-          <Property Name="ZolikType" Type="ZoliksModel.ZolikType" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Crash">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ProjectID" Type="Int32" Nullable="false" />
-          <Property Name="ScreenshotID" Type="Int32" />
-          <Property Name="UserID" Type="Int32" />
-          <Property Name="Status" Type="ZoliksModel.CrashStatus" Nullable="false" />
-          <Property Name="AppVersion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Build" Type="DateTime" Precision="0" />
-          <Property Name="LastWindowName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="OS" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="Is64BitOS" Type="Boolean" />
-          <Property Name="Is64BitApp" Type="Boolean" />
-          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Exception" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Message" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
-          <Property Name="Email" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
-          <Property Name="Log" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Enabled" Type="Boolean" Nullable="false" />
-        </EntityType>
         <EntityType Name="Image">
           <Key>
             <PropertyRef Name="ID" />
@@ -1805,30 +1526,6 @@
           <Property Name="Created" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Expiration" Type="DateTime" Precision="3" />
           </EntityType>
-        <Association Name="FK_Crashes_Images">
-          <End Type="ZoliksModel.Image" Role="Image" Multiplicity="0..1" />
-          <End Type="ZoliksModel.Crash" Role="Crash" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Image">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="Crash">
-              <PropertyRef Name="ScreenshotID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Crashes_Projects">
-          <End Type="ZoliksModel.Project" Role="Project" Multiplicity="1" />
-          <End Type="ZoliksModel.Crash" Role="Crash" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Project">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="Crash">
-              <PropertyRef Name="ProjectID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="WebEvent">
           <Key>
             <PropertyRef Name="ID" />
@@ -1909,18 +1606,6 @@
             </Principal>
             <Dependent Role="User">
               <PropertyRef Name="ClassID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Crashes_Users">
-          <End Type="ZoliksModel.User" Role="User" Multiplicity="0..1" />
-          <End Type="ZoliksModel.Crash" Role="Crash" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="Crash">
-              <PropertyRef Name="UserID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2043,29 +1728,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="Consent">
-          <Key>
-            <PropertyRef Name="UserID" />
-            <PropertyRef Name="TermID" />
-          </Key>
-          <Property Name="UserID" Type="Int32" Nullable="false" />
-          <Property Name="TermID" Type="Int32" Nullable="false" />
-          <Property Name="Accepted" Type="Boolean" Nullable="false" />
-          <Property Name="When" Type="DateTime" Nullable="false" Precision="3" />
-        </EntityType>
-        <EntityType Name="Term">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Title" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="Head" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Body" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Footer" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Shortcut" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="Since" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="To" Type="DateTime" Precision="0" />
-        </EntityType>
         <EntityType Name="Token">
           <Key>
             <PropertyRef Name="ID" />
@@ -2079,30 +1741,6 @@
           <Property Name="Type" Type="ZoliksModel.TokenPurpose" Nullable="false" />
           <Property Name="Used" Type="Boolean" Nullable="false" />
         </EntityType>
-        <Association Name="FK_Consents_Terms">
-          <End Type="ZoliksModel.Term" Role="Term" Multiplicity="1" />
-          <End Type="ZoliksModel.Consent" Role="Consent" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Term">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="Consent">
-              <PropertyRef Name="TermID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Consents_Users">
-          <End Type="ZoliksModel.User" Role="User" Multiplicity="1" />
-          <End Type="ZoliksModel.Consent" Role="Consent" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="Consent">
-              <PropertyRef Name="UserID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Tokens_Users">
           <End Type="ZoliksModel.User" Role="User" Multiplicity="1" />
           <End Type="ZoliksModel.Token" Role="Token" Multiplicity="*" />
@@ -2139,7 +1777,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="SomeHash">
+        <EntityType Name="Password">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
@@ -2153,7 +1791,7 @@
         </EntityType>
         <Association Name="FK_SomeHashes_Users">
           <End Type="ZoliksModel.User" Role="User" Multiplicity="1" />
-          <End Type="ZoliksModel.SomeHash" Role="SomeHash" Multiplicity="*" />
+          <End Type="ZoliksModel.Password" Role="SomeHash" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="User">
               <PropertyRef Name="ID" />
@@ -2164,7 +1802,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Users_Password">
-          <End Type="ZoliksModel.SomeHash" Role="SomeHash" Multiplicity="0..1" />
+          <End Type="ZoliksModel.Password" Role="SomeHash" Multiplicity="0..1" />
           <End Type="ZoliksModel.User" Role="User" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="SomeHash">
@@ -2247,25 +1885,6 @@
             </Principal>
             <Dependent Role="Achievement">
               <PropertyRef Name="UnlockedImageID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityType Name="Path">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Url" Type="String" MaxLength="400" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <Association Name="FK_Urls_Paths">
-          <End Type="ZoliksModel.Path" Role="Path" Multiplicity="1" />
-          <End Type="ZoliksModel.Url" Role="Url" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Path">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="Url">
-              <PropertyRef Name="PathID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2378,8 +1997,8 @@
             <PropertyRef Name="LoginProvider" />
           </Key>
           <Property Name="UserID" Type="Int32" Nullable="false" />
-          <Property Name="ProviderKey" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="LoginProvider" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="ProviderKey" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="Created" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="User" Relationship="ZoliksModel.FK_UserLoginTokens_Users" FromRole="UserLoginToken" ToRole="User" />
         </EntityType>
@@ -2704,18 +2323,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Urls">
-            <EntityTypeMapping TypeName="ZoliksModel.Url">
-              <MappingFragment StoreEntitySet="Urls">
-                <ScalarProperty Name="PathID" ColumnName="PathID" />
-                <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
-                <ScalarProperty Name="New" ColumnName="New" />
-                <ScalarProperty Name="Enabled" ColumnName="Enabled" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Changelogs">
             <EntityTypeMapping TypeName="ZoliksModel.Changelog">
               <MappingFragment StoreEntitySet="Changelogs">
@@ -2749,39 +2356,6 @@
                 <ScalarProperty Name="Active" ColumnName="Active" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Prices">
-            <EntityTypeMapping TypeName="ZoliksModel.Price">
-              <MappingFragment StoreEntitySet="Prices">
-                <ScalarProperty Name="ZolikType" ColumnName="ZolikType" />
-                <ScalarProperty Name="Value" ColumnName="Value" />
-                <ScalarProperty Name="Date" ColumnName="Date" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Crashes">
-            <EntityTypeMapping TypeName="ZoliksModel.Crash">
-              <MappingFragment StoreEntitySet="Crashes">
-                <ScalarProperty Name="Build" ColumnName="Build" />
-                <ScalarProperty Name="Enabled" ColumnName="Enabled" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="Log" ColumnName="Log" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="Message" ColumnName="Message" />
-                <ScalarProperty Name="Exception" ColumnName="Exception" />
-                <ScalarProperty Name="Date" ColumnName="Date" />
-                <ScalarProperty Name="Is64BitApp" ColumnName="Is64BitApp" />
-                <ScalarProperty Name="Is64BitOS" ColumnName="Is64BitOS" />
-                <ScalarProperty Name="OS" ColumnName="OS" />
-                <ScalarProperty Name="LastWindowName" ColumnName="LastWindowName" />
-                <ScalarProperty Name="AppVersion" ColumnName="AppVersion" />
-                <ScalarProperty Name="UserID" ColumnName="UserID" />
-                <ScalarProperty Name="ScreenshotID" ColumnName="ScreenshotID" />
-                <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -2865,30 +2439,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Consents">
-            <EntityTypeMapping TypeName="ZoliksModel.Consent">
-              <MappingFragment StoreEntitySet="Consents">
-                <ScalarProperty Name="When" ColumnName="When" />
-                <ScalarProperty Name="Accepted" ColumnName="Accepted" />
-                <ScalarProperty Name="TermID" ColumnName="TermID" />
-                <ScalarProperty Name="UserID" ColumnName="UserID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Terms">
-            <EntityTypeMapping TypeName="ZoliksModel.Term">
-              <MappingFragment StoreEntitySet="Terms">
-                <ScalarProperty Name="Footer" ColumnName="Footer" />
-                <ScalarProperty Name="Body" ColumnName="Body" />
-                <ScalarProperty Name="Head" ColumnName="Head" />
-                <ScalarProperty Name="To" ColumnName="To" />
-                <ScalarProperty Name="Since" ColumnName="Since" />
-                <ScalarProperty Name="Shortcut" ColumnName="Shortcut" />
-                <ScalarProperty Name="Title" ColumnName="Title" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Tokens">
             <EntityTypeMapping TypeName="ZoliksModel.Token">
               <MappingFragment StoreEntitySet="Tokens">
@@ -2904,8 +2454,8 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="GetAllNotifications" FunctionName="ZoliksModel.Store.GetAllNotifications" />
-          <EntitySetMapping Name="SomeHashes">
-            <EntityTypeMapping TypeName="ZoliksModel.SomeHash">
+          <EntitySetMapping Name="Passwords">
+            <EntityTypeMapping TypeName="ZoliksModel.Password">
               <MappingFragment StoreEntitySet="SomeHashes">
                 <ScalarProperty Name="Created" ColumnName="Created" />
                 <ScalarProperty Name="Expiration" ColumnName="Expiration" />
@@ -2949,14 +2499,6 @@
                 <ScalarProperty Name="ToXP" ColumnName="ToXP" />
                 <ScalarProperty Name="FromXP" ColumnName="FromXP" />
                 <ScalarProperty Name="Title" ColumnName="Title" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Paths">
-            <EntityTypeMapping TypeName="ZoliksModel.Path">
-              <MappingFragment StoreEntitySet="Paths">
-                <ScalarProperty Name="Url" ColumnName="Url" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>

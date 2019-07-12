@@ -15,8 +15,8 @@ namespace DataAccess.Models
     public partial class UserLoginToken
     {
         public int UserID { get; set; }
-        public string ProviderKey { get; set; }
         public string LoginProvider { get; set; }
+        public string ProviderKey { get; set; }
         public System.DateTime Created { get; set; }
     
         public virtual User User { get; set; }

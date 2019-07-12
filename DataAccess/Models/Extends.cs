@@ -205,14 +205,6 @@ namespace DataAccess.Models
 
 	public partial class Class : IDbObject, IDbEntity, IClass { }
 
-	[Obsolete]
-	public partial class Consent : IDbObject
-	{
-		public Terms TermType => (Terms) this.TermID;
-	}
-
-	public partial class Crash : IDbObject, IDbEntity { }
-
 	public partial class GetTopStudents_Result : IDbEntity, IStudent<IImage>
 	{
 		public string FullName => $"{this.Name} {this.Lastname}";
@@ -295,8 +287,6 @@ namespace DataAccess.Models
 		}
 	}
 
-	public partial class Price : IDbObject, IDbEntity { }
-
 	public partial class Project : IDbObject, IDbEntity
 	{
 		[JsonIgnore]
@@ -317,7 +307,7 @@ namespace DataAccess.Models
 		}
 	}
 
-	public partial class SomeHash : IDbObject, IDbEntity
+	public partial class Password : IDbObject, IDbEntity
 	{
 		[JsonIgnore]
 		public Version Verze => System.Version.Parse(this.Version);
@@ -335,12 +325,6 @@ namespace DataAccess.Models
 	}
 
 	public partial class Subject : IDbObject, IDbEntity { }
-
-	[Obsolete]
-	public partial class Term : IDbObject, IDbEntity
-	{
-		public Terms Type => (Terms) this.ID;
-	}
 
 	public partial class Token : IDbObject, IDbEntity
 	{
@@ -409,9 +393,6 @@ namespace DataAccess.Models
 	{
 		public Projects Project => (Projects) ProjectID;
 	}
-
-	[Obsolete]
-	public partial class Url : IDbObject, IDbEntity { }
 
 	[MetadataType(typeof(UserMetaData))]
 	public partial class User : IDbObject, IDbEntity, IEnableable, IStudent<Image>, IUser<Class, Image, Role>
@@ -510,7 +491,7 @@ namespace DataAccess.Models
 			public string Description { get; set; }
 
 			[JsonIgnore]
-			public SomeHash Password { get; set; }
+			public Password Password { get; set; }
 
 			[JsonIgnore]
 			public ICollection<UserSetting> UserSettings { get; set; }

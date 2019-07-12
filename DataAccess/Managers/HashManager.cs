@@ -14,7 +14,7 @@ using SharedLibrary.Enums;
 
 namespace DataAccess.Managers
 {
-	public class HashManager : Manager<SomeHash>
+	public class HashManager : Manager<Password>
 	{
 		/// 
 		/// Fields, Constants
@@ -78,7 +78,7 @@ namespace DataAccess.Managers
 
 #region Own Methods
 
-		public PasswordVerificationResult VerifyHashedPassword(int userId, SomeHash hash, string password)
+		public PasswordVerificationResult VerifyHashedPassword(int userId, Password hash, string password)
 		{
 			if (userId < 1 || hash == null || string.IsNullOrWhiteSpace(password)) {
 				return PasswordVerificationResult.Failed;
@@ -97,7 +97,7 @@ namespace DataAccess.Managers
 			return res;
 		}
 
-		public Task<MActionResult<SomeHash>> CreatePasswordAsync(string password,
+		public Task<MActionResult<Password>> CreatePasswordAsync(string password,
 																 int ownerId,
 																 DateTime? exp = null)
 		{
@@ -110,20 +110,20 @@ namespace DataAccess.Managers
 			return this.CreateAsync(ownerId, hash, saltBytes, exp);
 		}
 
-		private async Task<MActionResult<SomeHash>> CreateAsync(int ownerId,
+		private async Task<MActionResult<Password>> CreateAsync(int ownerId,
 																string hash,
 																byte[] salt,
 																DateTime? exp = null,
 																string version = CurrentPasswordVersion)
 		{
 			if (ownerId < 1) {
-				return new MActionResult<SomeHash>(StatusCode.NotValidID);
+				return new MActionResult<Password>(StatusCode.NotValidID);
 			}
 			if (string.IsNullOrWhiteSpace(hash)) {
-				return new MActionResult<SomeHash>(StatusCode.InvalidInput);
+				return new MActionResult<Password>(StatusCode.InvalidInput);
 			}
 
-			var ent = new SomeHash() {
+			var ent = new Password() {
 				OwnerID = ownerId,
 				Created = DateTime.Now,
 				Expiration = exp,
@@ -134,12 +134,12 @@ namespace DataAccess.Managers
 			return await this.CreateAsync(ent);
 		}
 
-		public async Task<IList<SomeHash>> GetAllAsync(int userId)
+		public async Task<IList<Password>> GetAllAsync(int userId)
 		{
 			if (userId < 1) {
-				return new List<SomeHash>();
+				return new List<Password>();
 			}
-			var res = await _ctx.SomeHashes.Where(x => x.OwnerID == userId).ToListAsync();
+			var res = await _ctx.Passwords.Where(x => x.OwnerID == userId).ToListAsync();
 
 			return res;
 		}

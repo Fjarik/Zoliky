@@ -30,25 +30,19 @@ namespace DataAccess.Models
         public virtual DbSet<Transaction> Transactions { get; set; }
         public virtual DbSet<Zolik> Zoliky { get; set; }
         public virtual DbSet<Class> Classes { get; set; }
-        public virtual DbSet<Url> Urls { get; set; }
         public virtual DbSet<Changelog> Changelogs { get; set; }
         public virtual DbSet<News> News { get; set; }
         public virtual DbSet<Project> Projects { get; set; }
-        public virtual DbSet<Price> Prices { get; set; }
-        public virtual DbSet<Crash> Crashes { get; set; }
         public virtual DbSet<Image> Images { get; set; }
         public virtual DbSet<Notification> Notifications { get; set; }
         public virtual DbSet<WebEvent> WebEvents { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<UserLogin> UserLogins { get; set; }
-        public virtual DbSet<Consent> Consents { get; set; }
-        public virtual DbSet<Term> Terms { get; set; }
         public virtual DbSet<Token> Tokens { get; set; }
-        public virtual DbSet<SomeHash> SomeHashes { get; set; }
+        public virtual DbSet<Password> Passwords { get; set; }
         public virtual DbSet<Unavailability> Unavailabilities { get; set; }
         public virtual DbSet<Achievement> Achievements { get; set; }
         public virtual DbSet<Rank> Ranks { get; set; }
-        public virtual DbSet<Path> Paths { get; set; }
         public virtual DbSet<Subject> Subjects { get; set; }
         public virtual DbSet<UserSetting> UserSettings { get; set; }
         public virtual DbSet<Role> Roles { get; set; }

@@ -12,15 +12,14 @@ namespace DataAccess.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Url
+    public partial class Password
     {
         public int ID { get; set; }
-        public int ProjectID { get; set; }
-        public int PathID { get; set; }
-        public string Name { get; set; }
-        public string New { get; set; }
-        public bool Enabled { get; set; }
-    
-        public virtual Path OriginalPath { get; set; }
+        public int OwnerID { get; set; }
+        public byte[] Salt { get; set; }
+        public string Hash { get; set; }
+        public string Version { get; set; }
+        public System.DateTime Created { get; set; }
+        public Nullable<System.DateTime> Expiration { get; set; }
     }
 }
