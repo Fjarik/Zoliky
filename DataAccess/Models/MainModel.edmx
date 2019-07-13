@@ -190,6 +190,18 @@
           <Property Name="Name" Type="nvarchar" MaxLength="200" />
           <Property Name="Shortcut" Type="varchar" MaxLength="5" Nullable="false" />
         </EntityType>
+        <EntityType Name="TeacherSubjects">
+          <Key>
+            <PropertyRef Name="TeacherID" />
+            <PropertyRef Name="SubjectID" />
+            <PropertyRef Name="ClassID" />
+          </Key>
+          <Property Name="TeacherID" Type="int" Nullable="false" />
+          <Property Name="SubjectID" Type="int" Nullable="false" />
+          <Property Name="ClassID" Type="int" Nullable="false" />
+          <Property Name="Enabled" Type="bit" Nullable="false" />
+          <Property Name="Created" Type="datetime" Nullable="false" />
+        </EntityType>
         <EntityType Name="TicketCategories">
           <Key>
             <PropertyRef Name="ID" />
@@ -635,6 +647,42 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_TeacherSubjects_Classes">
+          <End Role="Classes" Type="Self.Classes" Multiplicity="1" />
+          <End Role="TeacherSubjects" Type="Self.TeacherSubjects" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Classes">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TeacherSubjects">
+              <PropertyRef Name="ClassID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TeacherSubjects_Subjects">
+          <End Role="Subjects" Type="Self.Subjects" Multiplicity="1" />
+          <End Role="TeacherSubjects" Type="Self.TeacherSubjects" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Subjects">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TeacherSubjects">
+              <PropertyRef Name="SubjectID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TeacherSubjects_Teachers">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="TeacherSubjects" Type="Self.TeacherSubjects" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TeacherSubjects">
+              <PropertyRef Name="TeacherID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_TicketComments_Ticket">
           <End Role="Tickets" Type="Self.Tickets" Multiplicity="1" />
           <End Role="TicketComments" Type="Self.TicketComments" Multiplicity="*" />
@@ -959,6 +1007,7 @@
           <EntitySet Name="Roles" EntityType="Self.Roles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SomeHashes" EntityType="Self.SomeHashes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Subjects" EntityType="Self.Subjects" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TeacherSubjects" EntityType="Self.TeacherSubjects" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TicketCategories" EntityType="Self.TicketCategories" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TicketComments" EntityType="Self.TicketComments" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tickets" EntityType="Self.Tickets" Schema="dbo" store:Type="Tables" />
@@ -1064,6 +1113,18 @@
           <AssociationSet Name="FK_SomeHashes_Users" Association="Self.FK_SomeHashes_Users">
             <End Role="Users" EntitySet="Users" />
             <End Role="SomeHashes" EntitySet="SomeHashes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TeacherSubjects_Classes" Association="Self.FK_TeacherSubjects_Classes">
+            <End Role="Classes" EntitySet="Classes" />
+            <End Role="TeacherSubjects" EntitySet="TeacherSubjects" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TeacherSubjects_Subjects" Association="Self.FK_TeacherSubjects_Subjects">
+            <End Role="Subjects" EntitySet="Subjects" />
+            <End Role="TeacherSubjects" EntitySet="TeacherSubjects" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TeacherSubjects_Teachers" Association="Self.FK_TeacherSubjects_Teachers">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="TeacherSubjects" EntitySet="TeacherSubjects" />
           </AssociationSet>
           <AssociationSet Name="FK_TicketComments_Ticket" Association="Self.FK_TicketComments_Ticket">
             <End Role="Tickets" EntitySet="Tickets" />
@@ -1440,6 +1501,19 @@
             <End Role="User" EntitySet="Users" />
             <End Role="UserLog" EntitySet="UserLogs" />
           </AssociationSet>
+          <EntitySet Name="TeacherSubjects" EntityType="ZoliksModel.TeacherSubject" />
+          <AssociationSet Name="FK_TeacherSubjects_Classes" Association="ZoliksModel.FK_TeacherSubjects_Classes">
+            <End Role="Class" EntitySet="Classes" />
+            <End Role="TeacherSubject" EntitySet="TeacherSubjects" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TeacherSubjects_Subjects" Association="ZoliksModel.FK_TeacherSubjects_Subjects">
+            <End Role="Subject" EntitySet="Subjects" />
+            <End Role="TeacherSubject" EntitySet="TeacherSubjects" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TeacherSubjects_Teachers" Association="ZoliksModel.FK_TeacherSubjects_Teachers">
+            <End Role="User" EntitySet="Users" />
+            <End Role="TeacherSubject" EntitySet="TeacherSubjects" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="Class">
           <Key>
@@ -1596,6 +1670,7 @@
           <NavigationProperty Name="Logins" Relationship="ZoliksModel.FK_Logins_Users" FromRole="User" ToRole="UserLogin" a:GetterAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" a:SetterAccess="Private" />
           <Property Name="EmailConfirmed" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="UserLogs" Relationship="ZoliksModel.FK_UserLogs_Users" FromRole="User" ToRole="UserLog" a:GetterAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" a:SetterAccess="Private" />
+          <NavigationProperty Name="Teaching" Relationship="ZoliksModel.FK_TeacherSubjects_Teachers" FromRole="User" ToRole="TeacherSubject" a:GetterAccess="Public" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
         </EntityType>
         <Association Name="FK_Users_Classes">
           <End Type="ZoliksModel.Class" Role="Class" Multiplicity="0..1" />
@@ -2275,6 +2350,57 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="TeacherSubject">
+          <Key>
+            <PropertyRef Name="TeacherID" />
+            <PropertyRef Name="SubjectID" />
+            <PropertyRef Name="ClassID" />
+          </Key>
+          <Property Name="TeacherID" Type="Int32" Nullable="false" />
+          <Property Name="SubjectID" Type="Int32" Nullable="false" />
+          <Property Name="ClassID" Type="Int32" Nullable="false" />
+          <Property Name="Enabled" Type="Boolean" Nullable="false" />
+          <Property Name="Created" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Class" Relationship="ZoliksModel.FK_TeacherSubjects_Classes" FromRole="TeacherSubject" ToRole="Class" />
+          <NavigationProperty Name="Subject" Relationship="ZoliksModel.FK_TeacherSubjects_Subjects" FromRole="TeacherSubject" ToRole="Subject" />
+          <NavigationProperty Name="Teacher" Relationship="ZoliksModel.FK_TeacherSubjects_Teachers" FromRole="TeacherSubject" ToRole="User" />
+        </EntityType>
+        <Association Name="FK_TeacherSubjects_Classes">
+          <End Type="ZoliksModel.Class" Role="Class" Multiplicity="1" />
+          <End Type="ZoliksModel.TeacherSubject" Role="TeacherSubject" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Class">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TeacherSubject">
+              <PropertyRef Name="ClassID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TeacherSubjects_Subjects">
+          <End Type="ZoliksModel.Subject" Role="Subject" Multiplicity="1" />
+          <End Type="ZoliksModel.TeacherSubject" Role="TeacherSubject" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Subject">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TeacherSubject">
+              <PropertyRef Name="SubjectID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TeacherSubjects_Teachers">
+          <End Type="ZoliksModel.User" Role="User" Multiplicity="1" />
+          <End Type="ZoliksModel.TeacherSubject" Role="TeacherSubject" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TeacherSubject">
+              <PropertyRef Name="TeacherID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2738,7 +2864,18 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-        </EntityContainerMapping>
+          <EntitySetMapping Name="TeacherSubjects">
+            <EntityTypeMapping TypeName="ZoliksModel.TeacherSubject">
+              <MappingFragment StoreEntitySet="TeacherSubjects">
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="Enabled" ColumnName="Enabled" />
+                <ScalarProperty Name="ClassID" ColumnName="ClassID" />
+                <ScalarProperty Name="SubjectID" ColumnName="SubjectID" />
+                <ScalarProperty Name="TeacherID" ColumnName="TeacherID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

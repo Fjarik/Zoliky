@@ -55,6 +55,7 @@ namespace DataAccess.Models
         public virtual DbSet<TicketCategory> TicketCategories { get; set; }
         public virtual DbSet<TicketComment> TicketComments { get; set; }
         public virtual DbSet<UserLog> UserLogs { get; set; }
+        public virtual DbSet<TeacherSubject> TeacherSubjects { get; set; }
     
         public virtual ObjectResult<Notification> GetAllNotifications()
         {

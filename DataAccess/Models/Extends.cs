@@ -326,6 +326,8 @@ namespace DataAccess.Models
 
 	public partial class Subject : IDbObject, IDbEntity { }
 
+	public partial class TeacherSubject : IDbObject { }
+
 	public partial class Token : IDbObject, IDbEntity
 	{
 		public override bool Equals(object obj)
@@ -391,7 +393,7 @@ namespace DataAccess.Models
 
 	public partial class Unavailability : IDbObject, IDbEntity
 	{
-		public Projects Project => (Projects) ProjectID;
+		public Projects? Project => (Projects?) ProjectID;
 	}
 
 	[MetadataType(typeof(UserMetaData))]
@@ -510,6 +512,9 @@ namespace DataAccess.Models
 
 			[JsonIgnore]
 			public ICollection<UserLogin> Logins { get; set; }
+
+			[JsonIgnore]
+			public ICollection<TeacherSubject> Teaching { get; set; }
 		}
 	}
 
