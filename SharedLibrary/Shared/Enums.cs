@@ -228,9 +228,6 @@ namespace SharedLibrary.Enums
 
 	public enum TokenPurpose : int
 	{
-		[Description("Jiné")]
-		Other = 0,
-
 		[Description("Aktivace")]
 		Activation = 1,
 

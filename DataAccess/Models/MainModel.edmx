@@ -254,7 +254,6 @@
           <Property Name="Issue" Type="datetime" Nullable="false" />
           <Property Name="Expiration" Type="datetime" Nullable="false" />
           <Property Name="Type" Type="int" Nullable="false" />
-          <Property Name="Purpose" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Used" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Transactions">
@@ -1746,7 +1745,6 @@
           <Property Name="Code" Type="Guid" Nullable="false" />
           <Property Name="Issue" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Expiration" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Purpose" Type="String" MaxLength="50" Unicode="true" FixedLength="false" Nullable="false" />
           <Property Name="Type" Type="ZoliksModel.TokenPurpose" Nullable="false" />
           <Property Name="Used" Type="Boolean" Nullable="false" />
         </EntityType>
@@ -2529,7 +2527,6 @@
                 <ScalarProperty Name="Type" ColumnName="Type" />
                 <ScalarProperty Name="Code" ColumnName="Code" />
                 <ScalarProperty Name="Used" ColumnName="Used" />
-                <ScalarProperty Name="Purpose" ColumnName="Purpose" />
                 <ScalarProperty Name="Expiration" ColumnName="Expiration" />
                 <ScalarProperty Name="Issue" ColumnName="Issue" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />

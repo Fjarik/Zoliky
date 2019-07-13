@@ -19,7 +19,6 @@ namespace DataAccess.Models
         public System.Guid Code { get; set; }
         public System.DateTime Issue { get; set; }
         public System.DateTime Expiration { get; set; }
-        public string Purpose { get; set; }
         public SharedLibrary.Enums.TokenPurpose Type { get; set; }
         public bool Used { get; set; }
     }

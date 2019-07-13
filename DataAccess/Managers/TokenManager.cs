@@ -76,8 +76,7 @@ namespace DataAccess.Managers
 		{
 			string code = t.Code.ToString();
 
-			string purpose = "";
-			purpose = t.Type == TokenPurpose.Other ? t.Purpose : ((int) t.Type).ToString();
+			string purpose = ((int) t.Type).ToString();
 			string id = t.UserID.ToString();
 
 			return string.Join("-", code, purpose, id);
@@ -149,16 +148,14 @@ namespace DataAccess.Managers
 			}
 
 			if (purposeType == null) {
-				if (!purpose.Equals(token.Purpose, StringComparison.InvariantCultureIgnoreCase)) {
-					res.Errors.Add(TokenValidationStatus.WrongPurpose);
-					return res;
-				}
-			} else {
-				if (purposeType != token.Type) {
-					// Wrong type
-					res.Errors.Add(TokenValidationStatus.WrongType);
-					return res;
-				}
+				res.Errors.Add(TokenValidationStatus.WrongPurpose);
+				return res;
+			}
+
+			if (purposeType != token.Type) {
+				// Wrong type
+				res.Errors.Add(TokenValidationStatus.WrongType);
+				return res;
 			}
 
 			if (g != token.Code) {
@@ -202,21 +199,19 @@ namespace DataAccess.Managers
 			return this.CreateAsync(userId, TokenPurpose.Activation, TimeSpan.FromHours(20));
 		}
 
-		public Task<MActionResult<Token>> CreateAsync(int userId, string purpose = "")
+		public Task<MActionResult<Token>> CreateAsync(int userId, TokenPurpose purpose)
 		{
-			return this.CreateAsync(userId, TokenPurpose.Other, TimeSpan.FromDays(1), purpose);
+			return this.CreateAsync(userId, purpose, TimeSpan.FromDays(1));
 		}
 
 		public async Task<MActionResult<Token>> CreateAsync(int userId,
 															TokenPurpose type,
-															TimeSpan expiration,
-															string purpose = "")
+															TimeSpan expiration)
 		{
 			if (userId < 1) {
 				return new MActionResult<Token>(StatusCode.NotValidID);
 			}
-			if (expiration < TimeSpan.Zero ||
-				(type == TokenPurpose.Other && string.IsNullOrWhiteSpace(purpose))) {
+			if (expiration < TimeSpan.Zero) {
 				return new MActionResult<Token>(StatusCode.InvalidInput);
 			}
 
@@ -228,7 +223,6 @@ namespace DataAccess.Managers
 				Issue = DateTime.UtcNow,
 				Expiration = DateTime.UtcNow.Add(expiration),
 				Type = type,
-				Purpose = purpose,
 				Used = false
 			};
 			return await base.CreateAsync(t);
