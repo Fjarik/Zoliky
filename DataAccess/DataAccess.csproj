@@ -203,6 +203,9 @@
     <Compile Include="Models\Role.cs">
       <DependentUpon>MainModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\School.cs">
+      <DependentUpon>MainModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Subject.cs">
       <DependentUpon>MainModel.tt</DependentUpon>
     </Compile>
@@ -240,9 +243,6 @@
       <DependentUpon>MainModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\UserSetting.cs">
-      <DependentUpon>MainModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\WebEvent.cs">
       <DependentUpon>MainModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Zolik.cs">

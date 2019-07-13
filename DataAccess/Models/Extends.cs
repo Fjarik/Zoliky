@@ -203,7 +203,15 @@ namespace DataAccess.Models
 
 	public partial class AchievementUnlock : IDbObject { }
 
-	public partial class Class : IDbObject, IDbEntity, IClass { }
+	[MetadataType(typeof(ClassMetaData))]
+	public partial class Class : IDbObject, IDbEntity, IClass
+	{
+		private sealed class ClassMetaData
+		{
+			[JsonIgnore]
+			public School School { get; set; }
+		}
+	}
 
 	public partial class GetTopStudents_Result : IDbEntity, IStudent<IImage>
 	{
@@ -321,6 +329,19 @@ namespace DataAccess.Models
 				}
 				return (this.Expiration < DateTime.Now);
 			}
+		}
+	}
+
+	[MetadataType(typeof(SchoolMetaData))]
+	public partial class School : IDbObject, IDbEntity
+	{
+		private sealed class SchoolMetaData
+		{
+			[JsonIgnore]
+			public ICollection<Class> Classes { get; set; }
+
+			[JsonIgnore]
+			public ICollection<User> Users { get; set; }
 		}
 	}
 
@@ -496,6 +517,9 @@ namespace DataAccess.Models
 			public Password Password { get; set; }
 
 			[JsonIgnore]
+			public School School { get; set; }
+
+			[JsonIgnore]
 			public ICollection<UserSetting> UserSettings { get; set; }
 
 			[JsonIgnore]
@@ -532,8 +556,6 @@ namespace DataAccess.Models
 	{
 		public UserSetting() { }
 	}
-
-	public partial class WebEvent : IDbObject, IDbEntity { }
 
 	[MetadataType(typeof(ZolikMetadata))]
 	public partial class Zolik : IDbObject, IDbEntity, IZolik

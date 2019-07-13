@@ -32,6 +32,7 @@ namespace DataAccess.Models
         public Nullable<int> ProfilePhotoID { get; set; }
         public Nullable<int> ClassID { get; set; }
         public Nullable<int> PasswordID { get; set; }
+        public int SchoolID { get; set; }
         public System.Guid UQID { get; set; }
         public string Username { get; set; }
         public string Email { get; set; }
@@ -50,6 +51,7 @@ namespace DataAccess.Models
         public virtual Class Class { get; set; }
         public virtual Password Password { get; set; }
         public virtual Image ProfilePhoto { get; set; }
+        public virtual School School { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserSetting> UserSettings { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

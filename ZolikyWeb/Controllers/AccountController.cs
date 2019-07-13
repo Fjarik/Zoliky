@@ -277,6 +277,7 @@ namespace ZolikyWeb.Controllers
 											  m.Username,
 											  (byte) m.Gender,
 											  classId,
+											  1,
 											  m.Newsletter,
 											  m.FutureNews,
 											  this.Request.GetIPAddress(),

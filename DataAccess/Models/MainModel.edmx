@@ -57,6 +57,7 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SchoolID" Type="int" Nullable="false" />
           <Property Name="Name" Type="varchar" MaxLength="3" />
           <Property Name="Since" Type="date" Nullable="false" />
           <Property Name="Graduation" Type="date" Nullable="false" />
@@ -169,6 +170,16 @@
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="20" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="Schools">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Type" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Street" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="City" Type="nvarchar" MaxLength="200" Nullable="false" />
         </EntityType>
         <EntityType Name="SomeHashes">
           <Key>
@@ -315,6 +326,7 @@
           <Property Name="ProfilePhotoID" Type="int" />
           <Property Name="ClassID" Type="int" />
           <Property Name="PasswordID" Type="int" />
+          <Property Name="SchoolID" Type="int" Nullable="false" />
           <Property Name="UQID" Type="uniqueidentifier" Nullable="false" />
           <Property Name="Username" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Email" Type="varchar" MaxLength="300" Nullable="false" />
@@ -340,19 +352,6 @@
           <Property Name="Key" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Value" Type="nvarchar" MaxLength="500" />
           <Property Name="Changed" Type="datetime" Nullable="false" />
-        </EntityType>
-        <EntityType Name="WebEvents">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="FromProjectID" Type="int" Nullable="false" />
-          <Property Name="FromID" Type="int" />
-          <Property Name="ToID" Type="int" Nullable="false" />
-          <Property Name="Type" Type="int" Nullable="false" />
-          <Property Name="Date" Type="datetime" Nullable="false" />
-          <Property Name="Enabled" Type="bit" Nullable="false" />
-          <Property Name="Message" Type="nvarchar" MaxLength="1000" />
         </EntityType>
         <EntityType Name="Zoliky">
           <Key>
@@ -467,39 +466,15 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Events_FromUser">
-          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
-          <End Role="WebEvents" Type="Self.WebEvents" Multiplicity="*" />
+        <Association Name="FK_Classes_Schools">
+          <End Role="Schools" Type="Self.Schools" Multiplicity="1" />
+          <End Role="Classes" Type="Self.Classes" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Users">
+            <Principal Role="Schools">
               <PropertyRef Name="ID" />
             </Principal>
-            <Dependent Role="WebEvents">
-              <PropertyRef Name="FromID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Events_Projects">
-          <End Role="Projects" Type="Self.Projects" Multiplicity="1" />
-          <End Role="WebEvents" Type="Self.WebEvents" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Projects">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="WebEvents">
-              <PropertyRef Name="FromProjectID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Events_ToUser">
-          <End Role="Users" Type="Self.Users" Multiplicity="1" />
-          <End Role="WebEvents" Type="Self.WebEvents" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Users">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="WebEvents">
-              <PropertyRef Name="ToID" />
+            <Dependent Role="Classes">
+              <PropertyRef Name="SchoolID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -875,6 +850,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Users_Schools">
+          <End Role="Schools" Type="Self.Schools" Multiplicity="1" />
+          <End Role="Users" Type="Self.Users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Schools">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Users">
+              <PropertyRef Name="SchoolID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Users_SomeHashes">
           <End Role="SomeHashes" Type="Self.SomeHashes" Multiplicity="0..1" />
           <End Role="Users" Type="Self.Users" Multiplicity="*" />
@@ -1005,6 +992,7 @@
           <EntitySet Name="Ranks" EntityType="Self.Ranks" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ReadNotifications" EntityType="Self.ReadNotifications" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Roles" EntityType="Self.Roles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Schools" EntityType="Self.Schools" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SomeHashes" EntityType="Self.SomeHashes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Subjects" EntityType="Self.Subjects" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TeacherSubjects" EntityType="Self.TeacherSubjects" Schema="dbo" store:Type="Tables" />
@@ -1020,7 +1008,6 @@
           <EntitySet Name="UserRoles" EntityType="Self.UserRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserSettings" EntityType="Self.UserSettings" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="WebEvents" EntityType="Self.WebEvents" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Zoliky" EntityType="Self.Zoliky" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_Achievements_LockedImage" Association="Self.FK_Achievements_LockedImage">
             <End Role="Images" EntitySet="Images" />
@@ -1054,17 +1041,9 @@
             <End Role="Users" EntitySet="Users" />
             <End Role="AnonymTickets" EntitySet="AnonymTickets" />
           </AssociationSet>
-          <AssociationSet Name="FK_Events_FromUser" Association="Self.FK_Events_FromUser">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="WebEvents" EntitySet="WebEvents" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Events_Projects" Association="Self.FK_Events_Projects">
-            <End Role="Projects" EntitySet="Projects" />
-            <End Role="WebEvents" EntitySet="WebEvents" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Events_ToUser" Association="Self.FK_Events_ToUser">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="WebEvents" EntitySet="WebEvents" />
+          <AssociationSet Name="FK_Classes_Schools" Association="Self.FK_Classes_Schools">
+            <End Role="Schools" EntitySet="Schools" />
+            <End Role="Classes" EntitySet="Classes" />
           </AssociationSet>
           <AssociationSet Name="FK_FaQ_FaqCategories" Association="Self.FK_FaQ_FaqCategories">
             <End Role="FaqCategories" EntitySet="FaqCategories" />
@@ -1190,6 +1169,10 @@
             <End Role="Images" EntitySet="Images" />
             <End Role="Users" EntitySet="Users" />
           </AssociationSet>
+          <AssociationSet Name="FK_Users_Schools" Association="Self.FK_Users_Schools">
+            <End Role="Schools" EntitySet="Schools" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
           <AssociationSet Name="FK_Users_SomeHashes" Association="Self.FK_Users_SomeHashes">
             <End Role="SomeHashes" EntitySet="SomeHashes" />
             <End Role="Users" EntitySet="Users" />
@@ -1287,14 +1270,9 @@
           </AssociationSet>
           <EntitySet Name="Images" EntityType="ZoliksModel.Image" />
           <EntitySet Name="Notifications" EntityType="ZoliksModel.Notification" />
-          <EntitySet Name="WebEvents" EntityType="ZoliksModel.WebEvent" />
           <AssociationSet Name="FK_News_Projects" Association="ZoliksModel.FK_News_Projects">
             <End Role="Project" EntitySet="Projects" />
             <End Role="News" EntitySet="News" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Events_Projects" Association="ZoliksModel.FK_Events_Projects">
-            <End Role="Project" EntitySet="Projects" />
-            <End Role="WebEvent" EntitySet="WebEvents" />
           </AssociationSet>
           <EntitySet Name="Users" EntityType="ZoliksModel.User" />
           <AssociationSet Name="FK_Users_Classes" Association="ZoliksModel.FK_Users_Classes">
@@ -1316,14 +1294,6 @@
           <AssociationSet Name="FK_Transactions_ToUser" Association="ZoliksModel.FK_Transactions_ToUser">
             <End Role="User" EntitySet="Users" />
             <End Role="Transaction" EntitySet="Transactions" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Events_FromUser" Association="ZoliksModel.FK_Events_FromUser">
-            <End Role="User" EntitySet="Users" />
-            <End Role="WebEvent" EntitySet="WebEvents" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Events_ToUser" Association="ZoliksModel.FK_Events_ToUser">
-            <End Role="User" EntitySet="Users" />
-            <End Role="WebEvent" EntitySet="WebEvents" />
           </AssociationSet>
           <AssociationSet Name="FK_Zoliky_Users" Association="ZoliksModel.FK_Zoliky_Users">
             <End Role="User" EntitySet="Users" />
@@ -1514,16 +1484,27 @@
             <End Role="User" EntitySet="Users" />
             <End Role="TeacherSubject" EntitySet="TeacherSubjects" />
           </AssociationSet>
+          <EntitySet Name="Schools" EntityType="ZoliksModel.School" />
+          <AssociationSet Name="FK_Classes_Schools" Association="ZoliksModel.FK_Classes_Schools">
+            <End Role="School" EntitySet="Schools" />
+            <End Role="Class" EntitySet="Classes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Users_Schools" Association="ZoliksModel.FK_Users_Schools">
+            <End Role="School" EntitySet="Schools" />
+            <End Role="User" EntitySet="Users" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="Class">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SchoolID" Type="Int32" Nullable="false" />
           <Property Name="Name" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
           <Property Name="Since" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="Graduation" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="Enabled" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="School" Relationship="ZoliksModel.FK_Classes_Schools" FromRole="Class" ToRole="School" />
         </EntityType>
         <EntityType Name="Changelog">
           <Key>
@@ -1600,19 +1581,6 @@
           <Property Name="Created" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Expiration" Type="DateTime" Precision="3" />
           </EntityType>
-        <EntityType Name="WebEvent">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="FromProjectID" Type="Int32" Nullable="false" />
-          <Property Name="FromID" Type="Int32" />
-          <Property Name="ToID" Type="Int32" Nullable="false" />
-          <Property Name="Type" Type="Int32" Nullable="false" />
-          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Enabled" Type="Boolean" Nullable="false" />
-          <Property Name="Message" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
-        </EntityType>
         <Association Name="FK_News_Projects">
           <End Type="ZoliksModel.Project" Role="Project" Multiplicity="0..1" />
           <End Type="ZoliksModel.News" Role="News" Multiplicity="*" />
@@ -1625,18 +1593,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Events_Projects">
-          <End Type="ZoliksModel.Project" Role="Project" Multiplicity="1" />
-          <End Type="ZoliksModel.WebEvent" Role="WebEvent" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Project">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="WebEvent">
-              <PropertyRef Name="FromProjectID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="User">
           <Key>
             <PropertyRef Name="ID" />
@@ -1645,6 +1601,7 @@
           <Property Name="ProfilePhotoID" Type="Int32" a:GetterAccess="Public" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" a:SetterAccess="Public" Nullable="true" />
           <Property Name="ClassID" Type="Int32" Nullable="true" />
           <Property Name="PasswordID" Type="Int32" a:GetterAccess="Public" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" a:SetterAccess="Public" Nullable="true" />
+          <Property Name="SchoolID" Type="Int32" Nullable="false" />
           <Property Name="UQID" Type="Guid" Nullable="false" />
           <Property Name="Username" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" a:SetterAccess="Public" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" a:GetterAccess="Public" />
           <Property Name="Email" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="false" />
@@ -1661,6 +1618,7 @@
           <Property Name="XP" Type="Int32" Nullable="false" a:SetterAccess="Public" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" a:GetterAccess="Public" />
           <NavigationProperty Name="Password" Relationship="ZoliksModel.FK_Users_Password" FromRole="User" ToRole="SomeHash" />
           <NavigationProperty Name="ProfilePhoto" Relationship="ZoliksModel.FK_Users_Images" FromRole="User" ToRole="Image" />
+          <NavigationProperty Name="School" Relationship="ZoliksModel.FK_Users_Schools" FromRole="User" ToRole="School" />
           <NavigationProperty Name="UserSettings" Relationship="ZoliksModel.FK_UserSettings_Users" FromRole="User" ToRole="UserSetting" />
           <NavigationProperty Name="Roles" Relationship="ZoliksModel.UserRoles" FromRole="User" ToRole="Role" />
           <NavigationProperty Name="ReadNotifications" Relationship="ZoliksModel.ReadNotifications" FromRole="User" ToRole="Notification" />
@@ -1728,30 +1686,6 @@
               <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="Transaction">
-              <PropertyRef Name="ToID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Events_FromUser">
-          <End Type="ZoliksModel.User" Role="User" Multiplicity="0..1" />
-          <End Type="ZoliksModel.WebEvent" Role="WebEvent" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="WebEvent">
-              <PropertyRef Name="FromID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Events_ToUser">
-          <End Type="ZoliksModel.User" Role="User" Multiplicity="1" />
-          <End Type="ZoliksModel.WebEvent" Role="WebEvent" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="WebEvent">
               <PropertyRef Name="ToID" />
             </Dependent>
           </ReferentialConstraint>
@@ -2401,6 +2335,42 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="School">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Type" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Street" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Classes" Relationship="ZoliksModel.FK_Classes_Schools" FromRole="School" ToRole="Class" />
+          <NavigationProperty Name="Users" Relationship="ZoliksModel.FK_Users_Schools" FromRole="School" ToRole="User" />
+        </EntityType>
+        <Association Name="FK_Classes_Schools">
+          <End Type="ZoliksModel.School" Role="School" Multiplicity="1" />
+          <End Type="ZoliksModel.Class" Role="Class" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="School">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Class">
+              <PropertyRef Name="SchoolID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Users_Schools">
+          <End Type="ZoliksModel.School" Role="School" Multiplicity="1" />
+          <End Type="ZoliksModel.User" Role="User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="School">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="SchoolID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2441,6 +2411,7 @@
           <EntitySetMapping Name="Classes">
             <EntityTypeMapping TypeName="ZoliksModel.Class">
               <MappingFragment StoreEntitySet="Classes">
+                <ScalarProperty Name="SchoolID" ColumnName="SchoolID" />
                 <ScalarProperty Name="Enabled" ColumnName="Enabled" />
                 <ScalarProperty Name="Graduation" ColumnName="Graduation" />
                 <ScalarProperty Name="Since" ColumnName="Since" />
@@ -2515,23 +2486,10 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="WebEvents">
-            <EntityTypeMapping TypeName="ZoliksModel.WebEvent">
-              <MappingFragment StoreEntitySet="WebEvents">
-                <ScalarProperty Name="Message" ColumnName="Message" />
-                <ScalarProperty Name="Enabled" ColumnName="Enabled" />
-                <ScalarProperty Name="Date" ColumnName="Date" />
-                <ScalarProperty Name="Type" ColumnName="Type" />
-                <ScalarProperty Name="ToID" ColumnName="ToID" />
-                <ScalarProperty Name="FromID" ColumnName="FromID" />
-                <ScalarProperty Name="FromProjectID" ColumnName="FromProjectID" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="ZoliksModel.User">
               <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="SchoolID" ColumnName="SchoolID" />
                 <ScalarProperty Name="EmailConfirmed" ColumnName="EmailConfirmed" />
                 <ScalarProperty Name="VersionS" ColumnName="Version" />
                 <ScalarProperty Name="Sex" ColumnName="Sex" />
@@ -2872,6 +2830,17 @@
                 <ScalarProperty Name="ClassID" ColumnName="ClassID" />
                 <ScalarProperty Name="SubjectID" ColumnName="SubjectID" />
                 <ScalarProperty Name="TeacherID" ColumnName="TeacherID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Schools">
+            <EntityTypeMapping TypeName="ZoliksModel.School">
+              <MappingFragment StoreEntitySet="Schools">
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Street" ColumnName="Street" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

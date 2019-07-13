@@ -35,7 +35,6 @@ namespace DataAccess.Models
         public virtual DbSet<Project> Projects { get; set; }
         public virtual DbSet<Image> Images { get; set; }
         public virtual DbSet<Notification> Notifications { get; set; }
-        public virtual DbSet<WebEvent> WebEvents { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<UserLogin> UserLogins { get; set; }
         public virtual DbSet<Token> Tokens { get; set; }
@@ -56,6 +55,7 @@ namespace DataAccess.Models
         public virtual DbSet<TicketComment> TicketComments { get; set; }
         public virtual DbSet<UserLog> UserLogs { get; set; }
         public virtual DbSet<TeacherSubject> TeacherSubjects { get; set; }
+        public virtual DbSet<School> Schools { get; set; }
     
         public virtual ObjectResult<Notification> GetAllNotifications()
         {

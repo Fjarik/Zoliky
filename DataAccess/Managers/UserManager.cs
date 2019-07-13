@@ -123,10 +123,6 @@ namespace DataAccess.Managers
 				_ctx.UserSettings.RemoveRange(settings);
 				await _ctx.SaveChangesAsync();
 
-				var events = _ctx.WebEvents.Where(x => x.FromID == id || x.ToID == id);
-				_ctx.WebEvents.RemoveRange(events);
-				await _ctx.SaveChangesAsync();
-
 #endregion
 
 #region Zoliks
@@ -462,9 +458,10 @@ namespace DataAccess.Managers
 		public async Task<MActionResult<User>> RegisterAsync(string email, string password,
 															 string name, string lastname,
 															 string username, byte gender,
-															 int? classId, bool newsletter,
-															 bool futureNews, string ip,
-															 string url, params string[] roles)
+															 int? classId, int schoolId,
+															 bool newsletter, bool futureNews,
+															 string ip, string url,
+															 params string[] roles)
 		{
 			if (!Enum.IsDefined(typeof(Sex), gender)) {
 				return new MActionResult<User>(StatusCode.InvalidInput);
@@ -472,17 +469,19 @@ namespace DataAccess.Managers
 			return await this.RegisterAsync(email, password,
 											name, lastname,
 											username, (Sex) gender,
-											classId, newsletter,
-											futureNews, ip,
-											url, roles);
+											classId, schoolId,
+											newsletter, futureNews,
+											ip, url,
+											roles);
 		}
 
 		public async Task<MActionResult<User>> RegisterAsync(string email, string password,
 															 string name, string lastname,
 															 string username, Sex gender,
-															 int? classId, bool newsletter,
-															 bool futureNews, string ip,
-															 string url, params string[] roles)
+															 int? classId, int schoolId,
+															 bool newsletter, bool futureNews,
+															 string ip, string url,
+															 params string[] roles)
 		{
 			var r = roles.Distinct().ToList();
 			if (classId == null) {
@@ -498,17 +497,19 @@ namespace DataAccess.Managers
 			return await this.RegisterAsync(email, password,
 											name, lastname,
 											username, gender,
-											classId, newsletter,
-											futureNews, ip,
-											url, rolesFinal);
+											classId, schoolId,
+											newsletter, futureNews,
+											ip, url,
+											rolesFinal);
 		}
 
 		private async Task<MActionResult<User>> RegisterAsync(string email, string password,
 															  string name, string lastname,
 															  string username, Sex gender,
-															  int? classId, bool newsletter,
-															  bool futureNews, string ip,
-															  string url, params Role[] roles)
+															  int? classId, int schoolId,
+															  bool newsletter, bool futureNews,
+															  string ip, string url,
+															  params Role[] roles)
 		{
 			if (Methods.AreNullOrWhiteSpace(email, password, name, lastname, username, url) ||
 				!Methods.IsEmailValid(email) ||
@@ -519,7 +520,7 @@ namespace DataAccess.Managers
 			if (!validResult.Succeeded) {
 				return new MActionResult<User>(StatusCode.WrongPassword);
 			}
-			if (classId != null && classId < 1) {
+			if (classId != null && classId < 1 || schoolId < 1) {
 				return new MActionResult<User>(StatusCode.NotValidID);
 			}
 			if ((await this.ExistsAsync(email, WhatToCheck.Email)) ||
@@ -538,6 +539,7 @@ namespace DataAccess.Managers
 			var u = new User() {
 				ClassID = classId,
 				PasswordID = null,
+				SchoolID = 1,
 				UQID = Guid.NewGuid(),
 				Username = username,
 				Email = email,

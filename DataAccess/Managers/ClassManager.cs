@@ -61,16 +61,30 @@ namespace DataAccess.Managers
 
 #region Own Methods
 
-		public async Task<MActionResult<Class>> CreateAsync(string name, DateTime since)
+		public Task<MActionResult<Class>> CreateAsync(string name,
+													  int schoolId,
+													  DateTime since)
+		{
+			return this.CreateAsync(name,
+									schoolId,
+									since,
+									since.AddYears(4));
+		}
+
+		public async Task<MActionResult<Class>> CreateAsync(string name,
+															int schoolId,
+															DateTime since,
+															DateTime graduation)
 		{
 			if (string.IsNullOrWhiteSpace(name)) {
 				return new MActionResult<Class>(StatusCode.InvalidInput);
 			}
 
 			Class c = new Class() {
+				SchoolID = schoolId,
 				Name = name,
 				Since = since,
-				Graduation = since.AddYears(4),
+				Graduation = graduation,
 				Enabled = true
 			};
 			return await this.CreateAsync(c);
