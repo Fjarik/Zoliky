@@ -15,11 +15,15 @@ namespace DataAccess.Models
     public partial class News
     {
         public int ID { get; set; }
+        public int AuthorID { get; set; }
         public Nullable<int> ProjectID { get; set; }
         public string Title { get; set; }
         public string Message { get; set; }
         public System.DateTime Created { get; set; }
         public Nullable<System.DateTime> Expiration { get; set; }
         public bool LoginOnly { get; set; }
+        public Nullable<System.DateTime> LastUpdate { get; set; }
+    
+        public virtual User Author { get; set; }
     }
 }

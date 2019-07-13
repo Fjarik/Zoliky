@@ -349,50 +349,7 @@ namespace DataAccess.Models
 
 	public partial class TeacherSubject : IDbObject { }
 
-	public partial class Token : IDbObject, IDbEntity
-	{
-		public override bool Equals(object obj)
-		{
-			if (!(obj is Token)) {
-				return false;
-			}
-			Token token = (Token) obj;
-
-			if (!SameDateTime(this.Issue, token.Issue)) {
-				return false;
-			}
-			if (!SameDateTime(this.Expiration, token.Expiration)) {
-				return false;
-			}
-
-			return ID == token.ID &&
-				   UserID == token.UserID &&
-				   Purpose == token.Purpose &&
-				   Used == token.Used;
-		}
-
-		private bool SameDateTime(DateTime first, DateTime second)
-		{
-			if (first.Date != second.Date) {
-				return false;
-			}
-
-			string s1 = first.ToLongTimeString();
-			string s2 = second.ToLongTimeString();
-			bool b = s1.Equals(s2, StringComparison.InvariantCultureIgnoreCase);
-			return b;
-		}
-
-		public static bool operator ==(Token token1, Token token2)
-		{
-			return EqualityComparer<Token>.Default.Equals(token1, token2);
-		}
-
-		public static bool operator !=(Token token1, Token token2)
-		{
-			return !(token1 == token2);
-		}
-	}
+	public partial class Token : IDbObject, IDbEntity { }
 
 	[MetadataType(typeof(TransactionMetaData))]
 	public partial class Transaction : IDbObject, IDbEntity, ITransaction

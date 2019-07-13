@@ -40,7 +40,7 @@ namespace DataAccess.Models
         public virtual DbSet<Token> Tokens { get; set; }
         public virtual DbSet<Password> Passwords { get; set; }
         public virtual DbSet<Unavailability> Unavailabilities { get; set; }
-        public virtual DbSet<Achievement> Achievements { get; set; }
+		public virtual DbSet<Achievement> Achievements { get; set; }
         public virtual DbSet<Rank> Ranks { get; set; }
         public virtual DbSet<Subject> Subjects { get; set; }
         public virtual DbSet<UserSetting> UserSettings { get; set; }
