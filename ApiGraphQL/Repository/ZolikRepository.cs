@@ -24,5 +24,20 @@ namespace ApiGraphQL.Repository
 						   .Where(DataAccess.Extensions.NonTesterZoliks())
 						   .ToList();
 		}
+
+		public Zolik GetById(int id)
+		{
+			return _context.Zoliky
+						   .Where(x => x.Enabled)
+						   .SingleOrDefault(x => x.ID == id);
+		}
+
+		public IEnumerable<Zolik> GetByOwnerId(int userId)
+		{
+			return _context.Zoliky
+						   .Where(x => x.Enabled)
+						   .Where(x => x.OwnerID == userId)
+						   .ToList();
+		}
 	}
 }

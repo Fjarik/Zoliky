@@ -30,13 +30,12 @@ namespace ApiGraphQL.GraphQL.Types
 				.Description("Datum, od kdy je žolík u aktuálního vlastníka");
 			Field(x => x.Created)
 				.Description("Datum vytvoření žolíka");
-			Field(x => x.Lock)
+			Field(x => x.Lock, nullable: true)
 				.Description("Za co si přeje uživatel uplatnit žolíka");
 			Field(x => x.AllowSplit)
 				.Description("Udává, zda je dovoleno žolíka rozdělit");
 			Field<ZolikEnumType>(nameof(Zolik.Type), "Typ žoilíka");
 			Field<SubjectType>(nameof(Zolik.Subject), "Předmět, ze kterého byl žolík udělen");
 		}
-
 	}
 }
