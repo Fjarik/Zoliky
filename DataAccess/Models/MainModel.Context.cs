@@ -38,9 +38,8 @@ namespace DataAccess.Models
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<UserLogin> UserLogins { get; set; }
         public virtual DbSet<Token> Tokens { get; set; }
-        public virtual DbSet<Password> Passwords { get; set; }
         public virtual DbSet<Unavailability> Unavailabilities { get; set; }
-		public virtual DbSet<Achievement> Achievements { get; set; }
+        public virtual DbSet<Achievement> Achievements { get; set; }
         public virtual DbSet<Rank> Ranks { get; set; }
         public virtual DbSet<Subject> Subjects { get; set; }
         public virtual DbSet<UserSetting> UserSettings { get; set; }
@@ -56,6 +55,7 @@ namespace DataAccess.Models
         public virtual DbSet<UserLog> UserLogs { get; set; }
         public virtual DbSet<TeacherSubject> TeacherSubjects { get; set; }
         public virtual DbSet<School> Schools { get; set; }
+        public virtual DbSet<Password> Passwords { get; set; }
     
         public virtual ObjectResult<Notification> GetAllNotifications()
         {
