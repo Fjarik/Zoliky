@@ -1696,7 +1696,7 @@
           <NavigationProperty Name="Achievements" Relationship="ZoliksModel.AchievementUnlocks" FromRole="User" ToRole="Achievement" />
           <NavigationProperty Name="OriginalZoliks" Relationship="ZoliksModel.FK_Zoliky_Users" FromRole="User" ToRole="Zolik" />
           <NavigationProperty Name="LoginTokens" Relationship="ZoliksModel.FK_UserLoginTokens_Users" FromRole="User" ToRole="UserLoginToken" />
-          <NavigationProperty Name="Logins" Relationship="ZoliksModel.FK_Logins_Users" FromRole="User" ToRole="UserLogin" a:GetterAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" a:SetterAccess="Private" />
+          <NavigationProperty Name="Logins" Relationship="ZoliksModel.FK_Logins_Users" FromRole="User" ToRole="UserLogin" />
           <Property Name="EmailConfirmed" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="UserLogs" Relationship="ZoliksModel.FK_UserLogs_Users" FromRole="User" ToRole="UserLog" a:GetterAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" a:SetterAccess="Private" />
           <NavigationProperty Name="Teaching" Relationship="ZoliksModel.FK_TeacherSubjects_Teachers" FromRole="User" ToRole="TeacherSubject" a:GetterAccess="Public" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />

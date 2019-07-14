@@ -1,4 +1,6 @@
-﻿@{
+﻿@using DataAccess
+@using SharedLibrary.Shared
+@{
 	Layout = "~/Views/Shared/Dashboard/_LayoutMenuBase.cshtml";
 }
 
@@ -56,32 +58,26 @@
 			<span class="hide-menu">Darovat žolíka</span>
 		</a>
 	</li>
-	@*<li>
-			<a href="#" aria-expanded="false">
-				<i class="mdi mdi-qrcode"></i>
-				<span class="hide-menu">Vyžádat žolíka</span>
-			</a>
-		</li>*@
 	<li>
 		<a href="@Url.Action("LoginHistory", "Account", new {Area = "App"})" aria-expanded="false">
 			<i class="mdi mdi-history"></i>
 			<span class="hide-menu">Historie přihlášení</span>
 		</a>
 	</li>
+	@if (User.IsInRolesOr(UserRoles.Administrator, UserRoles.Developer)) {
+		<li>
+			<a href="@Url.Action("Dashboard", "Admin", new {Area = "Admin"})" aria-expanded="false">
+				<i class="mdi mdi-wrench"></i>
+				<span class="hide-menu">Administrace</span>
+			</a>
+		</li>
+	}
 	<li>
 		<a href="https://support.zoliky.eu/" target="_blank" aria-expanded="false">
 			<i class="mdi mdi-help"></i>
 			<span class="hide-menu">Podpora</span>
 		</a>
 	</li>
-	@*<li class="nav-devider"></li>
-		<li class="nav-small-cap">OSOBNÍ</li>
-		<li>
-			<a href="#" aria-expanded="false">
-				<i class="mdi mdi-book-multiple"></i>
-				<span class="hide-menu">Profil</span>
-			</a>
-		</li>*@
 }
 
 @RenderBody()
