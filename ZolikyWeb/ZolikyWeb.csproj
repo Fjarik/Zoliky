@@ -987,7 +987,7 @@
     <Content Include="Areas\App\Views\Shared\_LogoutPartial.cshtml" />
     <Content Include="Areas\App\Views\Account\Settings.cshtml" />
     <Content Include="Areas\App\Views\Account\SettingsPartial\_ExternalLogin.cshtml" />
-    <Content Include="Areas\App\Views\Shared\_LayoutDashboard.cshtml" />
+    <Content Include="Views\Shared\Dashboard\_LayoutDashboard.cshtml" />
     <Content Include="Areas\App\images\background\Thumbs.db" />
     <Content Include="Areas\App\images\big\Thumbs.db" />
     <Content Include="Areas\App\Views\Shared\_LayoutMenu.cshtml" />
@@ -1001,7 +1001,7 @@
     <Content Include="Areas\App\Views\Transactions\Dashboard.cshtml" />
     <Content Include="Areas\App\Views\Main\Mobile.cshtml" />
     <Content Include="Areas\App\Views\Zoliky\Split.cshtml" />
-    <Content Include="Areas\App\Views\Shared\_LogoutDrop.cshtml" />
+    <Content Include="Views\Shared\Dashboard\_LogoutDrop.cshtml" />
     <Content Include="Areas\App\Views\Account\SettingsPartial\_TesterSwitchPartial.cshtml" />
     <Content Include="Areas\App\Views\Account\SettingsPartial\_ChangePassword.cshtml" />
     <Content Include="Areas\App\Views\Account\SettingsPartial\_NotificationPartial.cshtml" />
@@ -1202,6 +1202,7 @@
     <Content Include="App_Code\AccountPageHelp.cshtml" />
     <Content Include="Areas\App\Views\News\Dashboard.cshtml" />
     <Content Include="Content\Images\Screens\store.webp" />
+    <Content Include="Areas\Admin\Views\Shared\_LayoutMenu.cshtml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\fa-all.js" />
     <Content Include="Scripts\fa-all.min.js" />
@@ -1471,6 +1472,7 @@
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Account\RegisterSuccess.cshtml" />
     <Content Include="Views\Home\Changelog.cshtml" />
+    <Content Include="Views\Shared\Dashboard\_LayoutMenuBase.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

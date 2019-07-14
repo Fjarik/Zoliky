@@ -61,7 +61,7 @@
 						@if (Request.IsAuthenticated) {
 							<a class="dropdown-item" href="@Url.Action("Dashboard", "Main", new {Area = "App"})" title="Přejít na přehled žolíků">Přehled</a>
 							if (User.IsInRolesOr(UserRoles.Administrator, UserRoles.Developer)) {
-								<a class="dropdown-item" href="@Url.Action("Dashboard", "Main", new {Area = "Admin"})" title="Přejít do administrace">Administrace</a>
+								<a class="dropdown-item" href="@Url.Action("Dashboard", "Admin", new {Area = "Admin"})" title="Přejít do administrace">Administrace</a>
 							}
 							<a class="dropdown-item" href="@Url.Action("Settings", "Account", new {Area = "App"})" title="Přejít do nastavení">Nastavení</a>
 							<div class="dropdown-divider"></div>

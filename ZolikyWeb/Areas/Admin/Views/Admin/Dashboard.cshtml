@@ -1,22 +1,29 @@
 ﻿@model ZolikyWeb.Areas.Admin.Models.SendNotificationModel
 @{
-	ViewBag.Title = "Dashboard";
-	Layout = "~/Views/Shared/_Layout.cshtml";
+	ViewBag.Title = "Přehled";
+	Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h2>Dashboard</h2>
+<div class="row">
+	<!-- Column -->
+	<div class="col-lg-3 col-md-6">
+		<div class="card">
+			<div class="card-body">
+				@using (Html.BeginForm("SendNotification", "Admin", new {Area = "Admin"}, FormMethod.Post)) {
+					@Html.AntiForgeryToken()
+					<div class="form-group">
+						@Html.LabelFor(x => x.ToId)
+						@Html.TextBoxFor(x => x.ToId)
+					</div>
 
-@using (Html.BeginForm("SendNotification", "Admin", new {Area = "Admin"}, FormMethod.Post)) {
-	@Html.AntiForgeryToken()
-	<div class="form-group">
-		@Html.LabelFor(x => x.ToId)
-		@Html.TextBoxFor(x => x.ToId)
+					<div class="form-group">
+						@Html.LabelFor(x => x.ZolikId)
+						@Html.TextBoxFor(x => x.ZolikId)
+					</div>
+
+					<button type="submit">Odeslat</button>
+				}
+			</div>
+		</div>
 	</div>
-
-	<div class="form-group">
-		@Html.LabelFor(x => x.ZolikId)
-		@Html.TextBoxFor(x => x.ZolikId)
-	</div>
-
-	<button type="submit">Odeslat</button>
-}
+</div>
