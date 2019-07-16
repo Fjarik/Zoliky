@@ -1203,6 +1203,9 @@
     <Content Include="Areas\App\Views\News\Dashboard.cshtml" />
     <Content Include="Content\Images\Screens\store.webp" />
     <Content Include="Areas\Admin\Views\Shared\_LayoutMenu.cshtml" />
+    <Content Include="Areas\Admin\Views\School\Dashboard.cshtml" />
+    <Content Include="Areas\Admin\Views\School\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\School\Edit.cshtml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\fa-all.js" />
     <Content Include="Scripts\fa-all.min.js" />
@@ -1385,6 +1388,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\AdminController.cs" />
+    <Compile Include="Areas\Admin\Controllers\SchoolController.cs" />
     <Compile Include="Areas\Admin\Models\SendNotificationModel.cs" />
     <Compile Include="Areas\App\AppAreaRegistration.cs" />
     <Compile Include="Areas\App\Controllers\AccountController.cs" />

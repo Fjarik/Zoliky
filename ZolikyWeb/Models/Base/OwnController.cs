@@ -10,6 +10,7 @@ using DataAccess.Managers.New;
 using DataAccess.Managers.New.Interfaces;
 using DataAccess.Models;
 using hbehr.recaptcha;
+using SharedLibrary.Shared;
 using ZolikyWeb.Tools;
 
 namespace ZolikyWeb.Models.Base
@@ -34,6 +35,9 @@ namespace ZolikyWeb.Models.Base
 		{
 			if (r != null && Url.IsLocalUrl(r)) {
 				return Redirect(r);
+			}
+			if (this.IsAuthenticated() && this.User.IsInRolesOr(UserRoles.Administrator, UserRoles.Teacher)) {
+				return RedirectToAction("Dashboard", "Admin", new {Area = "Admin"});
 			}
 			return RedirectToAction("Dashboard", "Main", new {Area = "App"});
 		}

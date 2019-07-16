@@ -1,4 +1,5 @@
-﻿@{
+﻿@using SharedLibrary.Shared
+@{
 	Layout = "~/Views/Shared/Dashboard/_LayoutMenuBase.cshtml";
 }
 
@@ -18,6 +19,114 @@
 			<span class="hide-menu">Přehled </span>
 		</a>
 	</li>
+	<li class="nav-devider"></li>
+	<li class="nav-small-cap">ADMINISTRACE</li>
+	<li>
+		<a class="has-arrow" href="#" aria-expanded="false">
+			<i class="mdi mdi-account-multiple"></i>
+			<span class="hide-menu">Studenti</span>
+		</a>
+		<ul aria-expanded="false" class="collapse">
+			<li>
+				<a href="@Url.Action("Dashboard", "Student", new {Area = "Admin"})">Přehled</a>
+			</li>
+			<li>
+				<a href="@Url.Action("Create", "Student", new {Area = "Admin"})">Vytvoření</a>
+			</li>
+			<li>
+				<a href="@Url.Action("Edit", "Student", new {Area = "Admin"})">Úpravy</a>
+			</li>
+		</ul>
+	</li>
+	<li>
+		<a class="has-arrow" href="#" aria-expanded="false">
+			<i class="mdi mdi-laptop"></i>
+			<span class="hide-menu">Žolíci</span>
+		</a>
+		<ul aria-expanded="false" class="collapse">
+			<li>
+				<a href="@Url.Action("Dashboard", "Zoliky", new {Area = "Admin"})">Přehled</a>
+			</li>
+			<li>
+				<a href="@Url.Action("Create", "Zoliky", new {Area = "Admin"})">Vytvoření</a>
+			</li>
+			<li>
+				<a href="@Url.Action("Edit", "Zoliky", new {Area = "Admin"})">Úpravy</a>
+			</li>
+		</ul>
+	</li>
+	<li>
+		<a class="has-arrow" href="#" aria-expanded="false">
+			<i class="mdi mdi-developer-board"></i>
+			<span class="hide-menu">Třídy</span>
+		</a>
+		<ul aria-expanded="false" class="collapse">
+			<li>
+				<a href="@Url.Action("Dashboard", "Class", new {Area = "Admin"})">Přehled</a>
+			</li>
+			<li>
+				<a href="@Url.Action("Create", "Class", new {Area = "Admin"})">Vytvoření</a>
+			</li>
+			<li>
+				<a href="@Url.Action("Edit", "Class", new {Area = "Admin"})">Úpravy</a>
+			</li>
+		</ul>
+	</li>
+	<li>
+		<a class="has-arrow" href="#" aria-expanded="false">
+			<i class="mdi mdi-book-open-page-variant"></i>
+			<span class="hide-menu">Předměty</span>
+		</a>
+		<ul aria-expanded="false" class="collapse">
+			<li>
+				<a href="@Url.Action("Dashboard", "Subject", new {Area = "Admin"})">Přehled</a>
+			</li>
+			<li>
+				<a href="@Url.Action("Create", "Subject", new {Area = "Admin"})">Vytvoření</a>
+			</li>
+			<li>
+				<a href="@Url.Action("Edit", "Subject", new {Area = "Admin"})">Úpravy</a>
+			</li>
+		</ul>
+	</li>
+	@if (this.User.IsInRole(UserRoles.Administrator)) {
+		<li class="nav-devider"></li>
+		<li class="nav-small-cap">GLOBALNÍ</li>
+		<li>
+			<a class="has-arrow" href="#" aria-expanded="false">
+				<i class="mdi mdi-domain"></i>
+				<span class="hide-menu">Školy</span>
+			</a>
+			<ul aria-expanded="false" class="collapse">
+				<li>
+					<a href="@Url.Action("Dashboard", "School", new {Area = "Admin"})">Přehled</a>
+				</li>
+				<li>
+					<a href="@Url.Action("Create", "School", new {Area = "Admin"})">Vytvoření</a>
+				</li>
+				<li>
+					<a href="@Url.Action("Edit", "School", new {Area = "Admin"})">Úpravy</a>
+				</li>
+			</ul>
+		</li>
+		<li>
+			<a class="has-arrow" href="#" aria-expanded="false">
+				<i class="mdi mdi-folder-multiple-image"></i>
+				<span class="hide-menu">Obrázky</span>
+			</a>
+			<ul aria-expanded="false" class="collapse">
+				<li>
+					<a href="@Url.Action("Dashboard", "Images", new {Area = "Admin"})">Přehled</a>
+				</li>
+				<li>
+					<a href="@Url.Action("Create", "Images", new {Area = "Admin"})">Vytvoření</a>
+				</li>
+				<li>
+					<a href="@Url.Action("Edit", "Images", new {Area = "Admin"})">Úpravy</a>
+				</li>
+			</ul>
+		</li>
+	}
 }
 
 @RenderBody()
