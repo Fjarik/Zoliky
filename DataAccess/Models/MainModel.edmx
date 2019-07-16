@@ -196,6 +196,7 @@
           <Property Name="City" Type="nvarchar" MaxLength="200" Nullable="false" />
           <Property Name="AllowTransfer" Type="bit" Nullable="false" />
           <Property Name="AllowTeacherRemove" Type="bit" Nullable="false" />
+          <Property Name="AllowZolikSplik" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="SchoolSubjects">
           <Key>
@@ -2383,6 +2384,7 @@
           <Property Name="AllowTransfer" Type="Boolean" Nullable="false" />
           <Property Name="AllowTeacherRemove" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Subjects" Relationship="ZoliksModel.SchoolSubjects" FromRole="School" ToRole="Subject" />
+          <Property Name="AllowZolikSplik" Type="Boolean" Nullable="false" />
         </EntityType>
         <Association Name="FK_Classes_Schools">
           <End Type="ZoliksModel.School" Role="School" Multiplicity="1" />
@@ -2913,6 +2915,7 @@
           <EntitySetMapping Name="Schools">
             <EntityTypeMapping TypeName="ZoliksModel.School">
               <MappingFragment StoreEntitySet="Schools">
+                <ScalarProperty Name="AllowZolikSplik" ColumnName="AllowZolikSplik" />
                 <ScalarProperty Name="AllowTeacherRemove" ColumnName="AllowTeacherRemove" />
                 <ScalarProperty Name="AllowTransfer" ColumnName="AllowTransfer" />
                 <ScalarProperty Name="City" ColumnName="City" />

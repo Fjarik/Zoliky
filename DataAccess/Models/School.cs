@@ -29,6 +29,7 @@ namespace DataAccess.Models
         public string City { get; set; }
         public bool AllowTransfer { get; set; }
         public bool AllowTeacherRemove { get; set; }
+        public bool AllowZolikSplik { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Class> Classes { get; set; }
