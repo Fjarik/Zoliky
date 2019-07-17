@@ -1,4 +1,5 @@
-﻿@using SharedLibrary.Shared
+﻿@using DataAccess
+@using SharedLibrary.Shared
 @{
 	Layout = "~/Views/Shared/Dashboard/_LayoutMenuBase.cshtml";
 }
@@ -89,7 +90,7 @@
 			</li>
 		</ul>
 	</li>
-	@if (this.User.IsInRole(UserRoles.Administrator)) {
+	@if (this.User.IsInRolesOr(UserRoles.Administrator, UserRoles.Developer)) {
 		<li class="nav-devider"></li>
 		<li class="nav-small-cap">GLOBALNÍ</li>
 		<li>
@@ -106,6 +107,23 @@
 				</li>
 				<li>
 					<a href="@Url.Action("Edit", "School", new {Area = "Admin"})">Úpravy</a>
+				</li>
+			</ul>
+		</li>
+		<li>
+			<a class="has-arrow" href="#" aria-expanded="false">
+				<i class="mdi mdi-newspaper"></i>
+				<span class="hide-menu">Novinky</span>
+			</a>
+			<ul aria-expanded="false" class="collapse">
+				<li>
+					<a href="@Url.Action("Dashboard", "Images", new {Area = "Admin"})">Přehled</a>
+				</li>
+				<li>
+					<a href="@Url.Action("Create", "Images", new {Area = "Admin"})">Vytvoření</a>
+				</li>
+				<li>
+					<a href="@Url.Action("Edit", "Images", new {Area = "Admin"})">Úpravy</a>
 				</li>
 			</ul>
 		</li>

@@ -14,7 +14,7 @@ using ZolikyWeb.Tools;
 
 namespace ZolikyWeb.Areas.Admin.Controllers
 {
-	[Authorize(Roles = UserRoles.AdminOrDeveloper)]
+	[Authorize(Roles = UserRoles.AdminOrDeveloper + "," + UserRoles.Teacher)]
 	public class AdminController : OwnController
 	{
 		public ActionResult Index()
