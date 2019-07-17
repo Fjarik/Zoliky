@@ -23,6 +23,23 @@
 	<li class="nav-small-cap">ADMINISTRACE</li>
 	<li>
 		<a class="has-arrow" href="#" aria-expanded="false">
+			<i class="mdi mdi-laptop"></i>
+			<span class="hide-menu">Žolíci</span>
+		</a>
+		<ul aria-expanded="false" class="collapse">
+			<li>
+				<a href="@Url.Action("Dashboard", "Zolik", new {Area = "Admin"})">Přehled</a>
+			</li>
+			<li>
+				<a href="@Url.Action("Create", "Zolik", new {Area = "Admin"})">Vytvoření</a>
+			</li>
+			<li>
+				<a href="@Url.Action("Edit", "Zolik", new {Area = "Admin"})">Úpravy</a>
+			</li>
+		</ul>
+	</li>
+	<li>
+		<a class="has-arrow" href="#" aria-expanded="false">
 			<i class="mdi mdi-account-multiple"></i>
 			<span class="hide-menu">Studenti</span>
 		</a>
@@ -35,23 +52,6 @@
 			</li>
 			<li>
 				<a href="@Url.Action("Edit", "Student", new {Area = "Admin"})">Úpravy</a>
-			</li>
-		</ul>
-	</li>
-	<li>
-		<a class="has-arrow" href="#" aria-expanded="false">
-			<i class="mdi mdi-laptop"></i>
-			<span class="hide-menu">Žolíci</span>
-		</a>
-		<ul aria-expanded="false" class="collapse">
-			<li>
-				<a href="@Url.Action("Dashboard", "Zoliky", new {Area = "Admin"})">Přehled</a>
-			</li>
-			<li>
-				<a href="@Url.Action("Create", "Zoliky", new {Area = "Admin"})">Vytvoření</a>
-			</li>
-			<li>
-				<a href="@Url.Action("Edit", "Zoliky", new {Area = "Admin"})">Úpravy</a>
 			</li>
 		</ul>
 	</li>

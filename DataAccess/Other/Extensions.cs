@@ -145,7 +145,6 @@ namespace DataAccess
 					return true;
 				}
 			}
-
 			return false;
 		}
 
@@ -162,44 +161,35 @@ namespace DataAccess
 
 		public static string GetClassName(this System.Security.Principal.IIdentity identity)
 		{
-			if (!(identity is ClaimsIdentity claims)) {
-				return "";
-			}
+			return GetValue<string>(identity, "className");
+		}
 
-			var className = claims.FindFirst("className");
-			if (className == null) {
-				return "";
-			}
-
-			return className.Value;
+		public static string GetSchoolName(this System.Security.Principal.IIdentity identity)
+		{
+			return GetValue<string>(identity, "schoolName");
 		}
 
 		public static int GetId(this System.Security.Principal.IIdentity identity)
 		{
-			if (!(identity is ClaimsIdentity claims)) {
-				return 0;
-			}
-
-			var idClaim = claims.FindFirst("publicId");
-			if (idClaim == null || !int.TryParse(idClaim.Value, out int id)) {
-				return 0;
-			}
-
-			return id;
+			return GetValue<int>(identity, "publicId");
 		}
 
 		public static bool IsTester(this System.Security.Principal.IIdentity identity)
 		{
+			return GetValue<bool>(identity, "isTester");
+		}
+
+		private static T GetValue<T>(this System.Security.Principal.IIdentity identity, string key)
+			where T : IConvertible
+		{
 			if (!(identity is ClaimsIdentity claims)) {
-				return false;
+				return default;
 			}
-
-			var idClaim = claims.FindFirst("isTester");
-			if (idClaim == null || !bool.TryParse(idClaim.Value, out bool isTester)) {
-				return false;
+			var claim = claims.FindFirst(key);
+			if (claim == null) {
+				return default;
 			}
-
-			return isTester;
+			return (T) Convert.ChangeType(claim.Value, typeof(T));
 		}
 
 #endregion

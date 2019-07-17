@@ -66,6 +66,15 @@
 						<i class="ti-menu"></i>
 					</a>
 				</li>
+				<!-- School -->
+				<li class="nav-item">
+					@*<a class="nav-link text-muted" href="@Url.Action()">
+					@this.User.Identity.GetSchoolName()
+					</a>*@
+					<span class="nav-link text-white NoSelect">
+						@this.User.Identity.GetSchoolName()
+					</span>
+				</li>
 			</ul>
 			<!-- ============================================================== -->
 			<!-- User profile and search -->

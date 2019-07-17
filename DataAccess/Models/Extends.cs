@@ -381,6 +381,8 @@ namespace DataAccess.Models
 
 		public string ClassName => this.Class?.Name;
 
+		public string SchoolName => this.School.Name;
+
 		[JsonIgnore]
 		public string FullName
 		{

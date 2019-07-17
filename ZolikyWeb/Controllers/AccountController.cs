@@ -126,6 +126,9 @@ namespace ZolikyWeb.Controllers
 					if (res.Content is User u) {
 						this.SignInManager.SignIn(u, lg.RememberMe);
 						this.AddSuccessToastMessage("Přihlášení proběhlo úspěšně");
+						if (u.IsInRolesOr(UserRoles.Administrator, UserRoles.Teacher)) {
+							return RedirectToAction("Dashboard", "Admin", new {Area = "Admin"});
+						}
 						return this.RedirectToApp(r);
 					}
 					break;
@@ -190,6 +193,9 @@ namespace ZolikyWeb.Controllers
 					if (res.Content is User u) {
 						SignInManager.SignIn(u, false);
 						this.AddSuccessToastMessage("Přihlášení proběhlo úspěšně");
+						if (u.IsInRolesOr(UserRoles.Administrator, UserRoles.Teacher)) {
+							return RedirectToAction("Dashboard", "Admin", new { Area = "Admin" });
+						}
 						return RedirectToApp(r);
 					}
 					break;
