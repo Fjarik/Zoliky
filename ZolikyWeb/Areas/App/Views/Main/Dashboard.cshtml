@@ -85,32 +85,40 @@
 <!-- Row -->
 <div class="row">
 	<!-- Column -->
-	@if (Model.HasZoliks) {
-		<div class="col-xlg-3 col-lg-4 col-md-5">
-			<div class="card">
-				<div class="card-body bg-info">
-					<h4 class="text-white card-title">Žolíci</h4>
-					<h6 class="card-subtitle text-white m-b-0 op-5">Zde se zobrazují nejnovější žolíci</h6>
-				</div>
-				<div class="card-body">
-					<div class="message-box contact-box">
-						<div class="message-widget contact-widget">
-							@foreach (var zolik in Model.Zoliky) {
-								<!-- Zolik -->
-								<a href="@Url.Action("Dashboard", "Zoliky", new {Area = "App", id = zolik.ID})">
-									<div class="mail-contnet">
-										<h5>@zolik.Title</h5>
-										<span class="mail-desc">(@zolik.Type.GetDescription()) @zolik.OwnerSince.ToShortDateString()</span>
-									</div>
-								</a>
-								<!-- /Zolik -->
-							}
-						</div>
+	@*@if (Model.HasZoliks) {*@
+	<div class="col-xlg-3 col-lg-4 col-md-5">
+		<div class="card">
+			<div class="card-body bg-info">
+				<h4 class="text-white card-title">Žolíci</h4>
+				<h6 class="card-subtitle text-white mb-0 op-5">Zde se zobrazují nejnovější žolíci</h6>
+			</div>
+			<div class="card-body">
+				<div class="message-box contact-box">
+					<div class="message-widget contact-widget">
+						@if (!Model.HasZoliks) {
+							<div class="text-center">
+								<div class="mb-3">
+									<img style="width: 70%; height: 100%;" title="Žádný žolíky" src="@Url.Content("~/Content/Images/SVGs/NoZolik.svg")" />
+								</div>
+								<span class="text-muted">Nemáte žádného žolíka</span>
+							</div>
+						}
+						@foreach (var zolik in Model.Zoliky) {
+							<!-- Zolik -->
+							<a href="@Url.Action("Dashboard", "Zoliky", new {Area = "App", id = zolik.ID})">
+								<div class="mail-contnet">
+									<h5>@zolik.Title</h5>
+									<span class="mail-desc">(@zolik.Type.GetDescription()) @zolik.OwnerSince.ToShortDateString()</span>
+								</div>
+							</a>
+							<!-- /Zolik -->
+						}
 					</div>
 				</div>
 			</div>
 		</div>
-	}
+	</div>
+	@* }  *@
 	<!-- /Column -->
 	<!-- Column -->
 	@if (Model.IsInClass) {
@@ -157,7 +165,7 @@
 			<div class="card NoSelectAll">
 				<div class="card-header">
 					<div class="card-actions">
-						<a class="" href="@Url.Action("RefreshProfilePhotos")" target="_self" data-toggle="tooltip" data-placement="bottom" title="Přenačíst profilové obrázky" >
+						<a class="" href="@Url.Action("RefreshProfilePhotos")" target="_self" data-toggle="tooltip" data-placement="bottom" title="Přenačíst profilové obrázky">
 							<i class="ti-reload"></i>
 						</a>
 						<a class="" data-action="collapse">

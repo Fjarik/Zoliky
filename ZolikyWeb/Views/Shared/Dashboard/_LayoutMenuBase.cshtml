@@ -182,11 +182,12 @@
 							<li>
 								<div class="dw-user-box">
 									<div class="u-img"><img src="@profile" alt="user"></div>
-									<div class="u-text">
+									<div class="u-text" style="width: calc(100% - 90px);">
 										<h4>
 											@User.Identity.Name
 										</h4>
 										<p class="text-muted">@User.Identity.GetClassName()</p>
+										<p class="text-muted" title="@User.Identity.GetSchoolName()" style="text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">@User.Identity.GetSchoolName()</p>
 										@if (User.Identity.IsTester()) {
 											<p class="text-muted">Tester</p>
 										}

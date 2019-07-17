@@ -849,6 +849,7 @@
     <Content Include="Content\Images\SVGs\MyZoliks.svg" />
     <Content Include="Content\Images\SVGs\News.svg" />
     <Content Include="Content\Images\SVGs\Notifications.svg" />
+    <Content Include="Content\Images\SVGs\NoZolik.svg" />
     <Content Include="Content\Images\SVGs\PayMe.svg" />
     <Content Include="Content\Images\SVGs\ScanQR.svg" />
     <Content Include="Content\Images\SVGs\Screenshot.svg" />
