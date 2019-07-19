@@ -8,7 +8,7 @@ using DataAccess;
 using DataAccess.Managers;
 using DataAccess.Managers.New;
 using SharedLibrary.Shared;
-using ZolikyWeb.Areas.Admin.Models;
+using ZolikyWeb.Areas.Admin.Models.Admin;
 using ZolikyWeb.Models.Base;
 using ZolikyWeb.Tools;
 
@@ -24,8 +24,10 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 
 		public ActionResult Dashboard()
 		{
-			var model = new SendNotificationModel() {
-				ToId = 2
+			var model = new DashboardModel() {
+				SendNot = new SendNotificationModel() {
+					ToId = 2
+				},
 			};
 			return View(model);
 		}
