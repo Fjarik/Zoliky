@@ -52,6 +52,17 @@
           <Property Name="Code" Type="int" Nullable="false" />
           <Property Name="Ip" Type="varchar" MaxLength="50" />
         </EntityType>
+        <EntityType Name="Bans">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="int" />
+          <Property Name="IP" Type="varchar" MaxLength="100" />
+          <Property Name="From" Type="datetime" Nullable="false" />
+          <Property Name="To" Type="datetime" />
+          <Property Name="Reason" Type="nvarchar" MaxLength="200" Nullable="false" />
+        </EntityType>
         <EntityType Name="Classes">
           <Key>
             <PropertyRef Name="ID" />
@@ -475,6 +486,18 @@
             </Principal>
             <Dependent Role="AnonymTickets">
               <PropertyRef Name="AdminId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Bans_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Bans" Type="Self.Bans" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Bans">
+              <PropertyRef Name="UserID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1029,6 +1052,7 @@
           <EntitySet Name="AchievementUnlocks" EntityType="Self.AchievementUnlocks" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AnonymTicketComments" EntityType="Self.AnonymTicketComments" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AnonymTickets" EntityType="Self.AnonymTickets" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Bans" EntityType="Self.Bans" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Classes" EntityType="Self.Classes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FaQ" EntityType="Self.FaQ" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FaqCategories" EntityType="Self.FaqCategories" Schema="dbo" store:Type="Tables" />
@@ -1089,6 +1113,10 @@
           <AssociationSet Name="FK_AnonymTickets_Users" Association="Self.FK_AnonymTickets_Users">
             <End Role="Users" EntitySet="Users" />
             <End Role="AnonymTickets" EntitySet="AnonymTickets" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Bans_Users" Association="Self.FK_Bans_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Bans" EntitySet="Bans" />
           </AssociationSet>
           <AssociationSet Name="FK_Classes_Schools" Association="Self.FK_Classes_Schools">
             <End Role="Schools" EntitySet="Schools" />
@@ -1562,6 +1590,11 @@
             <End Role="School" EntitySet="Schools" />
             <End Role="Subject" EntitySet="Subjects" />
           </AssociationSet>
+          <EntitySet Name="Bans" EntityType="ZoliksModel.Ban" />
+          <AssociationSet Name="FK_Bans_Users" Association="ZoliksModel.FK_Bans_Users">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Ban" EntitySet="Bans" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="Class">
           <Key>
@@ -1701,6 +1734,7 @@
           <Property Name="EmailConfirmed" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="UserLogs" Relationship="ZoliksModel.FK_UserLogs_Users" FromRole="User" ToRole="UserLog" a:GetterAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" a:SetterAccess="Private" />
           <NavigationProperty Name="Teaching" Relationship="ZoliksModel.FK_TeacherSubjects_Teachers" FromRole="User" ToRole="TeacherSubject" a:GetterAccess="Public" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+          <NavigationProperty Name="Bans" Relationship="ZoliksModel.FK_Bans_Users" FromRole="User" ToRole="Ban" />
         </EntityType>
         <Association Name="FK_Users_Classes">
           <End Type="ZoliksModel.Class" Role="Class" Multiplicity="0..1" />
@@ -2462,6 +2496,30 @@
           <End Type="ZoliksModel.School" Role="School" Multiplicity="*" />
           <End Type="ZoliksModel.Subject" Role="Subject" Multiplicity="*" />
         </Association>
+        <EntityType Name="Ban">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int32" />
+          <Property Name="IP" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="From" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="To" Type="DateTime" Precision="3" />
+          <Property Name="Reason" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="User" Relationship="ZoliksModel.FK_Bans_Users" FromRole="Ban" ToRole="User" />
+        </EntityType>
+        <Association Name="FK_Bans_Users">
+          <End Type="ZoliksModel.User" Role="User" Multiplicity="0..1" />
+          <End Type="ZoliksModel.Ban" Role="Ban" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Ban">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2947,6 +3005,18 @@
               <ScalarProperty Name="ID" ColumnName="SchoolID" />
             </EndProperty>
           </AssociationSetMapping>
+          <EntitySetMapping Name="Bans">
+            <EntityTypeMapping TypeName="ZoliksModel.Ban">
+              <MappingFragment StoreEntitySet="Bans">
+                <ScalarProperty Name="Reason" ColumnName="Reason" />
+                <ScalarProperty Name="To" ColumnName="To" />
+                <ScalarProperty Name="From" ColumnName="From" />
+                <ScalarProperty Name="IP" ColumnName="IP" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

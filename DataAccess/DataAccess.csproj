@@ -151,6 +151,9 @@
     <Compile Include="Models\AnonymTicketComment.cs">
       <DependentUpon>MainModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Ban.cs">
+      <DependentUpon>MainModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Changelog.cs">
       <DependentUpon>MainModel.tt</DependentUpon>
     </Compile>

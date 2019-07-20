@@ -201,7 +201,10 @@ namespace DataAccess.Models
 		public Achievement() { }
 	}
 
-	public partial class AchievementUnlock : IDbObject { }
+	public partial class Ban : IDbObject
+	{
+		
+	}
 
 	[MetadataType(typeof(ClassMetaData))]
 	public partial class Class : IDbObject, IDbEntity, IClass
@@ -485,7 +488,7 @@ namespace DataAccess.Models
 			public ICollection<Notification> ReadNotifications { get; set; }
 
 			[JsonIgnore]
-			public ICollection<AchievementUnlock> Achievements { get; set; }
+			public ICollection<Achievement> Achievements { get; set; }
 
 			[JsonIgnore]
 			public ICollection<Zolik> OriginalZoliks { get; set; }

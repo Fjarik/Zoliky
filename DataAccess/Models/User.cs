@@ -26,6 +26,7 @@ namespace DataAccess.Models
             this.Logins = new HashSet<UserLogin>();
             this.UserLogs = new HashSet<UserLog>();
             this.Teaching = new HashSet<TeacherSubject>();
+            this.Bans = new HashSet<Ban>();
         }
     
         public int ID { get; set; }
@@ -70,5 +71,7 @@ namespace DataAccess.Models
         private ICollection<UserLog> UserLogs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TeacherSubject> Teaching { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Ban> Bans { get; set; }
     }
 }
