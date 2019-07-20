@@ -44,7 +44,7 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 				this.AddSuccessToastMessage("Úspěch");
 			}
 
-			return View("Dashboard", model);
+			return RedirectToAction("Dashboard");
 		}
 	}
 }

@@ -1,0 +1,25 @@
+﻿@model ZolikyWeb.Areas.Admin.Models.Admin.SendNotificationModel
+@using ZolikyWeb.Tools
+
+<div class="card">
+	<div class="card-body">
+		<h4 class="card-title">Poslání notifikace</h4>
+		@using (Html.BeginForm("SendNotification", "Admin", new {Area = "Admin"}, FormMethod.Post, new {@class = "floating-labels m-t-40"})) {
+			@Html.AntiForgeryToken()
+			<div class="form-group m-b-40">
+				@Html.NoSelectLaberFor(x => x.ToId)
+				@Html.MaterialTextBoxFor(x => x.ToId, 1)
+				@Html.ValidationMessageFor(x => x.ToId)
+			</div>
+
+			<div class="form-group">
+				@Html.NoSelectLaberFor(x => x.ZolikId)
+				@Html.MaterialTextBoxFor(x => x.ZolikId, 2)
+				@Html.ValidationMessageFor(x => x.ZolikId)
+			</div>
+			<div class="form-group text-right">
+				<button class="btn btn-primary" type="submit" tabindex="3">Odeslat</button>
+			</div>
+		}
+	</div>
+</div>

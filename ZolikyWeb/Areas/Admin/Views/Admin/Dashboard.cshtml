@@ -8,27 +8,6 @@
 <div class="row">
 	<!-- Column -->
 	<div class="col-lg-3 col-md-6">
-		<div class="card">
-			<div class="card-body">
-				<h4 class="card-title">Poslání notifikace</h4>
-				@using (Html.BeginForm("SendNotification", "Admin", new {Area = "Admin"}, FormMethod.Post, new {@class = "floating-labels m-t-40"})) {
-					@Html.AntiForgeryToken()
-					<div class="form-group m-b-40">
-						@Html.NoSelectLaberFor(x => x.SendNot.ToId)
-						@Html.MaterialTextBoxFor(x => x.SendNot.ToId, 1)
-						@Html.ValidationMessageFor(x=> x.SendNot.ToId)
-					</div>
-
-					<div class="form-group">
-						@Html.NoSelectLaberFor(x => x.SendNot.ZolikId)
-						@Html.MaterialTextBoxFor(x => x.SendNot.ZolikId, 2)
-						@Html.ValidationMessageFor(x=> x.SendNot.ZolikId)
-					</div>
-					<div class="form-group text-right">
-						<button class="btn btn-primary" type="submit" tabindex="3">Odeslat</button>
-					</div>
-				}
-			</div>
-		</div>
+		@Html.Partial("_SendNotificationPartial", Model.SendNot)
 	</div>
 </div>

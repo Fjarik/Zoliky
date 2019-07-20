@@ -1207,6 +1207,7 @@
     <Content Include="Areas\Admin\Views\School\Dashboard.cshtml" />
     <Content Include="Areas\Admin\Views\School\Create.cshtml" />
     <Content Include="Areas\Admin\Views\School\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Admin\_SendNotificationPartial.cshtml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\fa-all.js" />
     <Content Include="Scripts\fa-all.min.js" />
