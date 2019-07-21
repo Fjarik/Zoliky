@@ -208,6 +208,7 @@ namespace SharedLibrary.Enums
 	{
 		OK = 200,
 		SeeException = 303,
+		Banned = 402,
 		Forbidden = 403,
 		NotFound = 404,
 		Timeout = 408,

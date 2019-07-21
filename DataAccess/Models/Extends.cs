@@ -203,7 +203,7 @@ namespace DataAccess.Models
 
 	public partial class Ban : IDbEntity
 	{
-		
+		public bool IsActive => this.To == null || (this.To != null && this.To > DateTime.Now);
 	}
 
 	[MetadataType(typeof(ClassMetaData))]

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -52,6 +53,26 @@ namespace DataAccess.Managers
 
 #region Own Methods
 
+		public Task<bool> IsBannedAsync(int userId)
+		{
+			return _ctx.Bans.AnyAsync(x => x.UserID == userId && x.IsActive);
+		}
+
+		public Task<bool> IsBannedAsync(string ip)
+		{
+			return _ctx.Bans.AnyAsync(x => x.IP == ip && x.IsActive);
+		}
+
+		public Task<Ban> GetActiveBanAsync(int userId)
+		{
+			return _ctx.Bans.FirstOrDefaultAsync(x => x.UserID == userId && x.IsActive);
+		}
+
+		public Task<Ban> GetActiveBanAsync(string ip)
+		{
+			return _ctx.Bans.FirstOrDefaultAsync(x => x.IP == ip && x.IsActive);
+		}
+
 		public Task<MActionResult<Ban>> BanUserAsync(int userId,
 													 string reason,
 													 DateTime? to = null)
@@ -95,6 +116,24 @@ namespace DataAccess.Managers
 				Reason = reason
 			};
 			return await base.CreateAsync(ent);
+		}
+
+		public async Task<bool> UnbanAsync(int userId)
+		{
+			var elm = await this.GetActiveBanAsync(userId);
+			if (elm == null) {
+				return false;
+			}
+			return await DeleteAsync(elm);
+		}
+
+		public async Task<bool> UnbanAsync(string ip)
+		{
+			var elm = await this.GetActiveBanAsync(ip);
+			if (elm == null) {
+				return false;
+			}
+			return await DeleteAsync(elm);
 		}
 
 #endregion
