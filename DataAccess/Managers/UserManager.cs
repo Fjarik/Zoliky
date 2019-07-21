@@ -123,6 +123,29 @@ namespace DataAccess.Managers
 				_ctx.UserSettings.RemoveRange(settings);
 				await _ctx.SaveChangesAsync();
 
+				var logs = _ctx.UserLogs.Where(x => x.UserID == id);
+				_ctx.UserLogs.RemoveRange(logs);
+				await _ctx.SaveChangesAsync();
+
+				var bans = _ctx.Bans.Where(x => x.UserID == id);
+				_ctx.Bans.RemoveRange(bans);
+				await _ctx.SaveChangesAsync();
+
+				var teacherSubs = _ctx.TeacherSubjects.Where(x => x.TeacherID == id);
+				_ctx.TeacherSubjects.RemoveRange(teacherSubs);
+				await _ctx.SaveChangesAsync();
+
+#endregion
+
+#region News
+
+				var news = _ctx.News.Where(x => x.AuthorID == id);
+				foreach (var elm in news) {
+					_ctx.News.Attach(elm);
+					elm.AuthorID = Ext.AdminId;
+				}
+				await _ctx.SaveChangesAsync();
+
 #endregion
 
 #region Zoliks

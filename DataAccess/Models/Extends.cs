@@ -201,7 +201,7 @@ namespace DataAccess.Models
 		public Achievement() { }
 	}
 
-	public partial class Ban : IDbObject
+	public partial class Ban : IDbEntity
 	{
 		
 	}
