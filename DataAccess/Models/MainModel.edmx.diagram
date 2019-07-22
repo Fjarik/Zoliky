@@ -20,11 +20,9 @@
         <EntityTypeShape EntityType="ZoliksModel.User" Width="1.5" PointX="5.625" PointY="15.625" />
         <AssociationConnector Association="ZoliksModel.FK_Users_Classes" />
         <AssociationConnector Association="ZoliksModel.FK_Users_Images" ManuallyRouted="true" >
-          <ConnectorPoint PointX="7.875" PointY="40.99974609375" />
-          <ConnectorPoint PointX="5.77102924612641" PointY="40.99974609375" />
-          <ConnectorPoint PointX="5.77102924612641" PointY="28.933033007812497" />
-          <ConnectorPoint PointX="5.7913465121759282" PointY="28.933033007812497" />
-          <ConnectorPoint PointX="5.7913465121759282" PointY="22.989726562499996" />
+          <ConnectorPoint PointX="7.875" PointY="41.3278063671875" />
+          <ConnectorPoint PointX="6.8712202750803488" PointY="41.3278063671875" />
+          <ConnectorPoint PointX="6.8712202750803488" PointY="22.9897265625" />
         </AssociationConnector>
         <AssociationConnector Association="ZoliksModel.FK_Notifications_FromUser" />
         <AssociationConnector Association="ZoliksModel.FK_Transactions_FromUser" />
@@ -36,10 +34,10 @@
         <AssociationConnector Association="ZoliksModel.FK_Logins_Users" />
         <EntityTypeShape EntityType="ZoliksModel.Token" Width="1.5" PointX="7.875" PointY="33.875" />
         <AssociationConnector Association="ZoliksModel.FK_Tokens_Users" ManuallyRouted="true" >
-          <ConnectorPoint PointX="6.2604587667532954" PointY="22.989726562499996" />
-          <ConnectorPoint PointX="6.2604587667532954" PointY="26.972073535156248" />
-          <ConnectorPoint PointX="6.263858296282109" PointY="26.972073535156248" />
-          <ConnectorPoint PointX="6.263858296282109" PointY="35.057444661458334" />
+          <ConnectorPoint PointX="6.2555854191535172" PointY="22.9897265625" />
+          <ConnectorPoint PointX="6.2555854191535172" PointY="35.057444661458334" />
+          <ConnectorPoint PointX="6.7878869417470158" PointY="35.057444661458334" />
+          <ConnectorPoint PointX="7.1126959708735074" PointY="35.057444661458334" />
           <ConnectorPoint PointX="7.875" PointY="35.057444661458334" />
         </AssociationConnector>
         <AssociationConnector Association="ZoliksModel.FK_Notifications_Projects" />
@@ -72,19 +70,17 @@
         <AssociationConnector Association="ZoliksModel.AchievementUnlocks" />
         <EntityTypeShape EntityType="ZoliksModel.UserLoginToken" Width="1.5" PointX="7.875" PointY="36.875" />
         <AssociationConnector Association="ZoliksModel.FK_UserLoginTokens_Users" ManuallyRouted="true" >
-          <ConnectorPoint PointX="6.0739695498012853" PointY="22.989726562499996" />
-          <ConnectorPoint PointX="6.0739695498012853" PointY="27.898614062499995" />
-          <ConnectorPoint PointX="6.099305689837017" PointY="27.898614062499995" />
-          <ConnectorPoint PointX="6.099305689837017" PointY="37.865143229166662" />
+          <ConnectorPoint PointX="7.0293626375401743" PointY="22.9897265625" />
+          <ConnectorPoint PointX="7.0293626375401743" PointY="37.865143229166662" />
           <ConnectorPoint PointX="7.875" PointY="37.865143229166662" />
         </AssociationConnector>
         <AssociationConnector Association="ZoliksModel.FK_UserSettings_Users" />
         <EntityTypeShape EntityType="ZoliksModel.UserLog" Width="1.5" PointX="7.875" PointY="31.25" />
         <AssociationConnector Association="ZoliksModel.FK_UserLogs_Users" ManuallyRouted="true" >
-          <ConnectorPoint PointX="6.4372012885057481" PointY="22.989726562499996" />
-          <ConnectorPoint PointX="6.4372012885057481" PointY="26.010634326171871" />
-          <ConnectorPoint PointX="6.42487317006102" PointY="26.010634326171871" />
-          <ConnectorPoint PointX="6.42487317006102" PointY="32.143992513020834" />
+          <ConnectorPoint PointX="6.4677654846571073" PointY="22.9897265625" />
+          <ConnectorPoint PointX="6.4677654846571073" PointY="32.143992513020834" />
+          <ConnectorPoint PointX="6.7878869417470158" PointY="32.143992513020834" />
+          <ConnectorPoint PointX="7.1126959708735074" PointY="32.143992513020834" />
           <ConnectorPoint PointX="7.875" PointY="32.143992513020834" />
         </AssociationConnector>
         <EntityTypeShape EntityType="ZoliksModel.TeacherSubject" Width="1.5" PointX="10.875" PointY="21.125" />
@@ -101,9 +97,15 @@
         <AssociationConnector Association="ZoliksModel.SchoolSubjects" />
         <EntityTypeShape EntityType="ZoliksModel.Ban" Width="1.5" PointX="7.875" PointY="28.125" />
         <AssociationConnector Association="ZoliksModel.FK_Bans_Users" ManuallyRouted="true" >
-          <ConnectorPoint PointX="6.6174405501606968" PointY="22.989726562499996" />
-          <ConnectorPoint PointX="6.6174405501606968" PointY="29.307444661855698" />
-          <ConnectorPoint PointX="7.875" PointY="29.307444661855698" />
+          <ConnectorPoint PointX="6.1099794901941173" PointY="22.9897265625" />
+          <ConnectorPoint PointX="6.1099794901941173" PointY="29.2112939453125" />
+          <ConnectorPoint PointX="6.1722520858201841" PointY="29.2112939453125" />
+          <ConnectorPoint PointX="6.33891875248685" PointY="29.2112939453125" />
+          <ConnectorPoint PointX="6.3844321513237743" PointY="29.2112939453125" />
+          <ConnectorPoint PointX="6.55109881799044" PointY="29.2112939453125" />
+          <ConnectorPoint PointX="6.7878869417470158" PointY="29.2112939453125" />
+          <ConnectorPoint PointX="7.1126959708735074" PointY="29.2112939453125" />
+          <ConnectorPoint PointX="7.875" PointY="29.2112939453125" />
         </AssociationConnector>
         </Diagram>
       <Diagram DiagramId="667462baa1f84e3eb3fa1facae8a8a2d" Name="Support" >

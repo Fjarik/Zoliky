@@ -7,7 +7,6 @@ using Newtonsoft.Json;
 using SharedLibrary.Enums;
 using SharedLibrary.Interfaces;
 using SharedLibrary.Shared;
-using DateTime = System.DateTime;
 
 namespace DataAccess.Models
 {
@@ -203,11 +202,11 @@ namespace DataAccess.Models
 
 	public partial class Ban : IDbEntity
 	{
-		public bool IsActive => this.To == null || (this.To != null && this.To > DateTime.Now);
+		public bool IsActive => Extensions.IsActive().Compile()(this);
 	}
 
 	[MetadataType(typeof(ClassMetaData))]
-	public partial class Class : IDbObject, IDbEntity, IClass
+	public partial class Class : IClass
 	{
 		private sealed class ClassMetaData
 		{
@@ -216,11 +215,11 @@ namespace DataAccess.Models
 		}
 	}
 
-	public partial class GetTopStudents_Result : IDbEntity, IStudent<IImage>
+	public partial class GetTopStudents_Result : IStudent<IImage>
 	{
 		public string FullName => $"{this.Name} {this.Lastname}";
 
-		private IImage _image { get; set; }
+		private IImage _image;
 
 		private IImage GetImage()
 		{
@@ -246,7 +245,7 @@ namespace DataAccess.Models
 		public GetTopStudents_Result() { }
 	}
 
-	public partial class Changelog : IDbObject, IDbEntity { }
+	public partial class Changelog : IDbEntity { }
 
 	[MetadataType(typeof(ImageMetadata))]
 	public partial class Image : IDbObject, IDbEntity, IImage
@@ -265,7 +264,7 @@ namespace DataAccess.Models
 		}
 	}
 
-	public partial class News : IDbObject, IDbEntity { }
+	public partial class News : IDbEntity { }
 
 	public partial class Notification : IDbObject, IDbEntity
 	{
@@ -298,18 +297,16 @@ namespace DataAccess.Models
 		}
 	}
 
-	public partial class Project : IDbObject, IDbEntity
+	public partial class Project : IDbEntity
 	{
 		[JsonIgnore]
 		public Version VersionV => System.Version.Parse(this.Version);
 	}
 
-	public partial class Rank : IDbObject, IDbEntity { }
-
-	public partial class ReadNotification : IDbObject { }
+	public partial class Rank : IDbEntity { }
 
 	[MetadataType(typeof(RoleMetadata))]
-	public partial class Role : IDbObject, IDbEntity, IRole
+	public partial class Role : IRole
 	{
 		private sealed class RoleMetadata
 		{
@@ -318,7 +315,7 @@ namespace DataAccess.Models
 		}
 	}
 
-	public partial class Password : IDbObject, IDbEntity
+	public partial class Password : IDbEntity
 	{
 		[JsonIgnore]
 		public Version Verze => System.Version.Parse(this.Version);
@@ -336,7 +333,7 @@ namespace DataAccess.Models
 	}
 
 	[MetadataType(typeof(SchoolMetaData))]
-	public partial class School : IDbObject, IDbEntity
+	public partial class School : IDbEntity
 	{
 		private sealed class SchoolMetaData
 		{
@@ -348,14 +345,14 @@ namespace DataAccess.Models
 		}
 	}
 
-	public partial class Subject : IDbObject, IDbEntity { }
+	public partial class Subject : IDbEntity { }
 
 	public partial class TeacherSubject : IDbObject { }
 
-	public partial class Token : IDbObject, IDbEntity { }
+	public partial class Token : IDbEntity { }
 
 	[MetadataType(typeof(TransactionMetaData))]
-	public partial class Transaction : IDbObject, IDbEntity, ITransaction
+	public partial class Transaction : ITransaction
 	{
 		public string From => this.fromUser?.FullName;
 
@@ -372,13 +369,13 @@ namespace DataAccess.Models
 		}
 	}
 
-	public partial class Unavailability : IDbObject, IDbEntity
+	public partial class Unavailability : IDbEntity
 	{
 		public Projects? Project => (Projects?) ProjectID;
 	}
 
 	[MetadataType(typeof(UserMetaData))]
-	public partial class User : IDbObject, IDbEntity, IEnableable, IStudent<Image>, IUser<Class, Image, Role>
+	public partial class User :  IEnableable, IStudent<Image>, IUser<Class, Image, Role>
 	{
 #region Get only
 
@@ -506,7 +503,7 @@ namespace DataAccess.Models
 
 	public partial class UserLog : IDbEntity { }
 
-	public partial class UserLogin : IDbObject, IDbEntity
+	public partial class UserLogin : IDbEntity
 	{
 		[JsonIgnore]
 		public Projects Project => (Projects) this.ProjectID;
@@ -514,13 +511,13 @@ namespace DataAccess.Models
 
 	public partial class UserLoginToken : IDbObject { }
 
-	public partial class UserSetting : IDbEntity, IUserSetting
+	public partial class UserSetting : IUserSetting
 	{
-		public UserSetting() { }
+
 	}
 
 	[MetadataType(typeof(ZolikMetadata))]
-	public partial class Zolik : IDbObject, IDbEntity, IZolik
+	public partial class Zolik : IZolik
 	{
 		public bool IsLocked => !string.IsNullOrWhiteSpace(this.Lock);
 

@@ -122,6 +122,11 @@ namespace ZolikyWeb.Controllers
 				case StatusCode.EmailNotConfirmed:
 					lg.ShowActivationElement = true;
 					break;
+				case StatusCode.Banned:
+					var banMgr = this.GetManager<BanManager>();
+					var ban = await banMgr.GetActiveBanAsync(res.Content.ID);
+					msg = $"Váš účet byl zablokován z důvodu: {ban.Reason}";
+					break;
 				case StatusCode.OK:
 					if (res.Content is User u) {
 						this.SignInManager.SignIn(u, lg.RememberMe);

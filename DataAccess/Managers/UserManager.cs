@@ -457,6 +457,12 @@ namespace DataAccess.Managers
 																Projects project,
 																bool recordLogin = true)
 		{
+			var banMgr = this.Context.Get<BanManager>();
+			var banned = await banMgr.IsBannedAsync(u.ID);
+			if (banned) {
+				return new MActionResult<User>(StatusCode.Banned, new User {ID = u.ID});
+			}
+
 			if (!u.EmailConfirmed) {
 				return new MActionResult<User>(StatusCode.EmailNotConfirmed, u);
 			}

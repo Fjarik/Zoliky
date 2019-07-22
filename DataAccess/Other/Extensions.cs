@@ -25,20 +25,22 @@ namespace DataAccess
 
 			app.CreatePerOwinContext<BanManager>(BanManager.Create);
 			app.CreatePerOwinContext<ClassManager>(ClassManager.Create);
-			app.CreatePerOwinContext<ImageManager>(ImageManager.Create);
-			app.CreatePerOwinContext<TransactionManager>(TransactionManager.Create);
-			app.CreatePerOwinContext<UserLoginManager>(UserLoginManager.Create);
-			app.CreatePerOwinContext<LoginTokenManager>(LoginTokenManager.Create);
-			app.CreatePerOwinContext<UserManager>(UserManager.Create);
-			app.CreatePerOwinContext<ZolikManager>(ZolikManager.Create);
-			app.CreatePerOwinContext<TokenManager>(TokenManager.Create);
-			app.CreatePerOwinContext<UnavailabilityManager>(UnavailabilityManager.Create);
-			app.CreatePerOwinContext<ProjectManager>(ProjectManager.Create);
 			app.CreatePerOwinContext<HashManager>(HashManager.Create);
-			app.CreatePerOwinContext<RankManager>(RankManager.Create);
-			app.CreatePerOwinContext<UserSettingManager>(UserSettingManager.Create);
 			app.CreatePerOwinContext<ChangelogManager>(ChangelogManager.Create);
+			app.CreatePerOwinContext<ImageManager>(ImageManager.Create);
+			app.CreatePerOwinContext<LoginTokenManager>(LoginTokenManager.Create);
+			app.CreatePerOwinContext<NewsManager>(NewsManager.Create);
+			app.CreatePerOwinContext<ProjectManager>(ProjectManager.Create);
+			app.CreatePerOwinContext<RankManager>(RankManager.Create);
 			app.CreatePerOwinContext<SubjectManager>(SubjectManager.Create);
+			app.CreatePerOwinContext<TokenManager>(TokenManager.Create);
+			app.CreatePerOwinContext<TransactionManager>(TransactionManager.Create);
+			app.CreatePerOwinContext<UnavailabilityManager>(UnavailabilityManager.Create);
+			app.CreatePerOwinContext<UserLoginManager>(UserLoginManager.Create);
+			app.CreatePerOwinContext<UserLogManager>(UserLogManager.Create);
+			app.CreatePerOwinContext<UserManager>(UserManager.Create);
+			app.CreatePerOwinContext<UserSettingManager>(UserSettingManager.Create);
+			app.CreatePerOwinContext<ZolikManager>(ZolikManager.Create);
 
 			app.CreatePerOwinContext<FirebaseManager>(FirebaseManager.Create);
 			app.CreatePerOwinContext<MailManager>(MailManager.Create);
@@ -67,6 +69,8 @@ namespace DataAccess
 		}
 
 #endregion
+
+#region Get logged user
 
 		public static async Task<User> GetLoggedUserAsync(this System.Security.Claims.ClaimsPrincipal principal)
 		{
@@ -103,6 +107,8 @@ namespace DataAccess
 			return g;
 		}
 
+#endregion
+
 		public static TZolik Latest<TZolik>(this List<TZolik> list) where TZolik : class, IZolik
 		{
 			if (list == null || list.Count < 1) {
@@ -133,6 +139,11 @@ namespace DataAccess
 		public static Expression<Func<Zolik, bool>> NonTesterZoliks()
 		{
 			return x => x.Type != ZolikType.Debug && x.Type != ZolikType.DebugJoker;
+		}
+
+		public static Expression<Func<Ban, bool>> IsActive()
+		{
+			return x => x.To == null || (x.To != null && x.To > DateTime.Now);
 		}
 
 #endregion

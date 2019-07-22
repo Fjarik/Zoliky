@@ -15,8 +15,7 @@ namespace DataAccess.Models
     public partial class Ban
     {
         public int ID { get; set; }
-        public Nullable<int> UserID { get; set; }
-        public string IP { get; set; }
+        public int UserID { get; set; }
         public System.DateTime From { get; set; }
         public Nullable<System.DateTime> To { get; set; }
         public string Reason { get; set; }

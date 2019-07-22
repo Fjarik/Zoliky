@@ -130,6 +130,7 @@
     <Compile Include="Managers\LoginTokenManager.cs" />
     <Compile Include="Managers\MailManager.cs" />
     <Compile Include="Managers\Manager.cs" />
+    <Compile Include="Managers\NewsManager.cs" />
     <Compile Include="Managers\ProjectManager.cs" />
     <Compile Include="Managers\HashManager.cs" />
     <Compile Include="Managers\RankManager.cs" />
@@ -139,6 +140,7 @@
     <Compile Include="Managers\TokenManager.cs" />
     <Compile Include="Managers\TransactionManager.cs" />
     <Compile Include="Managers\UnavailabilityManager.cs" />
+    <Compile Include="Managers\UserLogManager.cs" />
     <Compile Include="Managers\UserLoginManager.cs" />
     <Compile Include="Managers\UserManager.cs" />
     <Compile Include="Managers\UserSettingManager.cs" />

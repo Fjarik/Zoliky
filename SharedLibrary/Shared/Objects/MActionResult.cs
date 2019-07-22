@@ -78,6 +78,8 @@ namespace SharedLibrary
 					return s;
 				case StatusCode.NoPassword:
 					return "Nemáte vytvořené heslo. Použijte funkci zapomenuté heslo";
+				case StatusCode.Banned:
+					return "Váš účet je zabanován";
 				case StatusCode.Forbidden:
 					return "Zakázáno";
 				case StatusCode.NotFound:
