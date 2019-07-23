@@ -23,6 +23,7 @@ namespace DataAccess
 		{
 			app.CreatePerOwinContext(ZoliksEntities.Create);
 
+			app.CreatePerOwinContext<AchievementManager>(AchievementManager.Create);
 			app.CreatePerOwinContext<BanManager>(BanManager.Create);
 			app.CreatePerOwinContext<ClassManager>(ClassManager.Create);
 			app.CreatePerOwinContext<HashManager>(HashManager.Create);
