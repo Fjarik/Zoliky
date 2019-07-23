@@ -195,9 +195,19 @@ namespace DataAccess.Models
 
 #endregion
 
-	public partial class Achievement : IDbObject, IDbEntity
+	public partial class Achievement : IDbEntity
 	{
-		public Achievement() { }
+		public string Shortcut
+		{
+			get
+			{
+				var tWords = this.Title.Trim().ToUpper().Split(' ');
+				if (tWords.Length > 1) {
+					return "" + tWords[0][0] + tWords[1][0];
+				}
+				return tWords.Length == 0 ? "" : "" + tWords[0][0] + tWords[0][1];
+			}
+		}
 	}
 
 	[MetadataType(typeof(BanMetadata))]
@@ -253,7 +263,7 @@ namespace DataAccess.Models
 	}
 
 	[MetadataType(typeof(ImageMetadata))]
-	public partial class Image : IDbObject, IDbEntity, IImage
+	public partial class Image : IImage
 	{
 		private sealed class ImageMetadata
 		{
@@ -271,7 +281,7 @@ namespace DataAccess.Models
 
 	public partial class News : IDbEntity { }
 
-	public partial class Notification : IDbObject, IDbEntity
+	public partial class Notification : IDbEntity
 	{
 		public NotificationType Type
 		{

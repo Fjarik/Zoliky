@@ -1208,6 +1208,7 @@
     <Content Include="Areas\Admin\Views\School\Create.cshtml" />
     <Content Include="Areas\Admin\Views\School\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\Admin\_SendNotificationPartial.cshtml" />
+    <Content Include="Areas\App\Views\Achievement\Dashboard.cshtml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\fa-all.js" />
     <Content Include="Scripts\fa-all.min.js" />
@@ -1395,6 +1396,7 @@
     <Compile Include="Areas\Admin\Models\Admin\SendNotificationModel.cs" />
     <Compile Include="Areas\App\AppAreaRegistration.cs" />
     <Compile Include="Areas\App\Controllers\AccountController.cs" />
+    <Compile Include="Areas\App\Controllers\AchievementController.cs" />
     <Compile Include="Areas\App\Controllers\NewsController.cs" />
     <Compile Include="Areas\App\Controllers\TransactionsController.cs" />
     <Compile Include="Areas\App\Controllers\ZolikyController.cs" />

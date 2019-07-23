@@ -5,7 +5,6 @@ using SharedLibrary.Enums;
 
 namespace SharedLibrary
 {
-	[Android.Runtime.Preserve(AllMembers = true)]
 	public class RegisterUser
 	{
 		public string Email { get; set; }

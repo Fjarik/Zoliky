@@ -7,7 +7,6 @@ using SharedLibrary.Interfaces;
 
 namespace SharedLibrary
 {
-	[Android.Runtime.Preserve(AllMembers = true)]
 	public class ZolikPackage : IValidable
 	{
 		public int FromID { get; set; }

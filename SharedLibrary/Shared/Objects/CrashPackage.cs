@@ -5,7 +5,6 @@ using SharedLibrary.Enums;
 
 namespace SharedLibrary
 {
-	[Android.Runtime.Preserve(AllMembers = true)]
 	public class CrashPackage
 	{
 		public Projects Project { get; set; }

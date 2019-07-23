@@ -8,7 +8,6 @@ using SharedLibrary.Interfaces;
 
 namespace SharedLibrary
 {
-	[Android.Runtime.Preserve(AllMembers = true)]
 	public class MActionResult<T> where T : class
 	{
 		[CanBeNull]

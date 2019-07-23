@@ -6,7 +6,6 @@ using SharedLibrary.Enums;
 
 namespace SharedLibrary
 {
-	[Android.Runtime.Preserve(AllMembers = true)]
 	public class WebStatus
 	{
 		public PageStatus Status { get; set; }
