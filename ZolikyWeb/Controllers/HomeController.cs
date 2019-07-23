@@ -27,23 +27,7 @@ namespace ZolikyWeb.Controllers
 		{
 			return RedirectToAction("Index", "Mobile", new {Area = ""});
 		}
-
-		[HttpGet]
-		public async Task<ActionResult> Changelog()
-		{
-			var changeMgr = this.GetManager<ChangelogManager>();
-
-			var res = await changeMgr.GetAllAsync(Projects.WebNew);
-			if (res.Count > 0) {
-				return View(res);
-			}
-
-			this.AddErrorToastMessage("Pro tento projekt nejsou dostupné žádné změny");
-			if (this.IsAuthenticated()) {
-				return RedirectToAction("Dashboard", "Main", new {Area = "App"});
-			}
-			return RedirectToAction("Index");
-		}
+		
 
 #region Project Status
 

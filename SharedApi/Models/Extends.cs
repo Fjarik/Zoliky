@@ -11,71 +11,51 @@ using SharedLibrary.Interfaces;
 
 namespace SharedApi.Models
 {
-	[Android.Runtime.Preserve(AllMembers = true)]
-	public partial class Class : IDbObject, IDbEntity, IClass
+	public partial class Achievement : IDbEntity
+	{
+		public Achievement() { }
+	}
+
+	public partial class Ban : IDbEntity
+	{
+		public bool IsActive { get; set; }
+	}
+
+	public partial class Class : IClass
 	{
 		public Class() { }
 	}
 
-	[Android.Runtime.Preserve(AllMembers = true)]
-	public partial class Crash : IDbObject, IDbEntity
-	{
-		public Crash() { }
-	}
-
-	[Android.Runtime.Preserve(AllMembers = true)]
-	public partial class Changelog : IDbObject, IDbEntity
-	{
-		public Changelog() { }
-	}
-
-	[Android.Runtime.Preserve(AllMembers = true)]
-	public partial class Image : IDbObject, IDbEntity, IImage
+	public partial class Image : IImage
 	{
 		public Image() { }
 	}
 
-	[Android.Runtime.Preserve(AllMembers = true)]
-	public partial class News : IDbObject, IDbEntity
+	public partial class News : IDbEntity
 	{
 		public News() { }
 	}
 
-	[Android.Runtime.Preserve(AllMembers = true)]
-	public partial class Price : IDbObject, IDbEntity
-	{
-		public Price() { }
-	}
-
-	[Android.Runtime.Preserve(AllMembers = true)]
-	public partial class Project : IDbObject, IDbEntity
+	public partial class Project : IDbEntity
 	{
 		public Project() { }
 	}
 
-	[Android.Runtime.Preserve(AllMembers = true)]
-	public partial class Role : IDbObject, IDbEntity, IRole
+	public partial class Rank : IDbEntity { }
+
+	public partial class Role : IRole
 	{
 		public Role() { }
 	}
 
-	[Android.Runtime.Preserve(AllMembers = true)]
-	public partial class Rank : IDbObject, IDbEntity
+	public partial class School : IDbEntity
 	{
-		public int ID { get; set; }
-		public string Title { get; set; }
-		public int FromXP { get; set; }
-		public int ToXP { get; set; }
-		public string Colour { get; set; }
-
-		public Rank() { }
+		
 	}
 
-	[Android.Runtime.Preserve(AllMembers = true)]
-	public partial class Subject : IDbObject, IDbEntity { }
+	public partial class Subject : IDbEntity { }
 
-	[Android.Runtime.Preserve(AllMembers = true)]
-	public partial class Transaction : IDbObject, IDbEntity, ITransaction
+	public partial class Transaction : ITransaction
 	{
 		[CanBeNull]
 		public string From { get; set; }
@@ -99,16 +79,14 @@ namespace SharedApi.Models
 		public Transaction() { }
 	}
 
-	[Android.Runtime.Preserve(AllMembers = true)]
-	public partial class Unavailability : IDbObject, IDbEntity
+	public partial class Unavailability : IDbEntity
 	{
 		public Projects Project => (Projects) this.ProjectID;
 
 		public Unavailability() { }
 	}
 
-	[Android.Runtime.Preserve(AllMembers = true)]
-	public partial class User : IDbObject, IDbEntity, ITokenable, IUser<Class, Image, Role>
+	public partial class User : ITokenable, IUser<Class, Image, Role>
 	{
 		[CanBeNull]
 		public DateTime? LastLoginDate { get; set; }
@@ -200,20 +178,17 @@ namespace SharedApi.Models
 		}
 	}
 
-	[Android.Runtime.Preserve(AllMembers = true)]
-	public partial class UserLogin : IDbObject, IDbEntity
+	public partial class UserLogin : IDbEntity
 	{
 		public UserLogin() { }
 	}
 
-	[Android.Runtime.Preserve(AllMembers = true)]
-	public partial class WebEvent : IDbObject, IDbEntity
+	public partial class UserSetting : IUserSetting
 	{
-		public WebEvent() { }
+
 	}
 
-	[Android.Runtime.Preserve(AllMembers = true)]
-	public partial class Zolik : IDbObject, IDbEntity, IZolik
+	public partial class Zolik : IZolik
 	{
 		public bool IsLocked { get; set; }
 

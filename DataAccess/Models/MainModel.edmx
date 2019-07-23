@@ -92,18 +92,6 @@
           <Property Name="Type" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="IsFirst" Type="bit" Nullable="false" />
         </EntityType>
-        <EntityType Name="Changelogs">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="ProjectID" Type="int" Nullable="false" />
-          <Property Name="Title" Type="nvarchar" MaxLength="200" />
-          <Property Name="Text" Type="nvarchar(max)" />
-          <Property Name="Date" Type="datetime" Nullable="false" />
-          <Property Name="Version" Type="varchar" MaxLength="10" />
-          <Property Name="Visible" Type="bit" Nullable="false" />
-        </EntityType>
         <EntityType Name="Images">
           <Key>
             <PropertyRef Name="ID" />
@@ -521,18 +509,6 @@
             </Principal>
             <Dependent Role="FaQ">
               <PropertyRef Name="CategoryID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Changelogs_Projects">
-          <End Role="Projects" Type="Self.Projects" Multiplicity="1" />
-          <End Role="Changelogs" Type="Self.Changelogs" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Projects">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="Changelogs">
-              <PropertyRef Name="ProjectID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1055,7 +1031,6 @@
           <EntitySet Name="Classes" EntityType="Self.Classes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FaQ" EntityType="Self.FaQ" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FaqCategories" EntityType="Self.FaqCategories" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Changelogs" EntityType="Self.Changelogs" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Images" EntityType="Self.Images" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="News" EntityType="Self.News" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Notifications" EntityType="Self.Notifications" Schema="dbo" store:Type="Tables" />
@@ -1124,10 +1099,6 @@
           <AssociationSet Name="FK_FaQ_FaqCategories" Association="Self.FK_FaQ_FaqCategories">
             <End Role="FaqCategories" EntitySet="FaqCategories" />
             <End Role="FaQ" EntitySet="FaQ" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Changelogs_Projects" Association="Self.FK_Changelogs_Projects">
-            <End Role="Projects" EntitySet="Projects" />
-            <End Role="Changelogs" EntitySet="Changelogs" />
           </AssociationSet>
           <AssociationSet Name="FK_Images_Owner" Association="Self.FK_Images_Owner">
             <End Role="Users" EntitySet="Users" />
@@ -1349,13 +1320,8 @@
             <End Role="Transactions" EntitySet="Transactions" />
           </AssociationSet>
           <EntitySet Name="Classes" EntityType="ZoliksModel.Class" />
-          <EntitySet Name="Changelogs" EntityType="ZoliksModel.Changelog" />
           <EntitySet Name="News" EntityType="ZoliksModel.News" />
           <EntitySet Name="Projects" EntityType="ZoliksModel.Project" />
-          <AssociationSet Name="FK_Changelogs_Projects" Association="ZoliksModel.FK_Changelogs_Projects">
-            <End Role="Project" EntitySet="Projects" />
-            <End Role="Changelog" EntitySet="Changelogs" />
-          </AssociationSet>
           <EntitySet Name="Images" EntityType="ZoliksModel.Image" />
           <EntitySet Name="Notifications" EntityType="ZoliksModel.Notification" />
           <AssociationSet Name="FK_News_Projects" Association="ZoliksModel.FK_News_Projects">
@@ -1607,19 +1573,6 @@
           <Property Name="Enabled" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="School" Relationship="ZoliksModel.FK_Classes_Schools" FromRole="Class" ToRole="School" />
         </EntityType>
-        <EntityType Name="Changelog">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ProjectID" Type="Int32" Nullable="false" />
-          <Property Name="Title" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="Text" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Version" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="Visible" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="Project" Relationship="ZoliksModel.FK_Changelogs_Projects" FromRole="Changelog" ToRole="Project" />
-        </EntityType>
         <EntityType Name="News">
           <Key>
             <PropertyRef Name="ID" />
@@ -1645,18 +1598,6 @@
           <Property Name="Active" Type="Boolean" Nullable="false" />
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
-        <Association Name="FK_Changelogs_Projects">
-          <End Type="ZoliksModel.Project" Role="Project" Multiplicity="1" />
-          <End Type="ZoliksModel.Changelog" Role="Changelog" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Project">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="Changelog">
-              <PropertyRef Name="ProjectID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="Image">
           <Key>
             <PropertyRef Name="ID" />
@@ -2563,19 +2504,6 @@
                 <ScalarProperty Name="Graduation" ColumnName="Graduation" />
                 <ScalarProperty Name="Since" ColumnName="Since" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Changelogs">
-            <EntityTypeMapping TypeName="ZoliksModel.Changelog">
-              <MappingFragment StoreEntitySet="Changelogs">
-                <ScalarProperty Name="Visible" ColumnName="Visible" />
-                <ScalarProperty Name="Version" ColumnName="Version" />
-                <ScalarProperty Name="Date" ColumnName="Date" />
-                <ScalarProperty Name="Text" ColumnName="Text" />
-                <ScalarProperty Name="Title" ColumnName="Title" />
-                <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>

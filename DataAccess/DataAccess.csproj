@@ -121,7 +121,6 @@
     <Compile Include="Errors\Errors.cs" />
     <Compile Include="Managers\BanManager.cs" />
     <Compile Include="Managers\BaseManager.cs" />
-    <Compile Include="Managers\ChangelogManager.cs" />
     <Compile Include="Managers\ClassManager.cs" />
     <Compile Include="Managers\FirebaseManager.cs" />
     <Compile Include="Managers\ImageManager.cs" />
@@ -155,9 +154,6 @@
       <DependentUpon>MainModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Ban.cs">
-      <DependentUpon>MainModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Changelog.cs">
       <DependentUpon>MainModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Class.cs">

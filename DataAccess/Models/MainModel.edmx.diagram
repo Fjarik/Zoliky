@@ -10,10 +10,8 @@
         <AssociationConnector Association="ZoliksModel.FK_Transactions_Zoliky" ManuallyRouted="false" >
         </AssociationConnector>
         <EntityTypeShape EntityType="ZoliksModel.Class" Width="1.5" PointX="3.375" PointY="12.375" />
-        <EntityTypeShape EntityType="ZoliksModel.Changelog" Width="1.5" PointX="3.375" PointY="35.625" />
         <EntityTypeShape EntityType="ZoliksModel.News" Width="1.5" PointX="3.375" PointY="23.875" />
         <EntityTypeShape EntityType="ZoliksModel.Project" Width="1.5" PointX="1.125" PointY="24.375" />
-        <AssociationConnector Association="ZoliksModel.FK_Changelogs_Projects" />
         <EntityTypeShape EntityType="ZoliksModel.Image" Width="1.5" PointX="7.875" PointY="39.625" />
         <EntityTypeShape EntityType="ZoliksModel.Notification" Width="1.5" PointX="3.375" PointY="20" />
         <AssociationConnector Association="ZoliksModel.FK_News_Projects" />

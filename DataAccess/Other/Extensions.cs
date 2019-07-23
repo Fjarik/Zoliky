@@ -26,7 +26,6 @@ namespace DataAccess
 			app.CreatePerOwinContext<BanManager>(BanManager.Create);
 			app.CreatePerOwinContext<ClassManager>(ClassManager.Create);
 			app.CreatePerOwinContext<HashManager>(HashManager.Create);
-			app.CreatePerOwinContext<ChangelogManager>(ChangelogManager.Create);
 			app.CreatePerOwinContext<ImageManager>(ImageManager.Create);
 			app.CreatePerOwinContext<LoginTokenManager>(LoginTokenManager.Create);
 			app.CreatePerOwinContext<NewsManager>(NewsManager.Create);

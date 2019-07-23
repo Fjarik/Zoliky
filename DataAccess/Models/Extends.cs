@@ -200,9 +200,16 @@ namespace DataAccess.Models
 		public Achievement() { }
 	}
 
+	[MetadataType(typeof(BanMetadata))]
 	public partial class Ban : IDbEntity
 	{
 		public bool IsActive => Extensions.IsActive().Compile()(this);
+
+		private sealed class BanMetadata
+		{
+			[JsonIgnore]
+			public User User { get; set; }
+		}
 	}
 
 	[MetadataType(typeof(ClassMetaData))]
@@ -244,8 +251,6 @@ namespace DataAccess.Models
 
 		public GetTopStudents_Result() { }
 	}
-
-	public partial class Changelog : IDbEntity { }
 
 	[MetadataType(typeof(ImageMetadata))]
 	public partial class Image : IDbObject, IDbEntity, IImage
@@ -375,7 +380,7 @@ namespace DataAccess.Models
 	}
 
 	[MetadataType(typeof(UserMetaData))]
-	public partial class User :  IEnableable, IStudent<Image>, IUser<Class, Image, Role>
+	public partial class User : IEnableable, IStudent<Image>, IUser<Class, Image, Role>
 	{
 #region Get only
 
@@ -511,10 +516,7 @@ namespace DataAccess.Models
 
 	public partial class UserLoginToken : IDbObject { }
 
-	public partial class UserSetting : IUserSetting
-	{
-
-	}
+	public partial class UserSetting : IUserSetting { }
 
 	[MetadataType(typeof(ZolikMetadata))]
 	public partial class Zolik : IZolik
