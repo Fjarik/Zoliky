@@ -9,6 +9,7 @@
 		style = $"/*background-image: url({Url.Content("~/Content/Images/Header/WebNavBKG.svg")});*//*background-color: #1e88e5;*/";
 	}
 	var profile = Url.GetCurrentUserProfilePhotoUrl();
+	var isAdminArea = ViewContext.RouteData.DataTokens["area"] is string area && area == "Admin";
 }
 
 @section styles {
@@ -219,27 +220,35 @@
 	<!-- Sidebar scroll-->
 	<div class="scroll-sidebar">
 		<!-- User profile -->
-		<div class="user-profile" style="background: url(@Url.Content("~/assets/images/background/user-info.jpg")) no-repeat;">
+		<div class="user-profile" style="background-image: url(@Url.Content("~/assets/images/background/user-info.jpg"));">
 			<!-- User profile image -->
 			<div class="profile-img">
-				<img src="@profile" alt="user" />
+				@if (!isAdminArea) {
+					<img src="@profile" alt="Profilový obrázek" />
+				}
 			</div>
 			<!-- User profile text-->
 			<div class="profile-text">
-				<a href="#" class="dropdown-toggle u-dropdown" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">
-					@User.Identity.Name @(User.Identity.IsTester() ? "(Tester)" : "")
-				</a>
-				<div class="dropdown-menu animated">
-					<a href="#" class="dropdown-item">
-						<i class="ti-user"></i> Profil
-					</a> 
-					<div class="dropdown-divider"></div> 
-					<a href="@Url.Action("Settings", "Account", new {Area = "App"})" class="dropdown-item">
-						<i class="ti-settings"></i> Nastavení
+				@if (isAdminArea) {
+					<a>
+						Administrace
 					</a>
-					<div class="dropdown-divider"></div> 
-					@Html.Partial("~/Views/Shared/Dashboard/_LogoutDrop.cshtml", "dropdown-item")
-				</div>
+				} else {
+					<a href="#" class="dropdown-toggle u-dropdown" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">
+							@User.Identity.Name @(User.Identity.IsTester() ? "(Tester)" : "")
+					</a>
+					<div class="dropdown-menu animated">
+						<a href="#" class="dropdown-item">
+							<i class="ti-user"></i> Profil
+						</a>
+						<div class="dropdown-divider"></div>
+						<a href="@Url.Action("Settings", "Account", new {Area = "App"})" class="dropdown-item">
+							<i class="ti-settings"></i> Nastavení
+						</a>
+						<div class="dropdown-divider"></div>
+						@Html.Partial("~/Views/Shared/Dashboard/_LogoutDrop.cshtml", "dropdown-item")
+					</div>
+				}
 			</div>
 		</div>
 		<!-- End User profile text-->
@@ -254,21 +263,7 @@
 	<!-- End Sidebar scroll-->
 	<!-- Bottom points-->
 	<div class="sidebar-footer">
-		<!-- item-->
-		<a href="@Url.Action("Mobile", "Main", new {Area = "App"})" class="link" data-toggle="tooltip" title="Mobilní aplikace">
-			<i class="ti-download"></i>
-		</a>
-		<!-- item-->
-		<a href="@Url.Action("Settings", "Account", new {Area = "App"})" class="link" data-toggle="tooltip" title="Nastavení">
-			<i class="ti-settings"></i>
-		</a>
-		<!-- item-->
-		@using (Html.BeginForm("Logout", "Account", new {Area = ""}, FormMethod.Post, new {id = "logOutForm"})) {
-			@Html.AntiForgeryToken()
-			<a href="javascript:$('#logOutForm').submit();" class="link" data-toggle="tooltip" title="Odhlásit se">
-				<i class="mdi mdi-power"></i>
-			</a>
-		}
+		@RenderSection("sidebarFooter", true)
 	</div>
 	<!-- End Bottom points-->
 </aside>

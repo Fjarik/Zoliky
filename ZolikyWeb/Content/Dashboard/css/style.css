@@ -6774,6 +6774,8 @@ use profile section
 .user-profile {
 	position: relative;
 	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
 }
 
 .user-profile .profile-img {
@@ -6854,7 +6856,7 @@ use profile section
 }
 
 .user-profile .profile-text {
-	padding: 5px 0px;
+	padding-top: 5px;
 	position: relative;
 }
 

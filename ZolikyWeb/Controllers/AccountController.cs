@@ -190,6 +190,11 @@ namespace ZolikyWeb.Controllers
 				case StatusCode.ExpiredPassword:
 					msg = "Vašemu heslu vypršela platnost";
 					break;
+				case StatusCode.Banned:
+					var banMgr = this.GetManager<BanManager>();
+					var ban = await banMgr.GetActiveBanAsync(res.Content.ID);
+					msg = $"Váš účet byl zablokován z důvodu: {ban.Reason}";
+					break;
 				case StatusCode.NotEnabled:
 				case StatusCode.EmailNotConfirmed:
 					lg.ShowActivationElement = true;

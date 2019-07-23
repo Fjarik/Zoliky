@@ -112,6 +112,26 @@
 		</li>
 		<li>
 			<a class="has-arrow" href="#" aria-expanded="false">
+				<i class="mdi mdi-account-multiple"></i>
+				<span class="hide-menu">Uživatelé</span>
+			</a>
+			<ul aria-expanded="false" class="collapse">
+				<li>
+					<a href="@Url.Action("Dashboard", "User", new {Area = "Admin"})">Přehled</a>
+				</li>
+				<li>
+					<a href="@Url.Action("Create", "User", new {Area = "Admin"})">Vytvoření</a>
+				</li>
+				<li>
+					<a href="@Url.Action("Edit", "User", new {Area = "Admin"})">Úpravy</a>
+				</li>
+				<li>
+					<a href="@Url.Action("BanView", "User", new {Area = "Admin"})">Blokace</a>
+				</li>
+			</ul>
+		</li>
+		<li>
+			<a class="has-arrow" href="#" aria-expanded="false">
 				<i class="mdi mdi-newspaper"></i>
 				<span class="hide-menu">Novinky</span>
 			</a>
@@ -149,6 +169,15 @@
 
 @RenderBody()
 
+@section sidebarFooter{
+	<!-- item-->
+	@using (Html.BeginForm("Logout", "Account", new { Area = "" }, FormMethod.Post, new { id = "logOutForm" })) {
+		@Html.AntiForgeryToken()
+		<a href="javascript:$('#logOutForm').submit();" class="link" data-toggle="tooltip" title="Odhlásit se" style="width: 100%;">
+			<i class="mdi mdi-power"></i>
+		</a>
+	}
+}
 
 @section scripts {
 	@RenderSection("scripts", false)

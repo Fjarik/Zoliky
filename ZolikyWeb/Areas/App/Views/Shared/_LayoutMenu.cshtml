@@ -73,14 +73,32 @@
 		</li>
 	}
 	@*<li>
-		<a href="https://support.zoliky.eu/" target="_blank" aria-expanded="false">
-			<i class="mdi mdi-help"></i>
-			<span class="hide-menu">Podpora</span>
-		</a>
-	</li>*@
+			<a href="https://support.zoliky.eu/" target="_blank" aria-expanded="false">
+				<i class="mdi mdi-help"></i>
+				<span class="hide-menu">Podpora</span>
+			</a>
+		</li>*@
 }
 
 @RenderBody()
+
+@section sidebarFooter{
+	<!-- item-->
+	<a href="@Url.Action("Mobile", "Main", new {Area = "App"})" class="link" data-toggle="tooltip" title="Mobilní aplikace">
+		<i class="ti-download"></i>
+	</a>
+	<!-- item-->
+	<a href="@Url.Action("Settings", "Account", new {Area = "App"})" class="link" data-toggle="tooltip" title="Nastavení">
+		<i class="ti-settings"></i>
+	</a>
+	<!-- item-->
+	@using (Html.BeginForm("Logout", "Account", new {Area = ""}, FormMethod.Post, new {id = "logOutForm"})) {
+		@Html.AntiForgeryToken()
+		<a href="javascript:$('#logOutForm').submit();" class="link" data-toggle="tooltip" title="Odhlásit se">
+			<i class="mdi mdi-power"></i>
+		</a>
+	}
+}
 
 
 @section scripts {
