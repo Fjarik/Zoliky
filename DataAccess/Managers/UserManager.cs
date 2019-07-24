@@ -66,7 +66,7 @@ namespace DataAccess.Managers
 				return false;
 			}
 			var res = await this.GetByIdAsync(userId);
-			if (!res.IsSuccess && res.Status != StatusCode.NotEnabled) {
+			if (!res.IsSuccess && res.Status != StatusCode.NotEnabled && res.Status != StatusCode.Banned) {
 				return false;
 			}
 			return await this.DeleteAsync(res.Content);
@@ -93,48 +93,29 @@ namespace DataAccess.Managers
 				await this.SaveAsync(u);
 
 
-				var passwords = _ctx.Passwords.Where(x => x.OwnerID == id);
-				_ctx.Passwords.RemoveRange(passwords);
-				await _ctx.SaveChangesAsync();
+				var passwords = await _ctx.Passwords.Where(x => x.OwnerID == id).DeleteAsync();
 
 #endregion
 
 #region Relations
 
-				var images = _ctx.Images.Where(x => x.OwnerID == id);
-				_ctx.Images.RemoveRange(images);
-				await _ctx.SaveChangesAsync();
+				var images = await _ctx.Images.Where(x => x.OwnerID == id).DeleteAsync();
 
-				var tokens = _ctx.Tokens.Where(x => x.UserID == id);
-				_ctx.Tokens.RemoveRange(tokens);
+				var tokens = await _ctx.Tokens.Where(x => x.UserID == id).DeleteAsync();
 
-				var logins = _ctx.UserLogins.Where(x => x.UserID == id);
-				_ctx.UserLogins.RemoveRange(logins);
-				await _ctx.SaveChangesAsync();
+				var logins = await _ctx.UserLogins.Where(x => x.UserID == id).DeleteAsync();
 
-				var loginTokens = _ctx.UserLoginTokens.Where(x => x.UserID == id);
-				_ctx.UserLoginTokens.RemoveRange(loginTokens);
-				await _ctx.SaveChangesAsync();
+				var loginTokens = await _ctx.UserLoginTokens.Where(x => x.UserID == id).DeleteAsync();
 
-				var settings = _ctx.UserSettings.Where(x => x.ID == id);
-				_ctx.UserSettings.RemoveRange(settings);
-				await _ctx.SaveChangesAsync();
+				var settings = await _ctx.UserSettings.Where(x => x.ID == id).DeleteAsync();
 
-				var logs = _ctx.UserLogs.Where(x => x.UserID == id);
-				_ctx.UserLogs.RemoveRange(logs);
-				await _ctx.SaveChangesAsync();
+				var logs = await _ctx.UserLogs.Where(x => x.UserID == id).DeleteAsync();
 
-				var bans = _ctx.Bans.Where(x => x.UserID == id);
-				_ctx.Bans.RemoveRange(bans);
-				await _ctx.SaveChangesAsync();
+				var bans = await _ctx.Bans.Where(x => x.UserID == id).DeleteAsync();
 
-				var teacherSubs = _ctx.TeacherSubjects.Where(x => x.TeacherID == id);
-				_ctx.TeacherSubjects.RemoveRange(teacherSubs);
-				await _ctx.SaveChangesAsync();
+				var teacherSubs = await _ctx.TeacherSubjects.Where(x => x.TeacherID == id).DeleteAsync();
 
 				var ach = await _ctx.AchievementUnlocks.Where(x => x.UserId == id).DeleteAsync();
-				//_ctx.AchievementUnlocks.RemoveRange(ach);
-				//await _ctx.SaveChangesAsync();
 
 				var nots = await _ctx.Notifications.Where(x => x.ToID == id).DeleteAsync();
 
@@ -142,23 +123,21 @@ namespace DataAccess.Managers
 
 #region News
 
-				var news = _ctx.News.Where(x => x.AuthorID == id);
-				foreach (var elm in news) {
-					_ctx.News.Attach(elm);
-					elm.AuthorID = Ext.AdminId;
-				}
-				await _ctx.SaveChangesAsync();
+				var news = await _ctx.News
+									 .Where(x => x.AuthorID == id)
+									 .UpdateAsync(x => new News() {
+										 AuthorID = Ext.AdminId
+									 });
 
 #endregion
 
 #region Zoliks
 
-				var originals = _ctx.Zoliky.Where(x => x.OriginalOwnerID == id);
-				foreach (var zolik in originals) {
-					_ctx.Zoliky.Attach(zolik);
-					zolik.OriginalOwnerID = Ext.BankId;
-				}
-				await _ctx.SaveChangesAsync();
+				var originals = await _ctx.Zoliky
+										  .Where(x => x.OriginalOwnerID == id)
+										  .UpdateAsync(x => new Zolik() {
+											  OriginalOwnerID = Ext.BankId
+										  });
 
 				var zolikMgr = this.Context.Get<ZolikManager>();
 				foreach (var zolik in _ctx.Zoliky.Where(x => x.OwnerID == id)) {
@@ -172,17 +151,18 @@ namespace DataAccess.Managers
 
 #region Transactions
 
-				foreach (var tran in _ctx.Transactions.Where(x => x.ToID == id || x.FromID == id)) {
-					_ctx.Transactions.Attach(tran);
-					if (tran.FromID == id) {
-						tran.FromID = Ext.BankId;
-					}
-					if (tran.ToID == id) {
-						tran.ToID = Ext.BankId;
-					}
-				}
-				await _ctx.SaveChangesAsync();
+				var tranFrom = await _ctx.Transactions
+										 .Where(x => x.FromID == id)
+										 .UpdateAsync(x => new Transaction() {
+											 FromID = Ext.BankId
+										 });
 
+				var tranTo = await _ctx.Transactions
+									   .Where(x => x.ToID == id)
+									   .UpdateAsync(x => new Transaction() {
+										   ToID = Ext.BankId
+									   });
+				
 #endregion
 
 #region Many to Many
