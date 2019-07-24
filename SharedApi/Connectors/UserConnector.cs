@@ -99,29 +99,6 @@ namespace SharedApi.Connectors
 				return new MActionResult<List<User>>(StatusCode.SeeException, ex);
 			}
 		}
-
-		[NotNull]
-		public MActionResult<WebEvent> CreateEvent(Projects project, int? from, int to, int type, string msg)
-		{
-			try {
-				WebEvent w = new WebEvent()
-				{
-					FromProjectID = (int)project,
-					FromID = from,
-					ToID = to,
-					Type = type,
-					Date = DateTime.Now,
-					Enabled = true,
-					Message = msg
-				};
-				string json = Task.Run(() => Request($"user/createevent", UsedToken).PostJsonAsync(w).ReceiveString()).Result;
-				MActionResult<WebEvent> e = JsonConvert.DeserializeObject<MActionResult<WebEvent>>(json);
-				return e;
-			} catch (Exception ex) {
-				return new MActionResult<WebEvent>(StatusCode.SeeException, ex);
-			}
-		}
-
-
+		
 	}
 }
