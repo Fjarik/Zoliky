@@ -4,107 +4,79 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="cfc689b9702e4af2acc85652c4311f83" Name="Main" ZoomLevel="106">
-        <EntityTypeShape EntityType="ZoliksModel.Transaction" Width="1.5" PointX="10.125" PointY="17.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="ZoliksModel.Zolik" Width="1.5" PointX="7.875" PointY="14.375" IsExpanded="true" />
+      <Diagram DiagramId="cfc689b9702e4af2acc85652c4311f83" Name="Main" ZoomLevel="82">
+        <EntityTypeShape EntityType="ZoliksModel.Transaction" Width="1.5" PointX="12.75" PointY="22" IsExpanded="true" />
+        <EntityTypeShape EntityType="ZoliksModel.Zolik" Width="1.5" PointX="10.5" PointY="21.5" IsExpanded="true" />
         <AssociationConnector Association="ZoliksModel.FK_Transactions_Zoliky" ManuallyRouted="false" >
         </AssociationConnector>
-        <EntityTypeShape EntityType="ZoliksModel.Class" Width="1.5" PointX="3.375" PointY="12.375" />
-        <EntityTypeShape EntityType="ZoliksModel.News" Width="1.5" PointX="3.375" PointY="23.875" />
-        <EntityTypeShape EntityType="ZoliksModel.Project" Width="1.5" PointX="1.125" PointY="24.375" />
-        <EntityTypeShape EntityType="ZoliksModel.Image" Width="1.5" PointX="7.875" PointY="39.625" />
-        <EntityTypeShape EntityType="ZoliksModel.Notification" Width="1.5" PointX="3.375" PointY="20" />
+        <EntityTypeShape EntityType="ZoliksModel.Class" Width="1.5" PointX="6" PointY="26" />
+        <EntityTypeShape EntityType="ZoliksModel.News" Width="1.5" PointX="3" PointY="18" />
+        <EntityTypeShape EntityType="ZoliksModel.Project" Width="1.5" PointX="0.75" PointY="22.375" />
+        <EntityTypeShape EntityType="ZoliksModel.Image" Width="1.5" PointX="10.5" PointY="43.625" />
+        <EntityTypeShape EntityType="ZoliksModel.Notification" Width="1.5" PointX="3" PointY="22" />
         <AssociationConnector Association="ZoliksModel.FK_News_Projects" />
-        <EntityTypeShape EntityType="ZoliksModel.User" Width="1.5" PointX="5.625" PointY="15.625" />
+        <EntityTypeShape EntityType="ZoliksModel.User" Width="1.5" PointX="8.25" PointY="19.75" />
         <AssociationConnector Association="ZoliksModel.FK_Users_Classes" />
-        <AssociationConnector Association="ZoliksModel.FK_Users_Images" ManuallyRouted="true" >
-          <ConnectorPoint PointX="7.875" PointY="41.3278063671875" />
-          <ConnectorPoint PointX="6.8712202750803488" PointY="41.3278063671875" />
-          <ConnectorPoint PointX="6.8712202750803488" PointY="22.9897265625" />
+        <AssociationConnector Association="ZoliksModel.FK_Users_Images" ManuallyRouted="false" >
         </AssociationConnector>
         <AssociationConnector Association="ZoliksModel.FK_Notifications_FromUser" />
         <AssociationConnector Association="ZoliksModel.FK_Transactions_FromUser" />
         <AssociationConnector Association="ZoliksModel.FK_Transactions_ToUser" ManuallyRouted="false" >
         </AssociationConnector>
         <AssociationConnector Association="ZoliksModel.FK_Zoliky_Users" />
-        <EntityTypeShape EntityType="ZoliksModel.UserLogin" Width="1.5" PointX="7.25" PointY="24.25" />
+        <EntityTypeShape EntityType="ZoliksModel.UserLogin" Width="1.5" PointX="6" PointY="22.375" />
         <AssociationConnector Association="ZoliksModel.FK_Logins_Projects" />
         <AssociationConnector Association="ZoliksModel.FK_Logins_Users" />
-        <EntityTypeShape EntityType="ZoliksModel.Token" Width="1.5" PointX="7.875" PointY="33.875" />
-        <AssociationConnector Association="ZoliksModel.FK_Tokens_Users" ManuallyRouted="true" >
-          <ConnectorPoint PointX="6.2555854191535172" PointY="22.9897265625" />
-          <ConnectorPoint PointX="6.2555854191535172" PointY="35.057444661458334" />
-          <ConnectorPoint PointX="6.7878869417470158" PointY="35.057444661458334" />
-          <ConnectorPoint PointX="7.1126959708735074" PointY="35.057444661458334" />
-          <ConnectorPoint PointX="7.875" PointY="35.057444661458334" />
+        <EntityTypeShape EntityType="ZoliksModel.Token" Width="1.5" PointX="10.5" PointY="37.75" />
+        <AssociationConnector Association="ZoliksModel.FK_Tokens_Users" ManuallyRouted="false" >
         </AssociationConnector>
         <AssociationConnector Association="ZoliksModel.FK_Notifications_Projects" />
         <AssociationConnector Association="ZoliksModel.FK_Notifications_ToUser" ManuallyRouted="false" >
         </AssociationConnector>
-        <EntityTypeShape EntityType="ZoliksModel.Unavailability" Width="1.5" PointX="3.375" PointY="32.75" />
+        <EntityTypeShape EntityType="ZoliksModel.Unavailability" Width="1.5" PointX="3" PointY="32.5" />
         <AssociationConnector Association="ZoliksModel.FK_Unavailabilities_Projects" />
-        <EntityTypeShape EntityType="ZoliksModel.Achievement" Width="1.5" PointX="10.125" PointY="39.625" />
-        <EntityTypeShape EntityType="ZoliksModel.Rank" Width="1.5" PointX="1.125" PointY="0.75" />
+        <EntityTypeShape EntityType="ZoliksModel.Achievement" Width="1.5" PointX="12.75" PointY="43.625" />
+        <EntityTypeShape EntityType="ZoliksModel.Rank" Width="1.5" PointX="0.75" PointY="0.75" />
         <AssociationConnector Association="ZoliksModel.FK_Achievements_LockedImage" />
         <AssociationConnector Association="ZoliksModel.FK_Achievements_UnlockedImage" />
-        <EntityTypeShape EntityType="ZoliksModel.Subject" Width="1.5" PointX="5.625" PointY="12.5" />
+        <EntityTypeShape EntityType="ZoliksModel.Subject" Width="1.5" PointX="8.25" PointY="16.625" />
         <AssociationConnector Association="ZoliksModel.FK_Zoliky_Subjects" />
         <AssociationConnector Association="ZoliksModel.FK_Zoliky_Teacher" />
-        <AssociationConnector Association="ZoliksModel.FK_Images_Owner" ManuallyRouted="true" >
-          <ConnectorPoint PointX="5.959545145336298" PointY="22.989726562499996" />
-          <ConnectorPoint PointX="5.959545145336298" PointY="28.695886577343749" />
-          <ConnectorPoint PointX="5.9774932567301144" PointY="28.695886577343749" />
-          <ConnectorPoint PointX="5.9774932567301144" PointY="40.281120546875" />
-          <ConnectorPoint PointX="7.875" PointY="40.281120546875" />
+        <AssociationConnector Association="ZoliksModel.FK_Images_Owner" ManuallyRouted="false" >
         </AssociationConnector>
-        <EntityTypeShape EntityType="ZoliksModel.UserSetting" Width="1.5" PointX="7.875" PointY="20" />
+        <EntityTypeShape EntityType="ZoliksModel.UserSetting" Width="1.5" PointX="10.5" PointY="18.375" />
         <AssociationConnector Association="ZoliksModel.FK_UserSettings_Projects" ManuallyRouted="false" >
         </AssociationConnector>
         <AssociationConnector Association="ZoliksModel.FK_Zoliky_OriginalOwner" />
-        <EntityTypeShape EntityType="ZoliksModel.Role" Width="1.5" PointX="3.375" PointY="16.5" />
+        <EntityTypeShape EntityType="ZoliksModel.Role" Width="1.5" PointX="6" PointY="19.5" />
         <AssociationConnector Association="ZoliksModel.UserRoles" />
         <AssociationConnector Association="ZoliksModel.ReadNotifications" ManuallyRouted="false" >
         </AssociationConnector>
-        <AssociationConnector Association="ZoliksModel.AchievementUnlocks" />
-        <EntityTypeShape EntityType="ZoliksModel.UserLoginToken" Width="1.5" PointX="7.875" PointY="36.875" />
-        <AssociationConnector Association="ZoliksModel.FK_UserLoginTokens_Users" ManuallyRouted="true" >
-          <ConnectorPoint PointX="7.0293626375401743" PointY="22.9897265625" />
-          <ConnectorPoint PointX="7.0293626375401743" PointY="37.865143229166662" />
-          <ConnectorPoint PointX="7.875" PointY="37.865143229166662" />
+        <EntityTypeShape EntityType="ZoliksModel.UserLoginToken" Width="1.5" PointX="10.5" PointY="40.875" />
+        <AssociationConnector Association="ZoliksModel.FK_UserLoginTokens_Users" ManuallyRouted="false" >
         </AssociationConnector>
         <AssociationConnector Association="ZoliksModel.FK_UserSettings_Users" />
-        <EntityTypeShape EntityType="ZoliksModel.UserLog" Width="1.5" PointX="7.875" PointY="31.25" />
-        <AssociationConnector Association="ZoliksModel.FK_UserLogs_Users" ManuallyRouted="true" >
-          <ConnectorPoint PointX="6.4677654846571073" PointY="22.9897265625" />
-          <ConnectorPoint PointX="6.4677654846571073" PointY="32.143992513020834" />
-          <ConnectorPoint PointX="6.7878869417470158" PointY="32.143992513020834" />
-          <ConnectorPoint PointX="7.1126959708735074" PointY="32.143992513020834" />
-          <ConnectorPoint PointX="7.875" PointY="32.143992513020834" />
+        <EntityTypeShape EntityType="ZoliksModel.UserLog" Width="1.5" PointX="10.5" PointY="35.25" />
+        <AssociationConnector Association="ZoliksModel.FK_UserLogs_Users" ManuallyRouted="false" >
         </AssociationConnector>
-        <EntityTypeShape EntityType="ZoliksModel.TeacherSubject" Width="1.5" PointX="10.875" PointY="21.125" />
+        <EntityTypeShape EntityType="ZoliksModel.TeacherSubject" Width="1.5" PointX="10.5" PointY="26.125" />
         <AssociationConnector Association="ZoliksModel.FK_TeacherSubjects_Classes" />
         <AssociationConnector Association="ZoliksModel.FK_TeacherSubjects_Subjects" />
         <AssociationConnector Association="ZoliksModel.FK_TeacherSubjects_Teachers" />
-        <EntityTypeShape EntityType="ZoliksModel.School" Width="1.875" PointX="0.75" PointY="12" />
+        <EntityTypeShape EntityType="ZoliksModel.School" Width="1.875" PointX="3.375" PointY="25.625" />
         <AssociationConnector Association="ZoliksModel.FK_Classes_Schools" />
         <AssociationConnector Association="ZoliksModel.FK_Users_Schools" />
         <AssociationConnector Association="ZoliksModel.FK_News_Users" />
-        <EntityTypeShape EntityType="ZoliksModel.Password" Width="1.5" PointX="7.875" PointY="10.625" />
+        <EntityTypeShape EntityType="ZoliksModel.Password" Width="1.5" PointX="10.5" PointY="14.875" />
         <AssociationConnector Association="ZoliksModel.FK_Passwords_Users" />
         <AssociationConnector Association="ZoliksModel.FK_Users_Passwords" />
         <AssociationConnector Association="ZoliksModel.SchoolSubjects" />
-        <EntityTypeShape EntityType="ZoliksModel.Ban" Width="1.5" PointX="7.875" PointY="28.125" />
-        <AssociationConnector Association="ZoliksModel.FK_Bans_Users" ManuallyRouted="true" >
-          <ConnectorPoint PointX="6.1099794901941173" PointY="22.9897265625" />
-          <ConnectorPoint PointX="6.1099794901941173" PointY="29.2112939453125" />
-          <ConnectorPoint PointX="6.1722520858201841" PointY="29.2112939453125" />
-          <ConnectorPoint PointX="6.33891875248685" PointY="29.2112939453125" />
-          <ConnectorPoint PointX="6.3844321513237743" PointY="29.2112939453125" />
-          <ConnectorPoint PointX="6.55109881799044" PointY="29.2112939453125" />
-          <ConnectorPoint PointX="6.7878869417470158" PointY="29.2112939453125" />
-          <ConnectorPoint PointX="7.1126959708735074" PointY="29.2112939453125" />
-          <ConnectorPoint PointX="7.875" PointY="29.2112939453125" />
+        <EntityTypeShape EntityType="ZoliksModel.Ban" Width="1.5" PointX="10.5" PointY="32.375" />
+        <AssociationConnector Association="ZoliksModel.FK_Bans_Users" ManuallyRouted="false" >
         </AssociationConnector>
+        <EntityTypeShape EntityType="ZoliksModel.AchievementUnlock" Width="1.5" PointX="15" PointY="32.125" />
+        <AssociationConnector Association="ZoliksModel.FK_AchievementUnlocks_Achievements" />
+        <AssociationConnector Association="ZoliksModel.FK_AchievementUnlocks_Users" />
         </Diagram>
       <Diagram DiagramId="667462baa1f84e3eb3fa1facae8a8a2d" Name="Support" >
         <EntityTypeShape EntityType="ZoliksModel.Ticket" Width="1.5" PointX="3" PointY="1.25" />

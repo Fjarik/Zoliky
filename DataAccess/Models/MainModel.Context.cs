@@ -56,6 +56,7 @@ namespace DataAccess.Models
         public virtual DbSet<School> Schools { get; set; }
         public virtual DbSet<Password> Passwords { get; set; }
         public virtual DbSet<Ban> Bans { get; set; }
+        public virtual DbSet<AchievementUnlock> AchievementUnlocks { get; set; }
     
         public virtual ObjectResult<Notification> GetAllNotifications()
         {

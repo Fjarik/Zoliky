@@ -195,7 +195,7 @@ namespace DataAccess.Models
 
 #endregion
 
-	public partial class Achievement : IDbEntity
+	public partial class Achievement : IAchievement
 	{
 		public string Shortcut
 		{
@@ -209,6 +209,8 @@ namespace DataAccess.Models
 			}
 		}
 	}
+
+	public partial class AchievementUnlock : IDbObject { }
 
 	[MetadataType(typeof(BanMetadata))]
 	public partial class Ban : IDbEntity
@@ -500,9 +502,6 @@ namespace DataAccess.Models
 			public ICollection<Notification> ReadNotifications { get; set; }
 
 			[JsonIgnore]
-			public ICollection<Achievement> Achievements { get; set; }
-
-			[JsonIgnore]
 			public ICollection<Zolik> OriginalZoliks { get; set; }
 
 			[JsonIgnore]
@@ -513,6 +512,9 @@ namespace DataAccess.Models
 
 			[JsonIgnore]
 			public ICollection<TeacherSubject> Teaching { get; set; }
+
+			[JsonIgnore]
+			public ICollection<AchievementUnlock> AchievementUnlocks { get; set; }
 		}
 	}
 

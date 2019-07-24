@@ -12,6 +12,7 @@ using SharedLibrary;
 using SharedLibrary.Enums;
 using SharedLibrary.Interfaces;
 using SharedLibrary.Shared;
+using Z.EntityFramework.Plus;
 
 namespace DataAccess.Managers
 {
@@ -135,6 +136,10 @@ namespace DataAccess.Managers
 				_ctx.TeacherSubjects.RemoveRange(teacherSubs);
 				await _ctx.SaveChangesAsync();
 
+				var ach = await _ctx.AchievementUnlocks.Where(x => x.UserId == id).DeleteAsync();
+				//_ctx.AchievementUnlocks.RemoveRange(ach);
+				//await _ctx.SaveChangesAsync();
+
 #endregion
 
 #region News
@@ -188,7 +193,6 @@ namespace DataAccess.Managers
 				u.UserSettings.Clear();
 				u.Roles.Clear();
 				u.ReadNotifications.Clear();
-				u.Achievements.Clear();
 				u.LoginTokens.Clear();
 				await SaveAsync(u);
 

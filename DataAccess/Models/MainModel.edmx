@@ -24,6 +24,7 @@
           </Key>
           <Property Name="UserId" Type="int" Nullable="false" />
           <Property Name="AchievementId" Type="int" Nullable="false" />
+          <Property Name="When" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="AnonymTicketComments">
           <Key>
@@ -1422,10 +1423,6 @@
             <End Role="Notification" EntitySet="Notifications" />
             <End Role="User" EntitySet="Users" />
           </AssociationSet>
-          <AssociationSet Name="AchievementUnlocks" Association="ZoliksModel.AchievementUnlocks">
-            <End Role="Achievement" EntitySet="Achievements" />
-            <End Role="User" EntitySet="Users" />
-          </AssociationSet>
           <EntitySet Name="UserLoginTokens" EntityType="ZoliksModel.UserLoginToken" />
           <AssociationSet Name="FK_UserLoginTokens_Users" Association="ZoliksModel.FK_UserLoginTokens_Users">
             <End Role="User" EntitySet="Users" />
@@ -1560,6 +1557,15 @@
             <End Role="User" EntitySet="Users" />
             <End Role="Ban" EntitySet="Bans" />
           </AssociationSet>
+          <EntitySet Name="AchievementUnlocks" EntityType="ZoliksModel.AchievementUnlock" />
+          <AssociationSet Name="FK_AchievementUnlocks_Achievements" Association="ZoliksModel.FK_AchievementUnlocks_Achievements">
+            <End Role="Achievement" EntitySet="Achievements" />
+            <End Role="AchievementUnlock" EntitySet="AchievementUnlocks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AchievementUnlocks_Users" Association="ZoliksModel.FK_AchievementUnlocks_Users">
+            <End Role="User" EntitySet="Users" />
+            <End Role="AchievementUnlock" EntitySet="AchievementUnlocks" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="Class">
           <Key>
@@ -1667,7 +1673,6 @@
           <NavigationProperty Name="UserSettings" Relationship="ZoliksModel.FK_UserSettings_Users" FromRole="User" ToRole="UserSetting" />
           <NavigationProperty Name="Roles" Relationship="ZoliksModel.UserRoles" FromRole="User" ToRole="Role" />
           <NavigationProperty Name="ReadNotifications" Relationship="ZoliksModel.ReadNotifications" FromRole="User" ToRole="Notification" />
-          <NavigationProperty Name="Achievements" Relationship="ZoliksModel.AchievementUnlocks" FromRole="User" ToRole="Achievement" />
           <NavigationProperty Name="OriginalZoliks" Relationship="ZoliksModel.FK_Zoliky_Users" FromRole="User" ToRole="Zolik" />
           <NavigationProperty Name="LoginTokens" Relationship="ZoliksModel.FK_UserLoginTokens_Users" FromRole="User" ToRole="UserLoginToken" />
           <NavigationProperty Name="Logins" Relationship="ZoliksModel.FK_Logins_Users" FromRole="User" ToRole="UserLogin" />
@@ -1675,6 +1680,7 @@
           <NavigationProperty Name="UserLogs" Relationship="ZoliksModel.FK_UserLogs_Users" FromRole="User" ToRole="UserLog" a:GetterAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" a:SetterAccess="Private" />
           <NavigationProperty Name="Teaching" Relationship="ZoliksModel.FK_TeacherSubjects_Teachers" FromRole="User" ToRole="TeacherSubject" a:GetterAccess="Public" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
           <NavigationProperty Name="Bans" Relationship="ZoliksModel.FK_Bans_Users" FromRole="User" ToRole="Ban" />
+          <NavigationProperty Name="AchievementUnlocks" Relationship="ZoliksModel.FK_AchievementUnlocks_Users" FromRole="User" ToRole="AchievementUnlock" />
         </EntityType>
         <Association Name="FK_Users_Classes">
           <End Type="ZoliksModel.Class" Role="Class" Multiplicity="0..1" />
@@ -2003,10 +2009,6 @@
         </Association>
         <Association Name="ReadNotifications">
           <End Type="ZoliksModel.Notification" Role="Notification" Multiplicity="*" />
-          <End Type="ZoliksModel.User" Role="User" Multiplicity="*" />
-        </Association>
-        <Association Name="AchievementUnlocks">
-          <End Type="ZoliksModel.Achievement" Role="Achievement" Multiplicity="*" />
           <End Type="ZoliksModel.User" Role="User" Multiplicity="*" />
         </Association>
         <EntityType Name="UserLoginToken">
@@ -2459,6 +2461,40 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="AchievementUnlock">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="AchievementId" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="AchievementId" Type="Int32" Nullable="false" />
+          <Property Name="When" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Achievement" Relationship="ZoliksModel.FK_AchievementUnlocks_Achievements" FromRole="AchievementUnlock" ToRole="Achievement" />
+        </EntityType>
+        <Association Name="FK_AchievementUnlocks_Achievements">
+          <End Type="ZoliksModel.Achievement" Role="Achievement" Multiplicity="1" />
+          <End Type="ZoliksModel.AchievementUnlock" Role="AchievementUnlock" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Achievement">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="AchievementUnlock">
+              <PropertyRef Name="AchievementId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AchievementUnlocks_Users">
+          <End Type="ZoliksModel.User" Role="User" Multiplicity="1" />
+          <End Type="ZoliksModel.AchievementUnlock" Role="AchievementUnlock" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="AchievementUnlock">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2693,14 +2729,6 @@
             </EndProperty>
             <EndProperty Name="Notification">
               <ScalarProperty Name="ID" ColumnName="NotificationID" />
-            </EndProperty>
-          </AssociationSetMapping>
-          <AssociationSetMapping Name="AchievementUnlocks" TypeName="ZoliksModel.AchievementUnlocks" StoreEntitySet="AchievementUnlocks">
-            <EndProperty Name="User">
-              <ScalarProperty Name="ID" ColumnName="UserId" />
-            </EndProperty>
-            <EndProperty Name="Achievement">
-              <ScalarProperty Name="ID" ColumnName="AchievementId" />
             </EndProperty>
           </AssociationSetMapping>
           <EntitySetMapping Name="UserLoginTokens">
@@ -2939,6 +2967,15 @@
                 <ScalarProperty Name="From" ColumnName="From" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AchievementUnlocks">
+            <EntityTypeMapping TypeName="ZoliksModel.AchievementUnlock">
+              <MappingFragment StoreEntitySet="AchievementUnlocks">
+                <ScalarProperty Name="When" ColumnName="When" />
+                <ScalarProperty Name="AchievementId" ColumnName="AchievementId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -59,6 +59,39 @@ namespace DataAccess.Managers
 
 #region Own Methods
 
+		public async Task<IList<AchievementUnlock>> GetUnlockedIdsAsync(int userId)
+		{
+			if (userId < 1) {
+				return new List<AchievementUnlock>();
+			}
+			return await _ctx.AchievementUnlocks
+							 .Where(x => x.UserId == userId)
+							 .ToListAsync();
+		}
+
+		public Task<bool> IsUnlockedAsync(int userId, int achId)
+		{
+			return _ctx.AchievementUnlocks
+					   .AnyAsync(x => x.UserId == userId &&
+									  x.AchievementId == achId);
+		}
+
+		public async Task<MActionResult<AchievementUnlock>> UnlockAsync(int userId, int achId)
+		{
+			if (userId < 1 || achId < 1) {
+				return new MActionResult<AchievementUnlock>(StatusCode.NotValidID);
+			}
+			if ((await IsUnlockedAsync(userId, achId))) {
+				return new MActionResult<AchievementUnlock>(StatusCode.AlreadyExists);
+			}
+			var ent = new AchievementUnlock() {
+				UserId = userId,
+				AchievementId = achId,
+				When = DateTime.Now
+			};
+			return await this.CreateUnlockAsync(ent);
+		}
+
 		public async Task<MActionResult<Achievement>> CreateAsync(string title,
 																  string desc,
 																  int xp,
@@ -81,6 +114,21 @@ namespace DataAccess.Managers
 				Enabled = true
 			};
 			return await base.CreateAsync(ent);
+		}
+
+		private async Task<MActionResult<AchievementUnlock>> CreateUnlockAsync(AchievementUnlock unlock)
+		{
+			var ent = _ctx.AchievementUnlocks.Add(unlock);
+			var changes = await base.SaveAsync();
+			if (changes == 0) {
+				return new MActionResult<AchievementUnlock>(StatusCode.InternalError);
+			}
+			ent = await _ctx.AchievementUnlocks
+							.AsNoTracking()
+							.Include(x => x.Achievement)
+							.FirstOrDefaultAsync(x => x.UserId == ent.UserId &&
+													  x.AchievementId == ent.AchievementId);
+			return new MActionResult<AchievementUnlock>(StatusCode.OK, ent);
 		}
 
 #endregion

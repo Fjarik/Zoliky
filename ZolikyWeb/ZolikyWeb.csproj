@@ -858,6 +858,7 @@
     <Content Include="Content\Images\SVGs\Settings.svg" />
     <Content Include="Content\Images\SVGs\Stats.svg" />
     <Content Include="Content\Images\SVGs\Transactions.svg" />
+    <Content Include="Content\Images\SVGs\Trophy.svg" />
     <Content Include="Content\Images\SVGs\User.svg" />
     <Content Include="Content\Images\SVGs\windows.svg" />
     <Content Include="Content\Images\SVGs\ZolikyDesktopIcon.svg" />
@@ -1406,6 +1407,7 @@
     <Compile Include="Areas\App\Models\Account\GeneralModel.cs" />
     <Compile Include="Areas\App\Models\Account\NotificationModel.cs" />
     <Compile Include="Areas\App\Models\Account\PrivacyModel.cs" />
+    <Compile Include="Areas\App\Models\Achievement\AchievementModel.cs" />
     <Compile Include="Areas\App\Models\DashboardModel.cs" />
     <Compile Include="Areas\App\Models\ExternalLoginModel.cs" />
     <Compile Include="Areas\App\Models\SettingsModel.cs" />
