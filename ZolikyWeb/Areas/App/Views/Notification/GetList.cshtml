@@ -1,0 +1,22 @@
+﻿@model IEnumerable<DataAccess.Models.Notification>
+
+@if (Model.Any()) {
+	foreach (var notif in Model) {
+		<!-- Message -->
+		<a href="@Url.Action("Dashboard", "Notification", new {Area = "App", id = notif.ID})">
+			<div class="btn btn-danger btn-circle">
+				<i class="fa fa-link"></i>
+			</div>
+			<div class="mail-contnet">
+				<h5>@notif.Title</h5>
+				<span class="mail-desc">@notif.Subtitle</span>
+				<span class="time">@notif.Created.ToString("dd.MM HH:MM")</span>
+			</div>
+		</a>
+		<!-- /Message -->
+	}
+} else {
+	<div class="text-center my-3">
+		Aktuálně nejsou k zobrazení žádné notifikace
+	</div>
+}

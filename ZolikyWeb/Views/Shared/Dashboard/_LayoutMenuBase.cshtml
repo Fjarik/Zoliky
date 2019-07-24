@@ -37,7 +37,7 @@
 					<!-- Dark Logo icon -->
 					<img src="@Url.Content("~/Content/Images/Icons/Logo/ZolikyIconBlack_50.png")" alt="homepage" class="dark-logo" />
 					<!-- Light Logo icon -->
-						<img src="@Url.Content("~/Content/Images/Icons/Logo/ZolikyIconWhite_50.png")" alt="homepage" class="light-logo" />
+					<img src="@Url.Content("~/Content/Images/Icons/Logo/ZolikyIconWhite_50.png")" alt="homepage" class="light-logo" />
 				</strong>
 				<!--End Logo icon -->
 				<!-- Logo text -->
@@ -71,8 +71,8 @@
 				<!-- School -->
 				<li class="nav-item">
 					@*<a class="nav-link text-muted" href="@Url.Action()">
-					@school
-					</a>*@
+						@school
+						</a>*@
 					<span class="nav-link text-white NoSelect" title="@school" style="text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">
 						@school
 					</span>
@@ -102,64 +102,22 @@
 							</li>
 							<li>
 								<div class="message-center">
-									@if (ViewBag.Notifications is List<Notification> notifs) {
-										foreach (var notif in notifs) {
-											<a href="@Url.Action("", "", new {Area = "App", id = notif.ID})">
-												<div class="btn btn-danger btn-circle">
-													<i class="fa fa-link"></i>
-												</div>
-												<div class="mail-contnet">
-													<h5>@notif.Title</h5> 
-													<span class="mail-desc">@notif.Content</span> 
-													<span class="time">@notif.Created.ToString("dd.MM HH:MM")</span>
-												</div>
-											</a>
-										}
-									} else {
-										<div class="text-center my-3">
-											Aktuálně nejsou k zobrazení žádné notifikace
-										</div>
-									}
-									<!-- Message -->
-									@*<a href="#">
-										<div class="btn btn-danger btn-circle">
-											<i class="fa fa-link"></i>
-										</div>
-										<div class="mail-contnet">
-											<h5>Luanch Admin</h5> 
-											<span class="mail-desc">Just see the my new admin!</span> 
-											<span class="time">9:30 AM</span>
-										</div>
-									</a>
-									<!-- Message -->
-									<a href="#">
-										<div class="btn btn-success btn-circle">
-											<i class="ti-calendar"></i>
-										</div>
-										<div class="mail-contnet">
-											<h5>Event today</h5> 
-											<span class="mail-desc">Just a reminder that you have event</span> 
-											<span class="time">9:10 AM</span>
-										</div>
-									</a>
-									<!-- Message -->
-									<a href="#">
-										<div class="btn btn-info btn-circle">
-											<i class="ti-settings"></i>
-										</div>
-										<div class="mail-contnet">
-											<h5>Settings</h5> 
-											<span class="mail-desc">You can customize this template as you want</span> 
-											<span class="time">9:08 AM</span>
-										</div>
-									</a>
-									<!-- Message -->
-									<a href="#">
-										<div class="btn btn-primary btn-circle"><i class="ti-user"></i></div>
-										<div class="mail-contnet">
-											<h5>Pavan kumar</h5> <span class="mail-desc">Just see the my admin!</span> <span class="time">9:02 AM</span>
-										</div>
-									</a>*@
+									<div class="linear-activity" title="Probíhá načítání" data-toggle="tooltip">
+										<div class="indeterminate"></div>
+									</div>
+									@*
+										<!-- Message -->
+										<a href="#">
+											<div class="btn btn-danger btn-circle">
+												<i class="fa fa-link"></i>
+											</div>
+											<div class="mail-contnet">
+												<h5>Luanch Admin</h5>
+												<span class="mail-desc">Just see the my new admin!</span>
+												<span class="time">9:30 AM</span>
+											</div>
+										</a>
+									*@
 								</div>
 							</li>
 							<li>
@@ -236,7 +194,7 @@
 					</a>
 				} else {
 					<a href="#" class="dropdown-toggle u-dropdown" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">
-							@User.Identity.Name @(User.Identity.IsTester() ? "(Tester)" : "")
+						@User.Identity.Name @(User.Identity.IsTester() ? "(Tester)" : "")
 					</a>
 					<div class="dropdown-menu animated">
 						<a href="#" class="dropdown-item">
@@ -255,7 +213,7 @@
 		<!-- End User profile text-->
 		<!-- Sidebar navigation-->
 		<nav class="sidebar-nav">
-			<ul id="sidebarnav">				
+			<ul id="sidebarnav">
 				@RenderSection("menu", true)
 			</ul>
 		</nav>
@@ -382,6 +340,23 @@
 
 
 @section scripts {
+	<script type="text/javascript" language="javascript">
+		$(function() {
+			$.ajax({
+				url: "@Url.Action("GetList", "Notification", new {Area = "App"})",
+				type: "GET",
+				datatype: "html",
+				success: function (result) {
+					//var test = $.parseHTML(result);
+					$(".message-center").html(result);
+				},
+				error: function(err) {
+					console.log(err);
+					alert("A kruci! Vyskytla se chyba při načítání notifikací :(");
+				}
+			});
+		});
+	</script>
 	@RenderSection("scripts", false)
 }
 

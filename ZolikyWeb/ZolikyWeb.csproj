@@ -1210,6 +1210,8 @@
     <Content Include="Areas\Admin\Views\School\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\Admin\_SendNotificationPartial.cshtml" />
     <Content Include="Areas\App\Views\Achievement\Dashboard.cshtml" />
+    <Content Include="Areas\App\Views\Notification\Dashboard.cshtml" />
+    <Content Include="Areas\App\Views\Notification\GetList.cshtml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\fa-all.js" />
     <Content Include="Scripts\fa-all.min.js" />
@@ -1494,7 +1496,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Areas\App\Views\Notification\" />
     <Folder Include="fonts\" />
     <Folder Include="Scripts\NewFolder1\" />
   </ItemGroup>
