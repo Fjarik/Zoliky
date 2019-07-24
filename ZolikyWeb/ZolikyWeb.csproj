@@ -1399,6 +1399,7 @@
     <Compile Include="Areas\App\Controllers\AccountController.cs" />
     <Compile Include="Areas\App\Controllers\AchievementController.cs" />
     <Compile Include="Areas\App\Controllers\NewsController.cs" />
+    <Compile Include="Areas\App\Controllers\NotificationController.cs" />
     <Compile Include="Areas\App\Controllers\TransactionsController.cs" />
     <Compile Include="Areas\App\Controllers\ZolikyController.cs" />
     <Compile Include="Areas\App\Models\Account\ChangePasswordModel.cs" />
@@ -1493,6 +1494,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Areas\App\Views\Notification\" />
     <Folder Include="fonts\" />
     <Folder Include="Scripts\NewFolder1\" />
   </ItemGroup>

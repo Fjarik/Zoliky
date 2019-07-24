@@ -19,7 +19,6 @@ namespace DataAccess.Models
         {
             this.UserSettings = new HashSet<UserSetting>();
             this.Roles = new HashSet<Role>();
-            this.ReadNotifications = new HashSet<Notification>();
             this.OriginalZoliks = new HashSet<Zolik>();
             this.LoginTokens = new HashSet<UserLoginToken>();
             this.Logins = new HashSet<UserLogin>();
@@ -27,6 +26,7 @@ namespace DataAccess.Models
             this.Teaching = new HashSet<TeacherSubject>();
             this.Bans = new HashSet<Ban>();
             this.AchievementUnlocks = new HashSet<AchievementUnlock>();
+            this.Notifications = new HashSet<Notification>();
         }
     
         public int ID { get; set; }
@@ -58,8 +58,6 @@ namespace DataAccess.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Role> Roles { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Notification> ReadNotifications { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Zolik> OriginalZoliks { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserLoginToken> LoginTokens { get; set; }
@@ -73,5 +71,7 @@ namespace DataAccess.Models
         public virtual ICollection<Ban> Bans { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AchievementUnlock> AchievementUnlocks { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Notification> Notifications { get; set; }
     }
 }

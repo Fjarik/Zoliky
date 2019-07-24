@@ -30,6 +30,7 @@ namespace DataAccess
 			app.CreatePerOwinContext<ImageManager>(ImageManager.Create);
 			app.CreatePerOwinContext<LoginTokenManager>(LoginTokenManager.Create);
 			app.CreatePerOwinContext<NewsManager>(NewsManager.Create);
+			app.CreatePerOwinContext<NotificationManager>(NotificationManager.Create);
 			app.CreatePerOwinContext<ProjectManager>(ProjectManager.Create);
 			app.CreatePerOwinContext<RankManager>(RankManager.Create);
 			app.CreatePerOwinContext<SubjectManager>(SubjectManager.Create);
@@ -144,6 +145,11 @@ namespace DataAccess
 		public static Expression<Func<Ban, bool>> IsActive()
 		{
 			return x => x.To == null || (x.To != null && x.To > DateTime.Now);
+		}
+
+		public static Expression<Func<Notification, bool>> IsNotExpired()
+		{
+			return x => x.Expiration == null || (x.Expiration != null && x.Expiration > DateTime.Now);
 		}
 
 #endregion

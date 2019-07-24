@@ -134,6 +134,7 @@
     <Compile Include="Managers\MailManager.cs" />
     <Compile Include="Managers\Manager.cs" />
     <Compile Include="Managers\NewsManager.cs" />
+    <Compile Include="Managers\NotificationManager.cs" />
     <Compile Include="Managers\ProjectManager.cs" />
     <Compile Include="Managers\HashManager.cs" />
     <Compile Include="Managers\RankManager.cs" />

@@ -21,27 +21,6 @@ namespace SharedLibrary.Enums
 		Closed = 6
 	}
 
-	public enum CrashStatus : byte
-	{
-		[Description("Crash report předán vývojářům")]
-		Created = 1,
-
-		[Description("Probíhá kontrolování reportu")]
-		Checking = 3,
-
-		[Description("Vývojáři pracují na opravě")]
-		WorkingOn = 5,
-
-		[Description("Probáhá testování oprav")]
-		Testing = 10,
-
-		[Description("Chyba byla opravena")]
-		Repaired = 15,
-
-		[Description("Chyba nemůže být opravena")]
-		CantRepair = 20,
-	}
-
 	public enum Projects : int
 	{
 		[Description("Webová aplikace")]
@@ -88,27 +67,6 @@ namespace SharedLibrary.Enums
 
 		[Description("Jiný")]
 		Other = 4,
-	}
-
-	public enum Terms : int
-	{
-		[Description("Privacy policy")]
-		PP = 1,
-
-		[Description("Terms of usage")]
-		TOS = 2,
-
-		[Description("Newsletter")]
-		News = 3,
-
-		[Description("DELTA Wiki")]
-		Wiki = 4,
-
-		[Description("Planned features")]
-		Planned = 5,
-
-		[Description("Testers")]
-		Testers = 6
 	}
 
 	public enum TransactionAssignment : byte
@@ -177,18 +135,6 @@ namespace SharedLibrary.Enums
 		DebugJoker = 6,
 	}
 
-	public enum NotificationType : int
-	{
-		[Description("Uživatelská notifikace")]
-		User = 0,
-
-		[Description("Notifikace pro celý projekt")]
-		Project = 5,
-
-		[Description("Globální notifikace")]
-		Global = 10
-	}
-
 	public enum PageStatus : int
 	{
 		[Description("je plně funkční")]
@@ -246,15 +192,6 @@ namespace SharedLibrary.Enums
 
 		[Description("Error")]
 		Error = 500
-	}
-
-	public enum MobileType : int
-	{
-		Android = 1,
-		IOS = 5,
-		PC = 7,
-		Unknown = 9,
-		Other = 10
 	}
 
 	public enum WhatToCheck : int

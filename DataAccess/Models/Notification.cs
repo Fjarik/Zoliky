@@ -15,13 +15,14 @@ namespace DataAccess.Models
     public partial class Notification
     {
         public int ID { get; set; }
-        public Nullable<int> FromID { get; set; }
-        public Nullable<int> ToID { get; set; }
+        public int ToID { get; set; }
         public Nullable<int> ProjectID { get; set; }
         public string Title { get; set; }
+        public string Subtitle { get; set; }
         public string Content { get; set; }
-        public bool Visible { get; set; }
         public System.DateTime Created { get; set; }
         public Nullable<System.DateTime> Expiration { get; set; }
+        public bool Seen { get; set; }
+        public bool Removed { get; set; }
     }
 }

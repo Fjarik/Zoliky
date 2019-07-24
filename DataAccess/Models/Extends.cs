@@ -285,33 +285,9 @@ namespace DataAccess.Models
 
 	public partial class Notification : IDbEntity
 	{
-		public NotificationType Type
-		{
-			get
-			{
-				if (ToID == null && ProjectID == null) {
-					return NotificationType.Global;
-				}
+		public Projects? Project => (Projects?) this.ProjectID;
 
-				if (ProjectID != null) {
-					return NotificationType.Project;
-				}
-
-				return NotificationType.User;
-			}
-		}
-
-		public bool IsExpired
-		{
-			get
-			{
-				if (Expiration == null) {
-					return false;
-				}
-
-				return Expiration < DateTime.Now;
-			}
-		}
+		public bool IsExpired => !(Extensions.IsNotExpired().Compile()(this));
 	}
 
 	public partial class Project : IDbEntity
@@ -499,9 +475,6 @@ namespace DataAccess.Models
 			public ICollection<UserSetting> UserSettings { get; set; }
 
 			[JsonIgnore]
-			public ICollection<Notification> ReadNotifications { get; set; }
-
-			[JsonIgnore]
 			public ICollection<Zolik> OriginalZoliks { get; set; }
 
 			[JsonIgnore]
@@ -515,6 +488,9 @@ namespace DataAccess.Models
 
 			[JsonIgnore]
 			public ICollection<AchievementUnlock> AchievementUnlocks { get; set; }
+
+			[JsonIgnore]
+			public ICollection<Notification> Notifications { get; set; }
 		}
 	}
 

@@ -127,14 +127,15 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="ToID" Type="int" />
-          <Property Name="FromID" Type="int" />
+          <Property Name="ToID" Type="int" Nullable="false" />
           <Property Name="ProjectID" Type="int" />
           <Property Name="Title" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="Content" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Subtitle" Type="nvarchar" MaxLength="200" />
+          <Property Name="Content" Type="nvarchar(max)" />
           <Property Name="Created" Type="datetime" Nullable="false" />
           <Property Name="Expiration" Type="datetime" />
-          <Property Name="Visible" Type="bit" Nullable="false" />
+          <Property Name="Seen" Type="bit" Nullable="false" />
+          <Property Name="Removed" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Passwords">
           <Key>
@@ -167,14 +168,6 @@
           <Property Name="FromXP" Type="int" Nullable="false" />
           <Property Name="ToXP" Type="int" />
           <Property Name="Colour" Type="nvarchar" MaxLength="20" />
-        </EntityType>
-        <EntityType Name="ReadNotifications">
-          <Key>
-            <PropertyRef Name="UserID" />
-            <PropertyRef Name="NotificationID" />
-          </Key>
-          <Property Name="UserID" Type="int" Nullable="false" />
-          <Property Name="NotificationID" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Roles">
           <Key>
@@ -573,18 +566,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Notifications_FromUser">
-          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
-          <End Role="Notifications" Type="Self.Notifications" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Users">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="Notifications">
-              <PropertyRef Name="FromID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Notifications_Projects">
           <End Role="Projects" Type="Self.Projects" Multiplicity="0..1" />
           <End Role="Notifications" Type="Self.Notifications" Multiplicity="*" />
@@ -598,7 +579,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Notifications_ToUser">
-          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
           <End Role="Notifications" Type="Self.Notifications" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Users">
@@ -618,30 +599,6 @@
             </Principal>
             <Dependent Role="Passwords">
               <PropertyRef Name="OwnerID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ReadNotifications_Notifications">
-          <End Role="Notifications" Type="Self.Notifications" Multiplicity="1" />
-          <End Role="ReadNotifications" Type="Self.ReadNotifications" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Notifications">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="ReadNotifications">
-              <PropertyRef Name="NotificationID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ReadNotifications_Users">
-          <End Role="Users" Type="Self.Users" Multiplicity="1" />
-          <End Role="ReadNotifications" Type="Self.ReadNotifications" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Users">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="ReadNotifications">
-              <PropertyRef Name="UserID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1038,7 +995,6 @@
           <EntitySet Name="Passwords" EntityType="Self.Passwords" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Projects" EntityType="Self.Projects" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Ranks" EntityType="Self.Ranks" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="ReadNotifications" EntityType="Self.ReadNotifications" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Roles" EntityType="Self.Roles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Schools" EntityType="Self.Schools" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SchoolSubjects" EntityType="Self.SchoolSubjects" Schema="dbo" store:Type="Tables" />
@@ -1121,10 +1077,6 @@
             <End Role="Users" EntitySet="Users" />
             <End Role="News" EntitySet="News" />
           </AssociationSet>
-          <AssociationSet Name="FK_Notifications_FromUser" Association="Self.FK_Notifications_FromUser">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="Notifications" EntitySet="Notifications" />
-          </AssociationSet>
           <AssociationSet Name="FK_Notifications_Projects" Association="Self.FK_Notifications_Projects">
             <End Role="Projects" EntitySet="Projects" />
             <End Role="Notifications" EntitySet="Notifications" />
@@ -1136,14 +1088,6 @@
           <AssociationSet Name="FK_Passwords_Users" Association="Self.FK_Passwords_Users">
             <End Role="Users" EntitySet="Users" />
             <End Role="Passwords" EntitySet="Passwords" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ReadNotifications_Notifications" Association="Self.FK_ReadNotifications_Notifications">
-            <End Role="Notifications" EntitySet="Notifications" />
-            <End Role="ReadNotifications" EntitySet="ReadNotifications" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ReadNotifications_Users" Association="Self.FK_ReadNotifications_Users">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="ReadNotifications" EntitySet="ReadNotifications" />
           </AssociationSet>
           <AssociationSet Name="FK_SchoolSubjects_Schools" Association="Self.FK_SchoolSubjects_Schools">
             <End Role="Schools" EntitySet="Schools" />
@@ -1338,10 +1282,6 @@
             <End Role="Image" EntitySet="Images" />
             <End Role="User" EntitySet="Users" />
           </AssociationSet>
-          <AssociationSet Name="FK_Notifications_FromUser" Association="ZoliksModel.FK_Notifications_FromUser">
-            <End Role="User" EntitySet="Users" />
-            <End Role="Notification" EntitySet="Notifications" />
-          </AssociationSet>
           <AssociationSet Name="FK_Transactions_FromUser" Association="ZoliksModel.FK_Transactions_FromUser">
             <End Role="User" EntitySet="Users" />
             <End Role="Transaction" EntitySet="Transactions" />
@@ -1417,10 +1357,6 @@
           <EntitySet Name="Roles" EntityType="ZoliksModel.Role" />
           <AssociationSet Name="UserRoles" Association="ZoliksModel.UserRoles">
             <End Role="Role" EntitySet="Roles" />
-            <End Role="User" EntitySet="Users" />
-          </AssociationSet>
-          <AssociationSet Name="ReadNotifications" Association="ZoliksModel.ReadNotifications">
-            <End Role="Notification" EntitySet="Notifications" />
             <End Role="User" EntitySet="Users" />
           </AssociationSet>
           <EntitySet Name="UserLoginTokens" EntityType="ZoliksModel.UserLoginToken" />
@@ -1623,14 +1559,15 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="FromID" Type="Int32" />
-          <Property Name="ToID" Type="Int32" />
-          <Property Name="ProjectID" Type="Int32" />
+          <Property Name="ToID" Type="Int32" Nullable="false" />
+          <Property Name="ProjectID" Type="Int32" Nullable="true" />
           <Property Name="Title" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Content" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Visible" Type="Boolean" Nullable="false" />
+          <Property Name="Subtitle" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="true" />
+          <Property Name="Content" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="true" />
           <Property Name="Created" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Expiration" Type="DateTime" Precision="3" />
+          <Property Name="Expiration" Type="DateTime" Precision="3" Nullable="true" />
+          <Property Name="Seen" Type="Boolean" Nullable="false" />
+          <Property Name="Removed" Type="Boolean" Nullable="false" />
           </EntityType>
         <Association Name="FK_News_Projects">
           <End Type="ZoliksModel.Project" Role="Project" Multiplicity="0..1" />
@@ -1672,7 +1609,6 @@
           <NavigationProperty Name="School" Relationship="ZoliksModel.FK_Users_Schools" FromRole="User" ToRole="School" />
           <NavigationProperty Name="UserSettings" Relationship="ZoliksModel.FK_UserSettings_Users" FromRole="User" ToRole="UserSetting" />
           <NavigationProperty Name="Roles" Relationship="ZoliksModel.UserRoles" FromRole="User" ToRole="Role" />
-          <NavigationProperty Name="ReadNotifications" Relationship="ZoliksModel.ReadNotifications" FromRole="User" ToRole="Notification" />
           <NavigationProperty Name="OriginalZoliks" Relationship="ZoliksModel.FK_Zoliky_Users" FromRole="User" ToRole="Zolik" />
           <NavigationProperty Name="LoginTokens" Relationship="ZoliksModel.FK_UserLoginTokens_Users" FromRole="User" ToRole="UserLoginToken" />
           <NavigationProperty Name="Logins" Relationship="ZoliksModel.FK_Logins_Users" FromRole="User" ToRole="UserLogin" />
@@ -1681,6 +1617,7 @@
           <NavigationProperty Name="Teaching" Relationship="ZoliksModel.FK_TeacherSubjects_Teachers" FromRole="User" ToRole="TeacherSubject" a:GetterAccess="Public" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
           <NavigationProperty Name="Bans" Relationship="ZoliksModel.FK_Bans_Users" FromRole="User" ToRole="Ban" />
           <NavigationProperty Name="AchievementUnlocks" Relationship="ZoliksModel.FK_AchievementUnlocks_Users" FromRole="User" ToRole="AchievementUnlock" />
+          <NavigationProperty Name="Notifications" Relationship="ZoliksModel.FK_Notifications_ToUser" FromRole="User" ToRole="Notification" />
         </EntityType>
         <Association Name="FK_Users_Classes">
           <End Type="ZoliksModel.Class" Role="Class" Multiplicity="0..1" />
@@ -1703,18 +1640,6 @@
             </Principal>
             <Dependent Role="User">
               <PropertyRef Name="ProfilePhotoID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Notifications_FromUser">
-          <End Type="ZoliksModel.User" Role="User" Multiplicity="0..1" />
-          <End Type="ZoliksModel.Notification" Role="Notification" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="Notification">
-              <PropertyRef Name="FromID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1826,7 +1751,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Notifications_ToUser">
-          <End Type="ZoliksModel.User" Role="User" Multiplicity="0..1" />
+          <End Type="ZoliksModel.User" Role="User" Multiplicity="1" />
           <End Type="ZoliksModel.Notification" Role="Notification" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="User">
@@ -2005,10 +1930,6 @@
         </EntityType>
         <Association Name="UserRoles">
           <End Type="ZoliksModel.Role" Role="Role" Multiplicity="*" />
-          <End Type="ZoliksModel.User" Role="User" Multiplicity="*" />
-        </Association>
-        <Association Name="ReadNotifications">
-          <End Type="ZoliksModel.Notification" Role="Notification" Multiplicity="*" />
           <End Type="ZoliksModel.User" Role="User" Multiplicity="*" />
         </Association>
         <EntityType Name="UserLoginToken">
@@ -2587,14 +2508,15 @@
           <EntitySetMapping Name="Notifications">
             <EntityTypeMapping TypeName="ZoliksModel.Notification">
               <MappingFragment StoreEntitySet="Notifications">
+                <ScalarProperty Name="Removed" ColumnName="Removed" />
+                <ScalarProperty Name="Seen" ColumnName="Seen" />
+                <ScalarProperty Name="Subtitle" ColumnName="Subtitle" />
                 <ScalarProperty Name="Title" ColumnName="Title" />
                 <ScalarProperty Name="Expiration" ColumnName="Expiration" />
                 <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
                 <ScalarProperty Name="ToID" ColumnName="ToID" />
                 <ScalarProperty Name="Content" ColumnName="Content" />
-                <ScalarProperty Name="Visible" ColumnName="Visible" />
                 <ScalarProperty Name="Created" ColumnName="Created" />
-                <ScalarProperty Name="FromID" ColumnName="FromID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -2721,14 +2643,6 @@
             </EndProperty>
             <EndProperty Name="Role">
               <ScalarProperty Name="ID" ColumnName="RoleID" />
-            </EndProperty>
-          </AssociationSetMapping>
-          <AssociationSetMapping Name="ReadNotifications" TypeName="ZoliksModel.ReadNotifications" StoreEntitySet="ReadNotifications">
-            <EndProperty Name="User">
-              <ScalarProperty Name="ID" ColumnName="UserID" />
-            </EndProperty>
-            <EndProperty Name="Notification">
-              <ScalarProperty Name="ID" ColumnName="NotificationID" />
             </EndProperty>
           </AssociationSetMapping>
           <EntitySetMapping Name="UserLoginTokens">

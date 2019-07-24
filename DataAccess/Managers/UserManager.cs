@@ -105,10 +105,6 @@ namespace DataAccess.Managers
 				_ctx.Images.RemoveRange(images);
 				await _ctx.SaveChangesAsync();
 
-				var notifications = _ctx.Notifications.Where(x => x.FromID == id || x.ToID == id);
-				_ctx.Notifications.RemoveRange(notifications);
-				await _ctx.SaveChangesAsync();
-
 				var tokens = _ctx.Tokens.Where(x => x.UserID == id);
 				_ctx.Tokens.RemoveRange(tokens);
 
@@ -139,6 +135,8 @@ namespace DataAccess.Managers
 				var ach = await _ctx.AchievementUnlocks.Where(x => x.UserId == id).DeleteAsync();
 				//_ctx.AchievementUnlocks.RemoveRange(ach);
 				//await _ctx.SaveChangesAsync();
+
+				var nots = await _ctx.Notifications.Where(x => x.ToID == id).DeleteAsync();
 
 #endregion
 
@@ -192,7 +190,6 @@ namespace DataAccess.Managers
 				_ctx.Users.Attach(u);
 				u.UserSettings.Clear();
 				u.Roles.Clear();
-				u.ReadNotifications.Clear();
 				u.LoginTokens.Clear();
 				await SaveAsync(u);
 
