@@ -98,7 +98,7 @@ namespace ZolikyWeb.Controllers
 			var logins = new Logins() {
 				UName = lg.UName,
 				Password = lg.Password,
-				Project = Projects.Web,
+				Project = Projects.WebNew,
 			};
 
 			var res = await Mgr.LoginAsync(logins, Request.GetIPAddress());
@@ -170,7 +170,7 @@ namespace ZolikyWeb.Controllers
 				this.AddErrorToastMessage("Nebyly vráceny žádné informace. Zkuste to prosím znovu");
 				return RedirectToLogin(r);
 			}
-			var res = await Mgr.LoginAsync(loginInfo, Request.GetIPAddress(), Projects.Web);
+			var res = await Mgr.LoginAsync(loginInfo, Request.GetIPAddress(), Projects.WebNew);
 			string msg = res.GetStatusMessage();
 			var lg = new LoginPageModel();
 			switch (res.Status) {

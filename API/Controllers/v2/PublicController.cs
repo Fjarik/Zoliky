@@ -76,7 +76,7 @@ namespace API.Controllers.v2
 		[ResponseType(typeof(WebStatus))]
 		public Task<IHttpActionResult> GetWebStatus()
 		{
-			return GetProjectStatusResultAsync((int) Projects.Web);
+			return GetProjectStatusResultAsync((int) Projects.WebNew);
 		}
 
 		// GET /public/status

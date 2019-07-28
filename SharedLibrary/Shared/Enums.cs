@@ -23,9 +23,11 @@ namespace SharedLibrary.Enums
 
 	public enum Projects : int
 	{
+		[Obsolete("Use WebNew instead")]
 		[Description("Webová aplikace")]
 		Web = 1,
 
+		[Obsolete("Use Flutter instead")]
 		[Description("Android + IOS(Xamarin)")]
 		Xamarin = 2,
 
