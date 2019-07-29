@@ -1921,11 +1921,11 @@
         <EnumType Name="CrashStatus" UnderlyingType="Byte" a:ExternalTypeName="SharedLibrary.Enums.CrashStatus" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
         <EntityType Name="UserSetting">
           <Key>
-            <PropertyRef Name="ID" />
+            <PropertyRef Name="UserID" />
             <PropertyRef Name="Key" />
           </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" />
-          <Property Name="ProjectId" Type="Int32" Nullable="true" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="ProjectID" Type="Int32" Nullable="true" />
           <Property Name="Key" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Value" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="Changed" Type="DateTime" Precision="3" Nullable="false" />
@@ -1938,7 +1938,7 @@
               <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="UserSetting">
-              <PropertyRef Name="ProjectId" />
+              <PropertyRef Name="ProjectID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1999,7 +1999,7 @@
               <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="UserSetting">
-              <PropertyRef Name="ID" />
+              <PropertyRef Name="UserID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2678,8 +2678,8 @@
           <EntitySetMapping Name="UserSettings">
             <EntityTypeMapping TypeName="ZoliksModel.UserSetting">
               <MappingFragment StoreEntitySet="UserSettings">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="ProjectId" ColumnName="ProjectId" />
+                <ScalarProperty Name="UserID" ColumnName="ID" />
+                <ScalarProperty Name="ProjectID" ColumnName="ProjectId" />
                 <ScalarProperty Name="Changed" ColumnName="Changed" />
                 <ScalarProperty Name="Value" ColumnName="Value" />
                 <ScalarProperty Name="Key" ColumnName="Key" />

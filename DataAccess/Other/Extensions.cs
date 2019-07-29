@@ -134,8 +134,9 @@ namespace DataAccess
 		public static Expression<Func<User, bool>> HasSetting(string key, string value, int? projectId = null)
 		{
 			return x => x.UserSettings.Any(s =>
-											   s.Key == key && s.Value.ToLower() == value.ToLower() &&
-											   s.ProjectId == projectId);
+											   s.Key == key && 
+											   s.Value.ToLower() == value.ToLower() &&
+											   s.ProjectID == projectId);
 		}
 
 		public static Expression<Func<Zolik, bool>> NonTesterZoliks()

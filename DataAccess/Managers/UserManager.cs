@@ -107,7 +107,7 @@ namespace DataAccess.Managers
 
 				var loginTokens = await _ctx.UserLoginTokens.Where(x => x.UserID == id).DeleteAsync();
 
-				var settings = await _ctx.UserSettings.Where(x => x.ID == id).DeleteAsync();
+				var settings = await _ctx.UserSettings.Where(x => x.UserID == id).DeleteAsync();
 
 				var logs = await _ctx.UserLogs.Where(x => x.UserID == id).DeleteAsync();
 

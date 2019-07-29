@@ -4,9 +4,10 @@ using System.Text;
 
 namespace SharedLibrary.Interfaces
 {
-	public interface IUserSetting : IDbEntity
+	public interface IUserSetting : IDbObject
 	{
-		int? ProjectId { get; set; }
+		int UserID { get; set; }
+		int? ProjectID { get; set; }
 		string Key { get; set; }
 		string Value { get; set; }
 		DateTime Changed { get; set; }

@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using JetBrains.Annotations;
+using Newtonsoft.Json;
 using SharedLibrary.Enums;
 using SharedLibrary.Interfaces;
 
@@ -134,7 +135,7 @@ namespace SharedLibrary.Shared
 				return null;
 			}
 			var res = enumerable.Where(x => x.Key == key &&
-											x.ProjectId == (int?) project)
+											x.ProjectID == (int?) project)
 								.Select(x => x.Value)
 								.FirstOrDefault();
 			return res;
@@ -148,7 +149,7 @@ namespace SharedLibrary.Shared
 			if (string.IsNullOrEmpty(res)) {
 				return default;
 			}
-			return res.Convert<T>();
+			return JsonConvert.DeserializeObject<T>(res);
 		}
 
 		#endregion

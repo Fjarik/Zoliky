@@ -8,6 +8,7 @@ using DataAccess.Models;
 using JetBrains.Annotations;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
+using Newtonsoft.Json;
 using SharedLibrary;
 using SharedLibrary.Enums;
 using SharedLibrary.Shared;
@@ -46,6 +47,8 @@ namespace DataAccess.Managers
 
 #region Own Methods
 
+#region Get
+
 		public async Task<MActionResult<ProjectSetting>> GetAsync(Projects project, string key)
 		{
 			if (string.IsNullOrWhiteSpace(key)) {
@@ -61,7 +64,56 @@ namespace DataAccess.Managers
 			return new MActionResult<ProjectSetting>(StatusCode.OK, res);
 		}
 
+		public async Task<string> GetStringValueAsync(Projects project, string key)
+		{
+			if (string.IsNullOrWhiteSpace(key)) {
+				return null;
+			}
+			var res = await _ctx.ProjectSettings
+								.AsProjectSettings((int) project, key)
+								.Select(x => x.Value)
+								.FirstOrDefaultAsync();
+			return res;
+		}
+
+		public async Task<T> GetValueAsync<T>(Projects project, string key) where T : struct
+		{
+			var res = await this.GetStringValueAsync(project, key);
+			if (string.IsNullOrWhiteSpace(res)) {
+				return default;
+			}
+			return JsonConvert.DeserializeObject<T>(res);
+		}
+
+		public async Task<bool> GetBoolAsync(Projects project, string key)
+		{
+			var res = await this.GetStringValueAsync(project, key);
+			if (string.IsNullOrWhiteSpace(res) || !bool.TryParse(res, out bool b)) {
+				return false;
+			}
+			return b;
+		}
+
+		public async Task<int> GetIntAsync(Projects project, string key)
+		{
+			var res = await this.GetStringValueAsync(project, key);
+			if (string.IsNullOrWhiteSpace(res) || !int.TryParse(res, out int i)) {
+				return Ext.IgnoreId;
+			}
+			return i;
+		}
+
+#endregion
+
 #region Edit and Save
+
+		public Task<MActionResult<ProjectSetting>> EditAndSaveAsync(Projects project,
+																	string key,
+																	object newValue)
+		{
+			var s = JsonConvert.SerializeObject(newValue);
+			return EditAndSaveAsync(project, key, s);
+		}
 
 		public async Task<MActionResult<ProjectSetting>> EditAndSaveAsync(Projects project,
 																		  string key,
@@ -90,6 +142,15 @@ namespace DataAccess.Managers
 #endregion
 
 #region Create
+
+		public Task<MActionResult<ProjectSetting>> CreateAsync(Projects project,
+															   string key,
+															   object value,
+															   bool editIfExists = false)
+		{
+			var s = JsonConvert.SerializeObject(value);
+			return CreateAsync(project, key, s, editIfExists);
+		}
 
 		public async Task<MActionResult<ProjectSetting>> CreateAsync(Projects project,
 																	 string key,
@@ -126,6 +187,30 @@ namespace DataAccess.Managers
 				return new MActionResult<ProjectSetting>(StatusCode.InternalError);
 			}
 			return new MActionResult<ProjectSetting>(StatusCode.OK, ent);
+		}
+
+#endregion
+
+#region Remove
+
+		public async Task<bool> RemoveAsync(int projectId,
+											string key)
+		{
+			if (!Enum.IsDefined(typeof(Projects), projectId)) {
+				return false;
+			}
+			return await RemoveAsync((Projects) projectId, key);
+		}
+
+		public async Task<bool> RemoveAsync(Projects project,
+											string key)
+		{
+			var res = await this.GetAsync(project, key);
+			if (!res.IsSuccess) {
+				return false;
+			}
+			var set = res.Content;
+			return await base.DeleteAsync(set);
 		}
 
 #endregion

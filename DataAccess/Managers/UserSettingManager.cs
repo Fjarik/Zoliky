@@ -13,7 +13,7 @@ using SharedLibrary.Shared;
 
 namespace DataAccess.Managers
 {
-	public class UserSettingManager : Manager<UserSetting>
+	public class UserSettingManager : BaseManager<UserSetting>, IDisposable
 	{
 		/// 
 		/// Fields
@@ -28,15 +28,6 @@ namespace DataAccess.Managers
 		// Methods
 
 #region Methods
-
-#region Overrides
-
-		public override Task<bool> DeleteAsync(int id)
-		{
-			throw new NotImplementedException("Použijte metodu RemoveAsync");
-		}
-
-#endregion
 
 		/// 
 		/// Own methods
@@ -60,14 +51,16 @@ namespace DataAccess.Managers
 			if (userId < 1) {
 				return new MActionResult<List<UserSetting>>(StatusCode.NotValidID);
 			}
-			var query = _ctx.UserSettings.Where(x => x.ID == userId);
+			var query = _ctx.UserSettings.Where(x => x.UserID == userId);
 			if (project != null) {
-				query = query.Where(x => x.ProjectId == (int) project);
+				query = query.Where(x => x.ProjectID == (int) project);
 			}
 			var res = await query.ToListAsync();
 
 			return new MActionResult<List<UserSetting>>(StatusCode.OK, res);
 		}
+
+#region Edit and save
 
 		public Task<MActionResult<UserSetting>> EditAndSaveAsync(int userId,
 																 string key,
@@ -103,13 +96,18 @@ namespace DataAccess.Managers
 			return new MActionResult<UserSetting>(StatusCode.OK, setting);
 		}
 
+#endregion
+
+#region Create
+
 		public Task<MActionResult<UserSetting>> CreateAsync(int userId,
 															string key,
 															object value,
 															bool editIfExists = false,
 															Projects? project = null)
 		{
-			return CreateAsync(userId, key, value.ToString(), editIfExists, project);
+			var json = JsonConvert.SerializeObject(value);
+			return CreateAsync(userId, key, json, editIfExists, project);
 		}
 
 		public async Task<MActionResult<UserSetting>> CreateAsync(int userId,
@@ -132,14 +130,31 @@ namespace DataAccess.Managers
 			}
 
 			var us = new UserSetting() {
-				ID = userId,
-				ProjectId = (int?) project,
+				UserID = userId,
+				ProjectID = (int?) project,
 				Key = key,
 				Value = value,
 				Changed = DateTime.Now
 			};
 			return await CreateAsync(us);
 		}
+
+		private async Task<MActionResult<UserSetting>> CreateAsync(UserSetting setting)
+		{
+			if (setting == null) {
+				return new MActionResult<UserSetting>(StatusCode.InvalidInput);
+			}
+			var ent = _ctx.UserSettings.Add(setting);
+			var changes = await base.SaveAsync();
+			if (changes == 0) {
+				return new MActionResult<UserSetting>(StatusCode.InternalError);
+			}
+			return new MActionResult<UserSetting>(StatusCode.OK, ent);
+		}
+
+#endregion
+
+#region Remove
 
 		public async Task<bool> RemoveAsync(int userId,
 											string key,
@@ -152,6 +167,10 @@ namespace DataAccess.Managers
 			var set = res.Content;
 			return await this.DeleteAsync(set);
 		}
+
+#endregion
+
+#region Get
 
 		public async Task<MActionResult<UserSetting>> GetAsync(int userId, string key, Projects? project = null)
 		{
@@ -189,7 +208,7 @@ namespace DataAccess.Managers
 			if (string.IsNullOrWhiteSpace(res)) {
 				return default;
 			}
-			return res.Convert<T>();
+			return JsonConvert.DeserializeObject<T>(res);
 		}
 
 		public async Task<bool> GetBoolAsync(int userId, string key, Projects? project = null)
@@ -210,6 +229,10 @@ namespace DataAccess.Managers
 			return i;
 		}
 
+#endregion
+
+#region Exists
+
 		public Task<bool> ExistsAsync(int userId, string key, Projects? project = null)
 		{
 			return this.ExistsAsync(userId, key, (int?) project);
@@ -217,10 +240,12 @@ namespace DataAccess.Managers
 
 		public Task<bool> ExistsAsync(int userId, string key, int? projectId = null)
 		{
-			return _ctx.UserSettings.AnyAsync(x => x.ID == userId &&
+			return _ctx.UserSettings.AnyAsync(x => x.UserID == userId &&
 												   x.Key == key &&
-												   x.ProjectId == projectId);
+												   x.ProjectID == projectId);
 		}
+
+#endregion
 
 #endregion
 

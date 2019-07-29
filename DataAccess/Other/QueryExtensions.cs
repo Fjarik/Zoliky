@@ -34,9 +34,9 @@ namespace DataAccess
 															 int? project = null)
 		{
 			return query.AsNoTracking()
-						.Where(x => x.ID == userId &&
+						.Where(x => x.UserID == userId &&
 									x.Key == key &&
-									x.ProjectId == project);
+									x.ProjectID == project);
 		}
 
 		public static IQueryable<ProjectSetting> AsProjectSettings(this IQueryable<ProjectSetting> query,
