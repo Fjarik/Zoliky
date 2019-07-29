@@ -57,16 +57,7 @@ namespace DataAccess.Models
         public virtual DbSet<Password> Passwords { get; set; }
         public virtual DbSet<Ban> Bans { get; set; }
         public virtual DbSet<AchievementUnlock> AchievementUnlocks { get; set; }
-    
-        public virtual ObjectResult<Notification> GetAllNotifications()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Notification>("GetAllNotifications");
-        }
-    
-        public virtual ObjectResult<Notification> GetAllNotifications(MergeOption mergeOption)
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Notification>("GetAllNotifications", mergeOption);
-        }
+        public virtual DbSet<ProjectSetting> ProjectSettings { get; set; }
     
         private ObjectResult<GetTopStudents_Result> GetTopStudents(Nullable<int> top, Nullable<int> imageMaxSize, Nullable<int> classId, string settingsKey, Nullable<int> defaultPhotoId)
         {

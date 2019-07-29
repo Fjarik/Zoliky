@@ -132,6 +132,8 @@
           <Property Name="Title" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Subtitle" Type="nvarchar" MaxLength="200" />
           <Property Name="Content" Type="nvarchar(max)" />
+          <Property Name="Severity" Type="smallint" Nullable="false" />
+          <Property Name="Icon" Type="varchar" MaxLength="10" />
           <Property Name="Created" Type="datetime" Nullable="false" />
           <Property Name="Expiration" Type="datetime" />
           <Property Name="Seen" Type="bit" Nullable="false" />
@@ -158,6 +160,16 @@
           <Property Name="Description" Type="nvarchar(max)" />
           <Property Name="Version" Type="varchar" MaxLength="15" />
           <Property Name="Active" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ProjectSettings">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProjectID" Type="int" Nullable="false" />
+          <Property Name="Key" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Value" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="Changed" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="Ranks">
           <Key>
@@ -602,6 +614,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_ProjectSettings_Projects">
+          <End Role="Projects" Type="Self.Projects" Multiplicity="1" />
+          <End Role="ProjectSettings" Type="Self.ProjectSettings" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Projects">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ProjectSettings">
+              <PropertyRef Name="ProjectID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_SchoolSubjects_Schools">
           <End Role="Schools" Type="Self.Schools" Multiplicity="1" />
           <End Role="SchoolSubjects" Type="Self.SchoolSubjects" Multiplicity="*" />
@@ -950,7 +974,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Function Name="GetAllNotifications" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="GetFakeStudents" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="imageMaxSize" Type="int" Mode="In" />
           <Parameter Name="defaultPhotoId" Type="int" Mode="In" />
@@ -994,6 +1017,7 @@
           <EntitySet Name="Notifications" EntityType="Self.Notifications" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Passwords" EntityType="Self.Passwords" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Projects" EntityType="Self.Projects" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProjectSettings" EntityType="Self.ProjectSettings" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Ranks" EntityType="Self.Ranks" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Roles" EntityType="Self.Roles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Schools" EntityType="Self.Schools" Schema="dbo" store:Type="Tables" />
@@ -1088,6 +1112,10 @@
           <AssociationSet Name="FK_Passwords_Users" Association="Self.FK_Passwords_Users">
             <End Role="Users" EntitySet="Users" />
             <End Role="Passwords" EntitySet="Passwords" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProjectSettings_Projects" Association="Self.FK_ProjectSettings_Projects">
+            <End Role="Projects" EntitySet="Projects" />
+            <End Role="ProjectSettings" EntitySet="ProjectSettings" />
           </AssociationSet>
           <AssociationSet Name="FK_SchoolSubjects_Schools" Association="Self.FK_SchoolSubjects_Schools">
             <End Role="Schools" EntitySet="Schools" />
@@ -1316,7 +1344,6 @@
             <End Role="User" EntitySet="Users" />
             <End Role="Notification" EntitySet="Notifications" />
           </AssociationSet>
-          <FunctionImport Name="GetAllNotifications" EntitySet="Notifications" ReturnType="Collection(ZoliksModel.Notification)" />
           <EntitySet Name="Unavailabilities" EntityType="ZoliksModel.Unavailability" />
           <AssociationSet Name="FK_Unavailabilities_Projects" Association="ZoliksModel.FK_Unavailabilities_Projects">
             <End Role="Project" EntitySet="Projects" />
@@ -1502,6 +1529,11 @@
             <End Role="User" EntitySet="Users" />
             <End Role="AchievementUnlock" EntitySet="AchievementUnlocks" />
           </AssociationSet>
+          <EntitySet Name="ProjectSettings" EntityType="ZoliksModel.ProjectSetting" />
+          <AssociationSet Name="FK_ProjectSettings_Projects" Association="ZoliksModel.FK_ProjectSettings_Projects">
+            <End Role="Project" EntitySet="Projects" />
+            <End Role="ProjectSetting" EntitySet="ProjectSettings" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="Class">
           <Key>
@@ -1539,6 +1571,7 @@
           <Property Name="Version" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
           <Property Name="Active" Type="Boolean" Nullable="false" />
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ProjectSettings" Relationship="ZoliksModel.FK_ProjectSettings_Projects" FromRole="Project" ToRole="ProjectSetting" />
         </EntityType>
         <EntityType Name="Image">
           <Key>
@@ -1568,6 +1601,8 @@
           <Property Name="Expiration" Type="DateTime" Precision="3" Nullable="true" />
           <Property Name="Seen" Type="Boolean" Nullable="false" />
           <Property Name="Removed" Type="Boolean" Nullable="false" />
+          <Property Name="Severity" Type="Int16" Nullable="false" />
+          <Property Name="Icon" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           </EntityType>
         <Association Name="FK_News_Projects">
           <End Type="ZoliksModel.Project" Role="Project" Multiplicity="0..1" />
@@ -2416,6 +2451,28 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="ProjectSetting">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProjectID" Type="Int32" Nullable="false" />
+          <Property Name="Key" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Value" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Changed" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <Association Name="FK_ProjectSettings_Projects">
+          <End Type="ZoliksModel.Project" Role="Project" Multiplicity="1" />
+          <End Type="ZoliksModel.ProjectSetting" Role="ProjectSetting" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ProjectSetting">
+              <PropertyRef Name="ProjectID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2508,6 +2565,8 @@
           <EntitySetMapping Name="Notifications">
             <EntityTypeMapping TypeName="ZoliksModel.Notification">
               <MappingFragment StoreEntitySet="Notifications">
+                <ScalarProperty Name="Icon" ColumnName="Icon" />
+                <ScalarProperty Name="Severity" ColumnName="Severity" />
                 <ScalarProperty Name="Removed" ColumnName="Removed" />
                 <ScalarProperty Name="Seen" ColumnName="Seen" />
                 <ScalarProperty Name="Subtitle" ColumnName="Subtitle" />
@@ -2571,7 +2630,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="GetAllNotifications" FunctionName="ZoliksModel.Store.GetAllNotifications" />
           <EntitySetMapping Name="Unavailabilities">
             <EntityTypeMapping TypeName="ZoliksModel.Unavailability">
               <MappingFragment StoreEntitySet="Unavailabilities">
@@ -2890,6 +2948,17 @@
                 <ScalarProperty Name="When" ColumnName="When" />
                 <ScalarProperty Name="AchievementId" ColumnName="AchievementId" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProjectSettings">
+            <EntityTypeMapping TypeName="ZoliksModel.ProjectSetting">
+              <MappingFragment StoreEntitySet="ProjectSettings">
+                <ScalarProperty Name="Changed" ColumnName="Changed" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="Key" ColumnName="Key" />
+                <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

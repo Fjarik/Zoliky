@@ -207,6 +207,9 @@
     <Compile Include="Models\Project.cs">
       <DependentUpon>MainModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ProjectSetting.cs">
+      <DependentUpon>MainModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Rank.cs">
       <DependentUpon>MainModel.tt</DependentUpon>
     </Compile>

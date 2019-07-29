@@ -14,10 +14,19 @@ namespace DataAccess.Models
     
     public partial class Project
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Project()
+        {
+            this.ProjectSettings = new HashSet<ProjectSetting>();
+        }
+    
         public int ID { get; set; }
         public string Name { get; set; }
         public string Version { get; set; }
         public bool Active { get; set; }
         public string Description { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ProjectSetting> ProjectSettings { get; set; }
     }
 }

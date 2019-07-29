@@ -12,19 +12,12 @@ namespace DataAccess.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Notification
+    public partial class ProjectSetting
     {
         public int ID { get; set; }
-        public int ToID { get; set; }
-        public Nullable<int> ProjectID { get; set; }
-        public string Title { get; set; }
-        public string Subtitle { get; set; }
-        public string Content { get; set; }
-        public System.DateTime Created { get; set; }
-        public Nullable<System.DateTime> Expiration { get; set; }
-        public bool Seen { get; set; }
-        public bool Removed { get; set; }
-        public short Severity { get; set; }
-        public string Icon { get; set; }
+        public int ProjectID { get; set; }
+        public string Key { get; set; }
+        public string Value { get; set; }
+        public System.DateTime Changed { get; set; }
     }
 }
