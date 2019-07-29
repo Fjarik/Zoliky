@@ -32,6 +32,7 @@ namespace DataAccess
 			app.CreatePerOwinContext<NewsManager>(NewsManager.Create);
 			app.CreatePerOwinContext<NotificationManager>(NotificationManager.Create);
 			app.CreatePerOwinContext<ProjectManager>(ProjectManager.Create);
+			app.CreatePerOwinContext<ProjectSettingManager>(ProjectSettingManager.Create);
 			app.CreatePerOwinContext<RankManager>(RankManager.Create);
 			app.CreatePerOwinContext<SubjectManager>(SubjectManager.Create);
 			app.CreatePerOwinContext<TokenManager>(TokenManager.Create);

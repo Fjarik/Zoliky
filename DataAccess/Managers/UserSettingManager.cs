@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using DataAccess.Models;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
+using Newtonsoft.Json;
 using SharedLibrary;
 using SharedLibrary.Enums;
 using SharedLibrary.Shared;
@@ -73,7 +74,8 @@ namespace DataAccess.Managers
 																 object newValue,
 																 Projects? project = null)
 		{
-			return this.EditAndSaveAsync(userId, key, newValue.ToString(), project);
+			var json = JsonConvert.SerializeObject(newValue);
+			return this.EditAndSaveAsync(userId, key, json, project);
 		}
 
 		public async Task<MActionResult<UserSetting>> EditAndSaveAsync(int userId,

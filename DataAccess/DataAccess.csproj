@@ -137,6 +137,7 @@
     <Compile Include="Managers\NotificationManager.cs" />
     <Compile Include="Managers\ProjectManager.cs" />
     <Compile Include="Managers\HashManager.cs" />
+    <Compile Include="Managers\ProjectSettingManager.cs" />
     <Compile Include="Managers\RankManager.cs" />
     <Compile Include="Managers\SubjectManager.cs" />
     <Compile Include="Managers\Support\TicketManager.cs" />

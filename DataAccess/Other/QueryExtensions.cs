@@ -21,7 +21,7 @@ namespace DataAccess
 						.ThenBy(x => x.Name)
 						.ThenBy(x => x.Lastname);
 		}
-		
+
 		public static IQueryable<Unavailability> IsActive(this IQueryable<Unavailability> query)
 		{
 			var now = DateTime.Now;
@@ -37,6 +37,15 @@ namespace DataAccess
 						.Where(x => x.ID == userId &&
 									x.Key == key &&
 									x.ProjectId == project);
+		}
+
+		public static IQueryable<ProjectSetting> AsProjectSettings(this IQueryable<ProjectSetting> query,
+																int projectId,
+																string key)
+		{
+			return query.AsNoTracking()
+						.Where(x => x.ProjectID == projectId &&
+									x.Key == key);
 		}
 	}
 }

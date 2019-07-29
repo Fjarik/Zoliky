@@ -19,9 +19,9 @@ namespace DataAccess.Managers
 
 #region Methods
 
-		public virtual async Task<bool> IdExistsAsync(int id)
+		public virtual Task<bool> IdExistsAsync(int id)
 		{
-			return await _ctx.Set<T>().AnyAsync(x => x.ID == id);
+			return _ctx.Set<T>().AnyAsync(x => x.ID == id);
 		}
 
 		public virtual async Task<MActionResult<T>> GetByIdAsync(int id)

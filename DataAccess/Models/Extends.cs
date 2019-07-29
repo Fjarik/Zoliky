@@ -296,7 +296,7 @@ namespace DataAccess.Models
 		public Version VersionV => System.Version.Parse(this.Version);
 	}
 
-	public partial class ProjectSetting : IDbEntity { }
+	public partial class ProjectSetting : IDbObject { }
 
 	public partial class Rank : IDbEntity { }
 
