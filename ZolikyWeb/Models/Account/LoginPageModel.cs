@@ -28,12 +28,13 @@ namespace ZolikyWeb.Models.Account
 		public bool RememberMe { get; set; }
 
 		public bool ShowActivationElement { get; set; } = false;
+		public bool ShowAccountDisabledElement { get; set; } = false;
 
 		public bool ShowRegistrationErrorElement { get; set; } = false;
 
 		public bool IsValid => !string.IsNullOrWhiteSpace(this.UName) && !string.IsNullOrWhiteSpace(this.Password);
 
-		public bool ShowMessage => !this.ShowActivationElement;
+		public bool ShowMessage => !this.ShowActivationElement && !ShowAccountDisabledElement;
 
 		public void ClearPassword()
 		{

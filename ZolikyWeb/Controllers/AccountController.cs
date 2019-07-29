@@ -119,6 +119,8 @@ namespace ZolikyWeb.Controllers
 					msg = "Vašemu heslu vypršela platnost";
 					break;
 				case StatusCode.NotEnabled:
+					lg.ShowAccountDisabledElement = true;
+					break;
 				case StatusCode.EmailNotConfirmed:
 					lg.ShowActivationElement = true;
 					break;
@@ -196,6 +198,8 @@ namespace ZolikyWeb.Controllers
 					msg = $"Váš účet byl zablokován z důvodu: {ban.Reason}";
 					break;
 				case StatusCode.NotEnabled:
+					lg.ShowAccountDisabledElement = true;
+					break;
 				case StatusCode.EmailNotConfirmed:
 					lg.ShowActivationElement = true;
 					break;
@@ -204,7 +208,7 @@ namespace ZolikyWeb.Controllers
 						SignInManager.SignIn(u, false);
 						this.AddSuccessToastMessage("Přihlášení proběhlo úspěšně");
 						if (u.IsInRolesOr(UserRoles.Administrator, UserRoles.Teacher)) {
-							return RedirectToAction("Dashboard", "Admin", new { Area = "Admin" });
+							return RedirectToAction("Dashboard", "Admin", new {Area = "Admin"});
 						}
 						return RedirectToApp(r);
 					}

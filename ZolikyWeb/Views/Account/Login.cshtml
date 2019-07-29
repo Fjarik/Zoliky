@@ -12,7 +12,7 @@
 		<div class="form-group">
 			<h3>@ViewBag.Title</h3>
 		</div>
-		@using (Html.BeginForm("Login", "Account", new {r = ViewBag.r ?? ""}, FormMethod.Post, new {id = "loginForm"})) {
+		@using (Html.BeginForm("Login", "Account", new { r = ViewBag.r ?? "" }, FormMethod.Post, new { id = "loginForm" })) {
 			@Html.AntiForgeryToken()
 			<div class="form-group">
 				@Html.NoSelectLaberFor(m => m.UName)
@@ -50,7 +50,7 @@
 				</div>
 			</div>
 			<div class="text-center">
-				@ReCaptcha.GetInvisibleCaptcha("login", "Přihlásit se", ReCaptchaLanguage.Czech, expireCallback: "gExpire", additionalClasses: new[] {"btn", "btn-info", "my-4", "w-50"})
+				@ReCaptcha.GetInvisibleCaptcha("login", "Přihlásit se", ReCaptchaLanguage.Czech, expireCallback: "gExpire", additionalClasses: new[] { "btn", "btn-info", "my-4", "w-50" })
 			</div>
 			if (!ViewData.ModelState.IsValid) {
 				<div id="ErrorDiv" runat="server" class="alert alert-danger alert-dismissible fade show" role="alert" style="display: block">
@@ -66,6 +66,16 @@
 					<h5>Tento účet není aktivovaný</h5>
 					Aktivaci provedete otevřením odkazu, který Vám byl doručen na email zadaný při registraci. Pokud Vám žádný email nepřišel
 					<a title="Vyžádat nový aktivační email" class="alert-link" href="@Url.Action("ReSend", "Account")">vyžádejte si nový</a>.
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close" tabindex="6">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+			}
+			if (Model.ShowAccountDisabledElement) {
+				<div class="alert alert-danger alert-dismissible fade show" role="alert" style="display: block">
+					<h5>Tento účet není aktivní</h5>
+					Kontaktujte prosím 
+					<a title="Kontaktovat podporu" class="alert-link" href="mailto:podpora@zoliky.eu">podporu</a>.
 					<button type="button" class="close" data-dismiss="alert" aria-label="Close" tabindex="6">
 						<span aria-hidden="true">&times;</span>
 					</button>
