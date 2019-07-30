@@ -1214,6 +1214,8 @@
     <Content Include="Areas\App\Views\Notification\GetList.cshtml" />
     <Content Include="Areas\Admin\Views\Settings\Dashboard.cshtml" />
     <Content Include="Areas\Admin\Views\Settings\SettingsPartials\_GlobalSettingsPartial.cshtml" />
+    <Content Include="Content\Images\Pages\Default\App.webp" />
+    <Content Include="Content\Images\Pages\Default\Store.webp" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\fa-all.js" />
     <Content Include="Scripts\fa-all.min.js" />
