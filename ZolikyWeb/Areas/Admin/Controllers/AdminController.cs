@@ -47,50 +47,5 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 
 			return RedirectToAction("Dashboard");
 		}
-
-#region Settings
-
-		[Authorize(Roles = UserRoles.AdminOrDeveloper)]
-		public async Task<ActionResult> Settings()
-		{
-			var sMgr = this.GetManager<ProjectSettingManager>();
-			var settings = await sMgr.GetAllAsync();
-
-			var model = new SettingsModel(settings);
-			return View(model);
-		}
-
-		private async Task<ActionResult> SaveSettings(IDictionary<string, bool> dictionary)
-		{
-			if (!this.IsAuthenticated()) {
-				return RedirectToLogin();
-			}
-
-			if (dictionary == null) {
-				this.AddErrorToastMessage("Nezdařilo se uložit změny");
-				return RedirectToAction("Settings");
-			}
-			var sMgr = this.GetManager<ProjectSettingManager>();
-
-			foreach (var elm in dictionary) {
-				var res = await sMgr.CreateAsync(null, elm.Key, elm.Value, true);
-				if (!res.IsSuccess) {
-					this.AddErrorToastMessage("Nezdařilo se uložit změny");
-					return RedirectToAction("Settings");
-				}
-			}
-			this.AddSuccessToastMessage("Nastavení bylo uloženo");
-			return RedirectToAction("Settings");
-		}
-
-		[Authorize(Roles = UserRoles.AdminOrDeveloper)]
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public Task<ActionResult> EditProjects(ProjectSettingsModel model)
-		{
-			return SaveSettings(model?.Dictionary);
-		}
-
-#endregion
 	}
 }

@@ -252,6 +252,13 @@ namespace ZolikyWeb.Controllers
 		[HttpGet]
 		public async Task<ActionResult> Register()
 		{
+			var sMgr = this.GetManager<ProjectSettingManager>();
+			var allow = await sMgr.GetBoolAsync(null, ProjectSettingKeys.RegistrationEnabled);
+			if (!allow) {
+				this.AddErrorToastMessage("Nové registrace nejsou aktuálně dovoleny");
+				return RedirectToLogin();
+			}
+
 			var cMgr = this.GetManager<ClassManager>();
 			var classes = await cMgr.GetAllAsync();
 			var model = new RegisterModel {
