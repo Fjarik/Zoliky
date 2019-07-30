@@ -10,16 +10,25 @@
 	<div class="col">
 		<div class="card">
 			<div class="card-body">
-				<div class="row">
+				<div class="list-group">
 					@foreach (var ent in Model) {
-						<div class="col-xl-3 col-lg-4 col-md-6">
-							<div class="card">
-								<div class="card-body">
-									<h4>@ent.Title</h4>
-									<small>@ent.Subtitle</small>
-								</div>
+						<a class="list-group-item list-group-item-action flex-column align-items-start">
+							<div class="d-flex w-100 justify-content-between">
+								<h4 class="mb-1">@ent.Title</h4>
+								@{
+									var diff = (DateTime.Now - ent.Created).Days;
+									var date = "Dnes";
+									if (diff == 1) {
+										date = "Včera";
+									} else if (diff > 1) {
+										date = $"Před {diff} dny";
+									}
+								}
+								<small class="text-muted">@date</small>
 							</div>
-						</div>
+							<p class="mb-1">@ent.Subtitle</p>
+							@*<small class="text-muted">Donec id elit non mi porta.</small>*@
+						</a>
 					}
 				</div>
 			</div>
