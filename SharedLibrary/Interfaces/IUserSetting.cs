@@ -4,12 +4,16 @@ using System.Text;
 
 namespace SharedLibrary.Interfaces
 {
-	public interface IUserSetting : IDbObject
+	public interface ISettings : IDbObject
 	{
-		int UserID { get; set; }
 		int? ProjectID { get; set; }
 		string Key { get; set; }
 		string Value { get; set; }
 		DateTime Changed { get; set; }
+	}
+
+	public interface IUserSetting : ISettings
+	{
+		int UserID { get; set; }
 	}
 }

@@ -14,7 +14,7 @@ namespace DataAccess.Models
     
     public partial class ProjectSetting
     {
-        public int ProjectID { get; set; }
+        public Nullable<int> ProjectID { get; set; }
         public string Key { get; set; }
         public string Value { get; set; }
         public System.DateTime Changed { get; set; }

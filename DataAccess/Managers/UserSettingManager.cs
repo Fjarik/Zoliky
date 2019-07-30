@@ -67,8 +67,8 @@ namespace DataAccess.Managers
 																 object newValue,
 																 Projects? project = null)
 		{
-			var json = JsonConvert.SerializeObject(newValue);
-			return this.EditAndSaveAsync(userId, key, json, project);
+			//var json = JsonConvert.SerializeObject(newValue);
+			return this.EditAndSaveAsync(userId, key, newValue.ToString(), project);
 		}
 
 		public async Task<MActionResult<UserSetting>> EditAndSaveAsync(int userId,
@@ -106,8 +106,8 @@ namespace DataAccess.Managers
 															bool editIfExists = false,
 															Projects? project = null)
 		{
-			var json = JsonConvert.SerializeObject(value);
-			return CreateAsync(userId, key, json, editIfExists, project);
+			//var json = JsonConvert.SerializeObject(value);
+			return CreateAsync(userId, key, value.ToString(), editIfExists, project);
 		}
 
 		public async Task<MActionResult<UserSetting>> CreateAsync(int userId,
@@ -208,7 +208,7 @@ namespace DataAccess.Managers
 			if (string.IsNullOrWhiteSpace(res)) {
 				return default;
 			}
-			return JsonConvert.DeserializeObject<T>(res);
+			return res.Convert<T>();
 		}
 
 		public async Task<bool> GetBoolAsync(int userId, string key, Projects? project = null)

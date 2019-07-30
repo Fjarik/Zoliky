@@ -40,8 +40,8 @@ namespace DataAccess
 		}
 
 		public static IQueryable<ProjectSetting> AsProjectSettings(this IQueryable<ProjectSetting> query,
-																int projectId,
-																string key)
+																   int? projectId,
+																   string key)
 		{
 			return query.AsNoTracking()
 						.Where(x => x.ProjectID == projectId &&

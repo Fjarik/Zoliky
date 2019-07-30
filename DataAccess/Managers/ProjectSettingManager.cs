@@ -49,14 +49,14 @@ namespace DataAccess.Managers
 
 #region Get
 
-		public async Task<MActionResult<ProjectSetting>> GetAsync(Projects project, string key)
+		public async Task<MActionResult<ProjectSetting>> GetAsync(Projects? project, string key)
 		{
 			if (string.IsNullOrWhiteSpace(key)) {
 				return new MActionResult<ProjectSetting>(StatusCode.InvalidInput);
 			}
 
 			var res = await _ctx.ProjectSettings
-								.AsProjectSettings((int) project, key)
+								.AsProjectSettings((int?) project, key)
 								.FirstOrDefaultAsync();
 			if (res == null) {
 				return new MActionResult<ProjectSetting>(StatusCode.NotFound);
@@ -64,28 +64,28 @@ namespace DataAccess.Managers
 			return new MActionResult<ProjectSetting>(StatusCode.OK, res);
 		}
 
-		public async Task<string> GetStringValueAsync(Projects project, string key)
+		public async Task<string> GetStringValueAsync(Projects? project, string key)
 		{
 			if (string.IsNullOrWhiteSpace(key)) {
 				return null;
 			}
 			var res = await _ctx.ProjectSettings
-								.AsProjectSettings((int) project, key)
+								.AsProjectSettings((int?) project, key)
 								.Select(x => x.Value)
 								.FirstOrDefaultAsync();
 			return res;
 		}
 
-		public async Task<T> GetValueAsync<T>(Projects project, string key) where T : struct
+		public async Task<T> GetValueAsync<T>(Projects? project, string key) where T : struct
 		{
 			var res = await this.GetStringValueAsync(project, key);
 			if (string.IsNullOrWhiteSpace(res)) {
 				return default;
 			}
-			return JsonConvert.DeserializeObject<T>(res);
+			return res.Convert<T>();
 		}
 
-		public async Task<bool> GetBoolAsync(Projects project, string key)
+		public async Task<bool> GetBoolAsync(Projects? project, string key)
 		{
 			var res = await this.GetStringValueAsync(project, key);
 			if (string.IsNullOrWhiteSpace(res) || !bool.TryParse(res, out bool b)) {
@@ -94,7 +94,7 @@ namespace DataAccess.Managers
 			return b;
 		}
 
-		public async Task<int> GetIntAsync(Projects project, string key)
+		public async Task<int> GetIntAsync(Projects? project, string key)
 		{
 			var res = await this.GetStringValueAsync(project, key);
 			if (string.IsNullOrWhiteSpace(res) || !int.TryParse(res, out int i)) {
@@ -107,15 +107,15 @@ namespace DataAccess.Managers
 
 #region Edit and Save
 
-		public Task<MActionResult<ProjectSetting>> EditAndSaveAsync(Projects project,
+		public Task<MActionResult<ProjectSetting>> EditAndSaveAsync(Projects? project,
 																	string key,
 																	object newValue)
 		{
-			var s = JsonConvert.SerializeObject(newValue);
-			return EditAndSaveAsync(project, key, s);
+			//var s = JsonConvert.SerializeObject(newValue);
+			return EditAndSaveAsync(project, key, newValue.ToString());
 		}
 
-		public async Task<MActionResult<ProjectSetting>> EditAndSaveAsync(Projects project,
+		public async Task<MActionResult<ProjectSetting>> EditAndSaveAsync(Projects? project,
 																		  string key,
 																		  string newValue)
 		{
@@ -143,16 +143,16 @@ namespace DataAccess.Managers
 
 #region Create
 
-		public Task<MActionResult<ProjectSetting>> CreateAsync(Projects project,
+		public Task<MActionResult<ProjectSetting>> CreateAsync(Projects? project,
 															   string key,
 															   object value,
 															   bool editIfExists = false)
 		{
-			var s = JsonConvert.SerializeObject(value);
-			return CreateAsync(project, key, s, editIfExists);
+			//var s = JsonConvert.SerializeObject(value);
+			return CreateAsync(project, key, value.ToString(), editIfExists);
 		}
 
-		public async Task<MActionResult<ProjectSetting>> CreateAsync(Projects project,
+		public async Task<MActionResult<ProjectSetting>> CreateAsync(Projects? project,
 																	 string key,
 																	 string value,
 																	 bool editIfExists = false)
@@ -168,7 +168,7 @@ namespace DataAccess.Managers
 			}
 
 			var us = new ProjectSetting() {
-				ProjectID = (int) project,
+				ProjectID = (int?) project,
 				Key = key,
 				Value = value,
 				Changed = DateTime.Now
@@ -193,16 +193,16 @@ namespace DataAccess.Managers
 
 #region Remove
 
-		public async Task<bool> RemoveAsync(int projectId,
+		public async Task<bool> RemoveAsync(int? projectId,
 											string key)
 		{
-			if (!Enum.IsDefined(typeof(Projects), projectId)) {
+			if (projectId != null && !Enum.IsDefined(typeof(Projects), projectId)) {
 				return false;
 			}
-			return await RemoveAsync((Projects) projectId, key);
+			return await RemoveAsync((Projects?) projectId, key);
 		}
 
-		public async Task<bool> RemoveAsync(Projects project,
+		public async Task<bool> RemoveAsync(Projects? project,
 											string key)
 		{
 			var res = await this.GetAsync(project, key);
@@ -217,12 +217,12 @@ namespace DataAccess.Managers
 
 #region Exists
 
-		public Task<bool> ExistsAsync(Projects project, string key)
+		public Task<bool> ExistsAsync(Projects? project, string key)
 		{
-			return ExistsAsync((int) project, key);
+			return ExistsAsync((int?) project, key);
 		}
 
-		public Task<bool> ExistsAsync(int projectId, string key)
+		public Task<bool> ExistsAsync(int? projectId, string key)
 		{
 			return _ctx.ProjectSettings.AnyAsync(x => x.ProjectID == projectId &&
 													  x.Key == key);

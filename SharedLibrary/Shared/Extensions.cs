@@ -128,7 +128,7 @@ namespace SharedLibrary.Shared
 			return enumerable;
 		}
 
-		public static string GetStringValue(this IEnumerable<IUserSetting> enumerable, string key,
+		public static string GetStringValue(this IEnumerable<ISettings> enumerable, string key,
 											Projects? project = null)
 		{
 			if (string.IsNullOrEmpty(key)) {
@@ -141,7 +141,7 @@ namespace SharedLibrary.Shared
 			return res;
 		}
 
-		public static T GetValue<T>(this IEnumerable<IUserSetting> enumerable,
+		public static T GetValue<T>(this IEnumerable<ISettings> enumerable,
 									string key,
 									Projects? project = null) where T : struct
 		{
@@ -149,7 +149,7 @@ namespace SharedLibrary.Shared
 			if (string.IsNullOrEmpty(res)) {
 				return default;
 			}
-			return JsonConvert.DeserializeObject<T>(res);
+			return res.Convert<T>();
 		}
 
 		#endregion

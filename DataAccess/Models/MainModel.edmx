@@ -163,10 +163,9 @@
         </EntityType>
         <EntityType Name="ProjectSettings">
           <Key>
-            <PropertyRef Name="ProjectID" />
             <PropertyRef Name="Key" />
           </Key>
-          <Property Name="ProjectID" Type="int" Nullable="false" />
+          <Property Name="ProjectID" Type="int" />
           <Property Name="Key" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Value" Type="nvarchar" MaxLength="500" Nullable="false" />
           <Property Name="Changed" Type="datetime" Nullable="false" />
@@ -360,11 +359,11 @@
         </EntityType>
         <EntityType Name="UserSettings">
           <Key>
-            <PropertyRef Name="ID" />
+            <PropertyRef Name="UserID" />
             <PropertyRef Name="Key" />
           </Key>
-          <Property Name="ID" Type="int" Nullable="false" />
-          <Property Name="ProjectId" Type="int" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="ProjectID" Type="int" />
           <Property Name="Key" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Value" Type="nvarchar" MaxLength="500" />
           <Property Name="Changed" Type="datetime" Nullable="false" />
@@ -615,7 +614,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_ProjectSettings_Projects">
-          <End Role="Projects" Type="Self.Projects" Multiplicity="1" />
+          <End Role="Projects" Type="Self.Projects" Multiplicity="0..1" />
           <End Role="ProjectSettings" Type="Self.ProjectSettings" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Projects">
@@ -910,7 +909,7 @@
               <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="UserSettings">
-              <PropertyRef Name="ProjectId" />
+              <PropertyRef Name="ProjectID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -922,7 +921,7 @@
               <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="UserSettings">
-              <PropertyRef Name="ID" />
+              <PropertyRef Name="UserID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2454,15 +2453,14 @@
         <EntityType Name="ProjectSetting">
           <Key>
             <PropertyRef Name="Key" />
-            <PropertyRef Name="ProjectID" />
           </Key>
-          <Property Name="ProjectID" Type="Int32" Nullable="false" />
+          <Property Name="ProjectID" Type="Int32" Nullable="true" />
           <Property Name="Key" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Value" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="Changed" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
         <Association Name="FK_ProjectSettings_Projects">
-          <End Type="ZoliksModel.Project" Role="Project" Multiplicity="1" />
+          <End Type="ZoliksModel.Project" Role="Project" Multiplicity="0..1" />
           <End Type="ZoliksModel.ProjectSetting" Role="ProjectSetting" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Project">
@@ -2678,8 +2676,8 @@
           <EntitySetMapping Name="UserSettings">
             <EntityTypeMapping TypeName="ZoliksModel.UserSetting">
               <MappingFragment StoreEntitySet="UserSettings">
-                <ScalarProperty Name="UserID" ColumnName="ID" />
-                <ScalarProperty Name="ProjectID" ColumnName="ProjectId" />
+                <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="Changed" ColumnName="Changed" />
                 <ScalarProperty Name="Value" ColumnName="Value" />
                 <ScalarProperty Name="Key" ColumnName="Key" />

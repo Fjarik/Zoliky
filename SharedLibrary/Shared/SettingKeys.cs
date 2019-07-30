@@ -6,7 +6,6 @@ namespace SharedLibrary.Shared
 {
 	public static class SettingKeys
 	{
-
 #region Tokens
 
 		public static string MobileToken => "TokenMobile0";
@@ -34,6 +33,5 @@ namespace SharedLibrary.Shared
 		public static string LeaderboardXp => "PrivacyLeaderboardXp";
 
 #endregion
-
 	}
 }
