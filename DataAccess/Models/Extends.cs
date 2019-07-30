@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
+using JetBrains.Annotations;
 using Newtonsoft.Json;
 using SharedLibrary.Enums;
 using SharedLibrary.Interfaces;
@@ -402,6 +403,14 @@ namespace DataAccess.Models
 
 		public DateTime? LastLoginDate => this.LastLogin?.Date;
 
+		[JsonIgnore]
+		public Ban LatestBan => this.Bans
+									.OrderBy(x => x.From)
+									.FirstOrDefault();
+
+		public bool IsBanned => this.Bans
+									.Any(x=> x.IsActive);
+
 		public bool IsEnabled
 		{
 			get
@@ -487,6 +496,9 @@ namespace DataAccess.Models
 
 			[JsonIgnore]
 			public ICollection<TeacherSubject> Teaching { get; set; }
+
+			[JsonIgnore]
+			public ICollection<Ban> Bans { get; set; }
 
 			[JsonIgnore]
 			public ICollection<AchievementUnlock> AchievementUnlocks { get; set; }

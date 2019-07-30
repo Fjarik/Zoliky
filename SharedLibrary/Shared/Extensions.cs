@@ -152,7 +152,7 @@ namespace SharedLibrary.Shared
 			return res.Convert<T>();
 		}
 
-		#endregion
+#endregion
 
 #region DateTime extensions
 
@@ -164,7 +164,7 @@ namespace SharedLibrary.Shared
 		public static bool IsChristmasTime(this System.DateTime main)
 		{
 			return (main.IsBetween(min: new DateTime(main.Year, 1, 1), max: new DateTime(main.Year, 1, 6)) ||
-			        main.IsBetween(min: new DateTime(main.Year, 12, 10), max: new DateTime(main.Year, 12, 31)));
+					main.IsBetween(min: new DateTime(main.Year, 12, 10), max: new DateTime(main.Year, 12, 31)));
 		}
 
 		public static bool IsPrideTime(this System.DateTime main)
@@ -172,7 +172,12 @@ namespace SharedLibrary.Shared
 			return main.IsBetween(min: new DateTime(main.Year, 6, 1), max: new DateTime(main.Year, 6, 30));
 		}
 
-#endregion
+		public static double GetJsTimestamp(this System.DateTime date)
+		{
+			return date.Subtract(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc))
+					   .TotalMilliseconds;
+		}
 
+#endregion
 	}
 }

@@ -58,6 +58,10 @@ b, strong {
 	cursor: pointer;
 }
 
+.c-help {
+	cursor: help;
+}
+
 .card-img-top {
 	width: auto;
 	height: 250px;

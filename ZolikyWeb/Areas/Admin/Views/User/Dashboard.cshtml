@@ -1,0 +1,115 @@
+﻿@using SharedLibrary.Enums
+@using SharedLibrary.Shared
+@model ZolikyWeb.Areas.Admin.Models.User.UserModel
+
+@{
+	ViewBag.Title = "Uživatelé";
+	Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="row">
+	<div class="col">
+		<div class="card">
+			<div class="card-body">
+				<div class="table-responsive">
+					<table id="table-users" class="table table-hover contact-list" data-sorting="true" data-page-size="10">
+						<thead>
+							<tr>
+								<th data-type="number">ID</th>
+								<th>Jméno</th>
+								<th>Email</th>
+								<th>Třída</th>
+								<th data-sort-ignore="true">Role</th>
+								<th data-type="date">Datum registrace</th>
+								<th data-type="date">Poslední přihlášení</th>
+								<th data-sort-ignore="true">Akce</th>
+							</tr>
+						</thead>
+						<tbody>
+							@foreach (var user in Model.Users) {
+								var cl = "text-dark";
+								if (!user.IsEnabled) {
+									cl = "text-warning";
+								}
+								if (user.IsBanned) {
+									cl = "text-danger";
+								}
+								<tr class="@cl">
+									<td data-value="@user.ID">
+										@user.ID
+									</td>
+									<td>@user.FullName</td>
+									<td>
+										<a href="mailto:@user.Email" class="link">
+											@user.Email
+										</a>
+									</td>
+									<td class="c-help" data-toggle="tooltip" data-original-title="@(user.Class?.Since.Year) - @(user.Class?.Graduation.Year)">
+										@(user.Class?.Name)
+									</td>
+									<td>
+										@foreach (var role in user.Roles) {
+											var rName = role.Name;
+											if (rName == UserRoles.Support) {
+												continue;
+											}
+											var lbl = "primary";
+											if (rName == UserRoles.Teacher) {
+												lbl = "danger";
+											} else if (rName == UserRoles.Developer) {
+												lbl = "warning";
+											} else if (rName == UserRoles.Tester) {
+												lbl = "success";
+											} else if (rName == UserRoles.Public) {
+												lbl = "info";
+											}
+											lbl = $"label-{lbl}";
+											<span class="c-help label @lbl" data-toggle="tooltip" data-original-title="@role.Description">
+												@rName
+											</span>
+										}
+									</td>
+									<td data-value="@(user.MemberSince.GetJsTimestamp())" data-toggle="tooltip" data-original-title="@user.RegistrationIp">
+										@(user.MemberSince.ToShortDateString())
+									</td>
+									@{
+										var t = "";
+										var project = user.LastLogin?.ProjectID;
+										if (project != null) {
+											t = ((Projects) (int) project).GetDescription();
+										}
+									}
+									<td data-value="@(user.LastLoginDate?.GetJsTimestamp())" class="c-help" data-toggle="tooltip" data-original-title="@t">
+										@(user.LastLoginDate?.ToShortDateString())
+									</td>
+									<td class="text-center">
+										<a href="@Url.Action("Edit", "User", new {Area = "Admin", id = user.ID})" data-toggle="tooltip" data-original-title="Upravit">
+											<i class="fa fa-pencil text-inverse m-r-10"></i>
+										</a>
+									</td>
+								</tr>
+							}
+						</tbody>
+						<tfoot>
+							<tr>
+								<td colspan="7">
+									<div class="text-right">
+										<ul class="pagination"> </ul>
+									</div>
+								</td>
+							</tr>
+						</tfoot>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+@section footer {
+	<script type="text/javascript">
+		$(() => {
+			$("#table-users").footable();
+		});
+	</script>
+}
