@@ -13,11 +13,11 @@ using SharedLibrary.Interfaces;
 
 namespace DataAccess.Managers
 {
-	public class MailManager : IDisposable
+	public sealed class MailManager : IDisposable
 	{
 #region ReadOnly Fields
 
-		protected readonly IOwinContext Context;
+		private readonly IOwinContext _context;
 
 		[NotNull]
 		private readonly SmtpClient _smtpClient;
@@ -55,7 +55,7 @@ namespace DataAccess.Managers
 
 		private MailManager(IOwinContext context)
 		{
-			this.Context = context;
+			this._context = context;
 
 			NetworkCredential netCred = new NetworkCredential() {
 				UserName = _noReplyEmail,
@@ -119,7 +119,7 @@ namespace DataAccess.Managers
 			return await AdminRegAsync(res, regIP);
 		}
 
-		public async Task<bool> AdminRegAsync(IUser<Class> who, string regIP)
+		public async Task<bool> AdminRegAsync(IUser who, string regIP)
 		{
 			if (who == null) {
 				return false;
@@ -131,7 +131,7 @@ namespace DataAccess.Managers
 			body = body.Replace("#Email#", who.Email);
 			body = body.Replace("#FName#", who.Name);
 			body = body.Replace("#LName#", who.Lastname);
-			body = body.Replace("#Class#", who.Class?.Name);
+			body = body.Replace("#Class#", who.ClassName);
 			body = body.Replace("#IP#", regIP);
 			body = body.Replace("#ID#", who.ID.ToString());
 
@@ -286,7 +286,7 @@ namespace DataAccess.Managers
 
 		private async Task<IUser<Class>> GetUserAsync(int id)
 		{
-			var mgr = Context.Get<UserManager>();
+			var mgr = _context.Get<UserManager>();
 			var res = await mgr.GetByIdAsync(id);
 			if (res.IsSuccess) {
 				return res.Content;
@@ -328,10 +328,10 @@ namespace DataAccess.Managers
 			return await SendAsync(email);
 		}
 
-		public async Task<bool> SendToAdminAsync([NotNull] string subject, [NotNull] string body,
+		public Task<bool> SendToAdminAsync([NotNull] string subject, [NotNull] string body,
 												 MailPriority priority = MailPriority.Normal)
 		{
-			return await SendAsync(subject, body, _adminAddress, priority);
+			return SendAsync(subject, body, _adminAddress, priority);
 		}
 
 #endregion
