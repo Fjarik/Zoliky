@@ -12,6 +12,7 @@ using DataAccess.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using SharedLibrary.Enums;
+using SharedLibrary.Shared;
 
 namespace ZolikyWeb.Tools
 {
@@ -101,6 +102,31 @@ namespace ZolikyWeb.Tools
 		{
 			var userId = HttpContext.Current.User.Identity.GetId();
 			return GetProfilePhotoUrl(urlHelper, userId);
+		}
+
+#endregion
+
+#region Roles
+
+		public static string GetColor(this Role r)
+		{
+			var rName = r.Name;
+			var lbl = "primary";
+			switch (rName) {
+				case UserRoles.Teacher:
+					lbl = "danger";
+					break;
+				case UserRoles.Developer:
+					lbl = "warning";
+					break;
+				case UserRoles.Tester:
+					lbl = "success";
+					break;
+				case UserRoles.Public:
+					lbl = "info";
+					break;
+			}
+			return lbl;
 		}
 
 #endregion

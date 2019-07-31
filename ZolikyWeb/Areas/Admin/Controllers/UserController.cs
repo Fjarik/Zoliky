@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using DataAccess.Managers;
+using DataAccess.Models;
+using Newtonsoft.Json;
+using SharedLibrary.Enums;
 using SharedLibrary.Shared;
 using ZolikyWeb.Areas.Admin.Models.User;
 using ZolikyWeb.Models.Base;
@@ -17,8 +20,8 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 	{
 		public async Task<ActionResult> Dashboard()
 		{
-			var users = await this.Mgr.GetAllAsync();
-
+			//var users = await this.Mgr.GetAllAsync();
+			var users = new List<User>();
 			var model = new UserModel {
 				Users = users.Where(x => !x.IsInRole(UserRoles.Robot))
 			};
@@ -47,6 +50,58 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 			var user = await this.Mgr.GetByIdAsync(userId);
 
 			return View(user);
+		}
+
+		public async Task<JsonResult> UsersJson()
+		{
+			var users = (await this.Mgr.GetAllAsync()).Where(x => !x.IsInRole(UserRoles.Robot));
+
+			var res = users.Select(x => new {
+				//options = new { },
+				id = x.ID,
+				fullname = x.FullName,
+				email = x.Email,
+				@class = x.Class == null
+							 ? null
+							 : new {
+								 name = x.Class.Name,
+								 since = x.Class.Since.Year,
+								 grad = x.Class.Graduation.Year
+							 },
+				roles = x.Roles
+						 .Where(y => y.Name != UserRoles.Support)
+						 .Select(y => new {
+							 name = y.Name,
+							 desc = y.Description,
+							 color = y.GetColor()
+						 }),
+				memberSince = new {
+					date = x.MemberSince.ToString("dd.MM.yyyy"),
+					timeS = x.MemberSince.GetJsTimestamp(),
+					regIp = x.RegistrationIp
+				},
+				lastLogin = x.LastLogin == null
+								? new {
+									date = "",
+									timeS = 0.0,
+									project = ""
+								}
+								: new {
+									date = x.LastLogin.Date.ToString("dd.MM.yyyy"),
+									timeS = x.LastLogin.Date.GetJsTimestamp(),
+									project = ((Projects) x.LastLogin.ProjectID).GetDescription()
+								},
+				x.IsBanned,
+				x.IsEnabled,
+				actions = new {
+					edit = x.IsInRolesOr(UserRoles.Administrator, UserRoles.Developer)
+							   ? ""
+							   : Url.Action("Edit", "User", new {Area = "Admin", id = x.ID}),
+					display = Url.Action("Detail", "User", new {Area = "Admin", id = x.ID})
+				}
+			});
+
+			return Json(res, JsonRequestBehavior.AllowGet);
 		}
 	}
 }
