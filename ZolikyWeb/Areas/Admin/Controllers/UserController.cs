@@ -32,8 +32,21 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 				return RedirectToAction("Dashboard");
 			}
 			var userId = (int) id;
+			var user = await this.Mgr.GetByIdAsync(userId);
 
-			return View();
+			return View(user);
+		}
+
+		public async Task<ActionResult> Detail(int? id = null)
+		{
+			if (id == null || id < 1) {
+				this.AddErrorToastMessage("Nejdříve vyberte uživatele");
+				return RedirectToAction("Dashboard");
+			}
+			var userId = (int) id;
+			var user = await this.Mgr.GetByIdAsync(userId);
+
+			return View(user);
 		}
 	}
 }

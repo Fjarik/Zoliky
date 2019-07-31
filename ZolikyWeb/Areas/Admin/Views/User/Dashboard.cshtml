@@ -44,9 +44,17 @@
 											@user.Email
 										</a>
 									</td>
-									<td class="c-help" data-toggle="tooltip" data-original-title="@(user.Class?.Since.Year) - @(user.Class?.Graduation.Year)">
-										@(user.Class?.Name)
-									</td>
+									@if (user.Class == null) {
+										<td class="text-center NoSelect">
+											-
+										</td>
+									} else {
+										<td class="text-center">
+											<span class="c-help" data-toggle="tooltip" data-original-title="@(user.Class?.Since.Year) - @(user.Class?.Graduation.Year)">
+												@(user.Class?.Name)
+											</span>
+										</td>
+									}
 									<td>
 										@foreach (var role in user.Roles) {
 											var rName = role.Name;
@@ -69,8 +77,10 @@
 											</span>
 										}
 									</td>
-									<td data-value="@(user.MemberSince.GetJsTimestamp())" data-toggle="tooltip" data-original-title="@user.RegistrationIp">
-										@(user.MemberSince.ToShortDateString())
+									<td data-value="@(user.MemberSince.GetJsTimestamp())">
+										<span data-toggle="tooltip" data-original-title="@user.RegistrationIp">
+											@(user.MemberSince.ToShortDateString())
+										</span>
 									</td>
 									@{
 										var t = "";
@@ -79,12 +89,19 @@
 											t = ((Projects) (int) project).GetDescription();
 										}
 									}
-									<td data-value="@(user.LastLoginDate?.GetJsTimestamp())" class="c-help" data-toggle="tooltip" data-original-title="@t">
-										@(user.LastLoginDate?.ToShortDateString())
+									<td data-value="@(user.LastLoginDate?.GetJsTimestamp())">
+										<span class="c-help" data-toggle="tooltip" data-original-title="@t">
+											@(user.LastLoginDate?.ToShortDateString())
+										</span>
 									</td>
-									<td class="text-center">
-										<a href="@Url.Action("Edit", "User", new {Area = "Admin", id = user.ID})" data-toggle="tooltip" data-original-title="Upravit">
-											<i class="fa fa-pencil text-inverse m-r-10"></i>
+									<td class="d-flex justify-content-around">
+										@if (!user.IsInRolesOr(UserRoles.AdminOrDeveloper)) {
+											<a href="@Url.Action("Edit", "User", new {Area = "Admin", id = user.ID})" data-toggle="tooltip" data-original-title="Upravit">
+												<i class="fa fa-pencil text-inverse"></i>
+											</a>
+										}
+										<a href="@Url.Action("Detail", "User", new {Area = "Admin", id = user.ID})" data-toggle="tooltip" data-original-title="Detaily">
+											<i class="fa fa-eye text-inverse"></i>
 										</a>
 									</td>
 								</tr>
