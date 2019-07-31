@@ -24,7 +24,7 @@ namespace SharedLibrary.Enums
 	public enum Projects : int
 	{
 		[Obsolete("Use WebNew instead")]
-		[Description("Webová aplikace")]
+		[Description("Stará webová aplikace (Web Forms)")]
 		Web = 1,
 
 		[Obsolete("Use Flutter instead")]
@@ -40,9 +40,10 @@ namespace SharedLibrary.Enums
 		[Description("Testování Api")]
 		ApiTest = 5,
 
-		[Description("Nová mobilní aplikace(Flutter)")]
+		[Description("Mobilní aplikace (Flutter)")]
 		Flutter = 6,
 
+		[Obsolete("No longer supported :)")]
 		[Description("Blog, Podpora, FAQ")]
 		Support = 7,
 
@@ -52,7 +53,7 @@ namespace SharedLibrary.Enums
 		[Description("Neznámý")]
 		Unknown = 9,
 
-		[Description("Nová webová aplikace (MVC)")]
+		[Description("Webová aplikace (MVC)")]
 		WebNew = 10,
 	}
 

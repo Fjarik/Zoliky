@@ -117,6 +117,7 @@ namespace ZolikyWeb.Tools
 					lbl = "danger";
 					break;
 				case UserRoles.Developer:
+				case UserRoles.Administrator:
 					lbl = "warning";
 					break;
 				case UserRoles.Tester:

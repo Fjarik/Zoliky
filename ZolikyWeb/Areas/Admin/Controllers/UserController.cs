@@ -54,7 +54,7 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 
 		public async Task<JsonResult> UsersJson()
 		{
-			var users = (await this.Mgr.GetAllAsync()).Where(x => !x.IsInRole(UserRoles.Robot));
+			var users = (await this.Mgr.GetAllAsync()).Where(x => !x.IsInRolesOr(UserRoles.Robot, UserRoles.LoginOnly));
 
 			var res = users.Select(x => new {
 				//options = new { },
@@ -71,7 +71,7 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 				roles = x.Roles
 						 .Where(y => y.Name != UserRoles.Support)
 						 .Select(y => new {
-							 name = y.Name,
+							 name = y.FriendlyName,
 							 desc = y.Description,
 							 color = y.GetColor()
 						 }),
