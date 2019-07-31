@@ -80,7 +80,24 @@ namespace DataAccess.Managers
 
 #region Seen
 
-		public async Task<bool> SeenNotificationAsync(int notificationId)
+		public Task<bool> AnyUnseenNotificationAsync(int userId)
+		{
+			return _ctx.Notifications
+					   .Where(Extensions.IsNotExpired())
+					   .AnyAsync(x => x.ToID == userId &&
+									  !x.Seen);
+		}
+
+		public async Task<bool> SeenNotificationAsync(int notificationId, int userId)
+		{
+			var exists = await _ctx.Notifications.AnyAsync(x => x.ID == notificationId && x.ToID == userId);
+			if (!exists) {
+				return false;
+			}
+			return await SeenNotificationAsync(notificationId);
+		}
+
+		private async Task<bool> SeenNotificationAsync(int notificationId)
 		{
 			if (notificationId < 1) {
 				return false;

@@ -18,14 +18,9 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 	[Authorize(Roles = UserRoles.AdminOrDeveloper)]
 	public class UserController : OwnController<UserManager>
 	{
-		public async Task<ActionResult> Dashboard()
+		public ActionResult Dashboard()
 		{
-			//var users = await this.Mgr.GetAllAsync();
-			var users = new List<User>();
-			var model = new UserModel {
-				Users = users.Where(x => !x.IsInRole(UserRoles.Robot))
-			};
-			return View(model);
+			return View();
 		}
 
 		public async Task<ActionResult> Edit(int? id = null)

@@ -30,7 +30,7 @@
 		<!-- Logo -->
 		<!-- ============================================================== -->
 		<div class="navbar-header">
-			<a class="navbar-brand" href="@Url.Action("Dashboard", "Main", new { Area = "App" })">
+			<a class="navbar-brand" href="@Url.Action("Dashboard", "Main", new {Area = "App"})">
 				<!-- Logo icon -->
 				<strong style="display: none;">
 					<!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
@@ -86,14 +86,12 @@
 				<!-- Notifications -->
 				<!-- ============================================================== -->
 				<li class="nav-item dropdown">
-					<a class="nav-link dropdown-toggle text-muted text-muted waves-effect waves-dark" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					<a id="notifyBell" class="nav-link dropdown-toggle text-muted text-muted waves-effect waves-dark" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 						<i class="mdi mdi-bell"></i>
-						@if (ViewBag.Notify == true) {
-							<div class="notify">
-								<span class="heartbit"></span>
-								<span class="point"></span>
-							</div>
-						}
+						<div class="notify" style="display: none">
+							<span class="heartbit"></span>
+							<span class="point"></span>
+						</div>
 					</a>
 					<div class="dropdown-menu dropdown-menu-right mailbox scale-up">
 						<ul>
@@ -121,7 +119,7 @@
 								</div>
 							</li>
 							<li>
-								<a class="nav-link text-center" href="@Url.Action("Dashboard","Notification", new {Area= "App"})">
+								<a class="nav-link text-center" href="@Url.Action("Dashboard", "Notification", new {Area = "App"})">
 									<strong>Zobrazit všechny notifikace</strong>
 									<i class="fa fa-angle-right"></i>
 								</a>
@@ -136,12 +134,16 @@
 				<!-- Profile -->
 				<!-- ============================================================== -->
 				<li class="nav-item dropdown">
-					<a class="nav-link dropdown-toggle text-muted waves-effect waves-dark" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="@profile" alt="user" class="profile-pic" /></a>
+					<a class="nav-link dropdown-toggle text-muted waves-effect waves-dark" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<img src="@profile" alt="user" class="profile-pic" />
+					</a>
 					<div class="dropdown-menu dropdown-menu-right scale-up">
 						<ul class="dropdown-user">
 							<li>
 								<div class="dw-user-box">
-									<div class="u-img"><img src="@profile" alt="user"></div>
+									<div class="u-img">
+										<img src="@profile" alt="user">
+									</div>
 									<div class="u-text" style="width: calc(100% - 90px);">
 										<h4>
 											@User.Identity.Name
@@ -155,11 +157,27 @@
 								</div>
 							</li>
 							<li role="separator" class="divider"></li>
-							<li><a href="#"><i class="ti-user"></i> Profil</a></li>
-							<li><a href="@Url.Action("Dashboard", "Achievement", new { Area = "App" })"><i class="mdi mdi-trophy-outline"></i> Achievementy</a></li>
-							<li><a href="@Url.Action("LoginHistory","Account", new { Area = "App" })"><i class="mdi mdi-history"></i> Historie</a></li>
+							<li>
+								<a href="#">
+									<i class="ti-user"></i> Profil
+								</a>
+							</li>
+							<li>
+								<a href="@Url.Action("Dashboard", "Achievement", new {Area = "App"})">
+									<i class="mdi mdi-trophy-outline"></i> Achievementy
+								</a>
+							</li>
+							<li>
+								<a href="@Url.Action("LoginHistory", "Account", new {Area = "App"})">
+									<i class="mdi mdi-history"></i> Historie
+								</a>
+							</li>
 							<li role="separator" class="divider"></li>
-							<li><a href="@Url.Action("Settings", "Account", new {Area = "App"})"><i class="ti-settings"></i> Nastavení</a></li>
+							<li>
+								<a href="@Url.Action("Settings", "Account", new {Area = "App"})">
+									<i class="ti-settings"></i> Nastavení
+								</a>
+							</li>
 							<li role="separator" class="divider"></li>
 							<li>@Html.Partial("~/Views/Shared/Dashboard/_LogoutDrop.cshtml", "")</li>
 						</ul>
@@ -342,18 +360,36 @@
 @section scripts {
 	<script type="text/javascript" language="javascript">
 		$(function() {
-			$.ajax({
-				url: "@Url.Action("GetList", "Notification", new {Area = "App"})",
-				type: "GET",
-				datatype: "html",
-				success: function (result) {
-					//var test = $.parseHTML(result);
-					$(".message-center").html(result);
-				},
-				error: function(err) {
-					console.log(err);
-					alert("A kruci! Vyskytla se chyba při načítání notifikací :(");
+			let $bell = $("#notifyBell");
+
+			$.get("@Url.Action("UnseenNotification", "Notification", new {Area = "App"})",
+				(data) => {
+					if (data === true) {
+						$bell.find(".notify").show();
+					}
 				}
+			);
+
+			let notLoaded = false;
+
+			$bell.click(() => {
+				if (notLoaded) {
+					return;
+				}
+				$.ajax({
+					url: "@Url.Action("GetList", "Notification", new {Area = "App"})",
+					type: "GET",
+					datatype: "html",
+					success: function(result) {
+						//var test = $.parseHTML(result);
+						$(".message-center").html(result);
+						notLoaded = true;
+					},
+					error: function(err) {
+						console.log(err);
+						alert("A kruci! Vyskytla se chyba při načítání notifikací :(");
+					}
+				});
 			});
 		});
 	</script>

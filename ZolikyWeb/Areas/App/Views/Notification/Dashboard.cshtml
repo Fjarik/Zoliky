@@ -12,9 +12,14 @@
 			<div class="card-body">
 				<div class="list-group">
 					@foreach (var ent in Model) {
-						<a class="list-group-item list-group-item-action flex-column align-items-start">
+						<a class="list-group-item list-group-item-action flex-column align-items-start notification" data-id="@ent.ID" data-seen="@ent.Seen">
 							<div class="d-flex w-100 justify-content-between">
-								<h4 class="mb-1">@ent.Title</h4>
+								<h4 class="mb-1">
+									@ent.Title
+									@if (!ent.Seen) {
+										<span class="label label-warning px-1 ml-2">NOVÉ</span>
+									}
+								</h4>
 								@{
 									var diff = (DateTime.Now - ent.Created).Days;
 									var date = "Dnes";
@@ -35,3 +40,41 @@
 		</div>
 	</div>
 </div>
+
+@section footer {
+	<script type="text/javascript">
+		$(() => {
+			const url = "@Url.Action("NotificationSeen")";
+			$(".list-group .notification").mouseenter((event) => {
+				let $not = $(event.target);
+				let seen = $not.data("seen") === "True";
+				if (!seen) {
+					let id = $not.data("id");
+					$not.data("seen", "True");
+					$.ajax({
+						type: "POST",
+						url: url,
+						data: {
+							id: id
+						},
+						success: (data) => {
+							if (data === "true") {
+								$not.find(".label").remove();
+							} else {
+								console.log("Vyskytla se chyba");
+								$not.data("seen", "False");
+							}
+						},
+						error: () => {
+							console.log("Vyskytla se chyba");
+							$not.data("seen", "False");
+						},
+						dataType: "text"
+					});
+					//console.log($badge);
+				}
+			});
+		});
+	</script>
+
+}
