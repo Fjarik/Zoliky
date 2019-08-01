@@ -68,7 +68,7 @@ namespace ZolikyWeb.Areas.App.Controllers
 		public async Task<PartialViewResult> GetList()
 		{
 			var id = this.User.Identity.GetId();
-			var res = await Mgr.GetUserNotificationsAsync(id);
+			var res = await Mgr.GetUserNotificationsAsync(id, top: 5);
 			return PartialView(res);
 		}
 

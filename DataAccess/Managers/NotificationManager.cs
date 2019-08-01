@@ -12,6 +12,7 @@ using Microsoft.Owin;
 using Newtonsoft.Json;
 using SharedLibrary;
 using SharedLibrary.Enums;
+using SharedLibrary.Shared;
 
 namespace DataAccess.Managers
 {
@@ -62,23 +63,34 @@ namespace DataAccess.Managers
 
 #region Get user notifications
 
-		public Task<IList<Notification>> GetUserNotificationsAsync(int userId, Projects? project = null)
+		public Task<IList<Notification>> GetUserNotificationsAsync(int userId,
+																   Projects? project = null,
+																   int? top = null)
 		{
-			return GetUserNotificationsAsync(userId, (int?) project);
+			return GetUserNotificationsAsync(userId, (int?) project, top);
 		}
 
-		private async Task<IList<Notification>> GetUserNotificationsAsync(int userId, int? projectId = null)
+		private async Task<IList<Notification>> GetUserNotificationsAsync(int userId,
+																		  int? projectId = null,
+																		  int? top = null)
 		{
 			if (userId < 1 || (projectId != null && projectId < 1)) {
 				return new List<Notification>();
 			}
-			return await _ctx.Notifications
-							 .Where(Extensions.IsNotExpired())
-							 .Where(x => x.ToID == userId &&
-										 x.ProjectID == projectId &&
-										 !x.Removed)
-							 .OrderBy(x => x.Seen)
-							 .ToListAsync();
+
+			var query = _ctx.Notifications
+							.Where(Extensions.IsNotExpired())
+							.Where(x => x.ToID == userId &&
+										x.ProjectID == projectId &&
+										!x.Removed)
+							.OrderBy(x => x.Seen)
+							.ThenByDescending(x => x.Created);
+
+			if (top != null) {
+				query = (IOrderedQueryable<Notification>) query.Take((int) top);
+			}
+
+			return await query.ToListAsync();
 		}
 
 #endregion
@@ -161,38 +173,56 @@ namespace DataAccess.Managers
 
 #region Create
 
+		public async Task<bool> SendNotificationToStudentsAsync(string title,
+																string subtitle,
+																object content = null,
+																DateTime? expiration = null)
+		{
+			var uMgr = Context.Get<UserManager>();
+			var ids = (uMgr.GetStudents()).Select(x => x.ID).OrderBy(x => x);
+			var success = true;
+
+			foreach (var id in ids) {
+				var res = await this.CreateAsync(id, title, subtitle);
+				if (!res.IsSuccess) {
+					success = false;
+					break;
+				}
+			}
+			return success;
+		}
+
 		public Task<MActionResult<Notification>> CreateAsync(int toId,
 															 string title,
-															 string subtitle = null,
-															 object content = null,
+															 string subtitle,
+															 object content,
 															 DateTime? expiration = null,
 															 Projects? projectId = null)
 		{
 			var conJson = JsonConvert.SerializeObject(content);
-			return this.CreateAsync(toId, title, subtitle, conJson, expiration, projectId);
+			return this.CreateBasicAsync(toId, title, subtitle, conJson, expiration, (int?) projectId);
 		}
 
 		public Task<MActionResult<Notification>> CreateAsync(int toId,
 															 string title,
-															 string subtitle = null,
-															 string content = null,
+															 string subtitle,
 															 DateTime? expiration = null,
 															 Projects? projectId = null)
 		{
-			return this.CreateAsync(toId, title, subtitle, content, expiration, (int?) projectId);
+			return this.CreateBasicAsync(toId, title, subtitle, null, expiration, (int?) projectId);
 		}
 
-		public async Task<MActionResult<Notification>> CreateAsync(int toId,
-																   string title,
-																   string subtitle = null,
-																   string content = null,
-																   DateTime? expiration = null,
-																   int? projectId = null)
+		private async Task<MActionResult<Notification>> CreateBasicAsync(int toId,
+																		 string title,
+																		 string subtitle,
+																		 string content = null,
+																		 DateTime? expiration = null,
+																		 int? projectId = null)
 		{
 			if (toId < 1) {
 				return new MActionResult<Notification>(StatusCode.NotValidID);
 			}
-			if (string.IsNullOrWhiteSpace(title)) {
+			if (Methods.AreNullOrWhiteSpace(title, subtitle)) {
 				return new MActionResult<Notification>(StatusCode.InvalidInput);
 			}
 			if (expiration != null && expiration < DateTime.Now) {
@@ -208,10 +238,12 @@ namespace DataAccess.Managers
 				Title = title,
 				Subtitle = subtitle,
 				Content = content,
+				Severity = 1,
 				Expiration = expiration,
 				Created = DateTime.Now,
 				Removed = false,
-				Seen = false
+				Seen = false,
+				Icon = null
 			};
 			return await base.CreateAsync(ent);
 		}

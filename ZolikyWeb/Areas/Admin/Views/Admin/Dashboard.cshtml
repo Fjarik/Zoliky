@@ -8,6 +8,12 @@
 <div class="row">
 	<!-- Column -->
 	<div class="col-lg-3 col-md-6">
-		@Html.Partial("_SendNotificationPartial", Model.SendNot)
+		@Html.Partial("Partials/_SendMobileNotPartial", Model.SendMobileNot)
 	</div>
+	<!-- /Column -->
+	<!-- Column -->
+	<div class="col-lg-3 col-md-6">
+		@Html.Partial("Partials/_SendNotificationsPartial", Model.SendNotifications)
+	</div>
+	<!-- /Column -->
 </div>

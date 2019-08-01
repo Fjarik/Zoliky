@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using ZolikyWeb.Areas.Admin.Models.Admin.Dashboard;
 
 namespace ZolikyWeb.Areas.Admin.Models.Admin
 {
@@ -21,6 +22,16 @@ namespace ZolikyWeb.Areas.Admin.Models.Admin
 
 #endregion
 
-		public SendNotificationModel SendNot { get; set; }
+		public SendMobileNotModel SendMobileNot { get; set; }
+		public SendNotificationsModel SendNotifications{ get; set; }
+
+		public DashboardModel(int defaultToId)
+		{
+			this.SendMobileNot = new SendMobileNotModel {
+				ToId = defaultToId
+			};
+			this.SendNotifications = new SendNotificationsModel();
+		}
+
 	}
 }

@@ -1,10 +1,10 @@
-﻿@model ZolikyWeb.Areas.Admin.Models.Admin.SendNotificationModel
+﻿@model ZolikyWeb.Areas.Admin.Models.Admin.Dashboard.SendMobileNotModel
 @using ZolikyWeb.Tools
 
 <div class="card">
 	<div class="card-body">
 		<h4 class="card-title">Poslání mobilní notifikace</h4>
-		@using (Html.BeginForm("SendNotification", "Admin", new {Area = "Admin"}, FormMethod.Post, new {@class = "floating-labels m-t-40"})) {
+		@using (Html.BeginForm("SendMobileNotification", "Admin", new {Area = "Admin"}, FormMethod.Post, new {@class = "floating-labels m-t-40"})) {
 			@Html.AntiForgeryToken()
 			<div class="form-group m-b-40">
 				@Html.NoSelectLaberFor(x => x.ToId)

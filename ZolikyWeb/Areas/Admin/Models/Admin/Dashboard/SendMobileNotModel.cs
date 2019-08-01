@@ -4,9 +4,9 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
-namespace ZolikyWeb.Areas.Admin.Models.Admin
+namespace ZolikyWeb.Areas.Admin.Models.Admin.Dashboard
 {
-	public class SendNotificationModel
+	public class SendMobileNotModel
 	{
 		[Display(Name = "ID příjemce")]
 		[Required(ErrorMessage = "Musíte zadat ID příjemce")]

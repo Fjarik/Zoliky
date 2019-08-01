@@ -1208,7 +1208,7 @@
     <Content Include="Areas\Admin\Views\School\Dashboard.cshtml" />
     <Content Include="Areas\Admin\Views\School\Create.cshtml" />
     <Content Include="Areas\Admin\Views\School\Edit.cshtml" />
-    <Content Include="Areas\Admin\Views\Admin\_SendNotificationPartial.cshtml" />
+    <Content Include="Areas\Admin\Views\Admin\Partials\_SendMobileNotPartial.cshtml" />
     <Content Include="Areas\App\Views\Achievement\Dashboard.cshtml" />
     <Content Include="Areas\App\Views\Notification\Dashboard.cshtml" />
     <Content Include="Areas\App\Views\Notification\GetList.cshtml" />
@@ -1218,6 +1218,7 @@
     <Content Include="Content\Images\Pages\Default\Store.webp" />
     <Content Include="Areas\Admin\Views\User\Dashboard.cshtml" />
     <Content Include="Areas\App\Views\Notification\_NotificationPartial.cshtml" />
+    <Content Include="Areas\Admin\Views\Admin\Partials\_SendNotificationsPartial.cshtml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\fa-all.js" />
     <Content Include="Scripts\fa-all.min.js" />
@@ -1404,9 +1405,10 @@
     <Compile Include="Areas\Admin\Controllers\SettingsController.cs" />
     <Compile Include="Areas\Admin\Controllers\UserController.cs" />
     <Compile Include="Areas\Admin\Models\Admin\DashboardModel.cs" />
-    <Compile Include="Areas\Admin\Models\Admin\SendNotificationModel.cs" />
+    <Compile Include="Areas\Admin\Models\Admin\Dashboard\SendMobileNotModel.cs" />
+    <Compile Include="Areas\Admin\Models\Admin\Dashboard\SendNotificationsModel.cs" />
     <Compile Include="Areas\Admin\Models\Admin\SettingsModel.cs" />
-    <Compile Include="Areas\Admin\Models\Admin\SettingsModels\ProjectSettingsModel.cs" />
+    <Compile Include="Areas\Admin\Models\Admin\Settings\ProjectSettingsModel.cs" />
     <Compile Include="Areas\Admin\Models\User\UserModel.cs" />
     <Compile Include="Areas\App\AppAreaRegistration.cs" />
     <Compile Include="Areas\App\Controllers\AccountController.cs" />
