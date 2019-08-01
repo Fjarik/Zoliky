@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.Mvc;
 using DataAccess;
 using DataAccess.Managers;
+using DataAccess.Models;
 using ZolikyWeb.Models.Base;
 using ZolikyWeb.Tools;
 
@@ -42,6 +43,26 @@ namespace ZolikyWeb.Areas.App.Controllers
 
 			var res = await Mgr.SeenNotificationAsync(id, userId);
 			return Json(res);
+		}
+
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		[ValidateSecureHiddenInputs(nameof(Notification.ID))]
+		public async Task<ActionResult> RemoveNotification(Notification n)
+		{
+			if (n == null || n.ID < 1) {
+				this.AddErrorToastMessage("Neplatná notifikace");
+				return RedirectToAction("Dashboard");
+			}
+
+			var userId = this.User.Identity.GetId();
+			var id = n.ID;
+
+			var res = await Mgr.HideNotificationAsync(id, userId);
+			if (!res) {
+				this.AddErrorToastMessage("Nezdařilo se odstranit notifikaci");
+			}
+			return RedirectToAction("Dashboard");
 		}
 
 		public async Task<PartialViewResult> GetList()

@@ -12,28 +12,7 @@
 			<div class="card-body">
 				<div class="list-group">
 					@foreach (var ent in Model) {
-						<a class="list-group-item list-group-item-action flex-column align-items-start notification" data-id="@ent.ID" data-seen="@ent.Seen">
-							<div class="d-flex w-100 justify-content-between">
-								<h4 class="mb-1">
-									@ent.Title
-									@if (!ent.Seen) {
-										<span class="label label-warning px-1 ml-2">NOVÉ</span>
-									}
-								</h4>
-								@{
-									var diff = (DateTime.Now - ent.Created).Days;
-									var date = "Dnes";
-									if (diff == 1) {
-										date = "Včera";
-									} else if (diff > 1) {
-										date = $"Před {diff} dny";
-									}
-								}
-								<small class="text-muted">@date</small>
-							</div>
-							<p class="mb-1">@ent.Subtitle</p>
-							@*<small class="text-muted">Donec id elit non mi porta.</small>*@
-						</a>
+						@Html.Partial("_NotificationPartial", ent)
 					}
 				</div>
 			</div>

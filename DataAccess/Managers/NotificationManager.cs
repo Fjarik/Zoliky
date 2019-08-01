@@ -37,6 +37,11 @@ namespace DataAccess.Managers
 
 #region Overrides
 
+		public override Task<bool> DeleteAsync(Notification entity)
+		{
+			throw new NotSupportedException("Use HideNotificationAsync instead");
+		}
+
 #endregion
 
 		/// 
@@ -90,7 +95,7 @@ namespace DataAccess.Managers
 
 		public async Task<bool> SeenNotificationAsync(int notificationId, int userId)
 		{
-			var exists = await _ctx.Notifications.AnyAsync(x => x.ID == notificationId && x.ToID == userId);
+			var exists = await ExistsAsync(notificationId, userId);
 			if (!exists) {
 				return false;
 			}
@@ -122,7 +127,16 @@ namespace DataAccess.Managers
 
 #region Hide (remove)
 
-		public async Task<bool> HideNotificationAsync(int notificationId)
+		public async Task<bool> HideNotificationAsync(int notificationId, int userId)
+		{
+			var exists = await ExistsAsync(notificationId, userId);
+			if (!exists) {
+				return false;
+			}
+			return await this.HideNotificationAsync(notificationId);
+		}
+
+		private async Task<bool> HideNotificationAsync(int notificationId)
 		{
 			if (notificationId < 1) {
 				return false;
@@ -200,6 +214,15 @@ namespace DataAccess.Managers
 				Seen = false
 			};
 			return await base.CreateAsync(ent);
+		}
+
+#endregion
+
+#region Exists
+
+		public Task<bool> ExistsAsync(int notId, int userId)
+		{
+			return _ctx.Notifications.AnyAsync(x => x.ID == notId && x.ToID == userId);
 		}
 
 #endregion

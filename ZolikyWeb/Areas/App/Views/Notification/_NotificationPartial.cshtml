@@ -1,0 +1,33 @@
+﻿@using ZolikyWeb.Tools
+@model DataAccess.Models.Notification
+<a class="list-group-item list-group-item-action flex-column align-items-start notification" data-id="@Model.ID" data-seen="@Model.Seen">
+	@using (Html.BeginForm("RemoveNotification", "Notification", new { Area = "App" }, FormMethod.Post)) {
+		@Html.AntiForgeryToken()
+		@Html.SecureHiddenFor(x => x.ID)
+		<div class="d-flex w-100 justify-content-between">
+			<h4 class="mb-1">
+				@Model.Title
+				@if (!Model.Seen) {
+					<span class="label label-warning px-1 ml-2">NOVÉ</span>
+				}
+			</h4>
+			@{
+				var diff = (DateTime.Now - Model.Created).Days;
+				var date = "Dnes";
+				if (diff == 1) {
+					date = "Včera";
+				} else if (diff > 1) {
+					date = $"Před {diff} dny";
+				}
+			}
+			<small class="text-muted">@date</small>
+		</div>
+		<div class="d-flex w-100 justify-content-between">
+			<p class="mb-1">@Model.Subtitle</p>
+			<button type="submit" class="btn btn-secondary btn-circle">
+				<i class="mdi mdi-delete"></i>
+			</button>
+		</div>
+	}
+	@*<small class="text-muted">Donec id elit non mi porta.</small>*@
+</a>

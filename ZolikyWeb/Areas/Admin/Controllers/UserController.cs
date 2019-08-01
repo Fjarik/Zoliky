@@ -6,10 +6,8 @@ using System.Web;
 using System.Web.Mvc;
 using DataAccess.Managers;
 using DataAccess.Models;
-using Newtonsoft.Json;
 using SharedLibrary.Enums;
 using SharedLibrary.Shared;
-using ZolikyWeb.Areas.Admin.Models.User;
 using ZolikyWeb.Models.Base;
 using ZolikyWeb.Tools;
 

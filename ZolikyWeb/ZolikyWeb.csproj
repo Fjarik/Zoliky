@@ -1217,6 +1217,7 @@
     <Content Include="Content\Images\Pages\Default\App.webp" />
     <Content Include="Content\Images\Pages\Default\Store.webp" />
     <Content Include="Areas\Admin\Views\User\Dashboard.cshtml" />
+    <Content Include="Areas\App\Views\Notification\_NotificationPartial.cshtml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\fa-all.js" />
     <Content Include="Scripts\fa-all.min.js" />
