@@ -1,0 +1,11 @@
+﻿@using ZolikyWeb.Tools
+@model DataAccess.Models.Ban
+
+
+@using (Html.BeginForm("Unban", "Ban", new {Area = "Admin"}, FormMethod.Post)) {
+	@Html.AntiForgeryToken()
+	@Html.SecureHiddenFor(x => x.ID)
+	<a href="#" data-click='submit' data-toggle="tooltip" data-original-title="Zrušit">
+		<i class="mdi mdi-delete text-inverse"></i>
+	</a>
+}

@@ -1,0 +1,90 @@
+﻿@using SharedLibrary.Shared
+@model IEnumerable<DataAccess.Models.Ban>
+
+@{
+	ViewBag.Title = "Blokace";
+	Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="row">
+	<div class="col">
+		<div class="card">
+			<div class="card-body">
+				<div class="table-responsive">
+					<table id="table-bans" class="table m-t-30 table-hover contact-list" data-page-size="10">
+						<thead>
+							<tr>
+								<th data-type="number">
+									ID
+								</th>
+								<th>
+									Uživatel
+								</th>
+								<th>
+									Důvod
+								</th>
+								<th data-type="date">
+									Od
+								</th>
+								<th data-type="date" class="text-center">
+									Do
+								</th>
+								<th data-sort-ignore="true" class="text-center">
+									Akce
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							@foreach (var ban in Model) {
+								<tr>
+									<td data-value="@ban.ID">
+										@ban.ID
+									</td>
+									<td data-value="@(ban.User?.FullName)">
+										<span class="c-help" data-toggle="tooltip" data-original-title="Třída: @(ban.User?.Class?.Name ?? "Žádná")">
+											@(ban.User?.FullName)
+										</span>
+									</td>
+									<td>
+										@ban.Reason
+									</td>
+									<td data-value="@(ban.From.GetJsTimestamp())">
+										@ban.From.ToString("dd.MM.yyyy")
+									</td>
+									<td class="text-center" data-value="@(ban.To?.GetJsTimestamp())">
+										@(ban.To?.ToString("dd.MM.yyyy") ?? "-")
+									</td>
+									<td class="d-flex justify-content-around">
+										<a href="@Url.Action("Edit", "Ban", new {Area = "Admin", id = ban.ID})" data-toggle="tooltip" data-original-title="Upravit">
+											<i class="fa fa-pencil text-inverse"></i>
+										</a>
+										@Html.Partial("_UnbanPartial", ban)
+									</td>
+								</tr>
+							}
+						</tbody>
+						<tfoot>
+							<tr>
+								<td colspan="6">
+									<div class="text-right">
+										<ul class="pagination"> </ul>
+									</div>
+								</td>
+							</tr>
+						</tfoot>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+@section footer {
+	<script type="text/javascript">
+		$(() => {
+			$("#table-bans").footable({
+			});
+		});
+	</script>
+
+}

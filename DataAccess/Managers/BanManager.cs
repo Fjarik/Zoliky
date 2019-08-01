@@ -67,6 +67,13 @@ namespace DataAccess.Managers
 					   .FirstOrDefaultAsync(x => x.UserID == userId);
 		}
 
+		public Task<List<Ban>> GetActiveBansAsync()
+		{
+			return _ctx.Bans
+					   .Where(Extensions.IsActive())
+					   .ToListAsync();
+		}
+
 		public async Task<MActionResult<Ban>> CreateAsync(string reason,
 														  int userId,
 														  DateTime? to = null)

@@ -1219,6 +1219,9 @@
     <Content Include="Areas\Admin\Views\User\Dashboard.cshtml" />
     <Content Include="Areas\App\Views\Notification\_NotificationPartial.cshtml" />
     <Content Include="Areas\Admin\Views\Admin\Partials\_SendNotificationsPartial.cshtml" />
+    <Content Include="Areas\Admin\Views\Ban\Dashboard.cshtml" />
+    <Content Include="Areas\Admin\Views\Ban\_UnbanPartial.cshtml" />
+    <Content Include="Areas\Admin\Views\Ban\Edit.cshtml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\fa-all.js" />
     <Content Include="Scripts\fa-all.min.js" />
@@ -1401,6 +1404,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\AdminController.cs" />
+    <Compile Include="Areas\Admin\Controllers\BanController.cs" />
     <Compile Include="Areas\Admin\Controllers\SchoolController.cs" />
     <Compile Include="Areas\Admin\Controllers\SettingsController.cs" />
     <Compile Include="Areas\Admin\Controllers\UserController.cs" />
@@ -1409,6 +1413,7 @@
     <Compile Include="Areas\Admin\Models\Admin\Dashboard\SendNotificationsModel.cs" />
     <Compile Include="Areas\Admin\Models\Admin\SettingsModel.cs" />
     <Compile Include="Areas\Admin\Models\Admin\Settings\ProjectSettingsModel.cs" />
+    <Compile Include="Areas\Admin\Models\Ban\BanModel.cs" />
     <Compile Include="Areas\Admin\Models\User\UserModel.cs" />
     <Compile Include="Areas\App\AppAreaRegistration.cs" />
     <Compile Include="Areas\App\Controllers\AccountController.cs" />
