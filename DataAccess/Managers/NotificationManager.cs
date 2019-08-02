@@ -175,7 +175,8 @@ namespace DataAccess.Managers
 
 		public async Task<bool> SendNotificationToStudentsAsync(string title,
 																string subtitle,
-																object content = null,
+																NotificationSeverity severity =
+																	NotificationSeverity.Normal,
 																DateTime? expiration = null)
 		{
 			var uMgr = Context.Get<UserManager>();
@@ -183,7 +184,7 @@ namespace DataAccess.Managers
 			var success = true;
 
 			foreach (var id in ids) {
-				var res = await this.CreateAsync(id, title, subtitle);
+				var res = await this.CreateAsync(id, title, subtitle, severity, expiration: expiration);
 				if (!res.IsSuccess) {
 					success = false;
 					break;
@@ -196,25 +197,31 @@ namespace DataAccess.Managers
 															 string title,
 															 string subtitle,
 															 object content,
+															 NotificationSeverity severity =
+																 NotificationSeverity.Normal,
 															 DateTime? expiration = null,
 															 Projects? projectId = null)
 		{
 			var conJson = JsonConvert.SerializeObject(content);
-			return this.CreateBasicAsync(toId, title, subtitle, conJson, expiration, (int?) projectId);
+			return this.CreateBasicAsync(toId, title, subtitle, severity, conJson, expiration, (int?) projectId);
 		}
 
 		public Task<MActionResult<Notification>> CreateAsync(int toId,
 															 string title,
 															 string subtitle,
+															 NotificationSeverity severity =
+																 NotificationSeverity.Normal,
 															 DateTime? expiration = null,
 															 Projects? projectId = null)
 		{
-			return this.CreateBasicAsync(toId, title, subtitle, null, expiration, (int?) projectId);
+			return this.CreateBasicAsync(toId, title, subtitle, severity, null, expiration, (int?) projectId);
 		}
 
 		private async Task<MActionResult<Notification>> CreateBasicAsync(int toId,
 																		 string title,
 																		 string subtitle,
+																		 NotificationSeverity severity =
+																			 NotificationSeverity.Normal,
 																		 string content = null,
 																		 DateTime? expiration = null,
 																		 int? projectId = null)
@@ -238,7 +245,7 @@ namespace DataAccess.Managers
 				Title = title,
 				Subtitle = subtitle,
 				Content = content,
-				Severity = 1,
+				Severity = severity,
 				Expiration = expiration,
 				Created = DateTime.Now,
 				Removed = false,

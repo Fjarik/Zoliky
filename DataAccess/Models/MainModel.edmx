@@ -132,7 +132,7 @@
           <Property Name="Title" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Subtitle" Type="nvarchar" MaxLength="200" />
           <Property Name="Content" Type="nvarchar(max)" />
-          <Property Name="Severity" Type="smallint" Nullable="false" />
+          <Property Name="Severity" Type="tinyint" Nullable="false" />
           <Property Name="Icon" Type="varchar" MaxLength="10" />
           <Property Name="Created" Type="datetime" Nullable="false" />
           <Property Name="Expiration" Type="datetime" />
@@ -194,7 +194,7 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Type" Type="int" Nullable="false" />
+          <Property Name="Type" Type="tinyint" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="200" Nullable="false" />
           <Property Name="Street" Type="nvarchar" MaxLength="200" Nullable="false" />
           <Property Name="City" Type="nvarchar" MaxLength="200" Nullable="false" />
@@ -1601,7 +1601,7 @@
           <Property Name="Expiration" Type="DateTime" Precision="3" Nullable="true" />
           <Property Name="Seen" Type="Boolean" Nullable="false" />
           <Property Name="Removed" Type="Boolean" Nullable="false" />
-          <Property Name="Severity" Type="Int16" Nullable="false" />
+          <Property Name="Severity" Type="ZoliksModel.NotificationSeverity" Nullable="false" />
           <Property Name="Icon" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           </EntityType>
         <Association Name="FK_News_Projects">
@@ -2308,7 +2308,7 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Type" Type="Int32" Nullable="false" />
+          <Property Name="Type" Type="ZoliksModel.SchoolTypes" Nullable="false" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="Street" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="City" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
@@ -2473,6 +2473,8 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EnumType Name="SchoolTypes" UnderlyingType="Byte" a:ExternalTypeName="SharedLibrary.Enums.SchoolTypes" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+        <EnumType Name="NotificationSeverity" UnderlyingType="Byte" a:ExternalTypeName="SharedLibrary.Enums.NotificationSeverity" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->

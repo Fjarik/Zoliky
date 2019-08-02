@@ -72,6 +72,27 @@ namespace SharedLibrary.Enums
 		Other = 4,
 	}
 
+	public enum SchoolTypes : byte
+	{
+		[Description("Základní škola")]
+		Zs = 0,
+
+		[Description("Střední škola")]
+		Ss = 1
+	}
+
+	public enum NotificationSeverity : byte
+	{
+		[Description("Normální")]
+		Normal = 0,
+
+		[Description("Důležitá")]
+		Important = 1,
+
+		[Description("Kritická")]
+		Critical = 2
+	}
+
 	public enum TransactionAssignment : byte
 	{
 		[Description("Dárek")]

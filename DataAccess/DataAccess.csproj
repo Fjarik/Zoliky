@@ -139,6 +139,7 @@
     <Compile Include="Managers\HashManager.cs" />
     <Compile Include="Managers\ProjectSettingManager.cs" />
     <Compile Include="Managers\RankManager.cs" />
+    <Compile Include="Managers\SchoolManager.cs" />
     <Compile Include="Managers\SubjectManager.cs" />
     <Compile Include="Managers\Support\TicketManager.cs" />
     <Compile Include="Managers\Support\UniversalTicketManager.cs" />

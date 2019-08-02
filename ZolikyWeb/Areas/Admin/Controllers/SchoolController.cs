@@ -1,30 +1,35 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using DataAccess.Managers;
 using DataAccess.Models;
 using SharedLibrary.Shared;
 using ZolikyWeb.Models.Base;
+using ZolikyWeb.Tools;
 
 namespace ZolikyWeb.Areas.Admin.Controllers
 {
-	[Authorize(Roles = UserRoles.AdminOrDeveloper + "," + UserRoles.Teacher)]
-    public class SchoolController : OwnController
+	[Authorize(Roles = UserRoles.AdminOrDeveloperOrTeacher)]
+	public class SchoolController : OwnController<SchoolManager>
 	{
-        // GET: Admin/School/Dashboard
-        public ActionResult Dashboard()
-        {
-            return View();
-        }
+		public async Task<ActionResult> Dashboard()
+		{
+			var res = await Mgr.GetAllAsync();
+			if (!res.Any()) {
+				this.AddErrorToastMessage("Nebyly nalezeny žádné školy");
+				return RedirectToApp();
+			}
+			return View(res);
+		}
 
-		// GET: Admin/School/Create
 		public ActionResult Create()
 		{
 			return View();
 		}
 
-		// GET: Admin/School/Edit
 		public ActionResult Edit()
 		{
 			return View();

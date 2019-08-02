@@ -24,7 +24,7 @@ namespace DataAccess.Models
         public Nullable<System.DateTime> Expiration { get; set; }
         public bool Seen { get; set; }
         public bool Removed { get; set; }
-        public short Severity { get; set; }
+        public SharedLibrary.Enums.NotificationSeverity Severity { get; set; }
         public string Icon { get; set; }
     }
 }

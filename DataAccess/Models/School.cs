@@ -23,7 +23,7 @@ namespace DataAccess.Models
         }
     
         public int ID { get; set; }
-        public int Type { get; set; }
+        public SharedLibrary.Enums.SchoolTypes Type { get; set; }
         public string Name { get; set; }
         public string Street { get; set; }
         public string City { get; set; }
