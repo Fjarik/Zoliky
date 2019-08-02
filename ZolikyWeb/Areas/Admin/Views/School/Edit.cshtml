@@ -1,8 +1,186 @@
-﻿
+﻿@using ZolikyWeb.Tools
+@model ZolikyWeb.Areas.Admin.Models.School.SchoolModel
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Škola";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+	var disabled = new {disabled = "disabled"};
 }
 
-<h2>Edit</h2>
 
+<div class="row">
+	<div class="col">
+		<div class="card card-outline-info">
+			<div class="card-header">
+				<h4 class="mb-0 text-white">Úprava školy</h4>
+			</div>
+			<div class="card-body">
+				@using (Html.BeginForm("Edit", "School", new { Area = "Admin" }, FormMethod.Post, new { @class = "form-horizontal" })) {
+					@Html.AntiForgeryToken()
+					@Html.SecureHiddenFor(x => x.ID)
+				<div class="form-body">
+					<h3 class="card-title">
+						Obecné
+					</h3>
+					<hr class="mt-0 m-b-40" />
+					<!-- row -->
+					<div class="row">
+						<!-- item -->
+						<div class="col-md-6">
+							<div class="form-group row">
+								<label class="control-label text-right col-md-3">ID</label>
+								<div class="col-md-9">
+									<p class="form-control-static">
+										@Model.ID
+									</p>
+								</div>
+							</div>
+						</div>
+						<!-- /item -->
+						<!-- item -->
+						<div class="col-md-6">
+							<div class="form-group row">
+								<label class="control-label text-right col-md-3">Druh</label>
+								<div class="col-md-9">
+									<p class="form-control-static">
+
+									</p>
+								</div>
+							</div>
+						</div>
+						<!-- /item -->
+					</div>
+					<!-- /row -->
+					<!-- row -->
+					<div class="row">
+						<!-- item -->
+						<div class="col-md-6">
+							<div class="form-group row">
+								<label class="control-label text-right col-md-3">Název</label>
+								<div class="col-md-9">
+									<p class="form-control-static">
+
+									</p>
+								</div>
+							</div>
+						</div>
+						<!-- /item -->
+						<!-- item -->
+						<div class="col-md-6">
+							<div class="form-group row">
+								<label class="control-label text-right col-md-3">Adresa</label>
+								<div class="col-md-9">
+									<p class="form-control-static">
+
+									</p>
+								</div>
+							</div>
+						</div>
+						<!-- /item -->
+					</div>
+					<!-- /row -->
+
+					<h3 class="card-title">
+						Nastavení
+					</h3>
+					<hr class="mt-0 m-b-40" />
+					<!-- row -->
+					<div class="row">
+						<!-- item -->
+						<div class="col-md-6">
+							<div class="form-group row">
+								<label class="control-label text-right col-md-3">Povolit přenost</label>
+								<div class="col-md-9">
+									<p class="form-control-static">
+
+									</p>
+								</div>
+							</div>
+						</div>
+						<!-- /item -->
+						<!-- item -->
+						<div class="col-md-6">
+							<div class="form-group row">
+								<label class="control-label text-right col-md-3">Odstaňováno žolíků učitelem</label>
+								<div class="col-md-9">
+									<p class="form-control-static">
+
+									</p>
+								</div>
+							</div>
+						</div>
+						<!-- /item -->
+					</div>
+					<!-- /row -->
+					<!-- row -->
+					<div class="row">
+						<!-- item -->
+						<div class="col-md-6">
+							<div class="form-group row">
+								<label class="control-label text-right col-md-3">Rozklad žolíků</label>
+								<div class="col-md-9">
+
+								</div>
+							</div>
+						</div>
+						<!-- /item -->
+						<!-- item -->
+						<div class="col-md-6">
+							<div class="form-group row">
+								<label class="control-label text-right col-md-3"></label>
+								<div class="col-md-9">
+
+								</div>
+							</div>
+						</div>
+						<!-- /item -->
+					</div>
+					<!-- /row -->
+
+					<h3 class="card-title">
+						Pokročilé
+					</h3>
+					<hr class="mt-0 m-b-40" />
+					<!-- row -->
+					<div class="row">
+						<!-- item -->
+						<div class="col-md-6">
+							<div class="form-group row">
+								<label class="control-label text-right col-md-3">Třídy</label>
+								<div class="col-md-9">
+									<p class="form-control-static">
+										@Html.DropDownList("classes", Model.ClassList, new {multiple="multiple", @class="form-control" })
+									</p>
+								</div>
+							</div>
+						</div>
+						<!-- /item -->
+						<!-- item -->
+						<div class="col-md-6">
+							<div class="form-group row">
+								<label class="control-label text-right col-md-3">Předměty</label>
+								<div class="col-md-9">
+									@Html.DropDownList("subjects", Model.SubjectList, new { multiple = "multiple", @class = "form-control" })
+								</div>
+							</div>
+						</div>
+						<!-- /item -->
+					</div>
+					<!-- /row -->
+				</div>
+					<hr />
+					<div class="form-actions">
+						<div class="row">
+							<div class="col-md-6">
+								<button type="submit" class="btn btn-primary" tabindex="4">
+									Uložit
+								</button>
+							</div>
+							<div class="col-md-6">
+							</div>
+						</div>
+					</div>
+				}
+			</div>
+		</div>
+	</div>
+</div>

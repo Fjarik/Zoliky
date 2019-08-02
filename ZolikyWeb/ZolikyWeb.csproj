@@ -1414,6 +1414,7 @@
     <Compile Include="Areas\Admin\Models\Admin\SettingsModel.cs" />
     <Compile Include="Areas\Admin\Models\Admin\Settings\ProjectSettingsModel.cs" />
     <Compile Include="Areas\Admin\Models\Ban\BanModel.cs" />
+    <Compile Include="Areas\Admin\Models\School\SchoolModel.cs" />
     <Compile Include="Areas\Admin\Models\User\UserModel.cs" />
     <Compile Include="Areas\App\AppAreaRegistration.cs" />
     <Compile Include="Areas\App\Controllers\AccountController.cs" />
