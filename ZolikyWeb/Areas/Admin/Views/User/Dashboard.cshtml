@@ -154,8 +154,10 @@
 					$(row).addClass(cl);
 				},
 				initComplete: () => {
-					$('[data-toggle="tooltip"]').tooltip();
 					console.log("DataTables: Data načtena");
+				},
+				drawCallback: () => {
+					$('[data-toggle="tooltip"]').tooltip();
 				}
 			});
 
