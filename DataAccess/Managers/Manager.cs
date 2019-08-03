@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Data.Entity;
+using System.Linq;
 using System.Threading.Tasks;
 using DataAccess.Models;
 using Microsoft.Owin;
 using SharedLibrary;
 using SharedLibrary.Enums;
 using SharedLibrary.Interfaces;
+using Z.EntityFramework.Plus;
 
 namespace DataAccess.Managers
 {
@@ -22,6 +24,24 @@ namespace DataAccess.Managers
 		public virtual Task<bool> IdExistsAsync(int id)
 		{
 			return _ctx.Set<T>().AnyAsync(x => x.ID == id);
+		}
+
+		public virtual Task<int> GetPreviousIdAsync(int currentId)
+		{
+			return _ctx.Set<T>()
+					   .Where(x => x.ID < currentId)
+					   .OrderByDescending(x => x.ID)
+					   .Select(x => x.ID)
+					   .FirstOrDefaultAsync();
+		}
+
+		public virtual Task<int> GetNextIdAsync(int currentId)
+		{
+			return _ctx.Set<T>()
+					   .Where(x => x.ID > currentId)
+					   .OrderBy(x => x.ID)
+					   .Select(x => x.ID)
+					   .FirstOrDefaultAsync();
 		}
 
 		public virtual async Task<MActionResult<T>> GetByIdAsync(int id)

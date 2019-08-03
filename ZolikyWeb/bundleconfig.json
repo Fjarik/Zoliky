@@ -1,0 +1,20 @@
+[
+  {
+    "outputFileName": "assets/plugins/multiselect/css/multi-select.min.css",
+    "inputFiles": [
+      "assets/plugins/multiselect/css/multi-select.css"
+    ]
+  },
+  {
+    "outputFileName": "assets/plugins/multiselect/js/jquery.multi-select.min.js",
+    "inputFiles": [
+      "assets/plugins/multiselect/js/jquery.multi-select.js"
+    ]
+  },
+  {
+    "outputFileName": "Scripts/Dashboard/custom.min.js",
+    "inputFiles": [
+      "Scripts/Dashboard/custom.js"
+    ]
+  }
+]
