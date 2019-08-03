@@ -45,7 +45,8 @@ namespace ZolikyWeb.Tools
 			IDictionary<string, object> htmlAttributes = null,
 			bool includePlaceholder = true)
 		{
-			htmlAttributes = NormalizeAttributes(expression, tabindex, htmlAttributes, autoComplete, includePlaceholder);
+			htmlAttributes =
+				NormalizeAttributes(expression, tabindex, htmlAttributes, autoComplete, includePlaceholder);
 			var mvcString = htmlHelper.TextBoxFor(expression, htmlAttributes);
 			return mvcString;
 		}
@@ -80,7 +81,8 @@ namespace ZolikyWeb.Tools
 			IDictionary<string, object> htmlAttributes = null,
 			bool includePlaceholder = true)
 		{
-			htmlAttributes = NormalizeAttributes(expression, tabindex, htmlAttributes, autoComplete, includePlaceholder);
+			htmlAttributes =
+				NormalizeAttributes(expression, tabindex, htmlAttributes, autoComplete, includePlaceholder);
 			var mvcString = htmlHelper.PasswordFor(expression, htmlAttributes);
 			return mvcString;
 		}
@@ -92,7 +94,8 @@ namespace ZolikyWeb.Tools
 			IDictionary<string, object> htmlAttributes = null,
 			bool includePlaceholder = true)
 		{
-			htmlAttributes = NormalizeAttributes(expression, tabindex, htmlAttributes, includePlaceholder: includePlaceholder);
+			htmlAttributes = NormalizeAttributes(expression, tabindex, htmlAttributes,
+												 includePlaceholder: includePlaceholder);
 			var mvcString = htmlHelper.PasswordFor(expression, htmlAttributes);
 			return mvcString;
 		}
@@ -131,6 +134,28 @@ namespace ZolikyWeb.Tools
 										  .GetCustomAttributes(false)
 										  .OfType<PlaceHolderAttribute>()
 										  .SingleOrDefault();
+				if (attribute == null) {
+					var type = typeof(TModel);
+					var metadataType = type.GetCustomAttributes(typeof(MetadataTypeAttribute), true)
+										   .OfType<MetadataTypeAttribute>().FirstOrDefault();
+					var metaData = (metadataType == null)
+									   ? ModelMetadataProviders.Current.GetMetadataForType(null, type)
+									   : ModelMetadataProviders.Current.GetMetadataForType(null, metadataType
+																							   .MetadataClassType);
+
+					metaData.Properties
+							.Single(x => x.PropertyName == memberExpr.Member.Name)
+							.Properties
+							.ForEach(x => {
+								if (metaData.ModelType
+											.GetProperty(memberExpr.Member.Name)?
+											.GetCustomAttributes(typeof(PlaceHolderAttribute), false)
+											.FirstOrDefault() is PlaceHolderAttribute a) {
+									attribute = a;
+								}
+							});
+				}
+
 				if (attribute != null) {
 					htmlAttributes.Add("placeholder", attribute.Text);
 				}

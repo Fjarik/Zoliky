@@ -331,6 +331,8 @@ namespace DataAccess.Models
 	[MetadataType(typeof(SchoolMetaData))]
 	public partial class School : IDbEntity
 	{
+		//public IList<Subject> Subjects => this.SchoolSubjects.Select(x => x.Subject).ToList();
+
 		private sealed class SchoolMetaData
 		{
 			[JsonIgnore]
@@ -338,8 +340,13 @@ namespace DataAccess.Models
 
 			[JsonIgnore]
 			public ICollection<User> Users { get; set; }
+
+			[JsonIgnore]
+			public ICollection<SchoolSubject> SchoolSubjects { get; set; }
 		}
 	}
+
+	public partial class SchoolSubject : IDbObject { }
 
 	public partial class Subject : IDbEntity { }
 
@@ -409,7 +416,7 @@ namespace DataAccess.Models
 									.FirstOrDefault();
 
 		public bool IsBanned => this.Bans
-									.Any(x=> x.IsActive);
+									.Any(x => x.IsActive);
 
 		public bool IsEnabled
 		{

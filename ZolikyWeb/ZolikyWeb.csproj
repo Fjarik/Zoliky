@@ -1220,7 +1220,6 @@
     <Content Include="Content\Images\Screens\store.webp" />
     <Content Include="Areas\Admin\Views\Shared\_LayoutMenu.cshtml" />
     <Content Include="Areas\Admin\Views\School\Dashboard.cshtml" />
-    <Content Include="Areas\Admin\Views\School\Create.cshtml" />
     <Content Include="Areas\Admin\Views\School\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\Admin\Partials\_SendMobileNotPartial.cshtml" />
     <Content Include="Areas\App\Views\Achievement\Dashboard.cshtml" />

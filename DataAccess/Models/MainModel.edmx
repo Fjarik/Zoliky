@@ -209,6 +209,7 @@
           </Key>
           <Property Name="SchoolID" Type="int" Nullable="false" />
           <Property Name="SubjectID" Type="int" Nullable="false" />
+          <Property Name="Bypass" Type="bit" />
         </EntityType>
         <EntityType Name="Subjects">
           <Key>
@@ -1511,10 +1512,6 @@
             <End Role="Password" EntitySet="Passwords" />
             <End Role="User" EntitySet="Users" />
           </AssociationSet>
-          <AssociationSet Name="SchoolSubjects" Association="ZoliksModel.SchoolSubjects">
-            <End Role="School" EntitySet="Schools" />
-            <End Role="Subject" EntitySet="Subjects" />
-          </AssociationSet>
           <EntitySet Name="Bans" EntityType="ZoliksModel.Ban" />
           <AssociationSet Name="FK_Bans_Users" Association="ZoliksModel.FK_Bans_Users">
             <End Role="User" EntitySet="Users" />
@@ -1533,6 +1530,15 @@
           <AssociationSet Name="FK_ProjectSettings_Projects" Association="ZoliksModel.FK_ProjectSettings_Projects">
             <End Role="Project" EntitySet="Projects" />
             <End Role="ProjectSetting" EntitySet="ProjectSettings" />
+          </AssociationSet>
+          <EntitySet Name="SchoolSubjects" EntityType="ZoliksModel.SchoolSubject" />
+          <AssociationSet Name="FK_SchoolSubjects_Schools" Association="ZoliksModel.FK_SchoolSubjects_Schools">
+            <End Role="School" EntitySet="Schools" />
+            <End Role="SchoolSubject" EntitySet="SchoolSubjects" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SchoolSubjects_Subjects" Association="ZoliksModel.FK_SchoolSubjects_Subjects">
+            <End Role="Subject" EntitySet="Subjects" />
+            <End Role="SchoolSubject" EntitySet="SchoolSubjects" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="Class">
@@ -2316,8 +2322,8 @@
           <NavigationProperty Name="Users" Relationship="ZoliksModel.FK_Users_Schools" FromRole="School" ToRole="User" />
           <Property Name="AllowTransfer" Type="Boolean" Nullable="false" />
           <Property Name="AllowTeacherRemove" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="Subjects" Relationship="ZoliksModel.SchoolSubjects" FromRole="School" ToRole="Subject" />
           <Property Name="AllowZolikSplik" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="SchoolSubjects" Relationship="ZoliksModel.FK_SchoolSubjects_Schools" FromRole="School" ToRole="SchoolSubject" />
         </EntityType>
         <Association Name="FK_Classes_Schools">
           <End Type="ZoliksModel.School" Role="School" Multiplicity="1" />
@@ -2390,10 +2396,6 @@
               <PropertyRef Name="PasswordID" />
             </Dependent>
           </ReferentialConstraint>
-        </Association>
-        <Association Name="SchoolSubjects">
-          <End Type="ZoliksModel.School" Role="School" Multiplicity="*" />
-          <End Type="ZoliksModel.Subject" Role="Subject" Multiplicity="*" />
         </Association>
         <EntityType Name="Ban">
           <Key>
@@ -2475,6 +2477,40 @@
         </Association>
         <EnumType Name="SchoolTypes" UnderlyingType="Byte" a:ExternalTypeName="SharedLibrary.Enums.SchoolTypes" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
         <EnumType Name="NotificationSeverity" UnderlyingType="Byte" a:ExternalTypeName="SharedLibrary.Enums.NotificationSeverity" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+        <EntityType Name="SchoolSubject">
+          <Key>
+            <PropertyRef Name="SchoolID" />
+            <PropertyRef Name="SubjectID" />
+          </Key>
+          <Property Name="SchoolID" Type="Int32" Nullable="false" />
+          <Property Name="SubjectID" Type="Int32" Nullable="false" />
+          <Property Name="Bypass" Type="Boolean" />
+          <NavigationProperty Name="Subject" Relationship="ZoliksModel.FK_SchoolSubjects_Subjects" FromRole="SchoolSubject" ToRole="Subject" />
+        </EntityType>
+        <Association Name="FK_SchoolSubjects_Schools">
+          <End Type="ZoliksModel.School" Role="School" Multiplicity="1" />
+          <End Type="ZoliksModel.SchoolSubject" Role="SchoolSubject" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="School">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="SchoolSubject">
+              <PropertyRef Name="SchoolID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SchoolSubjects_Subjects">
+          <End Type="ZoliksModel.Subject" Role="Subject" Multiplicity="1" />
+          <End Type="ZoliksModel.SchoolSubject" Role="SchoolSubject" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Subject">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="SchoolSubject">
+              <PropertyRef Name="SubjectID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2926,14 +2962,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <AssociationSetMapping Name="SchoolSubjects" TypeName="ZoliksModel.SchoolSubjects" StoreEntitySet="SchoolSubjects">
-            <EndProperty Name="Subject">
-              <ScalarProperty Name="ID" ColumnName="SubjectID" />
-            </EndProperty>
-            <EndProperty Name="School">
-              <ScalarProperty Name="ID" ColumnName="SchoolID" />
-            </EndProperty>
-          </AssociationSetMapping>
           <EntitySetMapping Name="Bans">
             <EntityTypeMapping TypeName="ZoliksModel.Ban">
               <MappingFragment StoreEntitySet="Bans">
@@ -2961,6 +2989,15 @@
                 <ScalarProperty Name="Value" ColumnName="Value" />
                 <ScalarProperty Name="Key" ColumnName="Key" />
                 <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SchoolSubjects">
+            <EntityTypeMapping TypeName="ZoliksModel.SchoolSubject">
+              <MappingFragment StoreEntitySet="SchoolSubjects">
+                <ScalarProperty Name="Bypass" ColumnName="Bypass" />
+                <ScalarProperty Name="SubjectID" ColumnName="SubjectID" />
+                <ScalarProperty Name="SchoolID" ColumnName="SchoolID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

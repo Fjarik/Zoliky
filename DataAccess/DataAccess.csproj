@@ -221,6 +221,9 @@
     <Compile Include="Models\School.cs">
       <DependentUpon>MainModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\SchoolSubject.cs">
+      <DependentUpon>MainModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Subject.cs">
       <DependentUpon>MainModel.tt</DependentUpon>
     </Compile>

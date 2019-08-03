@@ -72,7 +72,7 @@ namespace DataAccess.Managers
 				return false;
 			}
 			var entity = result.Content;
-			return await base.DeleteAsync(entity);
+			return await DeleteAsync(entity);
 		}
 
 #endregion

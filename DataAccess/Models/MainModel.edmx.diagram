@@ -67,7 +67,6 @@
         <EntityTypeShape EntityType="ZoliksModel.Password" Width="1.5" PointX="7.875" PointY="17.125" />
         <AssociationConnector Association="ZoliksModel.FK_Passwords_Users" />
         <AssociationConnector Association="ZoliksModel.FK_Users_Passwords" />
-        <AssociationConnector Association="ZoliksModel.SchoolSubjects" />
         <EntityTypeShape EntityType="ZoliksModel.Ban" Width="1.5" PointX="7.875" PointY="45.375" />
         <AssociationConnector Association="ZoliksModel.FK_Bans_Users" ManuallyRouted="false" >
         </AssociationConnector>
@@ -76,6 +75,9 @@
         <AssociationConnector Association="ZoliksModel.FK_AchievementUnlocks_Users" />
         <EntityTypeShape EntityType="ZoliksModel.ProjectSetting" Width="1.5" PointX="7.875" PointY="10.25" />
         <AssociationConnector Association="ZoliksModel.FK_ProjectSettings_Projects" />
+        <EntityTypeShape EntityType="ZoliksModel.SchoolSubject" Width="1.5" PointX="1.125" PointY="20.75" />
+        <AssociationConnector Association="ZoliksModel.FK_SchoolSubjects_Schools" />
+        <AssociationConnector Association="ZoliksModel.FK_SchoolSubjects_Subjects" />
         </Diagram>
       <Diagram DiagramId="667462baa1f84e3eb3fa1facae8a8a2d" Name="Support" >
         <EntityTypeShape EntityType="ZoliksModel.Ticket" Width="1.5" PointX="3" PointY="1.25" />

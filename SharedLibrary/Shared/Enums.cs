@@ -78,7 +78,10 @@ namespace SharedLibrary.Enums
 		Zs = 0,
 
 		[Description("Střední škola")]
-		Ss = 1
+		Ss = 1,
+
+		[Description("Vysoká škola/Univerzita")]
+		Vs = 2
 	}
 
 	public enum NotificationSeverity : byte

@@ -107,7 +107,7 @@ namespace RolesEditor
 
 				foreach (var roleId in notCheckedIds) {
 					if (u.Roles.Any(x => x.ID == roleId)) {
-						var role = ent.Roles.Find(roleId);
+						var role = await ent.Roles.FindAsync(roleId);
 						u.Roles.Remove(role);
 						ent.Entry(u).State = EntityState.Modified;
 					}

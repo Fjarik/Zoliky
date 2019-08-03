@@ -61,7 +61,7 @@ namespace DataAccess.Managers
 			return _ctx.Set<T>().ToListAsync();
 		}
 
-		public virtual async Task<int> SaveAsync(T entity, bool throwException = true)
+		public virtual Task<int> SaveAsync(T entity, bool throwException = true)
 		{
 			if (entity != null) {
 				/*
@@ -70,7 +70,7 @@ namespace DataAccess.Managers
 				}*/
 				_ctx.Set<T>().AddOrUpdate(entity);
 			}
-			return await this.SaveAsync(throwException);
+			return this.SaveAsync(throwException);
 		}
 
 		public virtual async Task<int> SaveAsync(bool throwException = true)

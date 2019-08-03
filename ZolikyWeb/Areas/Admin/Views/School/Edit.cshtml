@@ -1,9 +1,9 @@
-﻿@using ZolikyWeb.Tools
+﻿@using SharedLibrary.Enums
+@using ZolikyWeb.Tools
 @model ZolikyWeb.Areas.Admin.Models.School.SchoolModel
 @{
 	ViewBag.Title = "Škola";
 	Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
-	var disabled = new {disabled = "disabled"};
 }
 
 
@@ -11,10 +11,16 @@
 	<div class="col">
 		<div class="card card-outline-info">
 			<div class="card-header">
-				<h4 class="mb-0 text-white">Úprava školy</h4>
+				<h4 class="mb-0 text-white">
+					@if (Model.AllowEdit) {
+						@:Úprava školy
+					} else {
+						@:Detaily školy
+					}
+				</h4>
 			</div>
 			<div class="card-body">
-				@using (Html.BeginForm("Edit", "School", new {Area = "Admin"}, FormMethod.Post, new {@class = "form-horizontal"})) {
+				@using (Html.BeginForm(Model.ActionName, "School", new {Area = "Admin"}, FormMethod.Post, new {@class = "form-horizontal"})) {
 					@Html.AntiForgeryToken()
 					@Html.SecureHiddenFor(x => x.ID)
 					<div class="form-body">
@@ -29,7 +35,7 @@
 								<div class="form-group row">
 									<label class="control-label text-right col-md-3">ID</label>
 									<div class="col-md-9">
-										<p class="form-control-static">
+										<p class="form-control-static text-right text-md-left">
 											@Model.ID
 										</p>
 									</div>
@@ -40,10 +46,15 @@
 							<div class="col-md-6">
 								<div class="form-group row">
 									<label class="control-label text-right col-md-3">Druh</label>
-									<div class="col-md-9">
-										<p class="form-control-static">
-
-										</p>
+									<div class="col-md-8">
+										@if (Model.AllowEdit) {
+											@Html.DropDownListFor(x => x.TypeID, Model.TypeSelect, new {@class = "form-control", tabindex = 1})
+											@Html.ValidationMessageFor(x=> x.TypeID)
+										} else {
+											<p class="form-control-static">
+												@(Model.Type.GetDescription())
+											</p>
+										}
 									</div>
 								</div>
 							</div>
@@ -57,9 +68,14 @@
 								<div class="form-group row">
 									<label class="control-label text-right col-md-3">Název</label>
 									<div class="col-md-9">
-										<p class="form-control-static">
-
-										</p>
+										@if (Model.AllowEdit) {
+											@Html.MaterialTextBoxFor(x => x.Name, 2)
+											@Html.ValidationMessageFor(x => x.Name)
+										} else {
+											<p class="form-control-static">
+												@(Model.Name)
+											</p>
+										}
 									</div>
 								</div>
 							</div>
@@ -68,11 +84,22 @@
 							<div class="col-md-6">
 								<div class="form-group row">
 									<label class="control-label text-right col-md-3">Adresa</label>
-									<div class="col-md-9">
-										<p class="form-control-static">
-
-										</p>
-									</div>
+									@if (Model.AllowEdit) {
+										<div class="col-md-4">
+											@Html.MaterialTextBoxFor(x => x.Street, 3)
+											@Html.ValidationMessageFor(x => x.Street)
+										</div>
+										<div class="col-md-4">
+											@Html.MaterialTextBoxFor(x => x.City, 4)
+											@Html.ValidationMessageFor(x => x.City)
+										</div>
+									} else {
+										<div class="col-md-8">
+											<p class="form-control-static">
+												@(Model.Street + ", " + Model.City)
+											</p>
+										</div>
+									}
 								</div>
 							</div>
 							<!-- /item -->
@@ -88,11 +115,16 @@
 							<!-- item -->
 							<div class="col-md-6">
 								<div class="form-group row">
-									<label class="control-label text-right col-md-3">Povolit přenost</label>
+									<label class="control-label text-right col-md-3">Povolit darování</label>
 									<div class="col-md-9">
-										<p class="form-control-static">
-
-										</p>
+										@if (Model.AllowEdit) {
+											@Html.CheckBoxSimple(x => x.AllowTransfer, new {@class = "filled-in chk-col-light-blue", tabindex = 5})
+											@Html.LabelFor(x => x.AllowTransfer)
+										} else {
+											<p class="form-control-static">
+												@(Model.AllowTransfer ? "Ano" : "Ne")
+											</p>
+										}
 									</div>
 								</div>
 							</div>
@@ -101,10 +133,15 @@
 							<div class="col-md-6">
 								<div class="form-group row">
 									<label class="control-label text-right col-md-3">Odstaňováno žolíků učitelem</label>
-									<div class="col-md-9">
-										<p class="form-control-static">
-
-										</p>
+									<div class="col-md-8">
+										@if (Model.AllowEdit) {
+											@Html.CheckBoxSimple(x => x.AllowTeacherRemove, new {@class = "filled-in chk-col-light-blue", tabindex = 5})
+											@Html.LabelFor(x => x.AllowTeacherRemove)
+										} else {
+											<p class="form-control-static">
+												@(Model.AllowTeacherRemove ? "Ano" : "Ne")
+											</p>
+										}
 									</div>
 								</div>
 							</div>
@@ -118,7 +155,14 @@
 								<div class="form-group row">
 									<label class="control-label text-right col-md-3">Rozklad žolíků</label>
 									<div class="col-md-9">
-
+										@if (Model.AllowEdit) {
+											@Html.CheckBoxSimple(x => x.AllowZolikSplik, new {@class = "filled-in chk-col-light-blue", tabindex = 5})
+											@Html.LabelFor(x => x.AllowZolikSplik)
+										} else {
+											<p class="form-control-static">
+												@(Model.AllowZolikSplik ? "Ano" : "Ne")
+											</p>
+										}
 									</div>
 								</div>
 							</div>
@@ -127,8 +171,14 @@
 							<div class="col-md-6">
 								<div class="form-group row">
 									<label class="control-label text-right col-md-3"></label>
-									<div class="col-md-9">
+									<div class="col-md-8">
+										@if (Model.AllowEdit) {
 
+										} else {
+											<p class="form-control-static">
+
+											</p>
+										}
 									</div>
 								</div>
 							</div>
@@ -147,9 +197,7 @@
 								<div class="form-group row">
 									<label class="control-label text-right col-md-3">Třídy</label>
 									<div class="col-md-9">
-										<p class="form-control-static">
-											@Html.DropDownList("classes", Model.ClassList, new {multiple = "multiple", @class = "form-control", size = 8})
-										</p>
+										@Html.ListBox("AAB", Model.ClassList, new { multiple = "multiple", @class = "form-control c-help", size = 8, disabled = "disabled", title = "Třídy je nutné upravit jednotlivě" })
 									</div>
 								</div>
 							</div>
@@ -159,7 +207,11 @@
 								<div class="form-group row">
 									<label class="control-label text-right col-md-3">Předměty</label>
 									<div class="col-md-9">
-										@Html.ListBoxFor(x => x.SubjectIds, Model.SubjectList, new {multiple = "multiple", @class = "form-control", size = 8, id = "select-subjects"})
+										@if (Model.AllowEdit) {
+											@Html.ListBoxFor(x => x.SubjectIds, Model.SubjectList, new {multiple = "multiple", @class = "form-control", size = 8, id = "select-subjects"})
+										} else {
+											@Html.ListBox("AAA", Model.SubjectList, new { multiple = "multiple", @class = "form-control", size = 8, disabled = "disabled" })
+										}
 									</div>
 								</div>
 							</div>
@@ -175,12 +227,22 @@
 									<button type="submit" class="btn btn-primary" tabindex="4">
 										Uložit
 									</button>
+								} else {
+									<a href="@Url.Action("Edit", new {id = Model.ID})" class="btn btn-primary" tabindex="4">
+										Režim úprav
+									</a>
 								}
-								<button type="button" class="btn btn-danger" tabindex="5">
+
+								<a href="@Url.Action("Dashboard")" class="btn btn-success" tabindex="5">
 									Zpět
-								</button>
+								</a>
 							</div>
-							<div class="col-md-6">
+							<div class="col-md-6 text-right">
+								@if (Model.AllowRemove) {
+									<a href="@Url.Action("Remove", new {id = Model.ID})" class="text-danger">
+										Odstranit školu
+									</a>
+								}
 							</div>
 						</div>
 					</div>
@@ -206,3 +268,4 @@
 		});
 	</script>
 }
+

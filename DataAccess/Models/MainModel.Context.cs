@@ -58,6 +58,7 @@ namespace DataAccess.Models
         public virtual DbSet<Ban> Bans { get; set; }
         public virtual DbSet<AchievementUnlock> AchievementUnlocks { get; set; }
         public virtual DbSet<ProjectSetting> ProjectSettings { get; set; }
+        public virtual DbSet<SchoolSubject> SchoolSubjects { get; set; }
     
         private ObjectResult<GetTopStudents_Result> GetTopStudents(Nullable<int> top, Nullable<int> imageMaxSize, Nullable<int> classId, string settingsKey, Nullable<int> defaultPhotoId)
         {

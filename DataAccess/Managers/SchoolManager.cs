@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -35,9 +36,14 @@ namespace DataAccess.Managers
 
 #region Overrides
 
-		public override Task<bool> DeleteAsync(School entity)
+		public override async Task<bool> DeleteAsync(School entity)
 		{
-			throw new NotSupportedException("Školy nelze smazat");
+			if (entity.Classes.Any() || entity.Users.Any()) {
+				return false;
+			}
+
+			await _ctx.SchoolSubjects.Where(x => x.SchoolID == entity.ID).DeleteFromQueryAsync();
+			return await base.DeleteAsync(entity);
 		}
 
 #endregion
@@ -59,6 +65,75 @@ namespace DataAccess.Managers
 #region Own Methods
 
 #region Create
+
+#region School subjects
+
+		public Task<List<SchoolSubject>> GetSchoolSubjectsAsync(int schoolId)
+		{
+			return _ctx.SchoolSubjects
+					   .Where(x => x.SchoolID == schoolId)
+					   .OrderBy(x => x.Subject.Name)
+					   .Include(x => x.Subject)
+					   .ToListAsync();
+		}
+
+		public Task<SchoolSubject> GetSchoolSubjectAsync(int schoolId, int subjectId)
+		{
+			return _ctx.SchoolSubjects
+					   .Include(x => x.Subject)
+					   .FirstOrDefaultAsync(x => x.SchoolID == schoolId &&
+												 x.SubjectID == subjectId);
+		}
+
+		public Task<SchoolSubject> CreateSchoolSubjectAsync(int schoolId, int subjectId)
+		{
+			var s = new SchoolSubject {
+				SchoolID = schoolId,
+				SubjectID = subjectId,
+				Bypass = null
+			};
+			return CreateSchoolSubjectAsync(s);
+		}
+
+		private async Task<SchoolSubject> CreateSchoolSubjectAsync(SchoolSubject s)
+		{
+			var ent = _ctx.SchoolSubjects.Add(s);
+			await SaveAsync();
+			return await GetSchoolSubjectAsync(ent.SchoolID, ent.SubjectID);
+		}
+
+		public Task<int> RemoveSchoolSubjectsAsync(int schoolId, IEnumerable<int> ids)
+		{
+			return _ctx.SchoolSubjects
+					   .Where(x => x.SchoolID == schoolId &&
+								   ids.Contains(x.SubjectID))
+					   .DeleteFromQueryAsync();
+		}
+
+		public async Task<bool> RemoveSchoolSubjectAsync(int schoolId, int subjectId)
+		{
+			var ent = await GetSchoolSubjectAsync(schoolId, subjectId);
+			return await RemoveSchoolSubjectAsync(ent);
+		}
+
+		private async Task<bool> RemoveSchoolSubjectAsync(SchoolSubject ent)
+		{
+			_ctx.SchoolSubjects.Remove(ent);
+			await SaveAsync();
+			return true;
+		}
+
+#endregion
+
+		public Task<List<Subject>> GetSubjectsAsync(int schoolId)
+		{
+			return _ctx.SchoolSubjects
+					   .Include(x => x.Subject)
+					   .Where(x => x.SchoolID == schoolId)
+					   .Select(x => x.Subject)
+					   .OrderBy(x => x.Name)
+					   .ToListAsync();
+		}
 
 		public async Task<MActionResult<School>> CreateAsync(SchoolTypes type,
 															 string name,
