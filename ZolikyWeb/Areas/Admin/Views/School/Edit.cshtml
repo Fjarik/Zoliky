@@ -12,10 +12,14 @@
 		<div class="card card-outline-info">
 			<div class="card-header">
 				<h4 class="mb-0 text-white">
-					@if (Model.AllowEdit) {
-						@:Úprava školy
+					@if (Model.IsCreate) {
+						@:Vytvoření školy
 					} else {
-						@:Detaily školy
+						if (Model.AllowEdit) {
+							@:Úprava školy
+						} else {
+							@:Detaily školy
+						}
 					}
 				</h4>
 			</div>
