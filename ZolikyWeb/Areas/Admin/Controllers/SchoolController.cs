@@ -209,7 +209,7 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		[ValidateSecureHiddenInputs(nameof(School.ID))]
-		public Task<ActionResult> Remove(School model)
+		public Task<ActionResult> Remove(SchoolModel model)
 		{
 			return RemoveAsync(model?.ID);
 		}
