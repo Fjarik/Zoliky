@@ -1431,6 +1431,7 @@
     <Compile Include="Areas\Admin\Models\Admin\SettingsModel.cs" />
     <Compile Include="Areas\Admin\Models\Admin\Settings\ProjectSettingsModel.cs" />
     <Compile Include="Areas\Admin\Models\Ban\BanModel.cs" />
+    <Compile Include="Areas\Admin\Models\Class\ClassDashboardModel.cs" />
     <Compile Include="Areas\Admin\Models\Class\ClassModel.cs" />
     <Compile Include="Areas\Admin\Models\School\SchoolModel.cs" />
     <Compile Include="Areas\Admin\Models\User\UserModel.cs" />
@@ -1476,10 +1477,12 @@
     <Compile Include="Tools\HtmlHelperExtensions\CustomHtmlHelpers.cs" />
     <Compile Include="Tools\HtmlHelperExtensions\SecureHidden.cs" />
     <Compile Include="Tools\HtmlHelperExtensions\SimpleCheckBox.cs" />
+    <Compile Include="Tools\Interfaces\IModel.cs" />
     <Compile Include="Tools\OfflineActionFilter.cs" />
     <Compile Include="Tools\OfflineHelper.cs" />
     <Compile Include="Tools\SignInManager.cs" />
     <Compile Include="Tools\Toasts.cs" />
+    <Compile Include="Tools\UniversalModel.cs" />
     <Compile Include="Tools\WebExtensions.cs" />
   </ItemGroup>
   <ItemGroup>

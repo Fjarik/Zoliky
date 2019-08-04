@@ -64,6 +64,14 @@ namespace DataAccess.Managers
 
 #region Own Methods
 
+		public Task<SchoolTypes> GetSchoolTypeAsync(int schoolId)
+		{
+			return _ctx.Schools
+					   .Where(x => x.ID == schoolId)
+					   .Select(x => x.Type)
+					   .FirstOrDefaultAsync();
+		}
+
 #region Create
 
 #region School subjects
