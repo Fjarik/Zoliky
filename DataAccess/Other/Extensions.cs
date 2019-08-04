@@ -190,6 +190,11 @@ namespace DataAccess
 			return GetValue<string>(identity, "schoolName");
 		}
 
+		public static int GetSchoolId(this System.Security.Principal.IIdentity identity)
+		{
+			return GetValue<int>(identity, "schoolId");
+		}
+
 		public static int GetId(this System.Security.Principal.IIdentity identity)
 		{
 			return GetValue<int>(identity, "publicId");

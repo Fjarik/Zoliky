@@ -62,6 +62,7 @@ namespace ZolikyWeb.Tools
 			} else {
 				identity.AddClaim(new Claim("schoolName", "Nespecifikovaná škola"));
 			}
+			identity.AddClaim(new Claim("schoolId", user.SchoolID.ToString()));
 
 
 			identity.AddClaims(roles);

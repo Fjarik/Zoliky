@@ -1236,6 +1236,7 @@
     <Content Include="Areas\Admin\Views\Ban\_UnbanPartial.cshtml" />
     <Content Include="Areas\Admin\Views\Ban\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\School\_RemovePartial.cshtml" />
+    <Content Include="Areas\Admin\Views\Class\Dashboard.cshtml" />
     <None Include="bundleconfig.json" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\fa-all.js" />
@@ -1420,6 +1421,7 @@
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\AdminController.cs" />
     <Compile Include="Areas\Admin\Controllers\BanController.cs" />
+    <Compile Include="Areas\Admin\Controllers\ClassController.cs" />
     <Compile Include="Areas\Admin\Controllers\SchoolController.cs" />
     <Compile Include="Areas\Admin\Controllers\SettingsController.cs" />
     <Compile Include="Areas\Admin\Controllers\UserController.cs" />
@@ -1429,6 +1431,7 @@
     <Compile Include="Areas\Admin\Models\Admin\SettingsModel.cs" />
     <Compile Include="Areas\Admin\Models\Admin\Settings\ProjectSettingsModel.cs" />
     <Compile Include="Areas\Admin\Models\Ban\BanModel.cs" />
+    <Compile Include="Areas\Admin\Models\Class\ClassModel.cs" />
     <Compile Include="Areas\Admin\Models\School\SchoolModel.cs" />
     <Compile Include="Areas\Admin\Models\User\UserModel.cs" />
     <Compile Include="Areas\App\AppAreaRegistration.cs" />

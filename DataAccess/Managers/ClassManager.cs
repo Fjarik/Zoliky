@@ -61,6 +61,22 @@ namespace DataAccess.Managers
 
 #region Own Methods
 
+		public Task<List<Class>> GetAllAsync(int schoolId, bool onlyActive = false)
+		{
+			var query = _ctx.Classes
+							.Where(x => x.SchoolID == schoolId);
+
+			if (onlyActive) {
+				query = query.Where(x => x.Enabled);
+			}
+			return query.OrderBy(x => x.Name)
+						.ThenByDescending(x => x.Since.Year)
+						.ThenBy(x => x.Enabled)
+						.ToListAsync();
+		}
+
+#region Create
+
 		public Task<MActionResult<Class>> CreateAsync(string name,
 													  int schoolId,
 													  DateTime since)
@@ -89,6 +105,8 @@ namespace DataAccess.Managers
 			};
 			return await this.CreateAsync(c);
 		}
+
+#endregion
 
 		public async Task<MActionResult<Class>> MoveClassAsync(int id)
 		{

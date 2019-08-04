@@ -14,6 +14,14 @@ namespace ZolikyWeb.Tools
 			return CheckBoxSimple(htmlHelper, expression, null);
 		}
 
+		public static MvcHtmlString CheckBoxSimple(this HtmlHelper htmlHelper, string name, object htmlAttributes)
+		{
+			string checkBoxWithHidden = htmlHelper.CheckBox(name, htmlAttributes).ToHtmlString().Trim();
+			string pureCheckBox =
+				checkBoxWithHidden.Substring(0, checkBoxWithHidden.IndexOf("<input", 1, StringComparison.Ordinal));
+			return new MvcHtmlString(pureCheckBox);
+		}
+
 		public static MvcHtmlString CheckBoxSimple(this HtmlHelper htmlHelper, string name, bool isChecked)
 		{
 			return CheckBoxSimple(htmlHelper, name, isChecked, null);
