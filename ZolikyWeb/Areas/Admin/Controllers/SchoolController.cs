@@ -206,32 +206,6 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 
 #region Remove
 
-		[HttpGet]
-		public Task<ActionResult> Remove(int? id = null)
-		{
-			return RemovePageAsync(id);
-		}
-
-		private async Task<ActionResult> RemovePageAsync(int? id)
-		{
-			if (id == null || id <= 1) {
-				this.AddErrorToastMessage("Neplatné ID");
-				return RedirectToAction("Dashboard");
-			}
-			return await RemovePageAsync((int) id);
-		}
-
-		private async Task<ActionResult> RemovePageAsync(int id)
-		{
-			var res = await Mgr.GetByIdAsync(id);
-			if (!res.IsSuccess) {
-				this.AddErrorToastMessage("Neplatná škola");
-				return RedirectToAction("Dashboard");
-			}
-			var school = res.Content;
-			return View("Remove", school);
-		}
-
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		[ValidateSecureHiddenInputs(nameof(School.ID))]

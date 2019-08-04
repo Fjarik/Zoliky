@@ -1235,6 +1235,7 @@
     <Content Include="Areas\Admin\Views\Ban\Dashboard.cshtml" />
     <Content Include="Areas\Admin\Views\Ban\_UnbanPartial.cshtml" />
     <Content Include="Areas\Admin\Views\Ban\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\School\_RemovePartial.cshtml" />
     <None Include="bundleconfig.json" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\fa-all.js" />

@@ -331,7 +331,7 @@ namespace DataAccess.Models
 	[MetadataType(typeof(SchoolMetaData))]
 	public partial class School : IDbEntity
 	{
-		//public IList<Subject> Subjects => this.SchoolSubjects.Select(x => x.Subject).ToList();
+		public List<Subject> Subjects => this.SchoolSubjects.Select(x => x.Subject).ToList();
 
 		private sealed class SchoolMetaData
 		{

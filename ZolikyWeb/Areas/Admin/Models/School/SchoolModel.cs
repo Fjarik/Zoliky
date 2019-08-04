@@ -90,7 +90,7 @@ namespace ZolikyWeb.Areas.Admin.Models.School
 		public SchoolModel(DataAccess.Models.School s, List<Subject> allSubjects, bool allowEdit, int previousId,
 						   int nextId) : this()
 		{
-			this.AllSubjects = allSubjects;
+			this.AllSubjects = allowEdit ? allSubjects : s.Subjects;
 			this.AllowEdit = allowEdit;
 			this.PreviousID = previousId;
 			this.NextID = nextId;
@@ -106,9 +106,11 @@ namespace ZolikyWeb.Areas.Admin.Models.School
 			this.AllowZolikSplik = s.AllowZolikSplik;
 			this.Classes = s.Classes;
 			//this.Subjects = s.Subjects;
-			this.SubjectIds = s.SchoolSubjects.Select(x => x.SubjectID).ToList();
-			if (!SubjectIds.Contains(4)) {
-				SubjectIds.Add(4);
+			if (allowEdit) {
+				this.SubjectIds = s.SchoolSubjects.Select(x => x.SubjectID).ToList();
+				if (!SubjectIds.Contains(4)) {
+					SubjectIds.Add(4);
+				}
 			}
 
 			this.AllowRemove = !IsCreate &&

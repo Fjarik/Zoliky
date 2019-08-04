@@ -239,9 +239,7 @@
 							</div>
 							<div class="col-md-6 text-right">
 								@if (Model.AllowRemove) {
-									<a href="@Url.Action("Remove", new {id = Model.ID})" class="text-danger">
-										Odstranit školu
-									</a>
+									@Html.Partial("_RemovePartial", Model)
 								}
 							</div>
 						</div>
