@@ -103,9 +103,9 @@ $(function() {
 	// ============================================================== 
 	$(() => {
 
-		var url = window.location.href;
+		var url = window.location.pathname;
 		var element = $("ul#sidebarnav a").filter((i, elm) => {
-			return elm.href === url;
+			return elm.getAttribute("href") === url;
 		}).addClass("active").parent().addClass("active");
 
 		while (element.is("li")) {
