@@ -1,0 +1,181 @@
+﻿@using DataAccess
+@using SharedLibrary.Shared
+@{
+	Layout = "~/Views/Shared/Dashboard/_LayoutMenuBase.cshtml";
+}
+
+@section styles {
+	@RenderSection("styles", false)
+}
+
+@section header{
+	@RenderSection("header", false)
+}
+
+@section menu {
+	<li class="nav-small-cap">OBECNÉ</li>
+	<li>
+		<a href="@Url.Action("Dashboard", "Admin", new {Area = "Global"})" aria-expanded="false">
+			<i class="mdi mdi-gauge"></i>
+			<span class="hide-menu">Přehled </span>
+		</a>
+	</li>
+	<li class="nav-devider"></li>
+	<li class="nav-small-cap">GLOBALNÍ</li>
+	<li>
+		<a class="has-arrow" href="#" aria-expanded="false">
+			<i class="mdi mdi-laptop"></i>
+			<span class="hide-menu">Žolíci</span>
+		</a>
+		<ul aria-expanded="false" class="collapse">
+			<li>
+				<a href="@Url.Action("Dashboard", "Zolik", new {Area = "Global"})">Přehled</a>
+			</li>
+			<li>
+				<a href="@Url.Action("Create", "Zolik", new {Area = "Global"})">Vytvoření</a>
+			</li>
+			<li>
+				<a href="@Url.Action("Edit", "Zolik", new {Area = "Global"})">Úpravy</a>
+			</li>
+		</ul>
+	</li>
+	<li>
+		<a class="has-arrow" href="#" aria-expanded="false">
+			<i class="mdi mdi-account-multiple"></i>
+			<span class="hide-menu">Uživatelé</span>
+		</a>
+		<ul aria-expanded="false" class="collapse">
+			<li>
+				<a href="@Url.Action("Dashboard", "User", new {Area = "Global"})">Přehled</a>
+			</li>
+			<li>
+				<a href="@Url.Action("Create", "User", new {Area = "Global"})">Vytvoření</a>
+			</li>
+			<li>
+				<a href="@Url.Action("Edit", "User", new {Area = "Global"})">Úpravy</a>
+			</li>
+			<li>
+				<a href="@Url.Action("Dashboard", "Ban", new {Area = "Global"})">Blokace</a>
+			</li>
+		</ul>
+	</li>
+	<li>
+		<a class="has-arrow" href="#" aria-expanded="false">
+			<i class="mdi mdi-domain"></i>
+			<span class="hide-menu">Školy</span>
+		</a>
+		<ul aria-expanded="false" class="collapse">
+			<li>
+				<a href="@Url.Action("Dashboard", "School", new {Area = "Global"})">Přehled</a>
+			</li>
+			<li>
+				<a href="@Url.Action("Create", "School", new {Area = "Global"})">Vytvoření</a>
+			</li>
+			<li>
+				<a href="@Url.Action("Edit", "School", new {Area = "Global"})">Úpravy</a>
+			</li>
+		</ul>
+	</li>
+	<li>
+		<a class="has-arrow" href="#" aria-expanded="false">
+			<i class="mdi mdi-newspaper"></i>
+			<span class="hide-menu">Novinky</span>
+		</a>
+		<ul aria-expanded="false" class="collapse">
+			<li>
+				<a href="@Url.Action("Dashboard", "News", new {Area = "Global"})">Přehled</a>
+			</li>
+			<li>
+				<a href="@Url.Action("Create", "News", new {Area = "Global"})">Vytvoření</a>
+			</li>
+			<li>
+				<a href="@Url.Action("Edit", "News", new {Area = "Global"})">Úpravy</a>
+			</li>
+		</ul>
+	</li>
+	<li>
+		<a class="has-arrow" href="#" aria-expanded="false">
+			<i class="mdi mdi-folder-multiple-image"></i>
+			<span class="hide-menu">Obrázky</span>
+		</a>
+		<ul aria-expanded="false" class="collapse">
+			<li>
+				<a href="@Url.Action("Dashboard", "Images", new {Area = "Global"})">Přehled</a>
+			</li>
+			<li>
+				<a href="@Url.Action("Create", "Images", new {Area = "Global"})">Vytvoření</a>
+			</li>
+			<li>
+				<a href="@Url.Action("Edit", "Images", new {Area = "Global"})">Úpravy</a>
+			</li>
+		</ul>
+	</li>
+	<li>
+		<a class="has-arrow" href="#" aria-expanded="false">
+			<i class="mdi mdi-developer-board"></i>
+			<span class="hide-menu">Třídy</span>
+		</a>
+		<ul aria-expanded="false" class="collapse">
+			<li>
+				<a href="@Url.Action("Dashboard", "Class", new {Area = "Global"})">Přehled</a>
+			</li>
+			<li>
+				<a href="@Url.Action("Create", "Class", new {Area = "Global"})">Vytvoření</a>
+			</li>
+			<li>
+				<a href="@Url.Action("Edit", "Class", new {Area = "Global"})">Úpravy</a>
+			</li>
+		</ul>
+	</li>
+	<li>
+		<a class="has-arrow" href="#" aria-expanded="false">
+			<i class="mdi mdi-book-open-page-variant"></i>
+			<span class="hide-menu">Předměty</span>
+		</a>
+		<ul aria-expanded="false" class="collapse">
+			<li>
+				<a href="@Url.Action("Dashboard", "Subject", new {Area = "Global"})">Přehled</a>
+			</li>
+			<li>
+				<a href="@Url.Action("Create", "Subject", new {Area = "Global"})">Vytvoření</a>
+			</li>
+			<li>
+				<a href="@Url.Action("Edit", "Subject", new {Area = "Global"})">Úpravy</a>
+			</li>
+		</ul>
+	</li>
+	<li>
+		<a href="@Url.Action("Dashboard", "Settings", new {Area = "Global"})" aria-expanded="false">
+			<i class="mdi mdi-settings"></i>
+			<span class="hide-menu">Nastavení</span>
+		</a>
+	</li>
+	<li class="nav-devider"></li>
+	<li class="nav-small-cap">OSTATNÍ</li>
+	<li>
+		<a href="@Url.Action("Dashboard", "Admin", new {Area = "Admin"})" aria-expanded="false">
+			<i class="mdi mdi-wrench"></i>
+			<span class="hide-menu">Školní administrace</span>
+		</a>
+	</li>
+}
+
+@RenderBody()
+
+@section sidebarFooter{
+	<!-- item-->
+	@using (Html.BeginForm("Logout", "Account", new { Area = "" }, FormMethod.Post, new { id = "logOutForm" })) {
+		@Html.AntiForgeryToken()
+		<a href="javascript:$('#logOutForm').submit();" class="link" data-toggle="tooltip" title="Odhlásit se" style="width: 100%;">
+			<i class="mdi mdi-power"></i>
+		</a>
+	}
+}
+
+@section scripts {
+	@RenderSection("scripts", false)
+}
+
+@section footer {
+	@RenderSection("footer", false)
+}

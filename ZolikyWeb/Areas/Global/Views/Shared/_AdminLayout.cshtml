@@ -1,0 +1,18 @@
+﻿@{
+	Layout = "~/Areas/Global/Views/Shared/_LayoutMenu.cshtml";
+}
+
+@section header{
+
+	@RenderSection("header", false)
+}
+
+@RenderBody()
+
+
+@section footer {
+
+
+	@RenderSection("footer", false)
+
+}

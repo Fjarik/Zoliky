@@ -1,10 +1,20 @@
-﻿@model ZolikyWeb.Areas.Admin.Models.Admin.DashboardModel
+﻿@model ZolikyWeb.Areas.Global.Models.Admin.DashboardModel
 @{
 	ViewBag.Title = "Přehled";
-	Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+	Layout = "~/Areas/Global/Views/Shared/_AdminLayout.cshtml";
 }
 
 <div class="row">
+	<!-- Column -->
+	<div class="col-lg-3 col-md-6">
+		@Html.Partial("Partials/_SendMobileNotPartial", Model.SendMobileNot)
+	</div>
+	<!-- /Column -->
+	<!-- Column -->
+	<div class="col-lg-3 col-md-6">
+		@Html.Partial("Partials/_SendNotificationsPartial", Model.SendNotifications)
+	</div>
+	<!-- /Column -->
 	<!-- Column -->
 	<div class="col-xlg-3 col-lg-4 col-md-5">
 		<div class="card">
@@ -26,7 +36,14 @@
 				<ul>
 					<li>Přehled</li>
 					<li>
-						Třídy:
+						Uživatelé:
+						<ul>
+							<li>Přehled</li>
+							<li>Blokace</li>
+						</ul>
+					</li>
+					<li>
+						Školy:
 						<ul>
 							<li>Přehled</li>
 							<li>Vytvoření</li>
@@ -34,6 +51,7 @@
 							<li>Odstranění</li>
 						</ul>
 					</li>
+					<li>Nastavení</li>
 					<li>Odhlašování</li>
 				</ul>
 			</div>
@@ -41,3 +59,4 @@
 	</div>
 	<!-- /Column -->
 </div>
+

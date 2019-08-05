@@ -1,0 +1,166 @@
+﻿@{
+	ViewBag.Title = "Uživatelé";
+	Layout = "~/Areas/Global/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="row">
+	<div class="col">
+		<div class="card">
+			<div class="card-body">
+				<div class="table-responsive">
+					<table id="table-users" class="w-100 table table-striped table-bordered"></table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+@section footer {
+	<script type="text/javascript">
+		$(() => {
+			$("#table-users").DataTable({
+				ajax: {
+					url: "@Url.Action("UsersJson")",
+					dataSrc: ""
+				},
+				columns: [
+					{
+						title: "ID",
+						type: "num",
+						data: "id"
+					},
+					{
+						title: "Jméno",
+						type: "string",
+						data: "fullname"
+					},
+					{
+						title: "Email",
+						type: "string",
+						data: "email",
+						render: (data) => {
+							return `<a href="mailto:${data}" class="link">${data}</a>`;
+						}
+					},
+					{
+						title: "Třída",
+						type: "html",
+						className: "text-center",
+						data: "class",
+						render: (data) => {
+							if (!data) {
+								return "-";
+							}
+							return `<span class="c-help" data-toggle="tooltip" data-original-title="${data.since} - ${
+								data.grad}">${data.name}</span>`;
+						}
+					},
+					{
+						title: "Role",
+						data: "roles",
+						type: "html",
+						searchable: false,
+						orderable: false,
+						render: (data) => {
+							let res = "";
+							data.forEach((elm) => {
+								res +=
+									`<span class="c-help mr-1 label label-${elm.color
+									}" data-toggle="tooltip" data-original-title="${elm.desc}">${elm.name}</span>`;
+							});
+							return res;
+						}
+					},
+					{
+						title: "Datum registrace",
+						type: "html",
+						data: "memberSince",
+						searchable: false,
+						render: {
+							_: "timeS",
+							display: (data) => {
+								return `<span data-toggle="tooltip" data-original-title="${data.regIp}">${data.date
+									}</span>`;
+							}
+						}
+					},
+					{
+						title: "Poslední přihlášení",
+						type: "html ",
+						data: "lastLogin",
+						searchable: false,
+						render: {
+							_: "timeS",
+							display: (data) => {
+								if (!data) {
+									return "";
+								}
+								return `<span class="c-help" data-toggle="tooltip" data-original-title="${data.project
+									}">${data.date}</span>`;
+							}
+						}
+
+					},
+					{
+						title: "Akce",
+						type: "html",
+						data: "actions",
+						className: "d-flex justify-content-around",
+						orderable: false,
+						searchable: false,
+						render: (data) => {
+							var res = "";
+							if (data.edit) {
+								res +=
+									`<a href="${data.edit}" data-toggle="tooltip" data-original-title="Upravit">
+												<i class="fa fa-pencil text-inverse"></i>
+											</a>`;
+							}
+							res += `<a href="${data.display}" data-toggle="tooltip" data-original-title="Detaily">
+											<i class="fa fa-eye text-inverse"></i>
+										</a>`;
+							return res;
+						}
+					}
+				],
+				language: {
+					"lengthMenu": "Zobrazit _MENU_ záznamů na stránku",
+					"zeroRecords": "Nebyly nalezeny žádné záznamy",
+					"info": "Zobrazeno _START_ - _END_ z _TOTAL_ záznamů",
+					"infoEmpty": "Záznamy nejsou dostupné",
+					"thousands": " ",
+					"infoFiltered": "(filtrováno z _MAX_ záznamů)",
+					"search": "Vyhledávání:",
+					"loadingRecords": "Načítání...",
+					"paginate": {
+						"first": "První",
+						"last": "Poslední",
+						"next": "Další",
+						"previous": "Předchozí"
+					},
+					"aria": {
+						"sortAscending": ": Seřadit vzestupně",
+						"sortDescending": ": Seřadit sestupně"
+					}
+				},
+				createdRow: (row, data) => {
+					let cl = "text-dark";
+					if (!data.IsEnabled) {
+						cl = "text-warning";
+					}
+					if (data.IsBanned) {
+						cl = "text-danger";
+					}
+					$(row).addClass(cl);
+				},
+				initComplete: () => {
+					console.log("DataTables: Data načtena");
+				},
+				drawCallback: () => {
+					$('[data-toggle="tooltip"]').tooltip();
+				}
+			});
+
+		});
+	</script>
+}

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using ZolikyWeb.Areas.Global.Models.Admin.Dashboard;
 
-namespace ZolikyWeb.Areas.Admin.Models.Admin
+namespace ZolikyWeb.Areas.Global.Models.Admin
 {
 	public class DashboardModel
 	{
@@ -25,9 +25,12 @@ namespace ZolikyWeb.Areas.Admin.Models.Admin
 		public SendMobileNotModel SendMobileNot { get; set; }
 		public SendNotificationsModel SendNotifications{ get; set; }
 
-		public DashboardModel()
+		public DashboardModel(int defaultToId)
 		{
-			
+			this.SendMobileNot = new SendMobileNotModel {
+				ToId = defaultToId
+			};
+			this.SendNotifications = new SendNotificationsModel();
 		}
 
 	}

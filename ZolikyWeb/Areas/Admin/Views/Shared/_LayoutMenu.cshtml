@@ -92,82 +92,11 @@
 	</li>
 	@if (this.User.IsInRolesOr(UserRoles.Administrator, UserRoles.Developer)) {
 		<li class="nav-devider"></li>
-		<li class="nav-small-cap">GLOBALNÍ</li>
+		<li class="nav-small-cap">OSTATNÍ</li>
 		<li>
-			<a class="has-arrow" href="#" aria-expanded="false">
-				<i class="mdi mdi-account-multiple"></i>
-				<span class="hide-menu">Uživatelé</span>
-			</a>
-			<ul aria-expanded="false" class="collapse">
-				<li>
-					<a href="@Url.Action("Dashboard", "User", new {Area = "Admin"})">Přehled</a>
-				</li>
-				<li>
-					<a href="@Url.Action("Create", "User", new {Area = "Admin"})">Vytvoření</a>
-				</li>
-				<li>
-					<a href="@Url.Action("Edit", "User", new {Area = "Admin"})">Úpravy</a>
-				</li>
-				<li>
-					<a href="@Url.Action("Dashboard", "Ban", new {Area = "Admin"})">Blokace</a>
-				</li>
-			</ul>
-		</li>
-		<li>
-			<a class="has-arrow" href="#" aria-expanded="false">
-				<i class="mdi mdi-domain"></i>
-				<span class="hide-menu">Školy</span>
-			</a>
-			<ul aria-expanded="false" class="collapse">
-				<li>
-					<a href="@Url.Action("Dashboard", "School", new {Area = "Admin"})">Přehled</a>
-				</li>
-				<li>
-					<a href="@Url.Action("Create", "School", new {Area = "Admin"})">Vytvoření</a>
-				</li>
-				<li>
-					<a href="@Url.Action("Edit", "School", new {Area = "Admin"})">Úpravy</a>
-				</li>
-			</ul>
-		</li>
-		<li>
-			<a class="has-arrow" href="#" aria-expanded="false">
-				<i class="mdi mdi-newspaper"></i>
-				<span class="hide-menu">Novinky</span>
-			</a>
-			<ul aria-expanded="false" class="collapse">
-				<li>
-					<a href="@Url.Action("Dashboard", "News", new {Area = "Admin"})">Přehled</a>
-				</li>
-				<li>
-					<a href="@Url.Action("Create", "News", new {Area = "Admin"})">Vytvoření</a>
-				</li>
-				<li>
-					<a href="@Url.Action("Edit", "News", new {Area = "Admin"})">Úpravy</a>
-				</li>
-			</ul>
-		</li>
-		<li>
-			<a class="has-arrow" href="#" aria-expanded="false">
-				<i class="mdi mdi-folder-multiple-image"></i>
-				<span class="hide-menu">Obrázky</span>
-			</a>
-			<ul aria-expanded="false" class="collapse">
-				<li>
-					<a href="@Url.Action("Dashboard", "Images", new {Area = "Admin"})">Přehled</a>
-				</li>
-				<li>
-					<a href="@Url.Action("Create", "Images", new {Area = "Admin"})">Vytvoření</a>
-				</li>
-				<li>
-					<a href="@Url.Action("Edit", "Images", new {Area = "Admin"})">Úpravy</a>
-				</li>
-			</ul>
-		</li>
-		<li>
-			<a href="@Url.Action("Dashboard", "Settings", new {Area = "Admin"})" aria-expanded="false">
+			<a href="@Url.Action("Dashboard", "Admin", new {Area = "Global"})" aria-expanded="false">
 				<i class="mdi mdi-settings"></i>
-				<span class="hide-menu">Nastavení</span>
+				<span class="hide-menu">Globální administrace</span>
 			</a>
 		</li>
 	}

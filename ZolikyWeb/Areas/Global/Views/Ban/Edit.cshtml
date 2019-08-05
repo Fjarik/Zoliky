@@ -1,0 +1,210 @@
+﻿@using ZolikyWeb.Tools
+@model ZolikyWeb.Areas.Global.Models.Ban.BanModel
+
+@{
+	ViewBag.Title = "Úprava blokace";
+	Layout = "~/Areas/Global/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="row">
+	<div class="col">
+		<div class="card card-outline-info">
+			<div class="card-header">
+				<h4 class="mb-0 text-white">Úprava banu</h4>
+			</div>
+			<div class="card-body">
+				@using (Html.BeginForm("Edit", "Ban", new {Area = "Global" }, FormMethod.Post, new {@class = "form-horizontal"})) {
+					@Html.AntiForgeryToken()
+					@Html.SecureHiddenFor(x => x.ID)
+					<div class="form-body">
+						<h3 class="card-title">
+							Uživatel
+						</h3>
+						<hr class="mt-0 m-b-40" />
+						<!-- row -->
+						<div class="row">
+							<!-- item -->
+							<div class="col-md-6">
+								<div class="form-group row">
+									<label class="control-label text-right col-md-3">ID</label>
+									<div class="col-md-9">
+										<p class="form-control-static">
+											@Model.UserID
+										</p>
+									</div>
+								</div>
+							</div>
+							<!-- /item -->
+							<!-- item -->
+							<div class="col-md-6">
+								<div class="form-group row">
+									<label class="control-label text-right col-md-3">ID třídy</label>
+									<div class="col-md-9">
+										<p class="form-control-static">
+											@(Model.User?.ClassID?.ToString() ?? "-")
+										</p>
+									</div>
+								</div>
+							</div>
+							<!-- /item -->
+						</div>
+						<!-- /row -->
+						<!-- row -->
+						<div class="row">
+							<!-- item -->
+							<div class="col-md-6">
+								<div class="form-group row">
+									<label class="control-label text-right col-md-3">Jméno</label>
+									<div class="col-md-9">
+										<p class="form-control-static">
+											@(Model.User?.FullName)
+										</p>
+									</div>
+								</div>
+							</div>
+							<!-- /item -->
+							<!-- item -->
+							<div class="col-md-6">
+								<div class="form-group row">
+									<label class="control-label text-right col-md-3">Třída</label>
+									<div class="col-md-9">
+										<p class="form-control-static">
+											@(Model.User?.Class?.Name ?? "-")
+										</p>
+									</div>
+								</div>
+							</div>
+							<!-- /item -->
+						</div>
+						<!-- /row -->
+
+						<h3 class="card-title">
+							Ban
+						</h3>
+						<hr class="mt-0 m-b-40" />
+						<!-- row -->
+						<div class="row">
+							<!-- item -->
+							<div class="col-md-6">
+								<div class="form-group row">
+									<label class="control-label text-right col-md-3">ID</label>
+									<div class="col-md-9">
+										<p class="form-control-static">
+											@Model.ID
+										</p>
+									</div>
+								</div>
+							</div>
+							<!-- /item -->
+							<!-- item -->
+							<div class="col-md-6">
+								<div class="form-group row">
+									<label class="control-label text-right col-md-3">Udělen</label>
+									<div class="col-md-9">
+										<p class="form-control-static">
+											@(Model.From.ToString("dd.MM.yyyy HH:mm") ?? "-")
+										</p>
+									</div>
+								</div>
+							</div>
+							<!-- /item -->
+						</div>
+						<!-- /row -->
+						<!-- row -->
+						<div class="row">
+							<!-- item -->
+							<div class="col-md-6">
+								<div class="form-group row">
+									<label class="control-label text-right col-md-3">Důvod</label>
+									<div class="col-md-9">
+										@Html.TextBoxFor(x => x.Reason, new {@class = "form-control", tabindex = 1})
+										@Html.ValidationMessageFor(x => x.Reason)
+									</div>
+								</div>
+							</div>
+							<!-- /item -->
+							<!-- item -->
+							<div class="col-md-6">
+								<div class="form-group row">
+									<label class="control-label text-right col-md-3">Konec</label>
+									<div class="col-md-auto">
+										@Html.CheckBoxSimple(x => x.IsPermanent, new {@class = "filled-in chk-col-light-blue", tabindex = 2, id = "chBoxPermanent"})
+										<label for="chBoxPermanent">Trvalý ban</label>
+									</div>
+									<div class="col-md-4">
+										@Html.TextBoxFor(x => x.To, new {@class = "form-control", tabindex = 3, id = "txtEnd", placeholder="Vyberte datum"})
+									</div>
+								</div>
+							</div>
+							<!-- /item -->
+						</div>
+						<!-- /row -->
+					</div>
+					<hr />
+					<div class="form-actions">
+						<div class="row">
+							<div class="col-md-6">
+								<button type="submit" class="btn btn-primary" tabindex="4">
+									Uložit
+								</button>
+							</div>
+							<div class="col-md-6">
+							</div>
+						</div>
+					</div>
+				}
+			</div>
+		</div>
+	</div>
+</div>
+
+@section header {
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" integrity="sha256-siyOpF/pBWUPgIcQi17TLBkjvNgNQArcmwJB8YvkAgg=" crossorigin="anonymous" />
+}
+
+@section footer{
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js" integrity="sha256-4iQZ6BVL4qNKlQ27TExEhBN1HFPvAvAMbFavKKosSWQ=" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js" integrity="sha256-bqVeqGdJ7h/lYPq6xrPv/YGzMEb6dNxlfiTUHSgRCp8=" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.cs.min.js" integrity="sha256-pbW7ult8QcDlimj+JQplrsCieqCvQ/8VGr7ZdTuev8c=" crossorigin="anonymous"></script>
+	<script type="text/javascript">
+		$(() => {
+			$.validator.methods.date = function (value, element) {
+				return this.optional(element) || moment(value, "DD.MM.YYYY", true).isValid();
+			}
+		});
+
+		$(() => {
+			$("#txtEnd").datepicker({
+				clearBtn: true,
+				language: "cs",
+				format: "dd.mm.yyyy",
+				autoclose: true,
+				todayHighlight: true,
+				startDate: "0d",
+				daysOfWeekHighlighted: "0,6"
+			});
+
+			$(() => {
+				let $check = $("#chBoxPermanent");
+				let $end = $("#txtEnd");
+
+				let checkPermanent = () => {
+					let checked = $check.prop("checked");
+					if (checked) {
+						$end.attr("disabled", "disabled");
+						$end.hide();
+						$end.val("");
+					} else {
+						$end.removeAttr("disabled");
+						$end.show();
+					}
+				};
+
+				$check.change(checkPermanent);
+				checkPermanent();
+			});
+
+		});
+	</script>
+
+}

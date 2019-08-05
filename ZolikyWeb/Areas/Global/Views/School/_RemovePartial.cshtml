@@ -1,0 +1,47 @@
+﻿@using ZolikyWeb.Tools
+@model DataAccess.Models.School
+
+<div id="modalDelete" class="modal fade text-left" tabindex="-1" role="dialog" aria-labelledby="modalDeleteLabel" style="display: none;" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title" id="modalDeleteLabel">
+					Odstranění školy
+				</h4>
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			</div>
+			@using (Html.BeginForm("Remove", "School", new {Area = "Global" }, FormMethod.Post)) {
+				<div class="modal-body">
+					@Html.AntiForgeryToken()
+					@Html.SecureHiddenFor(x => x.ID)
+					<p class="font-bold" >
+						Opravdu si přejete odstranit tuto školu?
+					</p>
+					<br/>
+					<div class="row mb-3">
+						<div class="col-md-3">
+							<h4 class="mb-0">Název (ID):</h4>
+						</div>
+						<div class="col">
+							@Model.Name (@Model.ID)
+						</div>
+					</div>
+					<div class="row mb-3">
+						<div class="col-md-3">
+							<h4 class="mb-0">Adresa:</h4>
+						</div>
+						<div class="col">
+							@(Model.Street + ", " + Model.City)
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-info" data-dismiss="modal">Zavřít</button>
+					<button type="submit" class="btn btn-danger waves-effect">Odstranit</button>
+				</div>
+			}
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>

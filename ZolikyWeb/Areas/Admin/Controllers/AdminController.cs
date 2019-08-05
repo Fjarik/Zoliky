@@ -9,13 +9,12 @@ using DataAccess.Managers;
 using DataAccess.Managers.New;
 using SharedLibrary.Shared;
 using ZolikyWeb.Areas.Admin.Models.Admin;
-using ZolikyWeb.Areas.Admin.Models.Admin.Dashboard;
 using ZolikyWeb.Models.Base;
 using ZolikyWeb.Tools;
 
 namespace ZolikyWeb.Areas.Admin.Controllers
 {
-	[Authorize(Roles = UserRoles.AdminOrDeveloper + "," + UserRoles.Teacher)]
+	[Authorize(Roles = UserRoles.AdminOrDeveloperOrTeacher)]
 	public class AdminController : OwnController
 	{
 		public ActionResult Index()
@@ -25,40 +24,8 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 
 		public ActionResult Dashboard()
 		{
-			var model = new DashboardModel(2);
+			var model = new DashboardModel();
 			return View(model);
-		}
-
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public async Task<ActionResult> SendMobileNotification(SendMobileNotModel model)
-		{
-			var fMgr = this.GetManager<FirebaseManager>();
-
-			var id = User.Identity.GetId();
-			var res = await fMgr.NewZolikAsync(model.ZolikId, id, model.ToId);
-			if (res) {
-				this.AddSuccessToastMessage("Úspěch");
-			}
-
-			return RedirectToAction("Dashboard");
-		}
-
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public async Task<ActionResult> SendNotifications(SendNotificationsModel model)
-		{
-			if (model != null && model.IsValid) {
-				var nMgr = this.GetManager<NotificationManager>();
-
-				var res = await nMgr.SendNotificationToStudentsAsync(model.Title,
-																	 model.Subtitle);
-				if (!res) {
-					this.AddErrorToastMessage("Něco se nepovedlo");
-				}
-			}
-
-			return RedirectToAction("Dashboard");
 		}
 	}
 }

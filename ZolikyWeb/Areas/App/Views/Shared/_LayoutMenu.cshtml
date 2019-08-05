@@ -64,14 +64,24 @@
 			<span class="hide-menu">Historie přihlášení</span>
 		</a>
 	</li>
-	@if (User.IsInRolesOr(UserRoles.Administrator, UserRoles.Developer, UserRoles.Teacher)) {
-		<li>
-			<a href="@Url.Action("Dashboard", "Admin", new {Area = "Admin"})" aria-expanded="false">
+	<li>
+		@if (User.IsInRolesOr(UserRoles.Administrator, UserRoles.Developer, UserRoles.Teacher)) {
+			<a class="has-arrow" href="#" aria-expanded="false">
 				<i class="mdi mdi-wrench"></i>
 				<span class="hide-menu">Administrace</span>
 			</a>
-		</li>
-	}
+			<ul aria-expanded="false" class="collapse">
+				<li>
+					<a href="@Url.Action("Dashboard", "Admin", new {Area = "Admin"})">Školní</a>
+				</li>
+				@if (User.IsInRolesOr(UserRoles.Administrator, UserRoles.Developer)) {
+					<li>
+						<a href="@Url.Action("Dashboard", "Admin", new {Area = "Global"})">Globální</a>
+					</li>
+				}
+			</ul>
+		}
+	</li>
 	@*<li>
 			<a href="https://support.zoliky.eu/" target="_blank" aria-expanded="false">
 				<i class="mdi mdi-help"></i>
