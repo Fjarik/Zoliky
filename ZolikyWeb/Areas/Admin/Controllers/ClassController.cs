@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.Mvc;
 using DataAccess;
 using DataAccess.Managers;
+using DataAccess.Models;
 using SharedLibrary.Shared;
 using ZolikyWeb.Areas.Admin.Models.Class;
 using ZolikyWeb.Models.Base;
@@ -33,9 +34,10 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 
 #region Create
 
-		public ActionResult Create()
+		public async Task<ActionResult> Create()
 		{
-			var model = ClassModel.CreateModel();
+			var schools = await this.GetSchoolAsync();
+			var model = ClassModel.CreateModel(schools);
 			return View("Edit", model);
 		}
 
@@ -79,8 +81,10 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 			}
 			var previousId = await Mgr.GetPreviousIdAsync(id);
 			var nextId = await Mgr.GetNextIdAsync(id);
+			var schools = await this.GetSchoolAsync();
+			var names = await Mgr.GetStudentNamesAsync(id);
 
-			var model = new ClassModel(res.Content, allowEdit, previousId, nextId) {
+			var model = new ClassModel(res.Content, schools, names, allowEdit, previousId, nextId) {
 				ActionName = actionName
 			};
 
@@ -92,5 +96,11 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 #region Remove
 
 #endregion
+
+		private Task<List<School>> GetSchoolAsync()
+		{
+			var sMgr = this.GetManager<SchoolManager>();
+			return sMgr.GetAllAsync();
+		}
 	}
 }

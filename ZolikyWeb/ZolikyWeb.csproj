@@ -1237,6 +1237,8 @@
     <Content Include="Areas\Admin\Views\Ban\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\School\_RemovePartial.cshtml" />
     <Content Include="Areas\Admin\Views\Class\Dashboard.cshtml" />
+    <Content Include="Areas\Admin\Views\Class\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Class\_RemovePartial.cshtml" />
     <None Include="bundleconfig.json" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\fa-all.js" />

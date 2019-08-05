@@ -69,7 +69,7 @@
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="SchoolID" Type="int" Nullable="false" />
-          <Property Name="Name" Type="varchar" MaxLength="3" />
+          <Property Name="Name" Type="varchar" MaxLength="10" />
           <Property Name="Since" Type="date" Nullable="false" />
           <Property Name="Graduation" Type="date" Nullable="false" />
           <Property Name="Enabled" Type="bit" Nullable="false" />
@@ -1547,7 +1547,7 @@
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="SchoolID" Type="Int32" Nullable="false" />
-          <Property Name="Name" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
+          <Property Name="Name" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="Since" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="Graduation" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="Enabled" Type="Boolean" Nullable="false" />

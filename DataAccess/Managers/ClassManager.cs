@@ -75,6 +75,29 @@ namespace DataAccess.Managers
 						.ToListAsync();
 		}
 
+		public Task<List<string>> GetStudentNamesAsync(int classId, bool onlyActive = true)
+		{
+			var query = _ctx.Users
+							.Where(x => x.ClassID == classId);
+
+			if (onlyActive) {
+				query = query.Where(x => x.Enabled);
+			}
+
+			return query.Select(x => x.Name + " " + x.Lastname)
+						.ToListAsync();
+		}
+
+		public async Task<int> GetStudentsCountAsync(int classId)
+		{
+			if (classId < 1) {
+				return 0;
+			}
+			return await _ctx.Users
+							 .Where(x => x.ClassID == classId)
+							 .CountAsync();
+		}
+
 #region Create
 
 		public Task<MActionResult<Class>> CreateAsync(string name,

@@ -1,0 +1,205 @@
+﻿@using ZolikyWeb.Tools
+@model ZolikyWeb.Areas.Admin.Models.Class.ClassModel
+
+@{
+	ViewBag.Title = "Třída";
+	Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<div class="row">
+	<div class="col">
+		<div class="card card-outline-info">
+			<div class="card-header">
+				<h4 class="mb-0 text-white">
+					@if (Model.IsCreate) {
+						@:Vytvoření třídy
+					} else {
+						if (Model.AllowEdit) {
+							@:Úprava třídy
+						} else {
+							@:Detaily třídy
+						}
+					}
+				</h4>
+			</div>
+			<div class="card-body">
+				@using (Html.BeginForm(Model.ActionName, "Class", new { Area = "Admin" }, FormMethod.Post, new { @class = "form-horizontal" })) {
+					@Html.AntiForgeryToken()
+					@Html.SecureHiddenFor(x => x.ID)
+					<div class="form-body">
+						<h3 class="card-title">
+							Obecné
+						</h3>
+						<hr class="mt-0 m-b-40" />
+						<!-- row -->
+						<div class="row">
+							<!-- item -->
+							<div class="col-md-6">
+								<div class="form-group row">
+									<label class="control-label text-right col-md-3">ID</label>
+									<div class="col-md-9">
+										<p class="form-control-static text-right text-md-left">
+											@Model.ID
+										</p>
+									</div>
+								</div>
+							</div>
+							<!-- /item -->
+							<!-- item -->
+							<div class="col-md-6">
+								<div class="form-group row">
+									<label class="control-label text-right col-md-3">Název</label>
+									<div class="col-md-8">
+										@if (Model.AllowEdit) {
+											@Html.MaterialTextBoxFor(x => x.Name, 2)
+											@Html.ValidationMessageFor(x => x.Name)
+										} else {
+											<p class="form-control-static">
+												@(Model.Name)
+											</p>
+										}
+									</div>
+								</div>
+							</div>
+							<!-- /item -->
+						</div>
+						<!-- /row -->
+
+						<h3 class="card-title">
+							Nastavení
+						</h3>
+						<hr class="mt-0 m-b-40" />
+						<!-- row -->
+						<div class="row">
+							<!-- item -->
+							<div class="col-md-6">
+								<div class="form-group row">
+									<label class="control-label text-right col-md-3">Datum nástupu</label>
+									<div class="col-md-9">
+										@if (Model.AllowEdit) {
+											@Html.TextBoxFor(x => x.Since, new { @class = "form-control", tabindex = 3, data_type = "date", placeholder = "Vyberte datum" })
+										} else {
+											<p class="form-control-static">
+												@(Model.Since.ToString("dd.MM.yyyy"))
+											</p>
+										}
+									</div>
+								</div>
+							</div>
+							<!-- /item -->
+							<!-- item -->
+							<div class="col-md-6">
+								<div class="form-group row">
+									<label class="control-label text-right col-md-3">Ukončení studia</label>
+									<div class="col-md-8">
+										@if (Model.AllowEdit) {
+											@Html.TextBoxFor(x => x.Graduation, new { @class = "form-control", tabindex = 3, data_type="date", placeholder = "Vyberte datum" })
+										} else {
+											<p class="form-control-static">
+												@(Model.Graduation.ToString("dd.MM.yyyy"))
+											</p>
+										}
+									</div>
+								</div>
+							</div>
+							<!-- /item -->
+						</div>
+						<!-- /row -->
+						
+						<h3 class="card-title">
+							Pokročilé
+						</h3>
+						<hr class="mt-0 m-b-40" />
+						<!-- row -->
+						<div class="row">
+							<!-- item -->
+							<div class="col-md-6">
+								<div class="form-group row">
+									<label class="control-label text-right col-md-3">Škola</label>
+									<div class="col-md-9">
+										@if (Model.AllowEdit) {
+											@Html.DropDownListFor(x => x.SchoolID, Model.SchoolList, new {@class = "form-control  custom-select"})
+										} else {
+											@Model.SchoolName
+										}
+									</div>
+								</div>
+							</div>
+							<!-- /item -->
+							<!-- item -->
+							<div class="col-md-6">
+								<div class="form-group row">
+									<label class="control-label text-right col-md-3">Studenti</label>
+									<div class="col-md-9">
+										@Html.ListBox("AAA", Model.StudentList, new { multiple = "multiple", @class = "form-control c-help", size = 8, disabled = "disabled", title = "Studenty je nutné upravit jednotlivě" })
+									</div>
+								</div>
+							</div>
+							<!-- /item -->
+						</div>
+						<!-- /row -->
+					</div>
+					<hr />
+					<div class="form-actions">
+						<div class="row">
+							<div class="col-md-6">
+								@if (Model.AllowEdit) {
+									<button type="submit" class="btn btn-primary" tabindex="4">
+										Uložit
+									</button>
+								} else {
+									<a href="@Url.Action("Edit", new {id = Model.ID})" class="btn btn-primary" tabindex="4">
+										Režim úprav
+									</a>
+								}
+
+								<a href="@Url.Action("Dashboard")" class="btn btn-success" tabindex="5">
+									Zpět
+								</a>
+							</div>
+							<div class="col-md-6 text-right">
+								@if (Model.AllowRemove) {
+									<a href="#" class="text-danger" data-toggle="modal" data-target="#modalDelete">
+										Odstranit třídu
+									</a>
+								}
+							</div>
+						</div>
+					</div>
+				}
+			</div>
+		</div>
+	</div>
+</div>
+@if (Model.AllowRemove) {
+	@Html.Partial("_RemovePartial", Model)
+}
+
+
+@section header {
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" integrity="sha256-siyOpF/pBWUPgIcQi17TLBkjvNgNQArcmwJB8YvkAgg=" crossorigin="anonymous" />
+}
+
+@section footer{
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js" integrity="sha256-4iQZ6BVL4qNKlQ27TExEhBN1HFPvAvAMbFavKKosSWQ=" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js" integrity="sha256-bqVeqGdJ7h/lYPq6xrPv/YGzMEb6dNxlfiTUHSgRCp8=" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.cs.min.js" integrity="sha256-pbW7ult8QcDlimj+JQplrsCieqCvQ/8VGr7ZdTuev8c=" crossorigin="anonymous"></script>
+	<script type="text/javascript">
+		$(() => {
+			$.validator.methods.date = function(value, element) {
+				return this.optional(element) || moment(value, "DD.MM.YYYY", true).isValid();
+			}
+		});
+
+		$(() => {
+			$("[data-type='date']").datepicker({
+				clearBtn: true,
+				language: "cs",
+				format: "dd.mm.yyyy",
+				//autoclose: true,
+				daysOfWeekHighlighted: "0,6"
+			});
+		});
+	</script>
+}
