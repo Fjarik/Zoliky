@@ -42,7 +42,7 @@ namespace ZolikyWeb.Areas.Admin.Models.Class
 										SchoolID > 0 &&
 										!string.IsNullOrWhiteSpace(this.Name);
 
-		#region Entity
+#region Entity
 
 		[Display(Name = "Škola")]
 		[Required(ErrorMessage = "Musíte vybrat školu")]
@@ -77,27 +77,29 @@ namespace ZolikyWeb.Areas.Admin.Models.Class
 		{
 			this.Schools = new List<DataAccess.Models.School>();
 			this.StudentNames = new List<string>();
+			this.AllowRemove = false;
 		}
 
 		public static ClassModel CreateModel(List<DataAccess.Models.School> allSchools)
 		{
+			var currentYear = DateTime.Today.Year;
 			return new ClassModel() {
 				ID = -1,
 				ActionName = "Create",
 				AllowEdit = true,
 				IsCreate = true,
-				Schools = allSchools
+				Schools = allSchools,
+				Since = new DateTime(currentYear, 9, 1),
+				Graduation = new DateTime(currentYear + 4, 5, 31)
 			};
 		}
 
 		public ClassModel(DataAccess.Models.Class ent,
-						  List<DataAccess.Models.School> allSchools,
 						  List<string> studentNames,
 						  bool allowEdit,
 						  int previousId,
 						  int nextId) : base(ent, allowEdit, previousId, nextId)
 		{
-			this.Schools = allSchools;
 			this.StudentNames = studentNames;
 			this.SchoolID = ent.SchoolID;
 			this.Name = ent.Name;
@@ -105,6 +107,8 @@ namespace ZolikyWeb.Areas.Admin.Models.Class
 			this.Graduation = ent.Graduation;
 			this.Enabled = ent.Enabled;
 			this.SchoolName = ent.School.Name;
+			this.AllowRemove = !this.IsCreate &&
+							   !studentNames.Any();
 		}
 	}
 }

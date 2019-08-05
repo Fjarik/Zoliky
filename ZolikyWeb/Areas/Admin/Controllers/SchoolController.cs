@@ -163,6 +163,8 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 
 #endregion
 
+#region EditOrDetails
+
 		private async Task<ActionResult> EditOrDetail(int? id, string actionName, bool allowEdit)
 		{
 			if (id == null || id < 1) {
@@ -204,11 +206,13 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 
 #endregion
 
+#endregion
+
 #region Remove
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		[ValidateSecureHiddenInputs(nameof(School.ID))]
+		[ValidateSecureHiddenInputs(nameof(SchoolModel.ID))]
 		public Task<ActionResult> Remove(SchoolModel model)
 		{
 			return RemoveAsync(model?.ID);
@@ -226,7 +230,6 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 		private async Task<ActionResult> RemoveAsync(int id)
 		{
 			var res = await Mgr.DeleteAsync(id);
-
 			if (res) {
 				this.AddSuccessToastMessage("Škola úspěšně odstraněna");
 			} else {

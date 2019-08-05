@@ -24,7 +24,7 @@
 				</h4>
 			</div>
 			<div class="card-body">
-				@using (Html.BeginForm(Model.ActionName, "Class", new { Area = "Admin" }, FormMethod.Post, new { @class = "form-horizontal" })) {
+				@using (Html.BeginForm(Model.ActionName, "Class", new {Area = "Admin"}, FormMethod.Post, new {@class = "form-horizontal"})) {
 					@Html.AntiForgeryToken()
 					@Html.SecureHiddenFor(x => x.ID)
 					<div class="form-body">
@@ -52,7 +52,7 @@
 									<label class="control-label text-right col-md-3">Název</label>
 									<div class="col-md-8">
 										@if (Model.AllowEdit) {
-											@Html.MaterialTextBoxFor(x => x.Name, 2)
+											@Html.MaterialTextBoxFor(x => x.Name, 1)
 											@Html.ValidationMessageFor(x => x.Name)
 										} else {
 											<p class="form-control-static">
@@ -78,7 +78,7 @@
 									<label class="control-label text-right col-md-3">Datum nástupu</label>
 									<div class="col-md-9">
 										@if (Model.AllowEdit) {
-											@Html.TextBoxFor(x => x.Since, new { @class = "form-control", tabindex = 3, data_type = "date", placeholder = "Vyberte datum" })
+											@Html.TextBoxFor(x => x.Since, "{0:dd.MM.yyyy}", new {@class = "form-control", tabindex = 2, id = "txtSince", data_type = "date", placeholder = "Vyberte datum"})
 										} else {
 											<p class="form-control-static">
 												@(Model.Since.ToString("dd.MM.yyyy"))
@@ -94,7 +94,7 @@
 									<label class="control-label text-right col-md-3">Ukončení studia</label>
 									<div class="col-md-8">
 										@if (Model.AllowEdit) {
-											@Html.TextBoxFor(x => x.Graduation, new { @class = "form-control", tabindex = 3, data_type="date", placeholder = "Vyberte datum" })
+											@Html.TextBoxFor(x => x.Graduation, "{0:dd.MM.yyyy}", new {@class = "form-control", tabindex = 3, id = "txtGrad", data_type = "date", placeholder = "Vyberte datum"})
 										} else {
 											<p class="form-control-static">
 												@(Model.Graduation.ToString("dd.MM.yyyy"))
@@ -106,7 +106,7 @@
 							<!-- /item -->
 						</div>
 						<!-- /row -->
-						
+
 						<h3 class="card-title">
 							Pokročilé
 						</h3>
@@ -118,10 +118,13 @@
 								<div class="form-group row">
 									<label class="control-label text-right col-md-3">Škola</label>
 									<div class="col-md-9">
-										@if (Model.AllowEdit) {
-											@Html.DropDownListFor(x => x.SchoolID, Model.SchoolList, new {@class = "form-control  custom-select"})
+										@Html.HiddenFor(x=> x.SchoolID)
+										@if (Model.IsCreate) {
+											@Html.DropDownListFor(x => x.SchoolID, Model.SchoolList, new {@class = "form-control custom-select", tabindex = 4})
 										} else {
-											@Model.SchoolName
+											<span class="c-help" data-toggle="tooltip" data-original-title="Školu nelze změnit">
+												@Model.SchoolName
+											</span>
 										}
 									</div>
 								</div>
@@ -132,7 +135,7 @@
 								<div class="form-group row">
 									<label class="control-label text-right col-md-3">Studenti</label>
 									<div class="col-md-9">
-										@Html.ListBox("AAA", Model.StudentList, new { multiple = "multiple", @class = "form-control c-help", size = 8, disabled = "disabled", title = "Studenty je nutné upravit jednotlivě" })
+										@Html.ListBox("AAA", Model.StudentList, new {multiple = "multiple", @class = "form-control c-help", size = 8, disabled = "disabled", title = "Studenty je nutné upravit jednotlivě"})
 									</div>
 								</div>
 							</div>
@@ -145,16 +148,15 @@
 						<div class="row">
 							<div class="col-md-6">
 								@if (Model.AllowEdit) {
-									<button type="submit" class="btn btn-primary" tabindex="4">
+									<button type="submit" class="btn btn-primary" tabindex="5">
 										Uložit
 									</button>
 								} else {
-									<a href="@Url.Action("Edit", new {id = Model.ID})" class="btn btn-primary" tabindex="4">
+									<a href="@Url.Action("Edit", new {id = Model.ID})" class="btn btn-primary" tabindex="6">
 										Režim úprav
 									</a>
 								}
-
-								<a href="@Url.Action("Dashboard")" class="btn btn-success" tabindex="5">
+								<a href="@Url.Action("Dashboard")" class="btn btn-success" tabindex="7">
 									Zpět
 								</a>
 							</div>
@@ -200,6 +202,13 @@
 				//autoclose: true,
 				daysOfWeekHighlighted: "0,6"
 			});
+
+			$("#txtSince").on("changeDate",
+				(e) => {
+					const year = e.date.getFullYear();
+					const newVal = new Date(year + 4, 4, 31);
+					$("#txtGrad").datepicker("update", newVal);
+				});
 		});
 	</script>
 }

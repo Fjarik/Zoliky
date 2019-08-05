@@ -35,6 +35,15 @@ namespace DataAccess.Managers
 
 #region Overrides
 
+		public override async Task<bool> DeleteAsync(Class entity)
+		{
+			var students = await this.GetStudentsCountAsync(entity.ID);
+			if (students > 0) {
+				return false;
+			}
+			return await base.DeleteAsync(entity);
+		}
+
 		public override Task<List<Class>> GetAllAsync()
 		{
 			return _ctx.Classes

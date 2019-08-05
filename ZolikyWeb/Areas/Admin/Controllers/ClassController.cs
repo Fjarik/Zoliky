@@ -36,9 +36,52 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 
 		public async Task<ActionResult> Create()
 		{
-			var schools = await this.GetSchoolAsync();
+			var schoolId = this.User.Identity.GetSchoolId();
+			//var schools = await this.GetSchoolAsync();
+
+			// Pouze škola registrovaného správce školy - Nemůže přidat třídu do cizí školy
+			var sMgr = this.GetManager<SchoolManager>();
+			var res = await sMgr.GetByIdAsync(schoolId);
+			if (!res.IsSuccess) {
+				this.AddErrorToastMessage("Nezdařilo se nalézt Vaši školu");
+				return RedirectToAction("Dashboard");
+			}
+
+			var schools = new List<School> {
+				res.Content
+			};
+
 			var model = ClassModel.CreateModel(schools);
 			return View("Edit", model);
+		}
+
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		[ValidateSecureHiddenInputs(nameof(ClassModel.ID))]
+		public async Task<ActionResult> Create(ClassModel model)
+		{
+			if (model == null) {
+				return RedirectToAction("Dashboard");
+			}
+
+			if (!model.IsValid) {
+				this.AddErrorToastMessage("Neplatné hodnoty");
+				return RedirectToAction("Edit");
+			}
+
+			var res = await Mgr.CreateAsync(model.Name,
+											model.SchoolID,
+											model.Since,
+											model.Graduation);
+
+			if (!res.IsSuccess) {
+				this.AddErrorToastMessage($"Nezdařilo se vytvořit záznam. Chyba: {res.GetStatusMessage()}");
+				return RedirectToAction("Dashboard");
+			}
+			var original = res.Content;
+
+			this.AddSuccessToastMessage("Škola byla úspěšně vytvořena");
+			return RedirectToAction("Detail", new {id = original.ID});
 		}
 
 #endregion
@@ -52,6 +95,40 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 			return EditOrDetail(id, "Edit", true);
 		}
 
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		[ValidateSecureHiddenInputs(nameof(ClassModel.ID))]
+		public async Task<ActionResult> Edit(ClassModel model)
+		{
+			if (model == null) {
+				return RedirectToAction("Dashboard");
+			}
+
+			if (!model.IsValid) {
+				this.AddErrorToastMessage("Neplatné hodnoty");
+				return RedirectToAction("Edit");
+			}
+
+			var res = await Mgr.GetByIdAsync(model.ID);
+			if (!res.IsSuccess) {
+				this.AddErrorToastMessage($"Nezdařilo se načíst originální záznam. Chyba: {res.GetStatusMessage()}");
+				return RedirectToAction("Dashboard");
+			}
+
+
+			var original = res.Content;
+
+			// Edit
+			original.Name = model.Name;
+			original.Since = model.Since;
+			original.Graduation = model.Graduation;
+			// Edit end
+
+			await Mgr.SaveAsync(original);
+			this.AddSuccessToastMessage("Úspěšně uloženo");
+			return RedirectToAction("Edit", new {id = model.ID});
+		}
+
 #endregion
 
 #region Detail
@@ -62,6 +139,8 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 		}
 
 #endregion
+
+#region EditOrDetails
 
 		private async Task<ActionResult> EditOrDetail(int? id, string actionName, bool allowEdit)
 		{
@@ -81,10 +160,9 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 			}
 			var previousId = await Mgr.GetPreviousIdAsync(id);
 			var nextId = await Mgr.GetNextIdAsync(id);
-			var schools = await this.GetSchoolAsync();
 			var names = await Mgr.GetStudentNamesAsync(id);
 
-			var model = new ClassModel(res.Content, schools, names, allowEdit, previousId, nextId) {
+			var model = new ClassModel(res.Content, names, allowEdit, previousId, nextId) {
 				ActionName = actionName
 			};
 
@@ -93,7 +171,38 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 
 #endregion
 
+#endregion
+
 #region Remove
+
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		[ValidateSecureHiddenInputs(nameof(ClassModel.ID))]
+		public Task<ActionResult> Remove(ClassModel model)
+		{
+			return RemoveAsync(model?.ID);
+		}
+
+		private async Task<ActionResult> RemoveAsync(int? id = null)
+		{
+			if (id == null || id <= 1) {
+				this.AddErrorToastMessage("Neplatné ID");
+				return RedirectToAction("Dashboard");
+			}
+			return await RemoveAsync((int) id);
+		}
+
+		private async Task<ActionResult> RemoveAsync(int id)
+		{
+			var res = await Mgr.DeleteAsync(id);
+			if (res) {
+				this.AddSuccessToastMessage("Třída úspěšně odstraněna");
+			} else {
+				this.AddErrorToastMessage("Nezdařilo se odstranit třídu");
+			}
+
+			return RedirectToAction("Dashboard");
+		}
 
 #endregion
 
