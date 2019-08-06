@@ -1,20 +1,25 @@
-﻿@using ZolikyWeb.Tools
+﻿@using DataAccess
+@using ZolikyWeb.Tools
 @model ZolikyWeb.Areas.Admin.Models.Subject.SubjectDashboardModel
 @{
 	ViewBag.Title = "Přehled";
 	Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+	var schoolId = this.User.Identity.GetSchoolId();
 }
 
 <div class="row">
 	<div class="col">
 		<div class="card">
 			<div class="card-body">
+				<h3 class="card-title">Školní předměty</h3>
+				<h6 class="card-subtitle">Níže vypsané jsou pouze předměty, které jsou přiřazené, že se na Vaší škole vyučují</h6>
+				<hr/>
 				<div class="mb-3">
-					@using (Html.BeginForm("Dashboard", "Subject", new { Area = "Admin" }, FormMethod.Get)) {
-						<h3>Filtrování</h3>
+					@using (Html.BeginForm("Dashboard", "Subject", new {Area = "Admin"}, FormMethod.Get)) {
+						<h3 class="mb-3">Filtrování</h3>
 						<div class="row">
 							<div class="col-md-3">
-								@Html.CheckBoxSimple(x => x.OnlyAssigned, new { id = "chBoxOnlyAssigned" })
+								@Html.CheckBoxSimple(x => x.OnlyAssigned, new {id = "chBoxOnlyAssigned"})
 								<label for="chBoxOnlyAssigned">Zobrazit pouze přiřazené</label>
 							</div>
 							<div class="col">
@@ -25,7 +30,7 @@
 				</div>
 				<hr />
 				<div class="table-responsive">
-					<table id="table-subject" class="table table-hover contact-list toggle-arrow-tiny" data-page-size="10">
+					<table id="table-subject" class="table table-hover toggle-arrow-tiny" data-page-size="15">
 						<thead>
 							<tr>
 								<th data-type="number" data-toggle="true">
@@ -47,7 +52,7 @@
 						</thead>
 						<tbody>
 							@foreach (var subject in Model.Subjects) {
-								var cl = "";//school.Enabled ? "" : "text-danger";
+								var cl = ""; //school.Enabled ? "" : "text-danger";
 								<tr class="@cl">
 									<td data-value="@subject.ID">
 										@subject.ID
@@ -59,7 +64,7 @@
 										@subject.Shortcut
 									</td>
 									<td>
-
+										@subject.GetTeacherCount(schoolId)
 									</td>
 									<td class="d-flex justify-content-around">
 										<a href="@Url.Action("Edit", "Subject", new {Area = "Admin", id = subject.ID})" data-toggle="tooltip" data-original-title="Upravit">

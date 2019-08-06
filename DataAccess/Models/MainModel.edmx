@@ -1885,6 +1885,7 @@
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="Shortcut" Type="String" MaxLength="5" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Teachers" Relationship="ZoliksModel.FK_TeacherSubjects_Subjects" FromRole="Subject" ToRole="TeacherSubject" />
         </EntityType>
         <Association Name="FK_Zoliky_Subjects">
           <End Type="ZoliksModel.Subject" Role="Subject" Multiplicity="1" />

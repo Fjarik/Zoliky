@@ -348,9 +348,33 @@ namespace DataAccess.Models
 
 	public partial class SchoolSubject : IDbObject { }
 
-	public partial class Subject : IDbEntity { }
+	[MetadataType(typeof(SubjectMetaData))]
+	public partial class Subject : IDbEntity
+	{
+		public int GetTeacherCount(int? schoolId = null)
+		{
+			var query = this.Teachers.Where(x => x.Enabled);
 
-	public partial class TeacherSubject : IDbObject { }
+			if (schoolId != null) {
+				query = query.Where(x => x.SchoolID == schoolId);
+			}
+
+			return query.Select(x => x.TeacherID)
+						.Distinct()
+						.Count();
+		}
+
+		private sealed class SubjectMetaData
+		{
+			[JsonIgnore]
+			public ICollection<TeacherSubject> Teachers { get; set; }
+		}
+	}
+
+	public partial class TeacherSubject : IDbObject
+	{
+		public int SchoolID => this.Teacher.SchoolID;
+	}
 
 	public partial class Token : IDbEntity { }
 
