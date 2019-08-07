@@ -15,16 +15,28 @@ using ZolikyWeb.Tools;
 namespace ZolikyWeb.Areas.Admin.Controllers
 {
 	[Authorize(Roles = UserRoles.AdminOrDeveloperOrTeacher)]
-	public class AdminController : OwnController
+	public class AdminController : OwnController<SchoolManager>
 	{
 		public ActionResult Index()
 		{
 			return RedirectToAction("Dashboard");
 		}
 
-		public ActionResult Dashboard()
+		public async Task<ActionResult> Dashboard()
 		{
-			var model = new DashboardModel();
+			var schoolId = this.User.Identity.GetSchoolId();
+
+			var students = await Mgr.GetStudentCountAsync(schoolId);
+			var teachers = await Mgr.GetTeacherCountAsync(schoolId);
+			var zoliks = await Mgr.GetZolikCountAsync(schoolId);
+
+			var model = new DashboardModel {
+				SchoolStudentsCount = students,
+				SchoolTeachersCount = teachers,
+				SchoolZoliksCount = zoliks,
+				SpecialDate = new DateTime(2019, 09, 02),
+				SpecialDateDesc = "Nový školní rok"
+			};
 			return View(model);
 		}
 	}

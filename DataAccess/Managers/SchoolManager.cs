@@ -64,6 +64,44 @@ namespace DataAccess.Managers
 
 #region Own Methods
 
+#region Stats
+
+		public Task<int> GetStudentCountAsync(int schoolId)
+		{
+			return _ctx.Users
+					   .Where(x => x.SchoolID == schoolId &&
+								   x.Enabled &&
+								   x.ClassID != null &&
+								   x.Roles.Any(y => y.Name == UserRoles.Student) &&
+								   x.Roles.All(y => y.Name != UserRoles.HiddenStudent &&
+													y.Name != UserRoles.FakeStudent))
+					   .CountAsync();
+		}
+
+		public Task<int> GetTeacherCountAsync(int schoolId)
+		{
+			return _ctx.Users
+					   .Where(x => x.SchoolID == schoolId &&
+								   x.Enabled &&
+								   x.ClassID == null &&
+								   x.Roles.All(y => y.Name != UserRoles.Student &&
+													y.Name != UserRoles.Administrator) &&
+								   x.Roles.Any(y => y.Name == UserRoles.Teacher))
+					   .CountAsync();
+		}
+
+		public Task<int> GetZolikCountAsync(int schoolId)
+		{
+			return _ctx.Zoliky
+					   .Where(x => x.OriginalOwner.SchoolID == schoolId &&
+								   x.Type != ZolikType.Debug &&
+								   x.Type != ZolikType.DebugJoker &&
+								   x.Enabled)
+					   .CountAsync();
+		}
+
+#endregion
+
 		public Task<SchoolTypes> GetSchoolTypeAsync(int schoolId)
 		{
 			return _ctx.Schools

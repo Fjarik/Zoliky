@@ -554,6 +554,8 @@ namespace DataAccess.Models
 	[MetadataType(typeof(ZolikMetadata))]
 	public partial class Zolik : IZolik
 	{
+		public int SchoolID => this.OriginalOwner.SchoolID;
+
 		public bool IsLocked => !string.IsNullOrWhiteSpace(this.Lock);
 
 		public bool CanBeTransfered => this.Enabled && !this.IsLocked && this.Type != ZolikType.Black;
