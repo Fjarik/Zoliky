@@ -24,7 +24,10 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 			var subjects = await Mgr.GetSubjectsAsync(schoolId);
 
 			var assigned = onlyAssigned != null;
-
+			if (assigned) {
+				subjects = subjects.Where(x => x.GetTeacherCount(schoolId) > 0).ToList();
+			}
+			
 			var model = new SubjectDashboardModel(subjects, assigned);
 			return View(model);
 		}
