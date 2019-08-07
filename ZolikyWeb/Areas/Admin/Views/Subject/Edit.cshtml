@@ -17,7 +17,6 @@
 			<div class="card-body">
 				@using (Html.BeginForm("Edit", "Subject", new {Area = "Admin"}, FormMethod.Post, new {@class = "form-horizontal"})) {
 					@Html.AntiForgeryToken()
-					@Html.SecureHiddenFor(x => x.SubjectID)
 					<div class="form-body">
 						<h3 class="card-title">
 							Obecné
@@ -30,7 +29,7 @@
 								<div class="form-group row">
 									<label class="control-label text-right col-md-3">Předmět</label>
 									<div class="col-md-9">
-										@Html.DropDownListFor(x => x.SubjectID, Model.SubjectSelect, new { @class = "form-control" })
+										@Html.DropDownListFor(x => x.SubjectID, Model.SubjectSelect, new {@class = "form-control", data_change = "getData", id = "dropSubject"})
 										<p class="form-control-static text-right text-md-left">
 										</p>
 									</div>
@@ -51,10 +50,6 @@
 						</div>
 						<!-- /row -->
 
-						@*<h3 class="card-title">
-							Nastavení
-						</h3>
-						<hr class="mt-0 m-b-40" />*@
 						<!-- row -->
 						<div class="row">
 							<!-- item -->
@@ -62,7 +57,7 @@
 								<div class="form-group row">
 									<label class="control-label text-right col-md-3">Vyučující</label>
 									<div class="col-md-9">
-										@Html.DropDownListFor(x => x.TeacherID, Model.TeacherSelect, new {@class = "form-control"})
+										@Html.DropDownListFor(x => x.TeacherID, Model.TeacherSelect, new {@class = "form-control", data_change = "getData", id = "dropTeacher"})
 										<p class="form-control-static">
 										</p>
 									</div>
@@ -83,16 +78,15 @@
 						</div>
 						<!-- /row -->
 
-						@*<h3 class="card-title">
-							Pokročilé
-						</h3>
-						<hr class="mt-0 m-b-40" />*@
 						<!-- row -->
 						<div class="row">
 							<!-- item -->
 							<div class="col-md-6">
-								<div class="form-group row">
-									<label class="control-label text-right col-md-3">Předměty</label>
+								<div class="form-group row" id="classDiv" style="display: none;">
+									<label class="control-label text-right col-md-3">Třídy</label>
+									@*<div class="linear-activity" title="Probíhá načítání" data-toggle="tooltip">
+										<div class="indeterminate"></div>
+									</div>*@
 									<div class="col-md-9">
 										@Html.ListBoxFor(x => x.ClassIDs, Model.ClassSelect, new {multiple = "multiple", @class = "form-control", size = 8, id = "select-classes"})
 									</div>
@@ -134,10 +128,51 @@
 	<script type="text/javascript" src="@Url.Content("~/assets/plugins/multiselect/js/jquery.multi-select.min.js")"></script>
 	<script type="text/javascript">
 		$(() => {
-			$('#select-classes').multiSelect({
+			const $multiSelect = $('#select-classes').multiSelect({
 				selectableHeader: "<div class='custom-header'>Na výběr</div>",
 				selectionHeader: "<div class='custom-header'>Vybrané</div>",
 				keepOrder: true
+			});
+
+			const $dropdowns = $("[data-change='getData']");
+
+			const isSelected = () => {
+				let toReturn = true;
+				$dropdowns.each((index, element) => {
+					if (!$(element).val()) {
+						toReturn = false;
+						return false;
+					}
+				});
+				return toReturn;
+			};
+
+			$dropdowns.change(() => {
+				const $cDiv = $("#classDiv");
+				$cDiv.fadeOut();
+				if (!isSelected()) {
+					return;
+				}
+				const teacherId = $("#dropSubject").val();
+				const subjectId = $("#dropTeacher").val();
+				$.ajax({
+					url: "@Url.Action("GetTeacherSubjectClasses")",
+					method: "GET",
+					data: {
+						teacherId,
+						subjectId
+					},
+					success: (data) => {
+						$multiSelect.multiSelect("deselect_all");
+						$.each(data,
+							(index, obj) => {
+								$multiSelect.multiSelect("select", obj.toString());
+							});
+
+						$cDiv.fadeIn();
+					}
+				});
+
 			});
 		});
 	</script>

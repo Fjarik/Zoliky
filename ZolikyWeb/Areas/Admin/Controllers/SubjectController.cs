@@ -29,15 +29,37 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 			return View(model);
 		}
 
-		public Task<ActionResult> Edit(int? id = null)
+		public Task<ActionResult> Edit(int? id = null, int? teacherId = null)
 		{
-			if (id == null || id < 1) {
-				return EditAsync(-1);
-			}
-			return EditAsync((int) id);
+			return EditAsync(id, teacherId);
 		}
 
-		private async Task<ActionResult> EditAsync(int id)
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<ActionResult> Edit(SubjectEditModel model)
+		{
+			if (model == null || !model.IsValid) {
+				this.AddErrorToastMessage("Neplatné úpravy");
+				return RedirectToAction("Edit");
+			}
+
+			var sMgr = this.GetManager<TeacherSubjectManager>();
+			var teacherId = model.TeacherID;
+			var subjectId = model.SubjectID;
+
+			await sMgr.DeleteAsync(teacherId, subjectId);
+			foreach (var classId in model.ClassIDs) {
+				var res = await sMgr.CreateAsync(teacherId, subjectId, classId);
+				if (!res.IsSuccess) {
+					this.AddErrorToastMessage($"Vyskytla se chyba: {res.GetStatusMessage()}");
+					return RedirectToAction("Edit", new {id = subjectId, teacherId});
+				}
+			}
+			this.AddSuccessToastMessage("Úspěšně uloženo");
+			return RedirectToAction("Edit", new {id = subjectId, teacherId});
+		}
+
+		private async Task<ActionResult> EditAsync(int? id, int? teacherId)
 		{
 			var schoolId = this.User.Identity.GetSchoolId();
 
@@ -48,7 +70,8 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 			var classes = (await cMgr.GetAllAsync(schoolId, true)).ToList<IClass>();
 
 			var model = new SubjectEditModel(subjects, teachers, classes) {
-				SubjectID = id
+				SubjectID = id ?? -1,
+				TeacherID = teacherId ?? -1
 			};
 
 			return View("Edit", model);
@@ -57,9 +80,8 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 		public async Task<JsonResult> GetTeacherSubjectClasses(int subjectId, int teacherId)
 		{
 			var sMgr = this.GetManager<TeacherSubjectManager>();
-			var res = await sMgr.GetTeacherClassesAsync(teacherId, subjectId);
+			var res = await sMgr.GetTeacherClassIdsAsync(teacherId, subjectId);
 			return Json(res, JsonRequestBehavior.AllowGet);
 		}
-
 	}
 }

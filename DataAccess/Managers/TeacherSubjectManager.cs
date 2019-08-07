@@ -45,6 +45,17 @@ namespace DataAccess.Managers
 
 #region Own Methods
 
+		public Task<TeacherSubject> GetAsync(int teacherId,
+											 int subjectId,
+											 int classId)
+		{
+			return _ctx.TeacherSubjects
+					   .Where(x => x.TeacherID == teacherId &&
+								   x.SubjectID == subjectId &&
+								   x.ClassID == classId)
+					   .FirstOrDefaultAsync();
+		}
+
 		public Task<List<Class>> GetTeacherClassesAsync(int teacherId,
 														int subjectId)
 		{
@@ -52,6 +63,16 @@ namespace DataAccess.Managers
 					   .Where(x => x.TeacherID == teacherId &&
 								   x.SubjectID == subjectId)
 					   .Select(x => x.Class)
+					   .ToListAsync();
+		}
+
+		public Task<List<int>> GetTeacherClassIdsAsync(int teacherId,
+													   int subjectId)
+		{
+			return _ctx.TeacherSubjects
+					   .Where(x => x.TeacherID == teacherId &&
+								   x.SubjectID == subjectId)
+					   .Select(x => x.ClassID)
 					   .ToListAsync();
 		}
 
@@ -91,6 +112,26 @@ namespace DataAccess.Managers
 				return new MActionResult<TeacherSubject>(StatusCode.InternalError);
 			}
 			return new MActionResult<TeacherSubject>(StatusCode.OK, ent);
+		}
+
+		public async Task<bool> DeleteAsync(int teacherId,
+											 int subjectId,
+											 int classId)
+		{
+			var ent = await this.GetAsync(teacherId, subjectId, classId);
+			if (ent == null) {
+				return false;
+			}
+			return await base.DeleteAsync(ent);
+		}
+
+		public Task<int> DeleteAsync(int teacherId,
+									  int subjectId)
+		{
+			return _ctx.TeacherSubjects
+					   .Where(x => x.TeacherID == teacherId &&
+								   x.SubjectID == subjectId)
+					   .DeleteFromQueryAsync();
 		}
 
 #endregion
