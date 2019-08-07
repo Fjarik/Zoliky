@@ -1,0 +1,144 @@
+﻿@using ZolikyWeb.Tools
+@model ZolikyWeb.Areas.Admin.Models.Subject.SubjectEditModel
+@{
+	ViewBag.Title = "Předmět";
+	Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<div class="row">
+	<div class="col">
+		<div class="card card-outline-info">
+			<div class="card-header">
+				<h4 class="mb-0 text-white">
+					Úprava předmětu
+				</h4>
+			</div>
+			<div class="card-body">
+				@using (Html.BeginForm("Edit", "Subject", new {Area = "Admin"}, FormMethod.Post, new {@class = "form-horizontal"})) {
+					@Html.AntiForgeryToken()
+					@Html.SecureHiddenFor(x => x.SubjectID)
+					<div class="form-body">
+						<h3 class="card-title">
+							Obecné
+						</h3>
+						<hr class="mt-0 m-b-40" />
+						<!-- row -->
+						<div class="row">
+							<!-- item -->
+							<div class="col-md-6">
+								<div class="form-group row">
+									<label class="control-label text-right col-md-3">Předmět</label>
+									<div class="col-md-9">
+										@Html.DropDownListFor(x => x.SubjectID, Model.SubjectSelect, new { @class = "form-control" })
+										<p class="form-control-static text-right text-md-left">
+										</p>
+									</div>
+								</div>
+							</div>
+							<!-- /item -->
+							<!-- item -->
+							<div class="col-md-6">
+								<div class="form-group row">
+									<label class="control-label text-right col-md-3"></label>
+									<div class="col-md-8">
+										<p class="form-control-static">
+										</p>
+									</div>
+								</div>
+							</div>
+							<!-- /item -->
+						</div>
+						<!-- /row -->
+
+						@*<h3 class="card-title">
+							Nastavení
+						</h3>
+						<hr class="mt-0 m-b-40" />*@
+						<!-- row -->
+						<div class="row">
+							<!-- item -->
+							<div class="col-md-6">
+								<div class="form-group row">
+									<label class="control-label text-right col-md-3">Vyučující</label>
+									<div class="col-md-9">
+										@Html.DropDownListFor(x => x.TeacherID, Model.TeacherSelect, new {@class = "form-control"})
+										<p class="form-control-static">
+										</p>
+									</div>
+								</div>
+							</div>
+							<!-- /item -->
+							<!-- item -->
+							<div class="col-md-6">
+								<div class="form-group row">
+									<label class="control-label text-right col-md-3"></label>
+									<div class="col-md-8">
+										<p class="form-control-static">
+										</p>
+									</div>
+								</div>
+							</div>
+							<!-- /item -->
+						</div>
+						<!-- /row -->
+
+						@*<h3 class="card-title">
+							Pokročilé
+						</h3>
+						<hr class="mt-0 m-b-40" />*@
+						<!-- row -->
+						<div class="row">
+							<!-- item -->
+							<div class="col-md-6">
+								<div class="form-group row">
+									<label class="control-label text-right col-md-3">Předměty</label>
+									<div class="col-md-9">
+										@Html.ListBoxFor(x => x.ClassIDs, Model.ClassSelect, new {multiple = "multiple", @class = "form-control", size = 8, id = "select-classes"})
+									</div>
+								</div>
+							</div>
+							<!-- /item -->
+							<!-- item -->
+							<div class="col-md-6">
+								<div class="form-group row">
+									<label class="control-label text-right col-md-3"></label>
+									<div class="col-md-9">
+									</div>
+								</div>
+							</div>
+							<!-- /item -->
+						</div>
+						<!-- /row -->
+					</div>
+					<hr />
+					<div class="form-actions">
+						<button type="submit" class="btn btn-primary" tabindex="5">
+							Uložit
+						</button>
+						<a href="@Url.Action("Dashboard")" class="btn btn-success" tabindex="7">
+							Zpět
+						</a>
+					</div>
+				}
+			</div>
+		</div>
+	</div>
+</div>
+
+@section header {
+	<link type="text/css" href="@Url.Content("~/assets/plugins/multiselect/css/multi-select.min.css")" rel="stylesheet" />
+}
+
+@section footer {
+	<script type="text/javascript" src="@Url.Content("~/assets/plugins/multiselect/js/jquery.multi-select.min.js")"></script>
+	<script type="text/javascript">
+		$(() => {
+			$('#select-classes').multiSelect({
+				selectableHeader: "<div class='custom-header'>Na výběr</div>",
+				selectionHeader: "<div class='custom-header'>Vybrané</div>",
+				keepOrder: true
+			});
+		});
+	</script>
+}

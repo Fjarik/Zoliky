@@ -228,7 +228,6 @@
           <Property Name="TeacherID" Type="int" Nullable="false" />
           <Property Name="SubjectID" Type="int" Nullable="false" />
           <Property Name="ClassID" Type="int" Nullable="false" />
-          <Property Name="Enabled" Type="bit" Nullable="false" />
           <Property Name="Created" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="TicketCategories">
@@ -2268,7 +2267,6 @@
           <Property Name="TeacherID" Type="Int32" Nullable="false" />
           <Property Name="SubjectID" Type="Int32" Nullable="false" />
           <Property Name="ClassID" Type="Int32" Nullable="false" />
-          <Property Name="Enabled" Type="Boolean" Nullable="false" />
           <Property Name="Created" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="Class" Relationship="ZoliksModel.FK_TeacherSubjects_Classes" FromRole="TeacherSubject" ToRole="Class" />
           <NavigationProperty Name="Subject" Relationship="ZoliksModel.FK_TeacherSubjects_Subjects" FromRole="TeacherSubject" ToRole="Subject" />
@@ -2929,7 +2927,6 @@
             <EntityTypeMapping TypeName="ZoliksModel.TeacherSubject">
               <MappingFragment StoreEntitySet="TeacherSubjects">
                 <ScalarProperty Name="Created" ColumnName="Created" />
-                <ScalarProperty Name="Enabled" ColumnName="Enabled" />
                 <ScalarProperty Name="ClassID" ColumnName="ClassID" />
                 <ScalarProperty Name="SubjectID" ColumnName="SubjectID" />
                 <ScalarProperty Name="TeacherID" ColumnName="TeacherID" />

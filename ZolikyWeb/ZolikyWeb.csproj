@@ -1244,6 +1244,7 @@
     <Content Include="Areas\Global\Views\Admin\Dashboard.cshtml" />
     <Content Include="Areas\Global\Views\User\Dashboard.cshtml" />
     <Content Include="Areas\Admin\Views\Subject\Dashboard.cshtml" />
+    <Content Include="Areas\Admin\Views\Subject\Edit.cshtml" />
     <None Include="bundleconfig.json" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\fa-all.js" />
@@ -1431,6 +1432,7 @@
     <Compile Include="Areas\Admin\Controllers\SubjectController.cs" />
     <Compile Include="Areas\Admin\Models\Admin\DashboardModel.cs" />
     <Compile Include="Areas\Admin\Models\Subject\SubjectDashboardModel.cs" />
+    <Compile Include="Areas\Admin\Models\Subject\SubjectEditModel.cs" />
     <Compile Include="Areas\Global\Controllers\SettingsController.cs" />
     <Compile Include="Areas\Global\Models\Admin\DashboardModel.cs" />
     <Compile Include="Areas\Global\Models\Admin\Dashboard\SendMobileNotModel.cs" />

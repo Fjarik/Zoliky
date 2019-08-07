@@ -17,7 +17,6 @@ namespace DataAccess.Models
         public int TeacherID { get; set; }
         public int SubjectID { get; set; }
         public int ClassID { get; set; }
-        public bool Enabled { get; set; }
         public System.DateTime Created { get; set; }
     
         public virtual Class Class { get; set; }

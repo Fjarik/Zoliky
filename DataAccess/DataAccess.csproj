@@ -143,6 +143,7 @@
     <Compile Include="Managers\SubjectManager.cs" />
     <Compile Include="Managers\Support\TicketManager.cs" />
     <Compile Include="Managers\Support\UniversalTicketManager.cs" />
+    <Compile Include="Managers\TeacherSubjectManager.cs" />
     <Compile Include="Managers\TokenManager.cs" />
     <Compile Include="Managers\TransactionManager.cs" />
     <Compile Include="Managers\UnavailabilityManager.cs" />

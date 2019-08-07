@@ -353,7 +353,7 @@ namespace DataAccess.Models
 	{
 		public int GetTeacherCount(int? schoolId = null)
 		{
-			var query = this.Teachers.Where(x => x.Enabled);
+			var query = this.Teachers.AsEnumerable();
 
 			if (schoolId != null) {
 				query = query.Where(x => x.SchoolID == schoolId);

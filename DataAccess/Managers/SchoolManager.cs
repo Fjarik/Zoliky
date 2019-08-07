@@ -72,6 +72,23 @@ namespace DataAccess.Managers
 					   .FirstOrDefaultAsync();
 		}
 
+		public async Task<List<User>> GetSchoolTeachersAsync(int schoolId, bool onlyActive = true)
+		{
+			if (schoolId < 1) {
+				return new List<User>();
+			}
+
+			var query = _ctx.Users.Where(x => x.SchoolID == schoolId &&
+											  x.ID != 22 &&
+											  x.Roles.Any(y => y.Name == UserRoles.Teacher));
+
+			if (onlyActive) {
+				query = query.Where(x => x.Enabled);
+			}
+
+			return await query.ToListAsync();
+		}
+
 #region Create
 
 #region School subjects
