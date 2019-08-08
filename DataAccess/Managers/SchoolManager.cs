@@ -94,6 +94,7 @@ namespace DataAccess.Managers
 		{
 			return _ctx.Zoliky
 					   .Where(x => x.OriginalOwner.SchoolID == schoolId &&
+								   x.Owner.Roles.All(y => y.Name != UserRoles.HiddenStudent) &&
 								   x.Type != ZolikType.Debug &&
 								   x.Type != ZolikType.DebugJoker &&
 								   x.Enabled)

@@ -523,6 +523,7 @@ namespace DataAccess.Managers
 		{
 			var z = await _ctx.Zoliky
 							  .Where(x => x.Enabled &&
+										  x.Owner.Roles.All(y => y.Name != UserRoles.HiddenStudent) &&
 										  x.Type != ZolikType.Debug &&
 										  x.Type != ZolikType.DebugJoker)
 							  .Select(x => x.OwnerID)

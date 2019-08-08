@@ -571,6 +571,9 @@ namespace DataAccess.Models
 			public User OriginalOwner { get; set; }
 
 			[JsonIgnore]
+			public User Owner { get; set; }
+
+			[JsonIgnore]
 			public Subject Subject { get; set; }
 
 			[JsonIgnore]

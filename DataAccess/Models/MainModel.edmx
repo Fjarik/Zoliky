@@ -1272,6 +1272,7 @@
           <NavigationProperty Name="Transactions" Relationship="ZoliksModel.FK_Transactions_Zoliky" FromRole="Zoliky" ToRole="Transactions" />
           <Property Name="Lock" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="AllowSplit" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Owner" Relationship="ZoliksModel.FK_Zoliky_Users" FromRole="Zolik" ToRole="User" />
         </EntityType>
         <Association Name="FK_Transactions_Zoliky">
           <End Role="Zoliky" Type="ZoliksModel.Zolik" Multiplicity="1" />
