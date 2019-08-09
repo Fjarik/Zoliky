@@ -92,6 +92,28 @@ namespace DataAccess.Managers
 			return z;
 		}
 
+		public Task<List<Zolik>> GetSchoolZoliksAsync(int schoolId,
+													  bool onlyEnabled = true,
+													  bool includeTester = false)
+		{
+			var date = Ext.SchoolYearStart;
+			var query = _ctx.Zoliky.Where(x => x.OriginalOwner.SchoolID == schoolId &&
+											   x.OriginalOwner.ClassID != null &&
+											   x.Teacher.SchoolID == schoolId &&
+											   !x.Teacher.Roles.Any(y => y.Name == UserRoles.Robot ||
+																		 y.Name == UserRoles.Administrator) &&
+											   x.Created > date);
+			if (onlyEnabled) {
+				query = query.Where(x => x.Enabled);
+			}
+			if (!includeTester) {
+				query = query.Where(x => x.Type != ZolikType.Debug &&
+										 x.Type != ZolikType.DebugJoker);
+			}
+			query = query.OrderByDescending(x => x.OwnerSince);
+			return query.ToListAsync();
+		}
+
 #region Create
 
 		public Task<MActionResult<Zolik>> CreateAsync(int teacherId,

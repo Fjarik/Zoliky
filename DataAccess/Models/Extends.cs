@@ -574,6 +574,9 @@ namespace DataAccess.Models
 			public User Owner { get; set; }
 
 			[JsonIgnore]
+			public User Teacher { get; set; }
+
+			[JsonIgnore]
 			public Subject Subject { get; set; }
 
 			[JsonIgnore]

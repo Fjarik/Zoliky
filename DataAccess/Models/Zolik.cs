@@ -38,5 +38,6 @@ namespace DataAccess.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Transaction> Transactions { get; set; }
         public virtual User Owner { get; set; }
+        public virtual User Teacher { get; set; }
     }
 }

@@ -32,6 +32,18 @@ namespace SharedLibrary.Shared
 		// Firstname and Lastname Regex
 		public const string NameRegEx = "^[a-zA-ZěĚšŠčČřŘžŽýÝáÁíÍéÉúÚůŮóÓňŇťŤďĎ ]+$";
 
+		public static DateTime SchoolYearStart
+		{
+			get
+			{
+				var today = DateTime.Today;
+				if (today < new DateTime(today.Year, 8, 1)) {
+					return new DateTime(today.Year - 1, 8, 1);
+				}
+				return new DateTime(today.Year, 8, 1);
+			}
+		}
+
 #endregion
 
 #region Code settings
