@@ -37,10 +37,12 @@ namespace SharedLibrary.Shared
 			get
 			{
 				var today = DateTime.Today;
-				if (today < new DateTime(today.Year, 8, 1)) {
-					return new DateTime(today.Year - 1, 8, 1);
+				var year = today.Year;
+				var month = 9;
+				if (today < new DateTime(year, month, 1)) {
+					return new DateTime(year - 1, month, 1);
 				}
-				return new DateTime(today.Year, 8, 1);
+				return new DateTime(year, month, 1);
 			}
 		}
 

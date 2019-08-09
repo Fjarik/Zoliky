@@ -205,11 +205,5 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 		}
 
 #endregion
-
-		private Task<List<School>> GetSchoolAsync()
-		{
-			var sMgr = this.GetManager<SchoolManager>();
-			return sMgr.GetAllAsync();
-		}
 	}
 }

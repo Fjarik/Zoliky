@@ -110,7 +110,8 @@ namespace DataAccess.Managers
 				query = query.Where(x => x.Type != ZolikType.Debug &&
 										 x.Type != ZolikType.DebugJoker);
 			}
-			query = query.OrderByDescending(x => x.OwnerSince);
+			query = query.OrderBy(x=> x.Enabled)
+						 .ThenBy(x => x.ID);
 			return query.ToListAsync();
 		}
 

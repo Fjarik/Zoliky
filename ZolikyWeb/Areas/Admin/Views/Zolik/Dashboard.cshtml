@@ -34,6 +34,9 @@
 									ID
 								</th>
 								<th>
+									Předmět
+								</th>
+								<th>
 									Udělen za
 								</th>
 								<th data-hide="phone">
@@ -61,16 +64,25 @@
 										@zolik.ID
 									</td>
 									<td>
+										@zolik.Subject.Name
+									</td>
+									<td>
 										@zolik.Title
 									</td>
 									<td>
-										@zolik.Owner.FullName
+										<span class="c-help" data-toggle="tooltip" data-original-title="ID: @zolik.OwnerID">
+											@zolik.Owner.FullName
+										</span>
 									</td>
 									<td>
-										@zolik.OriginalOwner.FullName
+										<span class="c-help" data-toggle="tooltip" data-original-title="ID: @zolik.OriginalOwnerID">
+											@zolik.OriginalOwner.FullName
+										</span>
 									</td>
 									<td>
-										@zolik.Teacher.FullName
+										<span class="c-help" data-toggle="tooltip" data-original-title="ID: @zolik.TeacherID">
+											@zolik.Teacher.FullName
+										</span>
 									</td>
 									<td data-value="@zolik.Created.GetJsTimestamp()">
 										@zolik.Created.ToString("dd.MM.yyyy")
@@ -88,7 +100,7 @@
 						</tbody>
 						<tfoot>
 							<tr>
-								<td colspan="5">
+								<td colspan="8">
 									<div class="text-right">
 										<ul class="pagination"> </ul>
 									</div>
