@@ -41,6 +41,35 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 			return EditOrDetail(id, "Edit", true);
 		}
 
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		[ValidateSecureHiddenInputs(nameof(ZolikModel.ID))]
+		public async Task<ActionResult> Edit(ZolikModel model)
+		{
+			if (model == null) {
+				return RedirectToAction("Dashboard");
+			}
+
+			if (!model.IsValid) {
+				this.AddErrorToastMessage("Neplatné hodnoty");
+				return RedirectToAction("Edit");
+			}
+
+			var res = await Mgr.GetByIdAsync(model.ID);
+			if (!res.IsSuccess) {
+				this.AddErrorToastMessage($"Nezdařilo se načíst originální záznam. Chyba: {res.GetStatusMessage()}");
+				return RedirectToAction("Dashboard");
+			}
+			var original = res.Content;
+
+			// Edit
+			// Edit end
+
+			await Mgr.SaveAsync(original);
+			this.AddSuccessToastMessage("Úspěšně uloženo");
+			return RedirectToAction("Edit", new {id = model.ID});
+		}
+
 #endregion
 
 #region Detail
@@ -78,10 +107,9 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 
 			var sMgr = this.GetManager<SchoolManager>();
 
-			var students = new List<IUser>();
 			var subjects = await sMgr.GetSubjectsAsync(schoolId);
 
-			var model = new ZolikModel(res.Content, students, subjects, allowEdit, previousId, nextId) {
+			var model = new ZolikModel(res.Content, subjects, allowEdit, previousId, nextId) {
 				ActionName = actionName
 			};
 
