@@ -30,6 +30,54 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 
 #region Create
 
+		public async Task<ActionResult> Create()
+		{
+			var logged = await this.GetLoggedUserAsync();
+			var schoolId = this.User.Identity.GetSchoolId();
+			//var schools = await this.GetSchoolAsync();
+
+			// Pouze škola registrovaného správce školy - Nemůže přidat třídu do cizí školy
+			var sMgr = this.GetManager<SchoolManager>();
+			var subjects = await sMgr.GetSubjectsAsync(schoolId);
+			var students = await sMgr.GetStudentsAsync(schoolId, logged.ID);
+
+			var model = ZolikModel.CreateModel(logged, subjects, students.ToList<IUser>());
+			return View("Edit", model);
+		}
+
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		[ValidateSecureHiddenInputs(nameof(ZolikModel.ID))]
+		public async Task<ActionResult> Create(ZolikModel model)
+		{
+			if (model == null) {
+				return RedirectToAction("Dashboard");
+			}
+
+			if (!model.IsValid) {
+				this.AddErrorToastMessage("Neplatné hodnoty");
+				return RedirectToAction("Edit");
+			}
+			var logged = await this.GetLoggedUserAsync();
+
+			var res = await Mgr.CreateAndTransferAsync(logged.ID,
+													   model.OwnerID,
+													   model.Type,
+													   model.SubjectID,
+													   model.Title,
+													   logged,
+													   model.AllowSplit);
+
+			if (!res.IsSuccess) {
+				this.AddErrorToastMessage($"Nezdařilo se vytvořit záznam. Chyba: {res.GetStatusMessage()}");
+				return RedirectToAction("Dashboard");
+			}
+			var original = res.Content;
+
+			this.AddSuccessToastMessage("Žolík byl úspěšně vytvořen");
+			return RedirectToAction("Detail", new {id = original.ZolikID});
+		}
+
 #endregion
 
 #region Edit & Detail
@@ -72,7 +120,7 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 
 			await Mgr.SaveAsync(original);
 			this.AddSuccessToastMessage("Úspěšně uloženo");
-			return RedirectToAction("Edit", new {id = model.ID});
+			return RedirectToAction("Detail", new {id = model.ID});
 		}
 
 #endregion

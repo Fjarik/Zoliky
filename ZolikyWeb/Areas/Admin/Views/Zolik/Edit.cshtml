@@ -102,59 +102,69 @@
 									<label class="control-label text-right col-md-3">Aktuální vlastník</label>
 									<div class="col-md-9">
 										<p class="form-control-static">
-											<span class="c-help" data-toggle="tooltip" data-original-title="@(Model.Owner.Class?.Name ?? "-")">
-												@(Model.Owner.FullName)
-											</span>
+											@if (Model.IsCreate) {
+												@Html.DropDownListFor(x => x.OwnerID, Model.StudentSelect, new {@class = "form-control custom-select", tabindex = 2})
+												@Html.ValidationMessageFor(x => x.OwnerID)
+											} else {
+												@Html.HiddenFor(x => x.OwnerID)
+												<span class="c-help" data-toggle="tooltip" data-original-title="@(Model.Owner.Class?.Name ?? "-")">
+													@(Model.Owner.FullName)
+												</span>
+											}
 										</p>
 									</div>
 								</div>
 							</div>
 							<!-- /item -->
-							<!-- item -->
-							<div class="col-md-6">
-								<div class="form-group row">
-									<label class="control-label text-right col-md-3">Původní vlastník</label>
-									<div class="col-md-8">
-										<p class="form-control-static">
-											<span class="c-help" data-toggle="tooltip" data-original-title="@(Model.OriginalOwner.Class?.Name ?? "-")">
-												@(Model.OriginalOwner.FullName)
-											</span>
-										</p>
+							@if (!Model.IsCreate) {
+								<!-- item -->
+								<div class="col-md-6">
+									<div class="form-group row">
+										<label class="control-label text-right col-md-3">Původní vlastník</label>
+										<div class="col-md-8">
+											<p class="form-control-static">
+												<span class="c-help" data-toggle="tooltip" data-original-title="@(Model.OriginalOwner.Class?.Name ?? "-")">
+													@(Model.OriginalOwner.FullName)
+												</span>
+											</p>
+										</div>
 									</div>
 								</div>
-							</div>
-							<!-- /item -->
-						</div>
-						<!-- /row -->
-						<!-- row -->
-						<div class="row">
-							<!-- item -->
-							<div class="col-md-6">
-								<div class="form-group row">
-									<label class="control-label text-right col-md-3">Datum přidělení</label>
-									<div class="col-md-9">
-										<p class="form-control-static">
-											@(Model.Created.ToString("dd.MM.yyyy"))
-										</p>
-									</div>
-								</div>
-							</div>
-							<!-- /item -->
-							<!-- item -->
-							<div class="col-md-6">
-								<div class="form-group row">
-									<label class="control-label text-right col-md-3">Poslední přenos</label>
-									<div class="col-md-8">
-										<p class="form-control-static">
-											@(Model.OwnerSince.ToString("dd.MM.yyyy"))
-										</p>
-									</div>
-								</div>
-							</div>
-							<!-- /item -->
+								<!-- /item -->
+							}
 						</div>
 						<!-- /row -->
 
+						@if (!Model.IsCreate) {
+							<!-- row -->
+							<div class="row">
+								<!-- item -->
+								<div class="col-md-6">
+									<div class="form-group row">
+										<label class="control-label text-right col-md-3">Datum přidělení</label>
+										<div class="col-md-9">
+											<p class="form-control-static">
+												@(Model.Created.ToString("dd.MM.yyyy"))
+											</p>
+										</div>
+									</div>
+								</div>
+								<!-- /item -->
+								<!-- item -->
+								<div class="col-md-6">
+									<div class="form-group row">
+										<label class="control-label text-right col-md-3">Poslední přenos</label>
+										<div class="col-md-8">
+											<p class="form-control-static">
+												@(Model.OwnerSince.ToString("dd.MM.yyyy"))
+											</p>
+										</div>
+									</div>
+								</div>
+								<!-- /item -->
+							</div>
+							<!-- /row -->
+						}
 
 						<h3 class="card-title">
 							Nastavení
@@ -169,6 +179,7 @@
 									<div class="col-md-9">
 										@if (Model.AllowEdit) {
 											@Html.DropDownListFor(x => x.Type, Model.TypeSelect, new { @class = "form-control custom-select", tabindex = 4 })
+											@Html.ValidationMessageFor(x => x.Type)
 										} else {
 											<p class="form-control-static">
 												@(Model.Type.GetDescription())
@@ -184,8 +195,10 @@
 									<label class="control-label text-right col-md-3">Předmět</label>
 									<div class="col-md-8">
 										@if (Model.AllowEdit) {
-											@Html.DropDownListFor(x => x.SubjectID, Model.SubjectSelect, new { @class = "form-control custom-select", tabindex = 4 })
+											@Html.DropDownListFor(x => x.SubjectID, Model.SubjectSelect, new {@class = "form-control custom-select", tabindex = 5})
+											@Html.ValidationMessageFor(x => x.SubjectID)
 										} else {
+											@Html.HiddenFor(x => x.SubjectID)
 											<p class="form-control-static">
 												@(Model.Subject.Name)
 											</p>
@@ -200,23 +213,25 @@
 						<div class="row">
 							<!-- item -->
 							<div class="col-md-6">
-								<div class="form-group row">
-									<label class="control-label text-right col-md-3">Aktivní</label>
-									<div class="col-md-9">
-										@if (Model.AllowEdit) {
-											@Html.CheckBoxSimple(x => x.Enabled, new { @class = "filled-in chk-col-light-blue", tabindex = 8 })
-											@Html.NoSelectLaberFor(x => x.Enabled)
-											@Html.ValidationMessageFor(x => x.Enabled)
-										} else {
-											<p class="form-control-static">
-												@(Model.Enabled ? "Ano" : "Ne")
-											</p>
-										}
+								@if (!Model.IsCreate) {
+									<div class="form-group row">
+										<label class="control-label text-right col-md-3">Aktivní</label>
+										<div class="col-md-9">
+											@if (Model.AllowEdit) {
+												@Html.CheckBoxSimple(x => x.Enabled, new {@class = "filled-in chk-col-light-blue", tabindex = 8})
+												@Html.NoSelectLaberFor(x => x.Enabled)
+												@Html.ValidationMessageFor(x => x.Enabled)
+											} else {
+												<p class="form-control-static">
+													@(Model.Enabled ? "Ano" : "Ne")
+												</p>
+											}
+										</div>
 									</div>
-								</div>
+								}
 							</div>
 							<!-- /item -->
-							@if (Model.Type.IsSplittable()) {
+							@if (Model.Type.IsSplittable() || Model.IsCreate) {
 								<!-- item -->
 								<div class="col-md-6">
 									<div class="form-group row">
@@ -238,34 +253,36 @@
 							}
 						</div>
 						<!-- /row -->
-						<h3 class="card-title">
-							Pokročilé
-						</h3>
-						<hr class="mt-0 m-b-40" />
-						<!-- row -->
-						<div class="row">
-							<!-- item -->
-							<div class="col-md-6">
-								<div class="form-group row">
-									<label class="control-label text-right col-md-3">Transakce</label>
-									<div class="col-md-9">
-										@Html.Partial("_TransactionPartial", Model.Transactions.OrderByDescending(x=> x.Date).Take(10))
+						@if (!Model.IsCreate) {
+							<h3 class="card-title">
+								Pokročilé
+							</h3>
+							<hr class="mt-0 m-b-40" />
+							<!-- row -->
+							<div class="row">
+								<!-- item -->
+								<div class="col-md-6">
+									<div class="form-group row">
+										<label class="control-label text-right col-md-3">Transakce</label>
+										<div class="col-md-9">
+											@Html.Partial("_TransactionPartial", Model.Transactions.OrderByDescending(x => x.Date).Take(10))
+										</div>
 									</div>
 								</div>
-							</div>
-							<!-- /item -->
-							<!-- item -->
-							<div class="col-md-6">
-								<div class="form-group row">
-									<label class="control-label text-right col-md-3"></label>
-									<div class="col-md-8">
+								<!-- /item -->
+								<!-- item -->
+								<div class="col-md-6">
+									<div class="form-group row">
+										<label class="control-label text-right col-md-3"></label>
+										<div class="col-md-8">
+										</div>
 									</div>
 								</div>
+								<!-- /item -->
 							</div>
-							<!-- /item -->
+							<!-- /row -->
+						}
 						</div>
-						<!-- /row -->
-					</div>
 					<hr />
 					<div class="form-actions">
 						<div class="row">

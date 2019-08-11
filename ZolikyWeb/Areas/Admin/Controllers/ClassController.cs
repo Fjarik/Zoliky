@@ -80,7 +80,7 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 			}
 			var original = res.Content;
 
-			this.AddSuccessToastMessage("Škola byla úspěšně vytvořena");
+			this.AddSuccessToastMessage("Třída byla úspěšně vytvořena");
 			return RedirectToAction("Detail", new {id = original.ID});
 		}
 
@@ -126,7 +126,7 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 
 			await Mgr.SaveAsync(original);
 			this.AddSuccessToastMessage("Úspěšně uloženo");
-			return RedirectToAction("Edit", new {id = model.ID});
+			return RedirectToAction("Detail", new {id = model.ID});
 		}
 
 #endregion

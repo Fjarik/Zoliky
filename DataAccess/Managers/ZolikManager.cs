@@ -110,7 +110,7 @@ namespace DataAccess.Managers
 				query = query.Where(x => x.Type != ZolikType.Debug &&
 										 x.Type != ZolikType.DebugJoker);
 			}
-			query = query.OrderBy(x => x.Enabled)
+			query = query.OrderByDescending(x => x.Enabled)
 						 .ThenBy(x => x.ID);
 			return query.ToListAsync();
 		}
@@ -322,6 +322,9 @@ namespace DataAccess.Managers
 
 					var fMgr = Context.Get<FirebaseManager>();
 					var notification = await fMgr.NewZolikAsync(z, fromId, toId);
+
+					var nMgr = Context.Get<NotificationManager>();
+					// TODO: Create notification
 				}
 
 				return new MActionResult<Transaction>(StatusCode.OK, tran);

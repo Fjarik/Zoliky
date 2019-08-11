@@ -10,6 +10,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using SharedLibrary;
 using SharedLibrary.Enums;
+using SharedLibrary.Interfaces;
 using SharedLibrary.Shared;
 
 namespace DataAccess.Managers
@@ -126,6 +127,19 @@ namespace DataAccess.Managers
 			}
 
 			return await query.ToListAsync();
+		}
+
+		public Task<List<User>> GetStudentsAsync(int schoolId, params int[] excludeIds)
+		{
+			return _ctx.Users
+					   .Where(x => x.SchoolID == schoolId &&
+								   x.Enabled &&
+								   x.ClassID != null &&
+								   x.Roles.Any(y => y.Name == UserRoles.Student) &&
+								   x.Roles.All(y => y.Name != UserRoles.HiddenStudent &&
+													y.Name != UserRoles.FakeStudent) &&
+								   excludeIds.All(y => x.ID != y))
+					   .ToListAsync();
 		}
 
 #region Create

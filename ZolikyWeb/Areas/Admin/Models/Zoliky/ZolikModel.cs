@@ -26,12 +26,15 @@ namespace ZolikyWeb.Areas.Admin.Models.Zoliky
 
 		public override bool IsValid => (this.ID == -1 || this.ID > 0) &&
 										!string.IsNullOrWhiteSpace(this.Title) &&
+										this.OwnerID > 0 &&
 										this.SubjectID > 0;
 
 #endregion
 
 #region Entity
 
+		[Required(ErrorMessage = "Musíte vybrat vlastníka")]
+		[Range(1, int.MaxValue)]
 		public int OwnerID { get; set; }
 
 		[Required(ErrorMessage = "Musíte vybrat předmět")]
@@ -88,11 +91,57 @@ namespace ZolikyWeb.Areas.Admin.Models.Zoliky
 																	Value = x.ID.ToString(),
 																	Text = x.Name,
 																	Disabled = false
+																}).Prepend(new SelectListItem {
+																	Value = "-1",
+																	Text = "Vyberte předmět",
+																	Disabled = true,
+																	Selected = this.SubjectID == -1
+																});
+
+		public List<IUser> Students { get; set; }
+
+		public IEnumerable<SelectListItem> StudentSelect => this.Students
+																.OrderBy(x => x.ClassName)
+																.ThenBy(x => x.Lastname)
+																.ThenBy(x => x.Name)
+																.Select(x => new SelectListItem {
+																	Value = x.ID.ToString(),
+																	Text = $"{x.FullName} ({x.ClassName})",
+																	Disabled = false
+																}).Prepend(new SelectListItem {
+																	Value = "-1",
+																	Text = "Vyberte studenta",
+																	Disabled = true,
+																	Selected = this.OwnerID == -1
 																});
 
 #endregion
 
-		public ZolikModel() : base() { }
+		public ZolikModel() : base()
+		{
+			this.AllowRemove = false;
+		}
+
+		public static ZolikModel CreateModel(User teacher,
+											 List<DataAccess.Models.Subject> subjects,
+											 List<IUser> students)
+		{
+			return new ZolikModel {
+				ID = -1,
+				OwnerID = -1,
+				SubjectID = -1,
+				ActionName = "Create",
+				AllowEdit = true,
+				IsCreate = true,
+				Teacher = teacher,
+				Subjects = subjects,
+				Students = students,
+				Type = ZolikType.Normal,
+				Enabled = true,
+				AllowSplit = true,
+				AllowRemove = false
+			};
+		}
 
 		public ZolikModel(Zolik ent,
 						  List<DataAccess.Models.Subject> subjects,
