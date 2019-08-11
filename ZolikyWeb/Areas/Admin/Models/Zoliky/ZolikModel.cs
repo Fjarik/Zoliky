@@ -24,17 +24,29 @@ namespace ZolikyWeb.Areas.Admin.Models.Zoliky
 		public override int NextID { get; set; }
 		public override string ActionName { get; set; }
 
-		public override bool IsValid { get; }
+		public override bool IsValid => (this.ID == -1 || this.ID > 0) &&
+										!string.IsNullOrWhiteSpace(this.Title) &&
+										this.SubjectID > 0;
 
 #endregion
 
 #region Entity
 
 		public int OwnerID { get; set; }
+
+		[Required(ErrorMessage = "Musíte vybrat předmět")]
+		[Range(1, int.MaxValue)]
 		public int SubjectID { get; set; }
+
 		public int TeacherID { get; set; }
 		public int OriginalOwnerID { get; set; }
+
+		[Required(ErrorMessage = "Musíte vybrat typ")]
 		public ZolikType Type { get; set; }
+
+		[Required(ErrorMessage = "Musíte zadat, za co byl žolík udělen")]
+		[PlaceHolder(Text = "Zadejte, za co byl žolík udělen")]
+		[StringLength(200)]
 		public string Title { get; set; }
 
 		[Display(Name = "Ano/Ne")]
@@ -82,6 +94,7 @@ namespace ZolikyWeb.Areas.Admin.Models.Zoliky
 
 		public ZolikModel(Zolik ent,
 						  List<DataAccess.Models.Subject> subjects,
+						  bool allowRemove,
 						  bool allowEdit,
 						  int previousId,
 						  int nextId) : base(ent, allowEdit, previousId, nextId)
@@ -102,6 +115,8 @@ namespace ZolikyWeb.Areas.Admin.Models.Zoliky
 			this.Transactions = ent.Transactions;
 			this.Owner = ent.Owner;
 			this.Teacher = ent.Teacher;
+
+			this.AllowRemove = allowRemove;
 
 			this.Subjects = subjects;
 		}

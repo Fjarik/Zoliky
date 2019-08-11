@@ -63,6 +63,11 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 			var original = res.Content;
 
 			// Edit
+			original.Title = model.Title;
+			original.Type = model.Type;
+			original.SubjectID = model.SubjectID;
+			original.Enabled = model.Enabled;
+			original.AllowSplit = model.AllowSplit;
 			// Edit end
 
 			await Mgr.SaveAsync(original);
@@ -109,7 +114,14 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 
 			var subjects = await sMgr.GetSubjectsAsync(schoolId);
 
-			var model = new ZolikModel(res.Content, subjects, allowEdit, previousId, nextId) {
+
+			var sRes = await sMgr.GetByIdAsync(schoolId);
+			var allowRemove = false;
+			if (sRes.IsSuccess) {
+				allowRemove = sRes.Content.AllowTeacherRemove;
+			}
+
+			var model = new ZolikModel(res.Content, subjects, allowRemove, allowEdit, previousId, nextId) {
 				ActionName = actionName
 			};
 

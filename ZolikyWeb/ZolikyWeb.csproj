@@ -1248,6 +1248,7 @@
     <Content Include="Areas\Admin\Views\Zolik\Dashboard.cshtml" />
     <Content Include="Areas\Admin\Views\Zolik\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\Zolik\_RemovePartial.cshtml" />
+    <Content Include="Areas\Admin\Views\Zolik\_TransactionPartial.cshtml" />
     <None Include="bundleconfig.json" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\fa-all.js" />
