@@ -1,1 +1,61 @@
-﻿@model ZolikyWeb.Areas.Admin.Models.Zoliky.ZolikModel
+﻿@using ZolikyWeb.Tools
+@model ZolikyWeb.Areas.Admin.Models.Zoliky.ZolikRemoveModel
+
+
+<div id="modalDelete" class="modal fade text-left" tabindex="-1" role="dialog" aria-labelledby="modalDeleteLabel" style="display: none;" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title" id="modalDeleteLabel">
+					Odstranění žolíka
+				</h4>
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			</div>
+			@using (Html.BeginForm("Remove", "Zolik", new {Area = "Admin"}, FormMethod.Post)) {
+				<div class="modal-body">
+					@Html.AntiForgeryToken()
+					@Html.SecureHiddenFor(x => x.ID)
+					@Html.SecureHiddenFor(x => x.OwnerID)
+					<p class="font-bold">
+						Opravdu si přejete odstranit tohoto žolíka?
+					</p>
+					<p class="text-muted">Žolík bude pouze deaktivován a předán do umělého účtu (Národní banka Žolíků).</p>
+					<br />
+					<div class="row mb-3">
+						<div class="col-md-3">
+							<h5 class="mb-0">Za co byl udělen (ID):</h5>
+						</div>
+						<div class="col">
+							@Model.Title (@Model.ID)
+						</div>
+					</div>
+					<div class="row mb-3">
+						<div class="col-md-3">
+							<h5 class="mb-0">Vlastník:</h5>
+						</div>
+						<div class="col">
+							@Model.OwnerName
+						</div>
+					</div>
+					<div class="row mb-3">
+						<div class="col-md-3">
+							<h5 class="mb-0">
+								Důvod odstranění:
+							</h5>
+						</div>
+						<div class="col">
+							@Html.MaterialTextBoxFor(x => x.Reason, 1)
+							@Html.ValidationMessageFor(x => x.Reason)
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" tabindex="2" class="btn btn-info" data-dismiss="modal">Zavřít</button>
+					<button type="submit" tabindex="3" class="btn btn-danger waves-effect">Odstranit</button>
+				</div>
+			}
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>

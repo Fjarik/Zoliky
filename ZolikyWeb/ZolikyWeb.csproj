@@ -1440,6 +1440,7 @@
     <Compile Include="Areas\Admin\Models\Subject\SubjectEditModel.cs" />
     <Compile Include="Areas\Admin\Models\Zoliky\ZolikDashboardModel.cs" />
     <Compile Include="Areas\Admin\Models\Zoliky\ZolikModel.cs" />
+    <Compile Include="Areas\Admin\Models\Zoliky\ZolikRemoveModel.cs" />
     <Compile Include="Areas\Global\Controllers\SettingsController.cs" />
     <Compile Include="Areas\Global\Models\Admin\DashboardModel.cs" />
     <Compile Include="Areas\Global\Models\Admin\Dashboard\SendMobileNotModel.cs" />

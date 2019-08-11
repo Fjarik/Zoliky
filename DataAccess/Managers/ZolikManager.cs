@@ -110,7 +110,7 @@ namespace DataAccess.Managers
 				query = query.Where(x => x.Type != ZolikType.Debug &&
 										 x.Type != ZolikType.DebugJoker);
 			}
-			query = query.OrderBy(x=> x.Enabled)
+			query = query.OrderBy(x => x.Enabled)
 						 .ThenBy(x => x.ID);
 			return query.ToListAsync();
 		}
@@ -199,6 +199,30 @@ namespace DataAccess.Managers
 #endregion
 
 #region Transfer
+
+		public async Task<MActionResult<Transaction>> RemoveAsync(int zolikId,
+																  int ownerId,
+																  string reason,
+																  User teacher)
+		{
+			if (zolikId < 1 || ownerId < 1) {
+				return new MActionResult<Transaction>(StatusCode.NotValidID);
+			}
+			if (string.IsNullOrWhiteSpace(reason) || teacher == null) {
+				return new MActionResult<Transaction>(StatusCode.InvalidInput);
+			}
+
+			if (!teacher.IsInRolesOr(UserRoles.Administrator, UserRoles.Teacher, UserRoles.Developer)) {
+				return new MActionResult<Transaction>(StatusCode.InsufficientPermissions);
+			}
+			reason = $"Žolík odstraněn vyučujícím: {teacher.FullName}. Uvedený důvod: {reason}";
+			var zp = new ZolikPackage(fromId: ownerId,
+									  toId: Ext.BankId,
+									  zolikId: zolikId,
+									  message: reason,
+									  TransactionAssignment.ZerziRemoval);
+			return await this.TransferAsync(zp, teacher);
+		}
 
 		public async Task<MActionResult<Transaction>> TransferAsync(ZolikPackage p, User logged)
 		{

@@ -134,6 +134,40 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 
 #region Remove
 
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		[ValidateSecureHiddenInputs(nameof(ZolikRemoveModel.ID), nameof(ZolikRemoveModel.OwnerID))]
+		public Task<ActionResult> Remove(ZolikRemoveModel model)
+		{
+			return RemoveAsync(model?.Reason, model?.ID, model?.OwnerID);
+		}
+
+		private async Task<ActionResult> RemoveAsync(string reason, int? id = null, int? ownerId = null)
+		{
+			if (id == null || id < 1 || ownerId == null || ownerId < 1) {
+				this.AddErrorToastMessage("Neplatné ID");
+				return RedirectToAction("Dashboard");
+			}
+			if (string.IsNullOrWhiteSpace(reason)) {
+				this.AddErrorToastMessage("Neplatný důvod");
+				return RedirectToAction("Dashboard");
+			}
+			return await RemoveAsync(reason, (int) id, (int) ownerId);
+		}
+
+		private async Task<ActionResult> RemoveAsync(string reason, int id, int ownerId)
+		{
+			var logged = await this.GetLoggedUserAsync();
+
+			var res = await Mgr.RemoveAsync(id, ownerId, reason, logged);
+			if (res.IsSuccess) {
+				this.AddSuccessToastMessage("Žolík byl úspěšně odstraněn");
+			} else {
+				this.AddErrorToastMessage($"Nezdařilo se odstranit žolíka, chyba: {res.GetStatusMessage()}");
+			}
+			return RedirectToAction("Dashboard");
+		}
+
 #endregion
 	}
 }

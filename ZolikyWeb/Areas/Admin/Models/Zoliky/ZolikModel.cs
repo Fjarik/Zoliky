@@ -64,6 +64,8 @@ namespace ZolikyWeb.Areas.Admin.Models.Zoliky
 		public User Owner { get; set; }
 		public User Teacher { get; set; }
 
+		public ZolikRemoveModel RemoveModel { get; set; }
+
 #endregion
 
 #region Model lists
@@ -116,9 +118,16 @@ namespace ZolikyWeb.Areas.Admin.Models.Zoliky
 			this.Owner = ent.Owner;
 			this.Teacher = ent.Teacher;
 
-			this.AllowRemove = allowRemove;
+			this.AllowRemove = allowRemove && this.Enabled;
 
 			this.Subjects = subjects;
+
+			this.RemoveModel = new ZolikRemoveModel {
+				ID = this.ID,
+				OwnerID = this.OwnerID,
+				Title = this.Title,
+				OwnerName = this.Owner.FullName
+			};
 		}
 	}
 }

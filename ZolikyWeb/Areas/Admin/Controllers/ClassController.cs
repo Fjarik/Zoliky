@@ -185,7 +185,7 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 
 		private async Task<ActionResult> RemoveAsync(int? id = null)
 		{
-			if (id == null || id <= 1) {
+			if (id == null || id < 1) {
 				this.AddErrorToastMessage("Neplatné ID");
 				return RedirectToAction("Dashboard");
 			}
