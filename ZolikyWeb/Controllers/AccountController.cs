@@ -575,8 +575,17 @@ namespace ZolikyWeb.Controllers
 			return PartialView(model);
 		}
 
-#endregion
+		#endregion
+
+#region WakeUp
+
+		public ActionResult WakeUp()
+		{
+			return new EmptyResult();
+		}
 
 #endregion
+
+		#endregion
 	}
 }

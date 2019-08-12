@@ -137,7 +137,8 @@ namespace DataAccess.Managers
 								   x.ClassID != null &&
 								   x.Roles.Any(y => y.Name == UserRoles.Student) &&
 								   x.Roles.All(y => y.Name != UserRoles.HiddenStudent &&
-													y.Name != UserRoles.FakeStudent) &&
+													y.Name != UserRoles.FakeStudent &&
+													y.Name != UserRoles.Teacher) &&
 								   excludeIds.All(y => x.ID != y))
 					   .ToListAsync();
 		}
