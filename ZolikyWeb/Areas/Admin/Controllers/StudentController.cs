@@ -160,6 +160,11 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 				this.AddErrorToastMessage("Neplatný uživatel");
 				return RedirectToAction("Dashboard");
 			}
+			var loggedId = this.User.Identity.GetId();
+			if (loggedId == id) {
+				allowEdit = false;
+			}
+
 			var schoolId = this.User.Identity.GetSchoolId();
 			var previousId = await Mgr.GetPreviousIdAsync(id);
 			var nextId = await Mgr.GetNextIdAsync(id);
