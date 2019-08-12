@@ -6,8 +6,10 @@ using System.Web;
 using System.Web.Mvc;
 using DataAccess;
 using DataAccess.Managers;
+using DataAccess.Models;
 using SharedLibrary.Enums;
 using SharedLibrary.Shared;
+using ZolikyWeb.Areas.Admin.Models.Student;
 using ZolikyWeb.Models.Base;
 using ZolikyWeb.Tools;
 
@@ -68,12 +70,130 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 							   actions = new {
 								   edit = x.ID == loggedId
 											  ? ""
-											  : Url.Action("Edit", "User", new {Area = "Admin", id = x.ID}),
-								   display = Url.Action("Detail", "User", new {Area = "Admin", id = x.ID})
+											  : Url.Action("Edit", "Student", new {Area = "Admin", id = x.ID}),
+								   display = Url.Action("Detail", "Student", new {Area = "Admin", id = x.ID})
 							   }
 						   });
 
 			return Json(res, JsonRequestBehavior.AllowGet);
+		}
+
+#endregion
+
+#region Edit & Detail
+
+#region Edit
+
+		public Task<ActionResult> Edit(int? id = null)
+		{
+			return EditOrDetail(id, "Edit", true);
+		}
+
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		[ValidateSecureHiddenInputs(nameof(StudentModel.ID))]
+		public async Task<ActionResult> Edit(StudentModel model)
+		{
+			if (model == null) {
+				return RedirectToAction("Dashboard");
+			}
+
+			if (!model.IsValid) {
+				this.AddErrorToastMessage("Neplatné hodnoty");
+				return RedirectToAction("Edit");
+			}
+
+			var res = await Mgr.GetByIdAsync(model.ID);
+			if (!res.IsSuccess) {
+				this.AddErrorToastMessage($"Nezdařilo se načíst originální záznam. Chyba: {res.GetStatusMessage()}");
+				return RedirectToAction("Dashboard");
+			}
+
+
+			var original = res.Content;
+
+			// Edit
+			original.ClassID = model.ClassID;
+			//original.SchoolID = model.SchoolID;
+			original.Username = model.Username;
+			original.Email = model.Email;
+			original.Name = model.Name;
+			original.Lastname = model.Lastname;
+			original.Sex = model.Sex;
+			original.Enabled = model.Enabled;
+			if (!original.EmailConfirmed) {
+				original.EmailConfirmed = model.EmailConfirmed;
+			}
+			// Edit end
+
+			await Mgr.SaveAsync(original);
+			this.AddSuccessToastMessage("Úspěšně uloženo");
+			return RedirectToAction("Detail", new {id = model.ID});
+		}
+
+#endregion
+
+#region Detail
+
+		public Task<ActionResult> Detail(int? id = null)
+		{
+			return EditOrDetail(id, "Edit", false);
+		}
+
+#endregion
+
+#region Edit or Detail
+
+		private async Task<ActionResult> EditOrDetail(int? id, string actionName, bool allowEdit)
+		{
+			if (id == null || id < 1) {
+				this.AddErrorToastMessage("Neplatné ID");
+				return RedirectToAction("Dashboard");
+			}
+			return await EditOrDetail((int) id, actionName, allowEdit);
+		}
+
+		private async Task<ActionResult> EditOrDetail(int id, string actionName, bool allowEdit)
+		{
+			var res = await Mgr.GetByIdAsync(id);
+			if (!res.IsSuccess) {
+				this.AddErrorToastMessage("Neplatný uživatel");
+				return RedirectToAction("Dashboard");
+			}
+			var schoolId = this.User.Identity.GetSchoolId();
+			var previousId = await Mgr.GetPreviousIdAsync(id);
+			var nextId = await Mgr.GetNextIdAsync(id);
+
+			var sMgr = this.GetManager<SchoolManager>();
+			var cMgr = this.GetManager<ClassManager>();
+
+			var classes = await cMgr.GetAllAsync(schoolId, true);
+
+			var sRes = await sMgr.GetByIdAsync(schoolId);
+			if (!sRes.IsSuccess) {
+				this.AddErrorToastMessage("Neplatná škola");
+				return RedirectToAction("Dashboard");
+			}
+
+			var schools = new List<School> {sRes.Content};
+
+			var model = new StudentModel(res.Content, classes, schools, allowEdit, previousId, nextId) {
+				ActionName = actionName
+			};
+
+			return View("Edit", model);
+		}
+
+#endregion
+
+#endregion
+
+#region Create
+
+		public ActionResult Create()
+		{
+			this.AddErrorToastMessage("Každý student se musí zaregistovat sám za sebe");
+			return RedirectToAction("Dashboard");
 		}
 
 #endregion

@@ -1250,6 +1250,7 @@
     <Content Include="Areas\Admin\Views\Zolik\_RemovePartial.cshtml" />
     <Content Include="Areas\Admin\Views\Zolik\_TransactionPartial.cshtml" />
     <Content Include="Areas\Admin\Views\Student\Dashboard.cshtml" />
+    <Content Include="Areas\Admin\Views\Student\Edit.cshtml" />
     <None Include="bundleconfig.json" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\fa-all.js" />
@@ -1438,6 +1439,7 @@
     <Compile Include="Areas\Admin\Controllers\SubjectController.cs" />
     <Compile Include="Areas\Admin\Controllers\ZolikController.cs" />
     <Compile Include="Areas\Admin\Models\Admin\DashboardModel.cs" />
+    <Compile Include="Areas\Admin\Models\Student\StudentModel.cs" />
     <Compile Include="Areas\Admin\Models\Subject\SubjectDashboardModel.cs" />
     <Compile Include="Areas\Admin\Models\Subject\SubjectEditModel.cs" />
     <Compile Include="Areas\Admin\Models\Zoliky\ZolikDashboardModel.cs" />
