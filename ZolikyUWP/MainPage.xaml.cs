@@ -83,14 +83,14 @@ namespace ZolikyUWP
 
 		private void RefreshNotification(int id)
 		{
-			int count = _me.Zoliky.Count;
+			/*int count = _me.Zoliky.Count;
 
 			var tile = Tiles.GetTileXml(count.ToString());
 
 
 			var tileNot = new TileNotification(tile);
 			TileUpdateManager.CreateTileUpdaterForApplication().Update(tileNot);
-			ScheduleNotification(id);
+			ScheduleNotification(id);*/
 		}
 
 		private void ScheduleNotification(int id)

@@ -48,10 +48,7 @@ namespace SharedApi.Models
 		public Role() { }
 	}
 
-	public partial class School : IDbEntity
-	{
-		
-	}
+	public partial class School : IDbEntity { }
 
 	public partial class Subject : IDbEntity { }
 
@@ -113,38 +110,6 @@ namespace SharedApi.Models
 
 		public string ClassName => this.Class?.Name;
 
-		public List<Zolik> Zoliky { get; set; }
-
-		public string SpecialUsername { get; set; }
-
-		[JsonIgnore]
-		public bool IsTesterType
-		{
-			get
-			{
-				if (this.SpecialUsername.Contains("_tester")) {
-					return true;
-				}
-
-				if (this.Type == UserPermission.Dev) {
-					return true;
-				}
-				return false;
-			}
-			set
-			{
-				if (value) {
-					if (!this.SpecialUsername.Contains("_tester")) {
-						this.SpecialUsername = this.Username + "_tester";
-					}
-				} else {
-					if (this.SpecialUsername.Contains("_tester")) {
-						this.SpecialUsername = this.SpecialUsername.Replace("_tester", "");
-					}
-				}
-			}
-		}
-
 		public User() { }
 
 		public Version GetVersion() => Version.Parse(this.VersionS);
@@ -183,10 +148,7 @@ namespace SharedApi.Models
 		public UserLogin() { }
 	}
 
-	public partial class UserSetting : IUserSetting
-	{
-
-	}
+	public partial class UserSetting : IUserSetting { }
 
 	public partial class Zolik : IZolik
 	{

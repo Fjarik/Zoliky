@@ -159,7 +159,7 @@ namespace ZolikyUWP.Account
 			localSettings.Values["username"] = TxtLogin.Text;
 
 			var u = res.Content;
-			LblResult.Text = $"{u.FullName}, {u.Zoliky}";
+			LblResult.Text = $"{u.FullName}";
 			this.Frame.Navigate(typeof(MainPage), u);
 		}
 

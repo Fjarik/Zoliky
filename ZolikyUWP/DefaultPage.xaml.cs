@@ -47,7 +47,7 @@ namespace ZolikyUWP
 			}
 
 			Lbl_Name.Text = _me.FullName;
-			Lbl_Count.Text = _me.Zoliky.Count.ToString();
+			//Lbl_Count.Text = _me.Zoliky.Count.ToString();
 			/*
 			UserConnector uc = new UserConnector(_me.Token);
 			var mAu = uc.GetTesterAccount(_me);
