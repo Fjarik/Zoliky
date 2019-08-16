@@ -1,0 +1,207 @@
+﻿@using DataAccess
+@using SharedLibrary.Shared
+@{
+	ViewBag.Title = "Hlavní strana";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section header {
+	<link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/new-age.css?v=141541215")" />
+}
+
+
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+	<div class="container">
+		<a class="navbar-brand js-scroll-trigger" href="#bodyTag">
+			@if (DateTime.Now.IsChristmasTime()) {
+				<img src="@Url.Content("~/Content/Images/Icons/ZolikChristmas.ico")" width="40" height="40" class="d-inline-block align-top" alt="(logo)Ž" />
+				//} else if (DateTime.Now.IsPrideTime()) {
+				//} else {
+			} else {
+				<img src="@Url.Content("~/Content/Images/Header/ZolikyHeaderWhite_1024.png")" class="logo-white" height="40" alt="Logo žolíků" />
+				<img src="@Url.Content("~/Content/Images/Header/ZolikyHeaderBlack_1024.png")" class="logo-black" height="40" alt="Logo žolíků" style="display: none;" />
+			}
+		</a>
+		<button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+			Menu
+			<i class="fa fa-bars"></i>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarResponsive">
+			<ul class="navbar-nav ml-auto">
+				<li class="nav-item mx-2">
+					<a class="nav-link js-scroll-trigger" href="#download">Ke stažení</a>
+				</li>
+				<li class="nav-item mx-2">
+					<a class="nav-link js-scroll-trigger" href="#features">Funkce</a>
+				</li>
+				<li class="nav-item mx-2">
+					<a class="nav-link js-scroll-trigger" href="#contact">Kontakt</a>
+				</li>
+				<li class="nav-item dropdown mx-2 c-pointer">
+					<a class="nav-link dropdown-toggle" id="navbarDropdownMoreLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						Více
+					</a>
+					<div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMoreLink">
+						<a class="dropdown-item" href="http://www.support.zoliky.eu/" target="_blank" title="Odkaz na podporu">Podpora</a>
+						<a class="dropdown-item" href="#" title="Odkaz na blog">Blog</a>
+						<a class="dropdown-item" href="http://www.support.zoliky.eu/Faq" target="_blank" title="Odkaz na často kladené otázky">FAQ</a>
+						<a class="dropdown-item" href="http://www.support.zoliky.eu/Status" target="_blank" title="Odkaz na aktuální stav serverů">Stav serverů</a>
+					</div>
+				</li>
+				<li class="nav-item dropdown mx-2 c-pointer">
+					<a class="nav-link dropdown-toggle" id="navbarDropdownAccountLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						@if (Request.IsAuthenticated) {
+							@User.Identity.Name
+						} else {
+							@("Účet")
+						}
+					</a>
+					<div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownAccountLink">
+						@if (Request.IsAuthenticated) {
+							<a class="dropdown-item" href="@Url.Action("Dashboard", "Main", new {Area = "App"})" title="Přejít na přehled žolíků">Přehled</a>
+							if (User.IsInRolesOr(UserRoles.Administrator, UserRoles.Teacher, UserRoles.Developer)) {
+								<a class="dropdown-item" href="@Url.Action("Dashboard", "Admin", new {Area = "Admin"})" title="Přejít do administrace">Administrace</a>
+							}
+							<a class="dropdown-item" href="@Url.Action("Settings", "Account", new {Area = "App"})" title="Přejít do nastavení">Nastavení</a>
+							<div class="dropdown-divider"></div>
+							<a class="dropdown-item" href="@Url.Action("Mobile", "Home")" title="Stáhnout mobilní aplikaci">Mobilní aplikace</a>
+							<div class="dropdown-divider"></div>
+							@Html.Partial("_LogoutPartialMenu")
+						} else {
+							<a class="dropdown-item" href="@Url.Action("Login", "Account")" title="Přihlásit se">Přihlášení</a>
+							<a class="dropdown-item" href="@Url.Action("Register", "Account")" title="Registrovat se">Registrace</a>
+						}
+					</div>
+				</li>
+			</ul>
+		</div>
+	</div>
+</nav>
+<!-- /Navigation -->
+
+<header class="masthead gradient">
+	<div class="container h-100">
+		<div class="row h-100">
+			<div class="col-lg-7 my-auto">
+				<div class="header-content mx-auto">
+					<h1 class="mb-5">
+						Představujeme Vám revoluci v organizaci Žolíků
+					</h1>
+					<a href="#download" class="btn btn-outline btn-xl js-scroll-trigger">Chci vědět více</a>
+				</div>
+			</div>
+			<div class="col-lg-5 my-auto">
+				<div>
+					<img src="@Url.Content("~/Content/Images/Pages/Default/Store.webp")" title="Screenshot Google Play aplikace" alt="Screenshot Google Play aplikace" class="img-fluid" />
+				</div>
+			</div>
+		</div>
+	</div>
+</header>
+
+<section class="download bg-primary text-center" id="download">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-8 mx-auto">
+				<h2 class="section-heading">Objevte, co vše Žolíky umí!</h2>
+				<p>Žolíky jsou dostupné i na mobilních zařízeních. Pokračujte vybráním platformy.</p>
+				<div class="badges">
+					<a class="badge-link" href="@Url.Action("Android", "Mobile")">
+						<img src="@Url.Content("~/Content/Images/SVGs/google-play-badge.svg")" title="Google Play" alt="Google Play" />
+					</a>
+					<a class="badge-link" href="https://www.microsoft.com/store/apps/9NS2BP2HTCJK?ocid=badge" target="_blank">
+						<img src="@Url.Content("~/Content/Images/SVGs/MS.svg")" title="Microsoft store" alt="Microsoft store" />
+					</a>
+					<a class="badge-link" href="https://itunes.apple.com/cz/app/%C5%BEol%C3%ADky/id1463194810" target="_blank">
+						<img src="@Url.Content("~/Content/Images/SVGs/app-store-badge.svg")" title="App Store" alt="App Store" />
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+
+<section class="features" id="features">
+	<div class="container">
+		<div class="section-heading text-center">
+			<h2>Funkce</h2>
+			<p class="notWhite">Prohlédněte si, co Žolíky umí a budou umět</p>
+			<hr />
+		</div>
+		<div class="row">
+			<div class="col-lg-4 my-auto">
+				<div>
+					<img src="@Url.Content("~/Content/Images/Pages/Default/App.webp")" title="Screenshot hlavní obrazovky Androidí aplikace" class="img-fluid" alt="Screenshot hlavní obrazovky mobílní aplikace"/>
+				</div>
+			</div>
+			<div class="col-lg-8 my-auto">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-lg-6">
+							<div class="feature-item">
+								<i class="material-icons main NoSelect" alt="Správa žolíků">
+									devices
+								</i>
+								<h3>Správa</h3>
+								<p class="notWhite">Prohlédněte si své aktuální žolíky a informace o nich</p>
+							</div>
+						</div>
+						<div class="col-lg-6">
+							<div class="feature-item">
+								<i class="material-icons main NoSelect" alt="Darování žolíků">
+									send
+								</i>
+								<h3>Přeposílání</h3>
+								<p class="notWhite">Darujte svého žolíka svému kamarádovi</p>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-6">
+							<div class="feature-item">
+								<i class="material-icons main NoSelect" alt="Statistiky žolíků">
+									insert_chart_outlined
+								</i>
+								<h3>Statistiky</h3>
+								<p class="notWhite">Zobrazte si aktulní statistky žolíků na škole</p>
+							</div>
+						</div>
+						<div class="col-lg-6">
+							<div class="feature-item">
+								<i class="material-icons main NoSelect" alt="Statistiky žolíků">
+									history
+								</i>
+								<h3>Historie</h3>
+								<p class="notWhite">Zjištěte, kudy žolík cestoval, než se dostal k Vám</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="contact bg-primary" id="contact">
+	<div class="container">
+		<h2>Kontaktujte nás</h2>
+		<ul class="list-inline list-social">
+			<li class="list-inline-item social-email">
+				<a href="mailto:podpora@zoliky.eu" title="Náš email">
+					<i class="far fa-envelope"></i>
+				</a>
+			</li>
+			<li class="list-inline-item social-facebook">
+				<a href="https://www.facebook.com/TheZoliky/" target="_blank" title="Náš Facebook">
+					<i class="fab fa-facebook-f"></i>
+				</a>
+			</li>
+		</ul>
+	</div>
+</section>
+
+@section footer{
+	<script type="text/javascript" src="@Url.Content("~/Scripts/new-age.js")"></script>
+}

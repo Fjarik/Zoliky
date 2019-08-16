@@ -9,6 +9,7 @@ using DataAccess.Managers.New;
 using DataAccess.Models;
 using SharedLibrary;
 using SharedLibrary.Enums;
+using ZolikyWeb.Models.Home;
 using ZolikyWeb.Tools;
 
 namespace ZolikyWeb.Controllers
@@ -19,7 +20,13 @@ namespace ZolikyWeb.Controllers
 		[HttpGet]
 		public ActionResult Index()
 		{
-			return View();
+			var model = new HomeModel {
+				StudentCount = 92,
+				SchoolCount = 1,
+				ZolikCount = 145,
+				AchievementCount = 100
+			};
+			return View(model);
 		}
 
 		[HttpGet]
@@ -29,7 +36,7 @@ namespace ZolikyWeb.Controllers
 		}
 
 		[HttpGet]
-		public ActionResult IndexNew()
+		public ActionResult IndexOld()
 		{
 			return View();
 		}
