@@ -27,6 +27,12 @@ namespace ZolikyWeb.Controllers
 		{
 			return RedirectToAction("Index", "Mobile", new {Area = ""});
 		}
+
+		[HttpGet]
+		public ActionResult IndexNew()
+		{
+			return View();
+		}
 		
 
 #region Project Status

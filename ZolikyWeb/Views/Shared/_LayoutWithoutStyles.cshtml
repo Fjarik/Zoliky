@@ -2,12 +2,12 @@
 @using Microsoft.AspNet.Identity
 @using ZolikyWeb.Tools
 <!DOCTYPE html>
-<html lang="cs" xmlns="http://www.w3.org/1999/xhtml" >
+<html lang="cs" xmlns="http://www.w3.org/1999/xhtml">
 <head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb#">
 	<!-- Meta -->
 	<meta charset="utf-8" />
-	<meta name="description" content="Zolikovy web" />
-	<meta name="robots" content="noindex" />
+	<meta name="description" content="Informační systém na správu žolíků na školách" />
+	@*<meta name="robots" content="noindex" />*@
 	<meta name="authors" content="Jiri Falta & Karel Koudelka" />
 	<meta name="application-name" content="@Globals.Name" data-version="@Globals.Version.ToString(3)" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -28,7 +28,7 @@
 	<!-- Google Analytics -->
 	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-122582106-4"></script>
 	<script>
-		if (window.location.host === "www.new.zoliky.eu" || window.location.host === "www.zoliky.eu") {
+		if (window.location.host === "www.zoliky.eu") {
 			window.dataLayer = window.dataLayer || [];
 
 			function gtag() { dataLayer.push(arguments); }

@@ -1,0 +1,583 @@
+﻿@{
+	Layout = "~/Views/Shared/_Layout.cshtml";
+	ViewBag.Title = "Hlavní strana";
+}
+
+@section styles {
+	<!-- CSS -->
+	<link rel="stylesheet" href="@Url.Content("~/Content/MainPage/owl.carousel.min.css")" />
+	<link rel="stylesheet" href="@Url.Content("~/Content/MainPage/slicknav.min.css")" />
+	<link rel="stylesheet" href="@Url.Content("~/Content/MainPage/typography.css")" />
+	<link rel="stylesheet" href="@Url.Content("~/Content/MainPage/style.css")" />
+	<link rel="stylesheet" href="@Url.Content("~/Content/MainPage/responsive.css")" />
+	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	<!--[if lt IE 9]>
+		<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+		<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+	<![endif]-->
+}
+
+<!-- preloader area start -->
+<div id="preloader">
+	<div class="spinner"></div>
+</div>
+<!-- preloader area end -->
+<!-- header area start -->
+<header id="header">
+	<div class="header-area">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-3 col-12 m-auto">
+					<div class="logo">
+						<a href="@Url.Action("Index")">
+							<img src="@Url.Content("~/assets/img/icon/logo.png")" alt="Logo žolíků">
+						</a>
+					</div>
+				</div>
+				<div class="col-lg-9 d-none d-lg-block">
+					<div class="main-menu">
+						<nav class="nav-menu">
+							<ul>
+								<li class="active">
+									<a href="#home">Domů</a>
+								</li>
+								<li>
+									<a href="#feature">Funkce</a>
+								</li>
+								<li>
+									<a href="#screenshot">Ukázky</a>
+								</li>
+								<li>
+									<a href="#school">Školy</a>
+								</li>
+								<li>
+									<a href="#pricing">Ceník</a>
+								</li>
+								<li>
+									<a href="#download">Ke stažení</a>
+								</li>
+								<li>
+									<a href="#contact">Kontakt</a>
+								</li>
+								<li>
+									<a href="@Url.Action("Login")">Pro studenty</a>
+								</li>
+							</ul>
+						</nav>
+					</div>
+				</div>
+				<div class="col d-block d-lg-none">
+					<div class="mobile_menu"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</header>
+<!-- header area end -->
+<!-- slider area start -->
+<section class="slider-area" id="home">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-6 col-sm-6 d-none d-md-block">
+				<div class="slider-img">
+					<img src="@Url.Content("~/Content/Images/Pages/Default/Main_500.png")" alt="slider image">
+				</div>
+			</div>
+			<div class="col-md-6 col-12">
+				<div class="row justify-content-right">
+					<div class="col justify-content-center justify-content-md-right">
+						<div class="slider-inner text-center">
+							<h2>Snadná správa žolíků</h2>
+							<h5>Už žádný ztracený žolík!</h5>
+							<!-- <h5>Díky nám se žádný žolík neztratí</h5> -->
+							<a href="#info" class="scroll">
+								<span>
+									<i class="fas fa-arrow-right"></i>
+								</span> Dozvědět se více
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<!-- slider area end -->
+<!-- service area start -->
+<div id="info" class="service-area">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-4 col-12">
+				<div class="service-single h-100">
+					<img src="@Url.Content("~/assets/img/service/service-img1.png")" alt="service image">
+					<h2>Přehledná administrace</h2>
+					<p>Veškeré informace o žolíkách na jednom místě</p>
+				</div>
+			</div>
+			<div class="col-md-4 col-sm-6 col-12">
+				<div class="service-single h-100">
+					<img src="@Url.Content("~/assets/img/service/service-img2.png")" alt="service image">
+					<h2>Okamžitá upozornění</h2>
+					<p>Budete dostávat okamžitá oznámení, jakmile se něco stane</p>
+				</div>
+			</div>
+			<div class="col-md-4 col-sm-6 col-12">
+				<div class="service-single h-100">
+					<img src="@Url.Content("~/assets/img/service/service-img3.png")" alt="service image">
+					<h2>Jednoduché darování</h2>
+					<p>
+						Vyberte žolíka, vyberte studenta, *
+						<strong>Odeslat</strong>* A je to!
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- service area end -->
+<!-- about area start -->
+<div class="about-area ptb--100">
+	<div class="container">
+		<div class="section-title">
+			<h2>O systému</h2>
+			<!-- <p>Aneb co to je a k čemu to je</p> -->
+		</div>
+		<div class="row d-flex flex-center">
+			<div class="col-md-6 col-sm-6 d-none d-sm-block">
+				<div class="about-left-img">
+					<img src="@Url.Content("~/Content/Images/Pages/Default/All.png")" alt="image">
+				</div>
+			</div>
+
+			<div class="col-md-6 col-sm-6 col-12 d-flex flex-center">
+				<div class="about-content">
+					<h4>Co je žolík?</h4>
+					<p>
+						Každý student má možnost získat žolíka za výjimečný výkon či mimořádnou aktivitu. Tohoto
+						žolíka může poté
+						<strong>použít na např. nepovedenou písemku, zkoušení...</strong> Žolíka
+						lze zjednodušeně
+						popsat jako "
+						<strong>záložní padák</strong>" v případě selhání hlavního padáku - v tomto
+						případě je hlavním
+						padákem písemka, ze které dostal student špatnou známku.
+						<br />
+						<strong>Jednotlivá pravidla si upravuje každá škola podle sebe.</strong>
+					</p>
+					<h4>Proč systém Žolíků?</h4>
+					<p>
+						Jelikož je
+						<strong>organizačně složité</strong> zapamatování a zjištování, který student má
+						kolik žolíků a kolik jich již použil, byl vytvořen univerzální informační systém Žolíky,
+						který umožňuje studentům i vyučujícím
+						<strong>jednoduchou organizaci a správu</strong>
+						žolíků.
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- about area end -->
+<!-- feature area start -->
+<section class="feature-area bg-gray ptb--100" id="feature">
+	<div class="container">
+		<div class="section-title">
+			<h2>Funkce</h2>
+			<!-- <p>Vypsány jsou pouze základní funkce, systém umí mnohem více</p> -->
+		</div>
+		<div class="row">
+			<div class="col-lg-4 col-sm-6 col-12">
+				<div class="ft-content rtl">
+					<div class="ft-single">
+						<img src="@Url.Content("~/assets/img/icon/feature/1.png")" alt="icon">
+						<div class="meta-content">
+							<h2>Přehledná správa</h2>
+							<p>
+								Prohlédněte si své aktuální žolíky a zobrazte si akutální statistiky na škole či ve
+								třídě.
+							</p>
+						</div>
+					</div>
+					<div class="ft-single">
+						<img src="@Url.Content("~/assets/img/icon/feature/2.png")" alt="icon">
+						<div class="meta-content">
+							<h2>Darování žolíků</h2>
+							<p>Systém umožnuje rychlé a jednoduché darování žolíků mezi studenty.</p>
+							<br class="d-none d-sm-block d-md-none d-lg-block d-xl-none" />
+							<br class="d-none d-lg-block" />
+						</div>
+					</div>
+					<div class="ft-single">
+						<img src="@Url.Content("~/assets/img/icon/feature/3.png")" alt="icon">
+						<div class="meta-content">
+							<h2>Rozdělování jokérů</h2>
+							<p>
+								Lze získat
+								<strong>Jokéra</strong> (za opravdu výjimečnou práci), kterého
+								lze rozdělit až na
+								<strong>5 obyčejných žolíků</strong>.
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4 col-12 d-none d-lg-block">
+				<div class="ft-screen-img">
+					<img src="@Url.Content("~/Content/Images/Pages/Default/App.webp")" alt="image">
+				</div>
+			</div>
+			<div class="col-lg-4 col-sm-6 col-12">
+				<div class="ft-content">
+					<div class="ft-single">
+						<img src="@Url.Content("~/assets/img/icon/feature/4.png")" alt="icon">
+						<div class="meta-content">
+							<h2>Jednoduché nastavení</h2>
+							<p>Školy si lze mohou jednoduše nastavit svá školní pravidla.</p>
+							<br class="d-none d-sm-block d-xl-none" />
+							<br class="d-none d-sm-block d-md-none" />
+						</div>
+					</div>
+					<div class="ft-single">
+						<img src="@Url.Content("~/assets/img/icon/feature/5.png")" alt="icon">
+						<div class="meta-content">
+							<h2>Vše pod dohledem</h2>
+							<p>
+								Žádný žolík se již neztratí. Veškeré aktivity s žolíkem si lze přehledně zobrazit na
+								jednom místě.
+							</p>
+						</div>
+					</div>
+					<div class="ft-single">
+						<img src="@Url.Content("~/assets/img/icon/feature/6.png")" alt="icon">
+						<div class="meta-content">
+							<h2>Stahování není nutné</h2>
+							<p>
+								Systém lze používat pouze z webového prohlížeče. I tak jsou dostupné
+								<a href="#download">aplikace pro mobily i PC</a>.
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<!-- feature area end -->
+<!-- achivement area start -->
+<div class="achivement-area ptb--100">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-3 col-sm-6 col-12">
+				<div class="ach-single">
+					<div class="icon">
+						<i class="fas fa-users"></i>
+					</div>
+					<p>
+						<span class="counter">100</span>
+					</p>
+					<h5>Registrovaných uživatelů</h5>
+				</div>
+			</div>
+			<div class="col-md-3 col-sm-6 col-12">
+				<div class="ach-single">
+					<div class="icon">
+						<i class="fas fa-school"></i>
+					</div>
+					<span class="counter">1</span>
+					<h5>Zapojená škola</h5>
+				</div>
+			</div>
+			<div class="col-md-3 col-sm-6 col-12">
+				<div class="ach-single">
+					<div class="icon">
+						<i class="fas fa-exchange-alt"></i>
+					</div>
+					<p>
+						<span class="counter">150</span>
+					</p>
+					<h5>Rozdaných žolíků</h5>
+				</div>
+			</div>
+			<div class="col-md-3 col-sm-6 col-12">
+				<div class="ach-single">
+					<div class="icon">
+						<i class="fas fa-trophy"></i>
+					</div>
+					<span class="counter">100</span>
+					<h5>Splněných achivementů</h5>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- achivement area end -->
+<!-- screen slider area start -->
+<section class="screen-area ptb--100" id="screenshot">
+	<div class="screenshots-container">
+		<div class="section-title">
+			<h2>Ukázky</h2>
+			<!-- <p>Nemo enim ipsam voluptatem quia voluptas sit</p> -->
+		</div>
+		<img class="screen-img" src="@Url.Content("~/Content/Images/Pages/Default/Laptop.png")" alt="mobile screen">
+		<div class="screen-slider owl-carousel">
+			<div class="single-screen">
+				<img src="@Url.Content("~/Content/Images/Pages/Default/Dashboard.png")" alt="Ukázka z pohledu studenta">
+			</div>
+			<div class="single-screen">
+				<img src="@Url.Content("~/Content/Images/Pages/Default/Zolici.png")" alt="Ukázka z pohledu studenta">
+			</div>
+			<div class="single-screen">
+				<img src="@Url.Content("~/Content/Images/Pages/Default/Transactions.png")" alt="Ukázka z pohledu studenta">
+			</div>
+			<div class="single-screen">
+				<img src="@Url.Content("~/Content/Images/Pages/Default/Achievements.png")" alt="Ukázka z pohledu studenta">
+			</div>
+			<div class="single-screen">
+				<img src="@Url.Content("~/Content/Images/Pages/Default/News.png")" alt="Ukázka z pohledu studenta">
+			</div>
+			<div class="single-screen">
+				<img src="@Url.Content("~/Content/Images/Pages/Default/Transfer.png")" alt="Ukázka z pohledu studenta">
+			</div>
+			<div class="single-screen">
+				<img src="@Url.Content("~/Content/Images/Pages/Default/SettingsPrivacy.png")" alt="Ukázka z pohledu studenta">
+			</div>
+		</div>
+	</div>
+</section>
+<!-- screen slider area end -->
+<!-- video area start -->
+<div class="video-area ptb--100">
+	<div class="container">
+		<div class="row justify-content-center">
+			<div class="col-md-8 col-sm-10 col-xs-12">
+				<h2>Upoutávka</h2>
+				<p>
+					Po kliknutí na tlačíko se otevře krátký trailer na mobilní aplikaci.
+					Autorem videa je
+					<strong>Jan Kollert</strong>.
+				</p>
+				<a target="_blank" href="https://youtu.be/EAM3LJiwOPI">
+					<i class="fas fa-play"></i>
+				</a>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- video area end -->
+<!-- team area start -->
+<section class="team-area ptb--100" id="school">
+	<div class="container">
+		<div class="section-title">
+			<h2>Zapojené školy</h2>
+			<p>Níže vypsané školy se úspěšně zapojily do systému Žolíků</p>
+		</div>
+		<div class="row justify-content-center">
+			<div class="col-lg-4 col-md-6 col-sm-8 col-12">
+				<div class="single-team">
+					<div class="team-thumb">
+						<img src="https://www.delta-skola.cz/static/delta/img/logo.png" alt="image">
+						<!-- <img src="@Url.Content("~/assets/img/team/team-img1.jpg")" alt="image"> -->
+					</div>
+					<h4>
+						DELTA - střední škola informatiky a ekonomie, s.r.o.
+						<br />
+						Pardubice
+					</h4>
+					<span>
+						Součástí od:
+						<strong>3. září 2018</strong>
+					</span>
+					<ul class="tst-social">
+						<li>
+							<a href="https://www.facebook.com/DELTA.SSIE/" target="_blank"
+							   title="Odkaz na Facebook stránku školy">
+								<i class="fab fa-facebook"></i>
+							</a>
+						</li>
+						<li>
+							<a href="https://www.delta-skola.cz/" target="_blank"
+							   title="Odkaz na webovou stránku školy">
+								<i class="fas fa-globe"></i>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<!-- team area end -->
+<!-- pricing area start -->
+<section class="pricing-area bg-gray ptb--100" id="pricing">
+	<div class="container">
+		<div class="section-title">
+			<h2>Ceník</h2>
+			<!-- <p>Nemo enim ipsam voluptatem quia voluptas sit</p> -->
+		</div>
+		<div class="row justify-content-center">
+			<div class="col-lg-4 col-md-6 col-sm-8 col-12">
+				<div class="single-price">
+					<div class="prc-head">
+						<span>Zdarma</span>
+						<h5>
+							0
+							<small>kč</small>/měsíc
+						</h5>
+					</div>
+					<div class="prc-text">
+						<p>
+							Vzhledem k tomu, že systém je vyvíjen v rámci maturitního projektu, je veškeré jeho
+							používání
+							<strong>bezpatné</strong> a naprosto
+							<strong>bez reklam</strong>.
+						</p>
+						<p>
+							Kterákoliv škola se může zažádat o přidání do systému. Máte-li zájem, použijte kontaktní
+							formulář níže.
+						</p>
+					</div>
+					<a href="#contact" class="scroll">Kontakt</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<!-- pricing area end -->
+<!-- call-action area start -->
+<section class="call-to-action ptb--100" id="download">
+	<div class="container">
+		<div class="section-title text-white">
+			<h2>Ke stažení</h2>
+			<p>Aplikace pro studenty ke stažení</p>
+		</div>
+		<div class="download-btns btn-area text-center">
+			<a href="#">
+				<span>
+					<i class="fab fa-android"></i>
+				</span>Android
+			</a>
+			<a href="#">
+				<span>
+					<i class="fab fa-windows"></i>
+				</span>Windows
+			</a>
+			<a href="#">
+				<span>
+					<i class="fab fa-apple"></i>
+				</span>Apple
+			</a>
+		</div>
+	</div>
+</section>
+<!-- call-action area end -->
+<!-- contact area start -->
+<section class="contact-area ptb--100" id="contact">
+	<div class="container">
+		<div class="section-title">
+			<h2>Kontakt</h2>
+			<p>Můžete nás kontaktovat pomocí formuláře, či na email níže</p>
+		</div>
+		<div class="row">
+			<div class="col-md-6 col-sm-6 col-xs-12">
+				<div class="contact-form">
+					<form action="#">
+						<input type="text" name="name" placeholder="Zadejte Vaše jméno">
+						<input type="text" name="email" placeholder="Zadejte Váš email">
+						<textarea name="msg" id="msg" placeholder="Zadejte zprávu..."></textarea>
+						<input type="submit" value="Odeslat" id="send">
+					</form>
+				</div>
+			</div>
+			<div class="col-md-6 col-sm-6 col-xs-12">
+				<div class="contact_info">
+					<div class="s-info">
+						<span>
+							<i class="fa fa-map-marker"></i>
+						</span>
+						<div class="meta-content">
+							<span>Ke Kamenci 151, Pardubice</span>
+							<span>530 03, Česko</span>
+						</div>
+					</div>
+					<br />
+					<div class="s-info">
+						<span>
+							<i class="fa fa-user"></i>
+						</span>
+						<div class="meta-content">
+							<span>Vývojář:</span>
+							<span>Jiří Falta</span>
+						</div>
+					</div>
+					<br />
+					<div class="s-info">
+						<span>
+							<i class="fa fa-paper-plane"></i>
+						</span>
+						<div class="meta-content">
+							<a href="mailto:podpora@zoliky.eu">
+								<span>
+									podpora@zoliky.eu
+								</span>
+							</a>
+						</div>
+					</div>
+					<div class="c-social">
+						<ul>
+							<li>
+								<a href="https://www.facebook.com/TheZoliky/" target="_blank"
+								   title="Odkaz na Facebook stránku Žolíků">
+									<i class="fab fa-facebook-f"></i>
+								</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<!-- contact area end -->
+<!-- footer area start -->
+<footer>
+	<div class="footer-area">
+		<div class="container">
+			<div class="row">
+				<div class="col links">
+					<h4>Důležité odkazy</h4>
+					<ul>
+						<li>
+							<a href="@Url.Action("Login")" alt="Odkaz na přihlášení">Přihlášení</a>
+						</li>
+						<li>
+							<a href="@Url.Action("Register")" alt="Odkaz na registraci">Registrace</a>
+						</li>
+						<li>
+							<a href="@Url.Action("Login")" alt="Odkaz na administraci">Administrace pro školy</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<small>Systém je vyvíjen jako maturitní projekt.</small>
+			<p>
+				<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+				Copyright &copy; @DateTime.Today.Year Všechna práva vyhrazena |
+				Šablona vyrobena s
+				<i class="far fa-heart" aria-hidden="true"></i>
+				<a href="https://colorlib.com" class="text-white" target="_blank">Colorlibem</a>
+				<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+			</p>
+		</div>
+	</div>
+</footer>
+<!-- footer area end -->
+
+@section scripts {
+	<script src="@Url.Content("~/Scripts/MainPage/jquery.slicknav.min.js")"></script>
+	<script src="@Url.Content("~/Scripts/MainPage/owl.carousel.min.js")"></script>
+	<script src="@Url.Content("~/Scripts/MainPage/counterup.js")"></script>
+	<script src="@Url.Content("~/Scripts/MainPage/jquery.waypoints.min.js")"></script>
+	<script src="@Url.Content("~/Scripts/MainPage/theme.js")"></script>
+}
