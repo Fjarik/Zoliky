@@ -1,4 +1,5 @@
-﻿@model ZolikyWeb.Models.Home.HomeModel
+﻿@using System.Web.Optimization
+@model ZolikyWeb.Models.Home.HomeModel
 @{
 	Layout = "~/Views/Shared/_Layout.cshtml";
 	ViewBag.Title = "Hlavní strana";
@@ -6,11 +7,12 @@
 
 @section styles {
 	<!-- CSS -->
-	<link rel="stylesheet" href="@Url.Content("~/Content/MainPage/owl.carousel.min.css")" />
-	<link rel="stylesheet" href="@Url.Content("~/Content/MainPage/slicknav.min.css")" />
-	<link rel="stylesheet" href="@Url.Content("~/Content/MainPage/typography.css")" />
-	<link rel="stylesheet" href="@Url.Content("~/Content/MainPage/style.css")" />
-	<link rel="stylesheet" href="@Url.Content("~/Content/MainPage/responsive.css")" />
+	@Styles.Render("~/bundles/css/mainpage")
+	@*<link rel="stylesheet" href="@Url.Content("~/Content/MainPage/owl.carousel.min.css")" />
+		<link rel="stylesheet" href="@Url.Content("~/Content/MainPage/slicknav.min.css")" />
+		<link rel="stylesheet" href="@Url.Content("~/Content/MainPage/typography.css")" />
+		<link rel="stylesheet" href="@Url.Content("~/Content/MainPage/style.css")" />
+		<link rel="stylesheet" href="@Url.Content("~/Content/MainPage/responsive.css")" />*@
 	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 	<!--[if lt IE 9]>
@@ -20,9 +22,9 @@
 }
 
 <!-- preloader area start -->
-<div id="preloader">
-	<div class="spinner"></div>
-</div>
+@*<div id="preloader">
+		<div class="spinner"></div>
+	</div>*@
 <!-- preloader area end -->
 <!-- header area start -->
 <header id="header">
@@ -266,8 +268,8 @@
 	</div>
 </section>
 <!-- feature area end -->
-<!-- achivement area start -->
-<div class="achivement-area ptb--100">
+<!-- achievement area start -->
+<div class="achievement-area ptb--100">
 	<div class="container">
 		<div class="row">
 			<div class="col-md-3 col-sm-6 col-12">
@@ -307,13 +309,13 @@
 						<i class="fas fa-trophy"></i>
 					</div>
 					<span class="counter">@Model.AchievementCount</span>
-					<h5>Splněných achivementů</h5>
+					<h5>Splněných achievementů</h5>
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
-<!-- achivement area end -->
+<!-- achievement area end -->
 <!-- screen slider area start -->
 <section class="screen-area ptb--100" id="screenshot">
 	<div class="screenshots-container">
@@ -324,25 +326,25 @@
 		<img class="screen-img" src="@Url.Content("~/Content/Images/Pages/Default/Laptop.png")" alt="mobile screen">
 		<div class="screen-slider owl-carousel">
 			<div class="single-screen">
-				<img src="@Url.Content("~/Content/Images/Pages/Default/Dashboard.png")" alt="Ukázka z pohledu studenta">
+				<img class="owl-lazy" data-src="@Url.Content("~/Content/Images/Pages/Default/Dashboard.png")" title="Ukázka z pohledu studenta">
 			</div>
 			<div class="single-screen">
-				<img src="@Url.Content("~/Content/Images/Pages/Default/Zolici.png")" alt="Ukázka z pohledu studenta">
+				<img class="owl-lazy" data-src="@Url.Content("~/Content/Images/Pages/Default/Zolici.png")" title="Ukázka z pohledu studenta">
 			</div>
 			<div class="single-screen">
-				<img src="@Url.Content("~/Content/Images/Pages/Default/Transactions.png")" alt="Ukázka z pohledu studenta">
+				<img class="owl-lazy" data-src="@Url.Content("~/Content/Images/Pages/Default/Transactions.png")" title="Ukázka z pohledu studenta">
 			</div>
 			<div class="single-screen">
-				<img src="@Url.Content("~/Content/Images/Pages/Default/Achievements.png")" alt="Ukázka z pohledu studenta">
+				<img class="owl-lazy" data-src="@Url.Content("~/Content/Images/Pages/Default/Achievements.png")" title="Ukázka z pohledu studenta">
 			</div>
 			<div class="single-screen">
-				<img src="@Url.Content("~/Content/Images/Pages/Default/News.png")" alt="Ukázka z pohledu studenta">
+				<img class="owl-lazy" data-src="@Url.Content("~/Content/Images/Pages/Default/News.png")" title="Ukázka z pohledu studenta">
 			</div>
 			<div class="single-screen">
-				<img src="@Url.Content("~/Content/Images/Pages/Default/Transfer.png")" alt="Ukázka z pohledu studenta">
+				<img class="owl-lazy" data-src="@Url.Content("~/Content/Images/Pages/Default/Transfer.png")" title="Ukázka z pohledu studenta">
 			</div>
 			<div class="single-screen">
-				<img src="@Url.Content("~/Content/Images/Pages/Default/SettingsPrivacy.png")" alt="Ukázka z pohledu studenta">
+				<img class="owl-lazy" data-src="@Url.Content("~/Content/Images/Pages/Default/SettingsPrivacy.png")" title="Ukázka z pohledu studenta">
 			</div>
 		</div>
 	</div>
@@ -454,17 +456,17 @@
 			<p>Aplikace pro studenty ke stažení</p>
 		</div>
 		<div class="download-btns btn-area text-center">
-			<a href="#">
+			<a href="@Url.Action("Android", "Mobile")" target="_blank" title="Odkaz na návod k instalaci na Android">
 				<span>
 					<i class="fab fa-android"></i>
 				</span>Android
 			</a>
-			<a href="#">
+			<a href="https://www.microsoft.com/store/apps/9NS2BP2HTCJK?ocid=badge" target="_blank" title="Odkaz na Windows store">
 				<span>
 					<i class="fab fa-windows"></i>
 				</span>Windows
 			</a>
-			<a href="#">
+			<a href="https://apps.apple.com/cz/app/%C5%BEol%C3%ADky/id1463194810" target="_blank" title="Odkaz na app store">
 				<span>
 					<i class="fab fa-apple"></i>
 				</span>Apple
@@ -576,9 +578,10 @@
 <!-- footer area end -->
 
 @section scripts {
-	<script src="@Url.Content("~/Scripts/MainPage/jquery.slicknav.min.js")"></script>
-	<script src="@Url.Content("~/Scripts/MainPage/owl.carousel.min.js")"></script>
-	<script src="@Url.Content("~/Scripts/MainPage/counterup.js")"></script>
-	<script src="@Url.Content("~/Scripts/MainPage/jquery.waypoints.min.js")"></script>
-	<script src="@Url.Content("~/Scripts/MainPage/theme.js")"></script>
+	@Scripts.Render("~/bundles/js/mainpage")
+	@*<script src="@Url.Content("~/Scripts/MainPage/jquery.slicknav.min.js")"></script>
+		<script src="@Url.Content("~/Scripts/MainPage/owl.carousel.min.js")"></script>
+		<script src="@Url.Content("~/Scripts/MainPage/counterup.js")"></script>
+		<script src="@Url.Content("~/Scripts/MainPage/jquery.waypoints.min.js")"></script>
+		<script src="@Url.Content("~/Scripts/MainPage/theme.js")"></script>*@
 }

@@ -16,5 +16,59 @@
     "inputFiles": [
       "Scripts/Dashboard/custom.js"
     ]
+  },
+  {
+    "outputFileName": "Content/MainPage/style.min.css",
+    "inputFiles": [
+      "Content/MainPage/style.css"
+    ]
+  },
+  {
+    "outputFileName": "Content/Main.min.css",
+    "inputFiles": [
+      "Content/Main.css"
+    ]
+  },
+  {
+    "outputFileName": "Content/themes/base/base.min.css",
+    "inputFiles": [
+      "Content/themes/base/base.css"
+    ]
+  },
+  {
+    "outputFileName": "Content/bootstrap-social.min.css",
+    "inputFiles": [
+      "Content/bootstrap-social.css"
+    ]
+  },
+  {
+    "outputFileName": "Content/MainPage/typography.min.css",
+    "inputFiles": [
+      "Content/MainPage/typography.css"
+    ]
+  },
+  {
+    "outputFileName": "Content/MainPage/responsive.min.css",
+    "inputFiles": [
+      "Content/MainPage/responsive.css"
+    ]
+  },
+  {
+    "outputFileName": "Scripts/main.min.js",
+    "inputFiles": [
+      "Scripts/main.js"
+    ]
+  },
+  {
+    "outputFileName": "Scripts/MainPage/counterup.min.js",
+    "inputFiles": [
+      "Scripts/MainPage/counterup.js"
+    ]
+  },
+  {
+    "outputFileName": "Scripts/MainPage/theme.min.js",
+    "inputFiles": [
+      "Scripts/MainPage/theme.js"
+    ]
   }
 ]

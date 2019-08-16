@@ -24,13 +24,13 @@ namespace ZolikyWeb
 
 			bundles.Add(new StyleBundle("~/bundles/css/bootstrap")
 
-						// Bootstrap
-						//.Include("~/Content/bootstrap.css")
-						//.Include("~/Content/bootstrap.min.css")
+							// Bootstrap
+							//.Include("~/Content/bootstrap.css")
+							//.Include("~/Content/bootstrap.min.css")
 
-						// Material Bootstrap
-						.Include("~/Content/material.css")
-						.Include("~/Content/material.min.css")
+							// Material Bootstrap
+							.Include("~/Content/material.css")
+						//.Include("~/Content/material.min.css")
 					   );
 
 #endregion
@@ -41,10 +41,10 @@ namespace ZolikyWeb
 						// JQuery Ui
 						.Include("~/Content/themes/base/jquery-ui.min.css")
 						//.Include("~/Content/themes/base/all.css")
-						.Include("~/Content/themes/base/theme.css")
+						.Include("~/Content/themes/base/theme.min.css")
 
 						// Bootstrap Social buttons
-						.Include("~/Content/bootstrap-social.css")
+						.Include("~/Content/bootstrap-social.min.css")
 
 						// Toastr
 						.Include("~/Content/toastr.min.css")
@@ -53,7 +53,19 @@ namespace ZolikyWeb
 						.Include("~/Content/lightbox.min.css", new CssRewriteUrlTransform())
 
 						// Own Styles
-						.Include("~/Content/Main.css")
+						.Include("~/Content/Main.min.css")
+					   );
+
+#endregion
+
+#region Main page
+
+			bundles.Add(new StyleBundle("~/bundles/css/mainpage")
+						.Include("~/Content/MainPage/owl.carousel.min.css")
+						.Include("~/Content/MainPage/slicknav.min.css")
+						.Include("~/Content/MainPage/typography.min.css")
+						.Include("~/Content/MainPage/style.min.css")
+						.Include("~/Content/MainPage/responsive.min.css")
 					   );
 
 #endregion
@@ -78,9 +90,9 @@ namespace ZolikyWeb
 		{
 #region JQuery
 
-			string cdn = "https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js";
+			string cdn = "https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.min.js";
 			bundles.Add(new ScriptBundle("~/bundles/js/jquery", cdn)
-							.Include("~/Scripts/jquery-3.3.1.min.js")
+							.Include("~/Scripts/jquery-3.4.1.min.js")
 					   );
 
 #endregion
@@ -124,7 +136,19 @@ namespace ZolikyWeb
 						.Include("~/Scripts/lightbox.min.js")
 
 						// Own scripts
-						.Include("~/Scripts/main.js")
+						.Include("~/Scripts/main.min.js")
+					   );
+
+#endregion
+
+#region Main page
+
+			bundles.Add(new ScriptBundle("~/bundles/js/mainpage")
+						.Include("~/Scripts/MainPage/jquery.slicknav.min.js")
+						.Include("~/Scripts/MainPage/owl.carousel.min.js")
+						.Include("~/Scripts/MainPage/counterup.min.js")
+						.Include("~/Scripts/MainPage/jquery.waypoints.min.js")
+						.Include("~/Scripts/MainPage/theme.min.js")
 					   );
 
 #endregion

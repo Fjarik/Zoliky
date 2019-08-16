@@ -294,7 +294,6 @@
     <Content Include="assets\img\client\client-img1.png" />
     <Content Include="assets\img\client\client-img2.png" />
     <Content Include="assets\img\client\client-img3.png" />
-    <Content Include="assets\img\icon\favicon.ico" />
     <Content Include="assets\img\icon\feature\1.png" />
     <Content Include="assets\img\icon\feature\2.png" />
     <Content Include="assets\img\icon\feature\3.png" />
@@ -386,6 +385,9 @@
     <Content Include="Content\bootstrap-reboot.css" />
     <Content Include="Content\bootstrap-reboot.min.css" />
     <Content Include="Content\bootstrap-social.css" />
+    <Content Include="Content\bootstrap-social.min.css">
+      <DependentUpon>bootstrap-social.css</DependentUpon>
+    </Content>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\dashboard.css" />
@@ -943,13 +945,25 @@
     <Content Include="Content\Lootboxes\Sound\chest-anim.m4a" />
     <Content Include="Content\Lootboxes\Sound\choose-reward.m4a" />
     <Content Include="Content\Main.css" />
+    <Content Include="Content\Main.min.css">
+      <DependentUpon>Main.css</DependentUpon>
+    </Content>
     <Content Include="Content\MainPage\font-awesome.min.css" />
     <Content Include="Content\MainPage\jquery-ui.css" />
     <Content Include="Content\MainPage\owl.carousel.min.css" />
     <Content Include="Content\MainPage\responsive.css" />
+    <Content Include="Content\MainPage\responsive.min.css">
+      <DependentUpon>responsive.css</DependentUpon>
+    </Content>
     <Content Include="Content\MainPage\slicknav.min.css" />
     <Content Include="Content\MainPage\style.css" />
+    <Content Include="Content\MainPage\style.min.css">
+      <DependentUpon>style.css</DependentUpon>
+    </Content>
     <Content Include="Content\MainPage\typography.css" />
+    <Content Include="Content\MainPage\typography.min.css">
+      <DependentUpon>typography.css</DependentUpon>
+    </Content>
     <Content Include="Content\material.css" />
     <Content Include="Content\material.min.css" />
     <Content Include="Content\new-age.css" />
@@ -958,6 +972,9 @@
     <Content Include="Content\themes\base\all.css" />
     <Content Include="Content\themes\base\autocomplete.css" />
     <Content Include="Content\themes\base\base.css" />
+    <Content Include="Content\themes\base\base.min.css">
+      <DependentUpon>base.css</DependentUpon>
+    </Content>
     <Content Include="Content\themes\base\button.css" />
     <Content Include="Content\themes\base\core.css" />
     <Content Include="Content\themes\base\datepicker.css" />
@@ -1067,14 +1084,25 @@
     <Content Include="Areas\App\Views\Shared\_LogoutPartial.cshtml" />
     <Content Include="Areas\App\Views\Account\Settings.cshtml" />
     <Content Include="Areas\App\Views\Account\SettingsPartial\_ExternalLogin.cshtml" />
+    <None Include="Scripts\jquery-3.4.1.intellisense.js" />
+    <Content Include="Scripts\jquery-3.4.1.js" />
+    <Content Include="Scripts\jquery-3.4.1.min.js" />
+    <Content Include="Scripts\jquery-3.4.1.slim.js" />
+    <Content Include="Scripts\jquery-3.4.1.slim.min.js" />
+    <Content Include="Scripts\main.min.js">
+      <DependentUpon>main.js</DependentUpon>
+    </Content>
     <Content Include="Scripts\MainPage\counterup.js" />
-    <Content Include="Scripts\MainPage\jquery-3.2.0.min.js" />
-    <Content Include="Scripts\MainPage\jquery-ui.js" />
+    <Content Include="Scripts\MainPage\counterup.min.js">
+      <DependentUpon>counterup.js</DependentUpon>
+    </Content>
     <Content Include="Scripts\MainPage\jquery.slicknav.min.js" />
     <Content Include="Scripts\MainPage\jquery.waypoints.min.js" />
     <Content Include="Scripts\MainPage\owl.carousel.min.js" />
     <Content Include="Scripts\MainPage\theme.js" />
-    <Content Include="Scripts\MainPage\warm-canvas.js" />
+    <Content Include="Scripts\MainPage\theme.min.js">
+      <DependentUpon>theme.js</DependentUpon>
+    </Content>
     <Content Include="Views\Shared\Dashboard\_LayoutDashboard.cshtml" />
     <Content Include="Areas\App\images\background\Thumbs.db" />
     <Content Include="Areas\App\images\big\Thumbs.db" />
@@ -1324,13 +1352,10 @@
     <Content Include="Areas\Admin\Views\Student\Dashboard.cshtml" />
     <Content Include="Areas\Admin\Views\Student\Edit.cshtml" />
     <None Include="bundleconfig.json" />
-    <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\fa-all.js" />
     <Content Include="Scripts\fa-all.min.js" />
-    <Content Include="Scripts\jquery-3.3.1.js" />
-    <Content Include="Scripts\jquery-3.3.1.min.js" />
-    <Content Include="Scripts\jquery-3.3.1.slim.js" />
-    <Content Include="Scripts\jquery-3.3.1.slim.min.js" />
+    <Content Include="Scripts\jquery-3.4.1.slim.min.map" />
+    <Content Include="Scripts\jquery-3.4.1.min.map" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery-ui-1.12.1.js" />
     <Content Include="Scripts\jquery-ui-1.12.1.min.js" />
@@ -1593,8 +1618,6 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_LayoutWithoutStyles.cshtml" />
     <Content Include="Views\Home\IndexOld.cshtml" />
-    <Content Include="Scripts\jquery-3.3.1.slim.min.map" />
-    <Content Include="Scripts\jquery-3.3.1.min.map" />
     <Content Include="Views\Shared\_ToastrPartial.cshtml" />
     <Content Include="Scripts\material.js.map" />
     <Content Include="Scripts\material.min.js.map" />
@@ -1637,7 +1660,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="fonts\" />
-    <Folder Include="Scripts\NewFolder1\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DataAccess\DataAccess.csproj">

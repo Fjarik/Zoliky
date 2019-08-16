@@ -6,13 +6,13 @@
 	preloader
 	--------------------- */
 
-	$(window).on("load",
-		() => {
-			$("#preloader").delay(600).fadeOut("slow",
-				function() {
-					$(this).remove();
-				});
-		});
+	//$(window).on("load",
+	//	() => {
+	//		$("#preloader").fadeOut("fast",
+	//			() => {
+	//				$(this).remove();
+	//			});
+	//	});
 
 	//=========================
 	//  Active current menu while scrolling
@@ -109,6 +109,7 @@
 			//smartSpeed: 1000,
 			//fluidSpeed: 500,
 			autoplaySpeed: 1000,
+			lazyLoad: true,
 			dots: true,
 			autoplay: true,
 			center: true,
@@ -136,98 +137,6 @@
 
 	screenSlider();
 
-	/*---------------------
-	client carousel
-	--------------------- */
-	function clientCarousel() {
-		const owl = $(".client-carousel");
-		owl.owlCarousel({
-			loop: true,
-			margin: 60,
-			navigation: false,
-			items: 4,
-			smartSpeed: 1000,
-			dots: false,
-			autoplay: true,
-			autoplayTimeout: 5000,
-			dotsEach: true,
-			responsive: {
-				0: {
-					items: 2
-				},
-				480: {
-					items: 3
-				},
-				760: {
-					items: 4
-				},
-				1080: {
-					items: 4
-				},
-				1920: {
-					items: 4
-				}
-			}
-		});
-	}
-
-	clientCarousel();
-
-	/*---------------------
-	testimonial slider
-	--------------------- */
-	function testimonialSlider() {
-		const owl = $(".testimonial-slider");
-		owl.owlCarousel({
-			loop: true,
-			margin: 20,
-			navigation: false,
-			items: 1,
-			smartSpeed: 1000,
-			dots: true,
-			autoplay: false,
-			autoplayTimeout: 2000,
-			dotsEach: true,
-			responsive: {
-				0: {
-					items: 1
-				},
-				480: {
-					items: 1
-				},
-				760: {
-					items: 1
-				},
-				1080: {
-					items: 2
-				},
-				1920: {
-					items: 2
-				}
-			}
-		});
-	}
-
-	testimonialSlider();
-
-	/*-----------------------------
-	Warm Canvas activation
-	------------------------------- */
-	if ($(".warm-canvas").length) {
-		$(".warm-canvas").glassyWorms({
-			colors: ["#fff", "#c2c2c2"],
-			useStyles: true,
-			numParticles: 500,
-			tailLength: 20,
-			maxForce: 8,
-			friction: 0.75,
-			gravity: 9.81,
-			interval: 3
-			// colors: ['#000'],
-			// element: $('<canvas class="worms"></canvas>')[0]
-		});
-	}
-
 	/*------------------------------
 	     counter
 	------------------------------ */
@@ -236,43 +145,5 @@
 		delay: 20,
 		time: 2000
 	});
-
-	/*-----------------------------
-	Background Paralax activation
-	------------------------------- */
-	function bgParallax() {
-		if ($(".parallax").length) {
-			$(".parallax").each(function() {
-				const height = $(this).position().top;
-				const resize = height - $(window).scrollTop();
-				const parallaxSpeed = $(this).data("speed");
-				const doParallax = -(resize / parallaxSpeed);
-				const positionValue = doParallax + "px";
-				const img = $(this).data("bg-image");
-
-				$(this).css({
-					backgroundImage: "url(" + img + ")",
-					backgroundPosition: "50%" + positionValue,
-					backgroundSize: "cover",
-					backgroundRepeat: "no-repeat"
-				});
-
-				if (window.innerWidth < 768) {
-					$(this).css({
-						backgroundPosition: "center center"
-					});
-				}
-			});
-		}
-	}
-
-	bgParallax();
-
-	$(window).on("scroll",
-		() => {
-			bgParallax();
-		}
-	);
-
 
 }(jQuery));

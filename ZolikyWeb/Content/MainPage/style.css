@@ -46,8 +46,7 @@
 /*@import url('https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900');*/
 
 :root {
-	--blue-color: 9,   146,   255;
-	--main-color: rgb(var(--blue-color));
+	--main-color: rgb(9, 146, 255);
 }
 
 .clear {
@@ -587,19 +586,19 @@ END Feature Area
 2.6 Achivement Area
 ===========================*/
 
-.achivement-area {
+.achievement-area {
 	position: relative;
 	background: url(../../assets/img/bg/ach-bg-img.jpg) center center/cover no-repeat;
 }
 
-.achivement-area:before {
+.achievement-area:before {
 	content: '';
 	position: absolute;
 	left: 0;
 	top: 0;
 	height: 100%;
 	width: 100%;
-	background-color: rgba(var(--blue-color), 0.9);
+	background-color: rgba(9, 146, 255, 0.9);
 }
 
 .ach-single {
@@ -650,10 +649,10 @@ END Achivement Area
 
 .screen-area img.screen-img {
 	position: absolute;
-	left: 47.9%;
-	bottom: 190px;
-	width: 1180px;
-	height: 409px;
+	left: 50%;
+	bottom: 200px;
+	width: 737px;
+	height: 400px;
 	z-index: 111;
 	transform: translateX(-50%);
 }
@@ -795,7 +794,7 @@ END Testimonial Area
 	top: 0;
 	height: 100%;
 	width: 100%;
-	background-color: rgba(var(--blue-color), 0.9);
+	background-color: rgba(9, 146, 255, 0.9);
 }
 
 .video-area h2 {
@@ -1047,7 +1046,7 @@ END Pricing Area
 	height: 100%;
 	width: 100%;
 	z-index: -1;
-	background-color: rgba(var(--blue-color), 0.9);
+	background-color: rgba(9, 146, 255, 0.9);
 }
 
 .download-btns a {
