@@ -664,6 +664,7 @@ END Achivement Area
 	height: 400px;
 	z-index: 111;
 	transform: translateX(-50%);
+	pointer-events: none;
 }
 
 .screen-slider {
