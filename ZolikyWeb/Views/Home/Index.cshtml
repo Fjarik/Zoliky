@@ -1,4 +1,5 @@
 ﻿@using System.Web.Optimization
+@using hbehr.recaptcha
 @model ZolikyWeb.Models.Home.HomeModel
 @{
 	Layout = "~/Views/Shared/_Layout.cshtml";
@@ -16,11 +17,6 @@
 	<![endif]-->
 }
 
-<!-- preloader area start -->
-@*<div id="preloader">
-		<div class="spinner"></div>
-	</div>*@
-<!-- preloader area end -->
 <!-- header area start -->
 <header id="header">
 	<div class="header-area">
@@ -125,8 +121,7 @@
 					<img src="@Url.Content("~/assets/img/service/service-img3.png")" alt="service image">
 					<h2>Jednoduché darování</h2>
 					<p>
-						Vyberte žolíka, vyberte studenta, *
-						<strong>Odeslat</strong>* A je to!
+						Vyberte žolíka, vyberte studenta, *<strong>Odeslat</strong>* A je to!
 					</p>
 				</div>
 			</div>
@@ -252,7 +247,7 @@
 						<div class="meta-content">
 							<h2>Stahování není nutné</h2>
 							<p>
-								Systém lze používat pouze z webového prohlížeče. I tak jsou dostupné
+								Systém lze používat pouze z webového prohlížeče. I přesto jsou dostupné
 								<a href="#download">aplikace pro mobily i PC</a>.
 							</p>
 						</div>
@@ -388,7 +383,7 @@
 					</span>
 					<ul class="tst-social">
 						<li>
-							<a href="https://www.facebook.com/DELTA.SSIE/" target="_blank" rel="noreferrer"title="Odkaz na Facebook stránku školy">
+							<a href="https://www.facebook.com/DELTA.SSIE/" target="_blank" rel="noreferrer" title="Odkaz na Facebook stránku školy">
 								<i class="fab fa-facebook"></i>
 							</a>
 						</li>
@@ -415,10 +410,9 @@
 			<div class="col-lg-4 col-md-6 col-sm-8 col-12">
 				<div class="single-price">
 					<div class="prc-head">
-						<span>Zdarma</span>
+						<span>All in One</span>
 						<h5>
-							0
-							<small>kč</small>/měsíc
+							Zdarma
 						</h5>
 					</div>
 					<div class="prc-text">
@@ -475,17 +469,12 @@
 			<p>Můžete nás kontaktovat pomocí formuláře, či na email níže</p>
 		</div>
 		<div class="row">
-			<div class="col-md-6 col-sm-6 col-xs-12">
+			<div class="col-md-6 col-12">
 				<div class="contact-form">
-					<form action="#">
-						<input type="text" name="name" placeholder="Zadejte Vaše jméno">
-						<input type="text" name="email" placeholder="Zadejte Váš email">
-						<textarea name="msg" id="msg" placeholder="Zadejte zprávu..."></textarea>
-						<input type="submit" value="Odeslat" id="send">
-					</form>
+					@Html.Partial("_ContactUsPartial", Model.ContactUs)
 				</div>
 			</div>
-			<div class="col-md-6 col-sm-6 col-xs-12">
+			<div class="col-md-6 col-12">
 				<div class="contact_info">
 					<div class="s-info">
 						<span>
@@ -569,5 +558,6 @@
 <!-- footer area end -->
 
 @section scripts {
+	@ReCaptcha.GetCaptchaScript(ReCaptchaLanguage.Czech)
 	@Scripts.Render("~/bundles/js/mainpage")
 }

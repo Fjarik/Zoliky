@@ -6,13 +6,14 @@
 	preloader
 	--------------------- */
 
-	//$(window).on("load",
-	//	() => {
-	//		$("#preloader").fadeOut("fast",
-	//			() => {
-	//				$(this).remove();
-	//			});
-	//	});
+	$(window).on("load",
+		() => {
+			$(".contact-form input, .contact-form textarea").removeClass("form-control");
+			//$("#preloader").fadeOut("fast",
+			//	() => {
+			//		$(this).remove();
+			//	});
+		});
 
 	//=========================
 	//  Active current menu while scrolling

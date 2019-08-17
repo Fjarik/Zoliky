@@ -49,7 +49,7 @@ namespace ZolikyWeb.Models.Account
 		[Required(ErrorMessage = "Musíte vyplnit křestní jméno")]
 		[PlaceHolder(Text = "Zadejte křestní jméno")]
 		[StringLength(50, MinimumLength = 2, ErrorMessage = "Křestní jméno musí být dlouhé minimálně {2} znaky")]
-		[RegularExpression(Ext.NameRegEx, ErrorMessage = "Jméo není ve správném formátu")]
+		[RegularExpression(Ext.NameRegEx, ErrorMessage = "Jméno není ve správném formátu")]
 		public string Firstname { get; set; }
 
 		[Display(Name = "Příjmení")]
@@ -57,7 +57,7 @@ namespace ZolikyWeb.Models.Account
 		[Required(ErrorMessage = "Musíte vyplnit příjmení")]
 		[PlaceHolder(Text = "Zadejte příjmení")]
 		[StringLength(50, MinimumLength = 3, ErrorMessage = "Příjmení musí být dlouhé minimálně {2} znaky")]
-		[RegularExpression(Ext.NameRegEx, ErrorMessage = "Jméo není ve správném formátu")]
+		[RegularExpression(Ext.NameRegEx, ErrorMessage = "Příjmení není ve správném formátu")]
 		public string Lastname { get; set; }
 
 		[Display(Name = "Pohlaví")]

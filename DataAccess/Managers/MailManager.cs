@@ -10,6 +10,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using SharedLibrary.Enums;
 using SharedLibrary.Interfaces;
+using SharedLibrary.Shared;
 
 namespace DataAccess.Managers
 {
@@ -87,6 +88,25 @@ namespace DataAccess.Managers
 #endregion
 
 #region Templates
+
+		public async Task<bool> ContactUsAsync(string name, string from, string message)
+		{
+			if (Methods.AreNullOrWhiteSpace(name, from, message)) {
+				return false;
+			}
+			var body = $"Jméno: {name} <br/>";
+			body += $"Kontaktní email: <a href='mailto:{from}'>{from}</a> <br/>";
+			body += $"Zpráva: {message}";
+			var email = new MailMessage {
+				From = _from,
+				Subject = "[Žolíky] - Kontaktujte nás",
+				Body = body,
+				IsBodyHtml = true,
+				Priority = MailPriority.High
+			};
+			email.To.Add(new MailAddress(_adminEmail));
+			return await SendAsync(email);
+		}
 
 		public async Task<bool> ActivateAccountAsync(IUser to, string url)
 		{
@@ -329,7 +349,7 @@ namespace DataAccess.Managers
 		}
 
 		public Task<bool> SendToAdminAsync([NotNull] string subject, [NotNull] string body,
-												 MailPriority priority = MailPriority.Normal)
+										   MailPriority priority = MailPriority.Normal)
 		{
 			return SendAsync(subject, body, _adminAddress, priority);
 		}

@@ -11,5 +11,12 @@ namespace ZolikyWeb.Models.Home
 		public int SchoolCount { get; set; }
 		public int ZolikCount { get; set; }
 		public int AchievementCount { get; set; }
+
+		public ContactUsModel ContactUs { get; set; }
+
+		public HomeModel()
+		{
+			this.ContactUs = new ContactUsModel();
+		}
 	}
 }

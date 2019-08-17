@@ -281,19 +281,8 @@
     <Content Include="assets\images\tooltip\tooltip1.svg" />
     <Content Include="assets\images\tooltip\tooltip2.svg" />
     <Content Include="assets\images\tooltip\tooltip3.svg" />
-    <Content Include="assets\img\about\abt-left-img.png" />
-    <Content Include="assets\img\author\tst-author1.jpg" />
-    <Content Include="assets\img\author\tst-author2.jpg" />
     <Content Include="assets\img\bg\ach-bg-img.jpg" />
     <Content Include="assets\img\bg\slider-bg.jpg" />
-    <Content Include="assets\img\blog\blog-big-img.jpg" />
-    <Content Include="assets\img\blog\blog-post-img.jpg" />
-    <Content Include="assets\img\blog\blog-post-img1.jpg" />
-    <Content Include="assets\img\blog\blog-post-img2.jpg" />
-    <Content Include="assets\img\client\client-img.png" />
-    <Content Include="assets\img\client\client-img1.png" />
-    <Content Include="assets\img\client\client-img2.png" />
-    <Content Include="assets\img\client\client-img3.png" />
     <Content Include="assets\img\icon\feature\1.png" />
     <Content Include="assets\img\icon\feature\2.png" />
     <Content Include="assets\img\icon\feature\3.png" />
@@ -301,27 +290,9 @@
     <Content Include="assets\img\icon\feature\5.png" />
     <Content Include="assets\img\icon\feature\6.png" />
     <Content Include="assets\img\icon\logo.png" />
-    <Content Include="assets\img\mobile\ft-screen-img.png" />
-    <Content Include="assets\img\mobile\screen-slider.png" />
-    <Content Include="assets\img\mobile\screen-slider\screen1.jpg" />
-    <Content Include="assets\img\mobile\screen-slider\screen2.jpg" />
-    <Content Include="assets\img\mobile\screen-slider\screen3.jpg" />
-    <Content Include="assets\img\mobile\screen-slider\screen4.jpg" />
-    <Content Include="assets\img\mobile\screen-slider\screen5.jpg" />
-    <Content Include="assets\img\mobile\slider-left-img.png" />
     <Content Include="assets\img\service\service-img1.png" />
     <Content Include="assets\img\service\service-img2.png" />
     <Content Include="assets\img\service\service-img3.png" />
-    <Content Include="assets\img\sidebar\sidebar-thumb1.jpg" />
-    <Content Include="assets\img\sidebar\sidebar-thumb2.jpg" />
-    <Content Include="assets\img\sidebar\sidebar-thumb3.jpg" />
-    <Content Include="assets\img\sidebar\sidebar-thumb4.jpg" />
-    <Content Include="assets\img\sidebar\sidebar-thumb5.jpg" />
-    <Content Include="assets\img\sidebar\sidebar-thumb6.jpg" />
-    <Content Include="assets\img\team\team-img1.jpg" />
-    <Content Include="assets\img\team\team-img2.jpg" />
-    <Content Include="assets\img\team\team-img3.jpg" />
-    <Content Include="assets\img\team\team-img4.jpg" />
     <Content Include="assets\plugins\c3-master\c3.min.css" />
     <Content Include="assets\plugins\c3-master\c3.min.js" />
     <Content Include="assets\plugins\d3\d3.js" />
@@ -1607,6 +1578,7 @@
     <Compile Include="Models\Account\RegisterModel.cs" />
     <Compile Include="Models\Account\StudentsDrop.cs" />
     <Compile Include="Models\Base\OwnController.cs" />
+    <Compile Include="Models\Home\ContactUsModel.cs" />
     <Compile Include="Models\Home\HomeModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -1664,6 +1636,7 @@
     <Content Include="Views\Account\RegisterSuccess.cshtml" />
     <Content Include="Views\Shared\Dashboard\_LayoutMenuBase.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Home\_ContactUsPartial.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

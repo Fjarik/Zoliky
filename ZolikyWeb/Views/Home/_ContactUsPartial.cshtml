@@ -1,0 +1,25 @@
+﻿@using hbehr.recaptcha
+@using ZolikyWeb.Tools
+@model ZolikyWeb.Models.Home.ContactUsModel
+
+@using (Html.BeginForm("ContactUs", "Home", new {Area = ""}, FormMethod.Post)) {
+	@Html.AntiForgeryToken()
+
+	@Html.MaterialTextBoxFor(x => x.Name, 1)
+	@Html.ValidationMessageFor(x => x.Name)
+
+	@Html.MaterialTextBoxFor(x => x.Email, 2, new Dictionary<string, object> {{"type", "email"}})
+	@Html.ValidationMessageFor(x => x.Email)
+
+	@Html.MaterialTextAreaFor(x => x.Message, 3, new Dictionary<string, object> {{"rows", 1}})
+	@Html.ValidationMessageFor(x => x.Message)
+
+	<div class="row align-items-center mt--20">
+		<div class="col">
+			@ReCaptcha.GetCaptcha()
+		</div>
+		<div class="col">
+			<button type="submit" tabindex="5">Odeslat</button>
+		</div>
+	</div>
+}
