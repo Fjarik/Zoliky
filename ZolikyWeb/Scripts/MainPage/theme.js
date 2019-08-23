@@ -9,22 +9,15 @@
 	$(window).on("load",
 		() => {
 			$(".contact-form input, .contact-form textarea").removeClass("form-control");
-			//$("#preloader").fadeOut("fast",
-			//	() => {
-			//		$(this).remove();
-			//	});
 		});
 
 	//=========================
 	//  Active current menu while scrolling
 	//=========================
 
-	//ACTIVE CURRENT MENU WHILE SCROLLING
-
 	$(window).on("scroll",
 		() => {
 			activeMenuItem($(".nav-menu"));
-
 		}
 	);
 
@@ -94,7 +87,8 @@
 	// Slick Nav Activation
 	//=========================
 	$(".nav-menu > ul").slicknav({
-		'prependTo': ".mobile_menu"
+		prependTo: ".mobile_menu",
+		closeOnClick: true
 	});
 
 	/*---------------------

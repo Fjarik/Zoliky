@@ -20,6 +20,10 @@
 		width: 409px;
 		height: 223px;
 	}
+
+	.main-menu nav ul li:hover a:before, .main-menu nav ul li.active a:before {
+		width: 100%;
+	}
 }
 
 
