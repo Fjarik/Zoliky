@@ -70,6 +70,11 @@ namespace ZolikyWeb.Models.Account
 		[Range(0, maximum: int.MaxValue, ErrorMessage = "Musíte vybrat platnou třídu")]
 		public int ClassId { get; set; } = -1;
 
+		[Display(Name = "Škola")]
+		[Required(ErrorMessage = "Musíte vybrat školu")]
+		[Range(1, maximum: int.MaxValue, ErrorMessage = "Musíte vybrat platnou školu")]
+		public int SchoolId { get; set; } = -1;
+
 #endregion
 
 #region 3. step
@@ -104,7 +109,9 @@ namespace ZolikyWeb.Models.Account
 
 		public IEnumerable<Sex> Genders = Enum.GetValues(typeof(Sex)).Cast<Sex>().SkipLast(1);
 
-		public IList<Class> Classes { get; set; }
+		public IList<Class> Classes { get; set; } = new List<Class>();
+
+		public IList<School> Schools { get; set; }
 
 		public IEnumerable<SelectListItem> GenderSelect => this.Genders.Select(x => new SelectListItem() {
 																   Value = ((int) x).ToString(),
@@ -138,6 +145,19 @@ namespace ZolikyWeb.Models.Account
 																  Selected = -1 == ClassId
 															  });
 
+		public IEnumerable<SelectListItem> SchoolSelect => this.Schools.Select(x => new SelectListItem() {
+																   Value = (x.ID).ToString(),
+																   Text = x.Name,
+																   Disabled = false,
+																   Selected = (x.ID) == SchoolId
+															   })
+															   .Prepend(new SelectListItem() {
+																   Value = "-1",
+																   Text = "Vyberte školu",
+																   Disabled = true,
+																   Selected = -1 == SchoolId
+															   });
+
 #endregion
 
 #region Other
@@ -154,8 +174,9 @@ namespace ZolikyWeb.Models.Account
 							   !string.IsNullOrWhiteSpace(Username) &&
 							   Regex.Match(Username, Ext.UsernameRegEx).Success &&
 							   Gender >= 0 &&
-							   Enum.IsDefined(typeof(Sex), (byte)Gender) &&
+							   Enum.IsDefined(typeof(Sex), (byte) Gender) &&
 							   ClassId >= 0 &&
+							   SchoolId > 0 &&
 							   TOS &&
 							   PP;
 

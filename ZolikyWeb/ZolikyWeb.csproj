@@ -1647,6 +1647,7 @@
     <Content Include="Views\Shared\Dashboard\_LayoutMenuBase.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\_ContactUsPartial.cshtml" />
+    <Content Include="Views\Account\GetClasses.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

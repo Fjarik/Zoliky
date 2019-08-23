@@ -70,7 +70,7 @@ namespace DataAccess.Managers
 
 #region Own Methods
 
-		public Task<List<Class>> GetAllAsync(int schoolId, bool onlyActive = false)
+		private IOrderedQueryable<Class> GetAllQuery(int schoolId, bool onlyActive = false)
 		{
 			var query = _ctx.Classes
 							.Where(x => x.SchoolID == schoolId);
@@ -80,8 +80,24 @@ namespace DataAccess.Managers
 			}
 			return query.OrderBy(x => x.Name)
 						.ThenByDescending(x => x.Since.Year)
-						.ThenBy(x => x.Enabled)
-						.ToListAsync();
+						.ThenBy(x => x.Enabled);
+		}
+
+		public Task<List<Class>> GetAllAsync(int schoolId, bool onlyActive = false)
+		{
+			return GetAllQuery(schoolId, onlyActive).ToListAsync();
+		}
+
+		public async Task<List<Tuple<int, string>>> GetClassJsonAsync(int schoolId, bool onlyActive = false)
+		{
+			var classes = await GetAllQuery(schoolId, onlyActive)
+								.Select(x => new {
+									x.ID,
+									x.Name
+								})
+								.ToListAsync();
+			return classes.Select(x => new Tuple<int, string>(x.ID, x.Name))
+						  .ToList();
 		}
 
 		public Task<List<string>> GetStudentNamesAsync(int classId, bool onlyActive = true)

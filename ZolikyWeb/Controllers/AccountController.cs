@@ -259,10 +259,14 @@ namespace ZolikyWeb.Controllers
 				return RedirectToLogin();
 			}
 
-			var cMgr = this.GetManager<ClassManager>();
-			var classes = await cMgr.GetAllAsync();
+			//var cMgr = this.GetManager<ClassManager>();
+			var schoolMgr = this.GetManager<SchoolManager>();
+
+			//var classes = await cMgr.GetAllAsync();
+			var schools = await schoolMgr.GetAllAsync();
 			var model = new RegisterModel {
-				Classes = classes
+				//Classes = classes,
+				Schools = schools
 			};
 			return View(model);
 		}
@@ -274,8 +278,11 @@ namespace ZolikyWeb.Controllers
 			if (m == null) {
 				m = new RegisterModel();
 			}
-			var cMgr = this.GetManager<ClassManager>();
-			m.Classes = await cMgr.GetAllAsync();
+			//var cMgr = this.GetManager<ClassManager>();
+			var schoolMgr = this.GetManager<SchoolManager>();
+
+			//m.Classes = await cMgr.GetAllAsync();
+			m.Schools = await schoolMgr.GetAllAsync();
 			if (!ModelState.IsValid) {
 				m.ClearPasswords();
 				this.AddErrorToastMessage("Nebyly zadány platné údaje");
@@ -304,7 +311,7 @@ namespace ZolikyWeb.Controllers
 											  m.Username,
 											  (byte) m.Gender,
 											  classId,
-											  1,
+											  m.SchoolId,
 											  m.Newsletter,
 											  m.FutureNews,
 											  this.Request.GetIPAddress(),
@@ -531,7 +538,7 @@ namespace ZolikyWeb.Controllers
 
 #endregion
 
-#region Get user info
+#region Get info
 
 		[Authorize]
 		[OutputCache(Duration = int.MaxValue, VaryByParam = "userId;c")]
@@ -575,7 +582,23 @@ namespace ZolikyWeb.Controllers
 			return PartialView(model);
 		}
 
-		#endregion
+		[AllowAnonymous]
+		[HttpGet]
+		[OutputCache(Duration = int.MaxValue, VaryByParam = "schoolId;c")]
+		public async Task<ActionResult> GetClasses(int schoolId)
+		{
+			var cMgr = this.GetManager<ClassManager>();
+			var classes = await cMgr.GetClassJsonAsync(schoolId, true);
+			var model = classes.Select(x => new SelectListItem() {
+								   Value = x.Item1.ToString(),
+								   Text = x.Item2,
+								   Selected = false
+							   });
+
+			return PartialView(model);
+		}
+
+#endregion
 
 #region WakeUp
 
@@ -586,6 +609,6 @@ namespace ZolikyWeb.Controllers
 
 #endregion
 
-		#endregion
+#endregion
 	}
 }

@@ -67,9 +67,19 @@
 					@Html.ValidationMessageFor(x => x.Gender)
 				</div>
 				<div class="mb-4">
+					@Html.NoSelectLaberFor(x => x.SchoolId)
+
+					@Html.DropDownListFor(x => x.SchoolId, Model.SchoolSelect, new {@class = "form-control", tabindex = 7})
+
+					@Html.ValidationMessageFor(x => x.SchoolId)
+				</div>
+				<div class="linear-activity" title="Probíhá načítání" data-toggle="tooltip" style="display: none;">
+					<div class="indeterminate"></div>
+				</div>
+				<div class="mb-4" id="classContainer" style="display: none;">
 					@Html.NoSelectLaberFor(x => x.ClassId)
 
-					@Html.DropDownListFor(x => x.ClassId, Model.ClassSelect, new {@class = "form-control", tabindex = 6})
+					@Html.DropDownListFor(x => x.ClassId, Model.ClassSelect, new {@class = "form-control", tabindex = 8})
 
 					@Html.ValidationMessageFor(x => x.ClassId)
 				</div>
@@ -81,7 +91,7 @@
 
 					@Html.NoSelectLaberFor(x => x.Username)
 					<div class="input-group mb-2">
-						@Html.MaterialTextBoxFor(x => x.Username, 8, "username")
+						@Html.MaterialTextBoxFor(x => x.Username, 9, "username")
 						<div class="input-group-append">
 							<div class="input-group-text">
 								<button class="btn btn-flat" type="button" id="btn-generate">
@@ -101,7 +111,7 @@
 				<div class="row">
 					<div class="col-12 col-md-6 mb-4">
 						<div class="custom-control custom-checkbox">
-							@Html.CheckBoxFor(x => x.TOS, new {@class = "custom-control-input", tabindex = 9})
+							@Html.CheckBoxFor(x => x.TOS, new {@class = "custom-control-input", tabindex = 10})
 
 							@Html.NoSelectLaberFor(x => x.TOS, new Dictionary<string, object> {{"class", "custom-control-label"}})
 							<br />
@@ -110,7 +120,7 @@
 					</div>
 					<div class="col-12 col-md-6 mb-4">
 						<div class="custom-control custom-checkbox">
-							@Html.CheckBoxFor(x => x.Newsletter, new {@class = "custom-control-input", tabindex = 10})
+							@Html.CheckBoxFor(x => x.Newsletter, new {@class = "custom-control-input", tabindex = 11})
 
 							@Html.NoSelectLaberFor(x => x.Newsletter, new Dictionary<string, object> {{"class", "custom-control-label"}})
 
@@ -121,7 +131,7 @@
 				<div class="row mb-4">
 					<div class="col-12 col-md-6 mb-4">
 						<div class="custom-control custom-checkbox">
-							@Html.CheckBoxFor(x => x.PP, new {@class = "custom-control-input", tabindex = 10})
+							@Html.CheckBoxFor(x => x.PP, new {@class = "custom-control-input", tabindex = 12})
 
 							@Html.NoSelectLaberFor(x => x.PP, new Dictionary<string, object> {{"class", "custom-control-label"}})
 							<br />
@@ -130,7 +140,7 @@
 					</div>
 					<div class="col-12 col-md-6 mb-4">
 						<div class="custom-control custom-checkbox">
-							@Html.CheckBoxFor(x => x.FutureNews, new {@class = "custom-control-input", tabindex = 10})
+							@Html.CheckBoxFor(x => x.FutureNews, new {@class = "custom-control-input", tabindex = 13})
 
 							@Html.NoSelectLaberFor(x => x.FutureNews, new Dictionary<string, object> {{"class", "custom-control-label"}})
 
@@ -143,6 +153,7 @@
 					@ReCaptcha.GetCaptcha()
 				</div>
 			</section>
+			@Html.Hidden("Classes", Url.Action("GetClasses", "Account", new {Area = ""}))
 			@Html.Hidden("LoginUrl", Url.Action("Login", "Account", new {Area = ""}))
 		}
 

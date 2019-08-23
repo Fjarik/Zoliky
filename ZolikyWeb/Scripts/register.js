@@ -342,4 +342,32 @@ $(() => {
 		loginUrl +
 		"' class='float-left text-info' title='Zpět na přihlášení'>Již máte účet?</a>";
 	$("#registerDiv.wizard-content .actions").prepend(aTag);
+
+	const $classContainer = $("#classContainer");
+	const $classSelect = $("#ClassId");
+	const $schoolSelect = $("#SchoolId");
+	const classesUrl = $("#Classes").val();
+
+	$schoolSelect.change(() => {
+		$(".linear-activity").show();
+
+		const schoolId = $schoolSelect.val();
+		console.log(schoolId);
+
+		$.get(classesUrl,
+			{
+				schoolId: schoolId
+			},
+			(res) => {
+				var test = $.parseHTML(res);
+				$(test).children().each(function() {
+					$classSelect.append(this);
+				});
+				$classSelect.trigger("change");
+				$classSelect.val(-1);
+				$(".linear-activity").hide();
+				$classContainer.show();
+			},
+			"html");
+	});
 });
