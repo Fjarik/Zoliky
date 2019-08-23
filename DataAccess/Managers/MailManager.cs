@@ -152,6 +152,7 @@ namespace DataAccess.Managers
 			body = body.Replace("#FName#", who.Name);
 			body = body.Replace("#LName#", who.Lastname);
 			body = body.Replace("#Class#", who.ClassName);
+			body = body.Replace("#School#", who.SchoolName);
 			body = body.Replace("#IP#", regIP);
 			body = body.Replace("#ID#", who.ID.ToString());
 

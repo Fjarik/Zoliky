@@ -549,7 +549,7 @@ namespace DataAccess.Managers
 			var u = new User() {
 				ClassID = classId,
 				PasswordID = null,
-				SchoolID = 1,
+				SchoolID = schoolId,
 				UQID = Guid.NewGuid(),
 				Username = username,
 				Email = email,

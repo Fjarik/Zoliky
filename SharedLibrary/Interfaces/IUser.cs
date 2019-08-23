@@ -7,6 +7,7 @@ namespace SharedLibrary.Interfaces
 	public interface IUser : IEmailable, IStudent
 	{
 		string Username { get; set; }
+		string SchoolName { get; }
 	}
 
 	public interface IUser<TClass> : IUser where TClass : class, IClass

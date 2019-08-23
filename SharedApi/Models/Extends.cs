@@ -141,6 +141,8 @@ namespace SharedApi.Models
 			}
 			return true;
 		}
+
+		public string SchoolName { get; }
 	}
 
 	public partial class UserLogin : IDbEntity
