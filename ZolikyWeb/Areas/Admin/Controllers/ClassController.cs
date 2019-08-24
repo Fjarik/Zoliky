@@ -19,14 +19,14 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 	{
 		public async Task<ActionResult> Dashboard(bool? onlyActive)
 		{
-			var schoolId = this.User.Identity.GetSchoolId();
+			var schoolId = this.User.GetSchoolId();
 
 			bool active = onlyActive != null;
 
 			var res = await Mgr.GetAllAsync(schoolId, active);
 			if (!res.Any()) {
 				this.AddErrorToastMessage("Nebyly nalezeny žádné třídy");
-				return RedirectToApp();
+				return RedirectToAction("Create");
 			}
 			var model = new ClassDashboardModel(res, active);
 			return View(model);
@@ -36,7 +36,7 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 
 		public async Task<ActionResult> Create()
 		{
-			var schoolId = this.User.Identity.GetSchoolId();
+			var schoolId = this.User.GetSchoolId();
 			//var schools = await this.GetSchoolAsync();
 
 			// Pouze škola registrovaného správce školy - Nemůže přidat třídu do cizí školy

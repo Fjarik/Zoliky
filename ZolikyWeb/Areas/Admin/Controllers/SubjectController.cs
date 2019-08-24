@@ -19,7 +19,7 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 	{
 		public async Task<ActionResult> Dashboard(bool? onlyAssigned)
 		{
-			var schoolId = this.User.Identity.GetSchoolId();
+			var schoolId = this.User.GetSchoolId();
 
 			var subjects = await Mgr.GetSubjectsAsync(schoolId);
 
@@ -64,7 +64,7 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 
 		private async Task<ActionResult> EditAsync(int? id, int? teacherId)
 		{
-			var schoolId = this.User.Identity.GetSchoolId();
+			var schoolId = this.User.GetSchoolId();
 
 			var cMgr = this.GetManager<ClassManager>();
 

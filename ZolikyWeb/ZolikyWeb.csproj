@@ -1538,6 +1538,7 @@
     <Compile Include="Areas\Admin\Models\Zoliky\ZolikDashboardModel.cs" />
     <Compile Include="Areas\Admin\Models\Zoliky\ZolikModel.cs" />
     <Compile Include="Areas\Admin\Models\Zoliky\ZolikRemoveModel.cs" />
+    <Compile Include="Areas\Global\Controllers\ClassController.cs" />
     <Compile Include="Areas\Global\Controllers\SettingsController.cs" />
     <Compile Include="Areas\Global\Models\Admin\DashboardModel.cs" />
     <Compile Include="Areas\Global\Models\Admin\Dashboard\SendMobileNotModel.cs" />
@@ -1587,6 +1588,7 @@
     <Compile Include="Models\Account\LoginPageModel.cs" />
     <Compile Include="Models\Account\RegisterModel.cs" />
     <Compile Include="Models\Account\StudentsDrop.cs" />
+    <Compile Include="Models\Base\ChangeSchoolModel.cs" />
     <Compile Include="Models\Base\OwnController.cs" />
     <Compile Include="Models\Home\ContactUsModel.cs" />
     <Compile Include="Models\Home\HomeModel.cs" />
@@ -1648,6 +1650,8 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\_ContactUsPartial.cshtml" />
     <Content Include="Views\Account\GetClasses.cshtml" />
+    <Content Include="Views\Account\GetSchools.cshtml" />
+    <Content Include="Views\Shared\Dashboard\_ChangeSchoolPartial.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1658,6 +1662,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Areas\Global\Views\Class\" />
     <Folder Include="fonts\" />
   </ItemGroup>
   <ItemGroup>

@@ -134,7 +134,7 @@ namespace ZolikyWeb.Models.Account
 															  })
 															  .Prepend(new SelectListItem() {
 																  Value = "0",
-																  Text = "Veřejnost",
+																  Text = "Veřejnost/Vyučující",
 																  Disabled = false,
 																  Selected = 0 == ClassId
 															  })

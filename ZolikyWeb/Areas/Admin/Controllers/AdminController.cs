@@ -24,7 +24,7 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 
 		public async Task<ActionResult> Dashboard()
 		{
-			var schoolId = this.User.Identity.GetSchoolId();
+			var schoolId = this.User.GetSchoolId();
 
 			var students = await Mgr.GetStudentCountAsync(schoolId);
 			var teachers = await Mgr.GetTeacherCountAsync(schoolId);
@@ -39,5 +39,14 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 			};
 			return View(model);
 		}
+
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public ActionResult ChangeSchool(ChangeSchoolModel model)
+		{
+			this.Session[Ext.Session.SchoolID] = model.SchoolId;
+			return RedirectToAction("Dashboard");
+		}
+
 	}
 }

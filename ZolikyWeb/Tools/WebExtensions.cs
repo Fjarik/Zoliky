@@ -42,9 +42,18 @@ namespace ZolikyWeb.Tools
 			return res.Content;
 		}
 
-#endregion
+		public static int GetSchoolId(this System.Security.Principal.IPrincipal principal)
+		{
+			if (principal.IsInRolesOr(UserRoles.Administrator, UserRoles.Developer) && HttpContext.Current.Session[Ext.Session.SchoolID] is int schoolId) {
+				return schoolId;
+			}
+			return principal.Identity.GetValue<int>("schoolId");
+		}
 
-#region Entities
+
+		#endregion
+
+		#region Entities
 
 		public static TManager GetManager<TManager>(this Controller controller) where TManager : class, IDisposable
 		{

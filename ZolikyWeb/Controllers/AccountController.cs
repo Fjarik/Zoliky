@@ -590,11 +590,26 @@ namespace ZolikyWeb.Controllers
 			var cMgr = this.GetManager<ClassManager>();
 			var classes = await cMgr.GetClassJsonAsync(schoolId, true);
 			var model = classes.Select(x => new SelectListItem() {
-								   Value = x.Item1.ToString(),
-								   Text = x.Item2,
-								   Selected = false
-							   });
+				Value = x.Item1.ToString(),
+				Text = x.Item2,
+				Selected = false
+			});
 
+			return PartialView(model);
+		}
+
+		[Authorize(Roles = UserRoles.AdminOrDeveloper)]
+		[HttpGet]
+		[OutputCache(Duration = int.MaxValue, VaryByParam = "c")]
+		public async Task<ActionResult> GetSchools()
+		{
+			var sMgr = this.GetManager<SchoolManager>();
+			var schools = await sMgr.GetAllAsync();
+			var model = schools.Select(x => new SelectListItem() {
+				Value = x.ID.ToString(),
+				Text = x.Name,
+				Selected = false
+			});
 			return PartialView(model);
 		}
 

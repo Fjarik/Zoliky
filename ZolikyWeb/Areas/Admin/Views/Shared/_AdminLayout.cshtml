@@ -1,4 +1,5 @@
-﻿@{
+﻿@using ZolikyWeb.Tools
+@{
 	Layout = "~/Areas/Admin/Views/Shared/_LayoutMenu.cshtml";
 }
 
@@ -12,6 +13,33 @@
 
 @section footer {
 
+	<script type="text/javascript">
+		$(() => {
+			const $schoolSelect = $(".topbar .nav-item form #SchoolId");
+			const schoolsUrl = '@Url.Action("GetSchools", "Account", new {Area = "", c = 0})';
+			let loaded = false;
+			$.get(schoolsUrl,
+				{},
+				(res) => {
+					var test = $.parseHTML(res);
+					$(test).children().each(function() {
+						$schoolSelect.append(this);
+					});
+					$schoolSelect.trigger("change");
+					loaded = true;
+					$schoolSelect.val(@this.User.GetSchoolId());
+					$schoolSelect.find("option").css("color", "black");
+				},
+				"html");
+
+			$schoolSelect.change(() => {
+				if (!loaded) {
+					return;
+				}
+				$schoolSelect.closest("form").submit();
+			});
+		});
+	</script>
 
 	@RenderSection("footer", false)
 

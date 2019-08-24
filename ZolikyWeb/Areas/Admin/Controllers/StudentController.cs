@@ -27,7 +27,7 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 
 		public async Task<JsonResult> UsersJson()
 		{
-			var schoolId = this.User.Identity.GetSchoolId();
+			var schoolId = this.User.GetSchoolId();
 			var loggedId = this.User.Identity.GetId();
 
 			var sMgr = this.GetManager<SchoolManager>();
@@ -165,7 +165,7 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 				allowEdit = false;
 			}
 
-			var schoolId = this.User.Identity.GetSchoolId();
+			var schoolId = this.User.GetSchoolId();
 			var previousId = await Mgr.GetPreviousIdAsync(id);
 			var nextId = await Mgr.GetNextIdAsync(id);
 

@@ -4,7 +4,7 @@
 @{
 	ViewBag.Title = "Přehled";
 	Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
-	var schoolId = this.User.Identity.GetSchoolId();
+	var schoolId = this.User.GetSchoolId();
 }
 
 <div class="row">

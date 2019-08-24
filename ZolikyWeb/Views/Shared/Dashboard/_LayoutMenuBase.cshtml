@@ -1,6 +1,7 @@
 ﻿@using DataAccess
 @using DataAccess.Models
 @using SharedLibrary.Shared
+@using ZolikyWeb.Models.Base
 @using ZolikyWeb.Tools
 @{
 	Layout = "~/Views/Shared/Dashboard/_LayoutDashboard.cshtml";
@@ -13,6 +14,7 @@
 	var isAdminArea = area == "Admin";
 	var isGlobalArea = area == "Global";
 	var school = this.User.Identity.GetSchoolName();
+	var allowSchoolChange = isAdminArea && this.User.IsInRolesOr(UserRoles.Administrator, UserRoles.Developer);
 }
 
 @section styles {
@@ -72,12 +74,13 @@
 				</li>
 				<!-- School -->
 				<li class="nav-item">
-					@*<a class="nav-link text-muted" href="@Url.Action()">
-						@school
-						</a>*@
-					<span class="nav-link text-white NoSelect" title="@school" style="text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">
-						@school
-					</span>
+					@if (allowSchoolChange) {
+						@Html.Partial("~/Views/Shared/Dashboard/_ChangeSchoolPartial.cshtml", new ChangeSchoolModel(this.User.GetSchoolId()))
+					} else if (!isGlobalArea) {
+						<span class="nav-link text-white NoSelect" title="@school" style="text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">
+							@school
+						</span>
+					}
 				</li>
 			</ul>
 			<!-- ============================================================== -->

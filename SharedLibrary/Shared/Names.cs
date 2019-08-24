@@ -36,6 +36,7 @@ namespace SharedLibrary.Shared
 		public string RegisterUser => "regUser";
 		public string ResetUser => "resetPwd";
 		public string Manager => "manager";
+		public string SchoolID => "schoolId";
 
 	}
 

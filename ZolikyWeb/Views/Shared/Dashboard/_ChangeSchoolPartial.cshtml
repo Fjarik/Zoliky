@@ -1,0 +1,12 @@
+﻿@model ZolikyWeb.Models.Base.ChangeSchoolModel
+
+@*<div class="container h-100">*@
+	<div class="row h-100 align-items-center">
+		<div class="col">
+			@using (Html.BeginForm("ChangeSchool", "Admin", new {Area = "Admin"}, FormMethod.Post, new {@class = "form-material"})) {
+				@Html.AntiForgeryToken()
+				@Html.DropDownListFor(x => x.SchoolId, Model.SchoolSelect, new {@class = "form-control text-white", tabindex = -1})
+			}
+		</div>
+	</div>
+@*</div>*@

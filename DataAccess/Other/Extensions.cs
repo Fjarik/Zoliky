@@ -14,6 +14,7 @@ using JetBrains.Annotations;
 using Owin;
 using SharedLibrary.Enums;
 using SharedLibrary.Interfaces;
+using SharedLibrary.Shared;
 
 namespace DataAccess
 {
@@ -190,12 +191,7 @@ namespace DataAccess
 		{
 			return GetValue<string>(identity, "schoolName");
 		}
-
-		public static int GetSchoolId(this System.Security.Principal.IIdentity identity)
-		{
-			return GetValue<int>(identity, "schoolId");
-		}
-
+		
 		public static int GetId(this System.Security.Principal.IIdentity identity)
 		{
 			return GetValue<int>(identity, "publicId");
@@ -206,7 +202,7 @@ namespace DataAccess
 			return GetValue<bool>(identity, "isTester");
 		}
 
-		private static T GetValue<T>(this System.Security.Principal.IIdentity identity, string key)
+		public static T GetValue<T>(this System.Security.Principal.IIdentity identity, string key)
 			where T : IConvertible
 		{
 			if (!(identity is ClaimsIdentity claims)) {

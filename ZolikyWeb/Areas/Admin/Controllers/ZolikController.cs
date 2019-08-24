@@ -19,7 +19,7 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 	{
 		public async Task<ActionResult> Dashboard(bool? onlyEnabled)
 		{
-			var schoolId = this.User.Identity.GetSchoolId();
+			var schoolId = this.User.GetSchoolId();
 
 			bool active = onlyEnabled != null;
 
@@ -33,7 +33,7 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 		public async Task<ActionResult> Create()
 		{
 			var logged = await this.GetLoggedUserAsync();
-			var schoolId = this.User.Identity.GetSchoolId();
+			var schoolId = this.User.GetSchoolId();
 			//var schools = await this.GetSchoolAsync();
 
 			// Pouze škola registrovaného správce školy - Nemůže přidat třídu do cizí školy
@@ -152,7 +152,7 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 				this.AddErrorToastMessage("Neplatný žolík");
 				return RedirectToAction("Dashboard");
 			}
-			var schoolId = this.User.Identity.GetSchoolId();
+			var schoolId = this.User.GetSchoolId();
 
 			var previousId = await Mgr.GetPreviousIdAsync(id);
 			var nextId = await Mgr.GetNextIdAsync(id);
