@@ -199,6 +199,11 @@ namespace DataAccess.Managers
 			return this.CreateAsync(userId, TokenPurpose.Activation, TimeSpan.FromHours(20));
 		}
 
+		public Task<MActionResult<Token>> CreateChangeEmailTokenAsync(int userId)
+		{
+			return this.CreateAsync(userId, TokenPurpose.EmailChange, TimeSpan.FromHours(12));
+		}
+
 		public Task<MActionResult<Token>> CreateAsync(int userId, TokenPurpose purpose)
 		{
 			return this.CreateAsync(userId, purpose, TimeSpan.FromDays(1));

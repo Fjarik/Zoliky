@@ -538,6 +538,36 @@ namespace ZolikyWeb.Controllers
 
 #endregion
 
+#region Change email
+
+		[HttpGet]
+		public async Task<ActionResult> ChangeEmail(string code)
+		{
+			if (string.IsNullOrWhiteSpace(code)) {
+				this.AddErrorToastMessage("Kód není platný");
+				return this.RedirectToLogin();
+			}
+			var tokenMgr = this.GetManager<TokenManager>();
+			var check = await tokenMgr.IsValidAsync(code);
+			if (!check.IsValid || check.Token == null) {
+				this.AddErrorToastMessage(check.GetErrorMessages());
+				return this.RedirectToLogin();
+			}
+			var token = check.Token;
+			await tokenMgr.UseAsync(token);
+			var res = await Mgr.ChangeEmailConfirmAsync(token.UserID);
+			if (!res.IsSuccess) {
+				this.AddErrorToastMessage(res.GetStatusMessage());
+				return this.RedirectToLogin();
+			}
+			var sMgr = this.GetManager<SignInManager>();
+			sMgr.SignOut();
+			this.AddSuccessToastMessage("Email byl úspěšně změněn, nyní se přihlašte");
+			return RedirectToLogin();
+		}
+
+#endregion
+
 #region Get info
 
 		[Authorize]

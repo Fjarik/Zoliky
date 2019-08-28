@@ -12,13 +12,11 @@ namespace ZolikyWeb.Areas.App.Models.Account
 
 		public ChangePasswordModel ChangePassword { get; set; }
 
-		public GeneralModel()
-		{
-		}
+		public GeneralModel() { }
 
 		public GeneralModel(User u)
 		{
-			this.GeneralChange = new GeneralChangeModel(u.Username, u.Email, (int) u.Sex);
+			this.GeneralChange = new GeneralChangeModel(u.Username, u.Email, u.Sex);
 			this.ChangePassword = new ChangePasswordModel(u.UQID.ToString());
 		}
 	}

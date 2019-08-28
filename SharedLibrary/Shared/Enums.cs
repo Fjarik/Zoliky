@@ -205,6 +205,9 @@ namespace SharedLibrary.Enums
 		[Description("Aktivace")]
 		Activation = 1,
 
+		[Description("Změna hesla")]
+		EmailChange = 8,
+
 		[Description("Resetovaní hesla")]
 		PasswordReset = 10,
 	}

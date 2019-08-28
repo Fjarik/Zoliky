@@ -153,8 +153,47 @@ namespace ZolikyWeb.Areas.App.Controllers
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public ActionResult ChangeGeneral(GeneralChangeModel model)
+		public async Task<ActionResult> ChangeGeneral(GeneralChangeModel model)
 		{
+			if (model == null || !ModelState.IsValid || !model.IsValid) {
+				this.AddErrorToastMessage("Zadané údaje nejsou platné");
+				return RedirectToAction("Settings");
+			}
+
+			var logged = await this.GetLoggedUserAsync();
+			if (logged.Sex != model.Gender) {
+				logged.Sex = model.Gender;
+				await Mgr.SaveAsync(logged);
+			}
+
+			var newEmail = model.Email.Trim().ToLower();
+
+			if (logged.Email != newEmail) {
+				return await ChangeEmailAsync(logged.ID, model.Email);
+			}
+
+			this.AddSuccessToastMessage("Změny úspěšně uloženy");
+			return RedirectToAction("Settings");
+		}
+
+		private async Task<ActionResult> ChangeEmailAsync(int userId, string newEmail)
+		{
+			var url = Url.Action("ChangeEmail", "Account", new {Area = ""}, "https");
+			var res = await Mgr.ChangeEmailAsync(userId, newEmail, url);
+			if (res.IsSuccess) {
+				this.AddSuccessToastMessage("Potvrzovací email byl odeslán na zadaný email");
+				return this.RedirectToApp();
+			}
+			var msg = res.GetStatusMessage();
+			switch (res.Status) {
+				case StatusCode.InternalError:
+					msg = "Nezdařilo se vytvořit kód pro změnu emailu";
+					break;
+				case StatusCode.JustALittleError:
+					msg = "Nezdařilo se odeslat email k odkazem pro změnu emailu";
+					break;
+			}
+			this.AddErrorToastMessage(msg);
 			return RedirectToAction("Settings");
 		}
 

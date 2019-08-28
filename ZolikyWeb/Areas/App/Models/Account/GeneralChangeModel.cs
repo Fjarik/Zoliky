@@ -15,26 +15,24 @@ namespace ZolikyWeb.Areas.App.Models.Account
 	{
 		[Display(Name = "Uživatelské jméno")]
 		[DataType(DataType.Text)]
-		[Required(ErrorMessage = "Musíte vyplnit uživatelské jméno")]
-		[StringLength(100, MinimumLength = 5, ErrorMessage = "Uživatelské jméno musí být dlouhé minimálně {2} znaků")]
+		//[Required(ErrorMessage = "Musíte vyplnit uživatelské jméno")]
+		//[StringLength(100, MinimumLength = 5, ErrorMessage = "Uživatelské jméno musí být dlouhé minimálně {2} znaků")]
 		public string Username { get; set; }
 
 		[Display(Name = "Pohlaví")]
 		[Required(ErrorMessage = "Musíte vybrat své pohlaví")]
 		[Range(0, maximum: 9, ErrorMessage = "Musíte vybrat platné pohlaví")]
-		public int Gender { get; set; }
+		public Sex Gender { get; set; }
 
 #region Lists
 
 		public IEnumerable<Sex> Genders = Enum.GetValues(typeof(Sex)).Cast<Sex>().SkipLast(1);
 
-
-		public IEnumerable<SelectListItem> GenderSelect => this.Genders.Select(x => new SelectListItem()
-		{
+		public IEnumerable<SelectListItem> GenderSelect => this.Genders.Select(x => new SelectListItem() {
 			Value = ((int) x).ToString(),
 			Text = x.GetDescription(),
 			Disabled = false,
-			Selected = ((int) x) == Gender
+			Selected = x == Gender
 		});
 
 #endregion
@@ -42,15 +40,12 @@ namespace ZolikyWeb.Areas.App.Models.Account
 #region Other
 
 		public override bool IsValid => base.IsValid &&
-		                                !Methods.AreNullOrWhiteSpace(this.Username) &&
-		                                Gender >= 0 &&
-		                                Enum.IsDefined(typeof(Sex), (byte) Gender);
+										Gender >= 0 &&
+										Enum.IsDefined(typeof(Sex), (byte) Gender);
 
-		public GeneralChangeModel()
-		{
-		}
+		public GeneralChangeModel() { }
 
-		public GeneralChangeModel(string username, string email, int gender)
+		public GeneralChangeModel(string username, string email, Sex gender)
 		{
 			this.Username = username;
 			this.Email = email;

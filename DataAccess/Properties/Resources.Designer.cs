@@ -103,15 +103,36 @@ namespace DataAccess.Properties {
         ///			Křestní jméno: #FName# &lt;br /&gt;
         ///			Příjmení: #LName# &lt;br /&gt;
         ///			Třída: #Class# &lt;br /&gt;
+        ///			Škola: #School# &lt;br /&gt;
         ///			IP: #IP# &lt;br /&gt;
         ///		&lt;/p&gt;
         ///		&lt;br /&gt;
         ///		&lt;p&gt;
-        ///			Aktivaci a úpravu uživatele můžete prové [rest of string was truncated]&quot;;.
+        ///			Aktivaci a úp [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string AdminRegistration {
             get {
                 return ResourceManager.GetString("AdminRegistration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;p&gt;&amp;nbsp;
+        ///&lt;/p&gt;
+        ///&lt;!-- HIDDEN PREHEADER TEXT --&gt;
+        ///&lt;div style=&quot;display: none; font-size: 1px; color: #fefefe; line-height: 1px; font-family: &apos;Montserrat&apos;, Helvetica, Arial, sans-serif; max-height: 0px; max-width: 0px; opacity: 0; overflow: hidden;&quot;&gt;Aktivace &amp;uacute;čtu
+        ///&lt;/div&gt;
+        ///&lt;table border=&quot;0&quot; width=&quot;100%&quot; cellspacing=&quot;0&quot; cellpadding=&quot;0&quot;&gt;
+        ///	&lt;!-- LOGO --&gt;
+        ///	&lt;tbody&gt;
+        ///		&lt;tr&gt;
+        ///			&lt;td align=&quot;center&quot; bgcolor=&quot;#3267ff&quot;&gt;
+        ///				&lt;!-- [if (gte mso 9)|(IE)]&gt;
+        ///				            &lt;table align=&quot;center&quot; border=&quot;0&quot; cellspacing= [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string ChangeEmail {
+            get {
+                return ResourceManager.GetString("ChangeEmail", resourceCulture);
             }
         }
         

@@ -6,7 +6,7 @@
 
 <div class="settings profile-img">
 	@using (Html.BeginForm("ChangeProfilePhoto", "Account", new {Area = "App"}, FormMethod.Post, new {enctype = "multipart/form-data"})) {
-		<input type="file" name="file" class="dropify" data-max-file-size-preview="4M" data-allowed-file-extensions="jpg png jpeg webp gif" data-allowed-formats="square" data-show-remove="false" data-default-file="@profile&fix=.jpg" />
+		<input type="file" name="file" class="dropify" data-max-file-size-preview="4M" data-allowed-file-extensions="jpg png jpeg webp gif" data-allowed-formats="square" data-show-remove="false" data-default-file="@(profile)&fix=.jpg" />
 		@Html.AntiForgeryToken()
 		<button class="btn btn-block btn-outline-info" type="submit">Uložit</button>
 	}

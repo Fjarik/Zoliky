@@ -162,7 +162,7 @@ namespace DataAccess.Managers
 									   .UpdateAsync(x => new Transaction() {
 										   ToID = Ext.BankId
 									   });
-				
+
 #endregion
 
 #region Many to Many
@@ -958,6 +958,76 @@ namespace DataAccess.Managers
 			}
 
 			return new MActionResult<User>(StatusCode.OK, user);
+		}
+
+#endregion
+
+#region Change email
+
+		public async Task<MActionResult<User>> ChangeEmailConfirmAsync(int userId)
+		{
+			var res = await this.GetByIdAsync(userId);
+			if (!res.IsSuccess) {
+				return res;
+			}
+			return await ChangeEmailConfirmAsync(res.Content);
+		}
+
+		private async Task<MActionResult<User>> ChangeEmailConfirmAsync(User u)
+		{
+			if (u == null || string.IsNullOrWhiteSpace(u.Description) || !Methods.IsEmailValid(u.Description)) {
+				return new MActionResult<User>(StatusCode.InvalidInput);
+			}
+
+			u.Email = u.Description.Trim().ToLower();
+			u.Description = null;
+			u.EmailConfirmed = true;
+
+			await this.SaveAsync(u);
+			return new MActionResult<User>(StatusCode.OK, u);
+		}
+
+		public async Task<MActionResult<User>> ChangeEmailAsync(int userId, string newEmail, string activateUrl)
+		{
+			var res = await this.GetByIdAsync(userId);
+			if (!res.IsSuccess) {
+				return res;
+			}
+			return await ChangeEmailAsync(res.Content, newEmail, activateUrl);
+		}
+
+		private async Task<MActionResult<User>> ChangeEmailAsync(User u, string newEmail, string activateUrl)
+		{
+			if (u == null || string.IsNullOrWhiteSpace(newEmail) || !Methods.IsEmailValid(newEmail)) {
+				return new MActionResult<User>(StatusCode.InvalidInput);
+			}
+
+			//u.EmailConfirmed = false;
+			u.Description = newEmail.Trim().ToLower();
+
+			await this.SaveAsync(u);
+
+			var tMgr = Context.Get<TokenManager>();
+			var tRes = await tMgr.CreateChangeEmailTokenAsync(u.ID);
+			if (!tRes.IsSuccess) {
+				return new MActionResult<User>(tRes.Status);
+			}
+			var token = tRes.Content;
+			if (token == null) {
+				return new MActionResult<User>(StatusCode.InternalError);
+			}
+
+			var code = tMgr.GenerateCode(token);
+
+			activateUrl += $"?code={code}";
+
+			var mailMgr = Context.Get<MailManager>();
+			var mRes = await mailMgr.ChangeEmailAsync(newEmail, activateUrl);
+			if (!mRes) {
+				return new MActionResult<User>(StatusCode.JustALittleError);
+			}
+
+			return new MActionResult<User>(StatusCode.OK, u);
 		}
 
 #endregion

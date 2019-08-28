@@ -130,6 +130,26 @@ namespace DataAccess.Managers
 			return await SendAsync(email);
 		}
 
+		public async Task<bool> ChangeEmailAsync(string email, string url)
+		{
+			if (Methods.AreNullOrWhiteSpace(email, url)) {
+				return false;
+			}
+
+			string body = DataAccess.Properties.Resources.ChangeEmail;
+
+			body = body.Replace("#ActivateUrl#", url);
+			MailMessage message = new MailMessage() {
+				From = _from,
+				Subject = "[Žolíky] - Změna emailu",
+				Body = body,
+				IsBodyHtml = true,
+				Priority = MailPriority.Normal
+			};
+			message.To.Add(new MailAddress(email));
+			return await SendAsync(message);
+		}
+
 		public async Task<bool> AdminRegAsync(int whoId, string regIP)
 		{
 			var res = await this.GetUserAsync(whoId);
