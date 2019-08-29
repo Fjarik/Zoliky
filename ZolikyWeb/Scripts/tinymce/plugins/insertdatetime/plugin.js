@@ -4,10 +4,9 @@
  * For LGPL see License.txt in the project root for license information.
  * For commercial licenses see https://www.tiny.cloud/
  *
- * Version: 5.0.3 (2019-03-19)
+ * Version: 5.0.14 (2019-08-19)
  */
 (function () {
-var insertdatetime = (function () {
     'use strict';
 
     var global = tinymce.util.Tools.resolve('tinymce.PluginManager');
@@ -187,14 +186,13 @@ var insertdatetime = (function () {
     };
     var Buttons = { register: register$1 };
 
-    global.add('insertdatetime', function (editor) {
-      Commands.register(editor);
-      Buttons.register(editor);
-    });
     function Plugin () {
+      global.add('insertdatetime', function (editor) {
+        Commands.register(editor);
+        Buttons.register(editor);
+      });
     }
 
-    return Plugin;
+    Plugin();
 
 }());
-})();

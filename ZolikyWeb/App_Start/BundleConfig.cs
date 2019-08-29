@@ -130,7 +130,7 @@ namespace ZolikyWeb
 						.Include("~/Scripts/toastr.min.js")
 
 						// Cookies
-						.Include("~/Scripts/js-cookie/js.cookie-2.2.0.min.js")
+						.Include("~/Scripts/js-cookie/js.cookie-2.2.1.min.js")
 
 						// LightBox
 						.Include("~/Scripts/lightbox.min.js")

@@ -4,10 +4,9 @@
  * For LGPL see License.txt in the project root for license information.
  * For commercial licenses see https://www.tiny.cloud/
  *
- * Version: 5.0.3 (2019-03-19)
+ * Version: 5.0.14 (2019-08-19)
  */
-(function () {
-var codesample = (function (domGlobals) {
+(function (domGlobals) {
   'use strict';
 
   var global = tinymce.util.Tools.resolve('tinymce.PluginManager');
@@ -756,8 +755,9 @@ var codesample = (function (domGlobals) {
       },
       toString: constant('none()')
     };
-    if (Object.freeze)
+    if (Object.freeze) {
       Object.freeze(me);
+    }
     return me;
   }();
   var some = function (a) {
@@ -933,13 +933,16 @@ var codesample = (function (domGlobals) {
   };
 
   var typeOf = function (x) {
-    if (x === null)
+    if (x === null) {
       return 'null';
+    }
     var t = typeof x;
-    if (t === 'object' && Array.prototype.isPrototypeOf(x))
+    if (t === 'object' && (Array.prototype.isPrototypeOf(x) || x.constructor && x.constructor.name === 'Array')) {
       return 'array';
-    if (t === 'object' && String.prototype.isPrototypeOf(x))
+    }
+    if (t === 'object' && (String.prototype.isPrototypeOf(x) || x.constructor && x.constructor.name === 'String')) {
       return 'string';
+    }
     return t;
   };
   var isType = function (type) {
@@ -1045,7 +1048,7 @@ var codesample = (function (domGlobals) {
             $(elm).find('br').each(function (idx, elm) {
               elm.parentNode.replaceChild(editor.getDoc().createTextNode('\n'), elm);
             });
-            elm.contentEditable = false;
+            elm.contentEditable = 'false';
             elm.innerHTML = editor.dom.encode(elm.textContent);
             Prism.highlightElement(elm);
             elm.className = $.trim(elm.className);
@@ -1071,9 +1074,9 @@ var codesample = (function (domGlobals) {
         var nodeChangeHandler = function () {
           api.setActive(isCodeSampleSelection(editor));
         };
-        editor.on('nodeChange', nodeChangeHandler);
+        editor.on('NodeChange', nodeChangeHandler);
         return function () {
-          return editor.off('nodeChange', nodeChangeHandler);
+          return editor.off('NodeChange', nodeChangeHandler);
         };
       }
     });
@@ -1087,20 +1090,19 @@ var codesample = (function (domGlobals) {
   };
   var Buttons = { register: register$1 };
 
-  global.add('codesample', function (editor, pluginUrl) {
-    FilterContent.setup(editor);
-    Buttons.register(editor);
-    Commands.register(editor);
-    editor.on('dblclick', function (ev) {
-      if (Utils.isCodeSample(ev.target)) {
-        Dialog.open(editor);
-      }
-    });
-  });
   function Plugin () {
+    global.add('codesample', function (editor) {
+      FilterContent.setup(editor);
+      Buttons.register(editor);
+      Commands.register(editor);
+      editor.on('dblclick', function (ev) {
+        if (Utils.isCodeSample(ev.target)) {
+          Dialog.open(editor);
+        }
+      });
+    });
   }
 
-  return Plugin;
+  Plugin();
 
 }(window));
-})();

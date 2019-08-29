@@ -4,10 +4,9 @@
  * For LGPL see License.txt in the project root for license information.
  * For commercial licenses see https://www.tiny.cloud/
  *
- * Version: 5.0.3 (2019-03-19)
+ * Version: 5.0.14 (2019-08-19)
  */
 (function () {
-var save = (function () {
     'use strict';
 
     var global = tinymce.util.Tools.resolve('tinymce.PluginManager');
@@ -69,9 +68,7 @@ var save = (function () {
         editor.execCallback('save_oncancelcallback', editor);
         return;
       }
-      editor.setContent(h);
-      editor.undoManager.clear();
-      editor.nodeChanged();
+      editor.resetContent(h);
     };
     var Actions = {
       save: save,
@@ -93,9 +90,9 @@ var save = (function () {
         var handler = function () {
           api.setDisabled(Settings.enableWhenDirty(editor) && !editor.isDirty());
         };
-        editor.on('nodeChange dirty', handler);
+        editor.on('NodeChange dirty', handler);
         return function () {
-          return editor.off('nodeChange dirty', handler);
+          return editor.off('NodeChange dirty', handler);
         };
       };
     };
@@ -122,14 +119,13 @@ var save = (function () {
     };
     var Buttons = { register: register$1 };
 
-    global.add('save', function (editor) {
-      Buttons.register(editor);
-      Commands.register(editor);
-    });
     function Plugin () {
+      global.add('save', function (editor) {
+        Buttons.register(editor);
+        Commands.register(editor);
+      });
     }
 
-    return Plugin;
+    Plugin();
 
 }());
-})();

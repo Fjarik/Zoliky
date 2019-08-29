@@ -4,10 +4,9 @@
  * For LGPL see License.txt in the project root for license information.
  * For commercial licenses see https://www.tiny.cloud/
  *
- * Version: 5.0.3 (2019-03-19)
+ * Version: 5.0.14 (2019-08-19)
  */
-(function () {
-var directionality = (function (domGlobals) {
+(function (domGlobals) {
     'use strict';
 
     var global = tinymce.util.Tools.resolve('tinymce.PluginManager');
@@ -102,8 +101,9 @@ var directionality = (function (domGlobals) {
         },
         toString: constant('none()')
       };
-      if (Object.freeze)
+      if (Object.freeze) {
         Object.freeze(me);
+      }
       return me;
     }();
     var some = function (a) {
@@ -216,13 +216,16 @@ var directionality = (function (domGlobals) {
     };
 
     var typeOf = function (x) {
-      if (x === null)
+      if (x === null) {
         return 'null';
+      }
       var t = typeof x;
-      if (t === 'object' && Array.prototype.isPrototypeOf(x))
+      if (t === 'object' && (Array.prototype.isPrototypeOf(x) || x.constructor && x.constructor.name === 'Array')) {
         return 'array';
-      if (t === 'object' && String.prototype.isPrototypeOf(x))
+      }
+      if (t === 'object' && (String.prototype.isPrototypeOf(x) || x.constructor && x.constructor.name === 'String')) {
         return 'string';
+      }
       return t;
     };
     var isType = function (type) {
@@ -238,7 +241,7 @@ var directionality = (function (domGlobals) {
     };
 
     var isSupported = function (dom) {
-      return dom.style !== undefined;
+      return dom.style !== undefined && isFunction(dom.style.getPropertyValue);
     };
 
     var ATTRIBUTE = domGlobals.Node.ATTRIBUTE_NODE;
@@ -253,6 +256,8 @@ var directionality = (function (domGlobals) {
     var ENTITY_REFERENCE = domGlobals.Node.ENTITY_REFERENCE_NODE;
     var ENTITY = domGlobals.Node.ENTITY_NODE;
     var NOTATION = domGlobals.Node.NOTATION_NODE;
+
+    var Global = typeof domGlobals.window !== 'undefined' ? domGlobals.window : Function('return this;')();
 
     var type = function (element) {
       return element.dom().nodeType;
@@ -290,9 +295,9 @@ var directionality = (function (domGlobals) {
           var element = Element.fromDom(e.element);
           api.setActive(getDirection(element) === dir);
         };
-        editor.on('nodeChange', nodeChangeHandler);
+        editor.on('NodeChange', nodeChangeHandler);
         return function () {
-          return editor.off('nodeChange', nodeChangeHandler);
+          return editor.off('NodeChange', nodeChangeHandler);
         };
       };
     };
@@ -316,14 +321,13 @@ var directionality = (function (domGlobals) {
     };
     var Buttons = { register: register$1 };
 
-    global.add('directionality', function (editor) {
-      Commands.register(editor);
-      Buttons.register(editor);
-    });
     function Plugin () {
+      global.add('directionality', function (editor) {
+        Commands.register(editor);
+        Buttons.register(editor);
+      });
     }
 
-    return Plugin;
+    Plugin();
 
 }(window));
-})();

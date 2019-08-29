@@ -4,10 +4,9 @@
  * For LGPL see License.txt in the project root for license information.
  * For commercial licenses see https://www.tiny.cloud/
  *
- * Version: 5.0.3 (2019-03-19)
+ * Version: 5.0.14 (2019-08-19)
  */
 (function () {
-var noneditable = (function () {
     'use strict';
 
     var global = tinymce.util.Tools.resolve('tinymce.PluginManager');
@@ -114,13 +113,12 @@ var noneditable = (function () {
     };
     var FilterContent = { setup: setup };
 
-    global.add('noneditable', function (editor) {
-      FilterContent.setup(editor);
-    });
     function Plugin () {
+      global.add('noneditable', function (editor) {
+        FilterContent.setup(editor);
+      });
     }
 
-    return Plugin;
+    Plugin();
 
 }());
-})();
