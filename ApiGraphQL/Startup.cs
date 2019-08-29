@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ApiGraphQL.GraphQL.Schemas;
 using ApiGraphQL.Repository;
+using ApiGraphQL.Repository.Interfaces;
 using DataAccess.Models;
 using GraphQL;
 using GraphQL.Server;
@@ -35,12 +36,14 @@ namespace ApiGraphQL
 														   .GetConnectionString("ZolikEntities")));
 
 			services.AddScoped<IZolikRepository, ZolikRepository>();
+			services.AddScoped<ISchoolRepository, SchoolRepository>();
 
 			services.AddScoped<IDependencyResolver>(s => new FuncDependencyResolver(s.GetRequiredService));
 			services.AddScoped<AppSchema>();
 
 			services.AddGraphQL(o => { o.ExposeExceptions = false; })
-					.AddGraphTypes(ServiceLifetime.Scoped);
+					.AddGraphTypes(ServiceLifetime.Scoped)
+					.AddDataLoader();
 
 			services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 		}

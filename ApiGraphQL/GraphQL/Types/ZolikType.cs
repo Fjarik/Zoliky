@@ -22,6 +22,8 @@ namespace ApiGraphQL.GraphQL.Types
 				.Description("ID učitele, který udělil žolíka");
 			Field(x => x.OriginalOwnerID, type: typeof(IdGraphType))
 				.Description("ID originálního vlastníka žolíka");
+			Field(x => x.SchoolID, type: typeof(IdGraphType))
+				.Description("ID školy, pod kterou žolík spadá");
 			Field(x => x.Title)
 				.Description("Za co byl žolík udělen");
 			Field(x => x.Enabled)
@@ -32,9 +34,11 @@ namespace ApiGraphQL.GraphQL.Types
 				.Description("Datum vytvoření žolíka");
 			Field(x => x.Lock, nullable: true)
 				.Description("Za co si přeje uživatel uplatnit žolíka");
-			Field(x => x.AllowSplit)
+			Field(x => x.CanBeTransfered)
+				.Description("Udává, zda může být žolík předán jinému studentovi");
+			Field(x => x.IsSplittable)
 				.Description("Udává, zda je dovoleno žolíka rozdělit");
-			Field<ZolikEnumType>(nameof(Zolik.Type), "Typ žoilíka");
+			Field<ZolikEnumType>(nameof(Zolik.Type), "Typ žolíka");
 			Field<SubjectType>(nameof(Zolik.Subject), "Předmět, ze kterého byl žolík udělen");
 		}
 	}

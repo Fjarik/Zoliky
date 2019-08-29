@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ApiGraphQL.GraphQL.Types;
 using ApiGraphQL.Repository;
+using ApiGraphQL.Repository.Interfaces;
 using GraphQL;
 using GraphQL.Types;
 
@@ -11,8 +12,11 @@ namespace ApiGraphQL.GraphQL.Queries
 {
 	public class AppQuery : ObjectGraphType
 	{
-		public AppQuery(IZolikRepository repository)
+		public AppQuery(IZolikRepository zoliks,
+						ISchoolRepository schools)
 		{
+#region Zoliks
+
 			Field<ListGraphType<ZolikType>>(
 											"zoliks",
 											arguments: new
@@ -20,14 +24,14 @@ namespace ApiGraphQL.GraphQL.Queries
 													Name = "ownerId"
 												}),
 											resolve: x => {
-												if (x.HasArgument("ownerId")) {
-													if (!(x.GetArgument<int>("ownerId") is int id)) {
-														x.Errors.Add(new ExecutionError("Špatná hodnota ID vlastníka"));
-														return null;
-													}
-													return repository.GetByOwnerId(id);
+												if (!x.HasArgument("ownerId")) {
+													return zoliks.GetAll();
 												}
-												return repository.GetAll();
+												if (x.GetArgument<int>("ownerId") is int id) {
+													return zoliks.GetByOwnerId(id);
+												}
+												x.Errors.Add(new ExecutionError("Špatná hodnota ID vlastníka"));
+												return null;
 											});
 			Field<ZolikType>(
 							 "zolik",
@@ -36,12 +40,49 @@ namespace ApiGraphQL.GraphQL.Queries
 															   {Name = "id"}
 														  ),
 							 resolve: x => {
-								 if (!(x.GetArgument<int>("id") is int id)) {
-									 x.Errors.Add(new ExecutionError("Špatná hodnota ID"));
-									 return null;
+								 if (x.GetArgument<int>("id") is int id) {
+									 return zoliks.GetById(id);
 								 }
-								 return repository.GetById(id);
+								 x.Errors.Add(new ExecutionError("Špatná hodnota ID"));
+								 return null;
 							 });
+
+#endregion
+
+#region Schools
+
+			Field<ListGraphType<SchoolType>>(
+											 "schools",
+											 arguments: new
+												 QueryArguments(new QueryArgument<SchoolEnumType>() {
+													 Name = "type"
+												 }),
+											 resolve: x => {
+												 if (!x.HasArgument("type")) {
+													 return schools.GetAll();
+												 }
+												 if (x.GetArgument<int>("type") is int type) {
+													 return schools.GetByType(type);
+												 }
+												 x.Errors.Add(new ExecutionError("Špatná druh školy"));
+												 return null;
+											 });
+
+			Field<SchoolType>(
+							  "school",
+							  arguments: new QueryArguments(
+															new QueryArgument<NonNullGraphType<IdGraphType>>
+																{Name = "id"}
+														   ),
+							  resolve: x => {
+								  if (x.GetArgument<int>("id") is int id) {
+									  return schools.GetById(id);
+								  }
+								  x.Errors.Add(new ExecutionError("Špatná hodnota ID"));
+								  return null;
+							  });
+
+#endregion
 		}
 	}
 }

@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ApiGraphQL.Repository.Interfaces;
 using DataAccess.Models;
-//using DataAccessCore.Models;
 using SharedLibrary.Shared;
 
 namespace ApiGraphQL.Repository

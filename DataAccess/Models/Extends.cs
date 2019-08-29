@@ -15,7 +15,10 @@ namespace DataAccess.Models
 
 	public partial class ZoliksEntities
 	{
-		public ZoliksEntities(string cString) : base(cString) { }
+		public ZoliksEntities(string cString) : base(cString)
+		{
+			//Database.Log = sql => System.Diagnostics.Debug.WriteLine(sql);
+		}
 
 		public static ZoliksEntities Create()
 		{

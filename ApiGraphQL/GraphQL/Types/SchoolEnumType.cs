@@ -4,15 +4,16 @@ using System.Linq;
 using System.Threading.Tasks;
 using DataAccess.Models;
 using GraphQL.Types;
+using SharedLibrary.Enums;
 
 namespace ApiGraphQL.GraphQL.Types
 {
-	public class ZolikEnumType : EnumerationGraphType<SharedLibrary.Enums.ZolikType>
+	public class SchoolEnumType : EnumerationGraphType<SchoolTypes>
 	{
-		public ZolikEnumType()
+		public SchoolEnumType()
 		{
-			Name = nameof(Zolik.Type);
-			Description = "Typ žolíka";
+			Name = nameof(School.Type);
+			Description = "Druh školy";
 		}
 	}
 }
