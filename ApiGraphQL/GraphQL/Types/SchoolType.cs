@@ -18,15 +18,15 @@ namespace ApiGraphQL.GraphQL.Types
 			Field(x => x.Name)
 				.Description("Celý název školy");
 			Field(x => x.Street)
-				.Description("Celý název školy");
+				.Description("Ulice školy");
 			Field(x => x.City)
-				.Description("Celý název školy");
+				.Description("Město, kde je škola umístěna");
 			Field(x => x.AllowTransfer)
-				.Description("Celý název školy");
+				.Description("Nastavení, zda škola umožňuje darování žolíků mezi studenty");
 			Field(x => x.AllowTeacherRemove)
-				.Description("Celý název školy");
+				.Description("Nastavení, zda škola umožňuje odebírání žolíků vyučujícím");
 			Field(x => x.AllowZolikSplik)
-				.Description("Celý název školy");
+				.Description("Nastavení, zda škola umožňuje rozdělení žolíků");
 			Field<SchoolEnumType>(nameof(School.Type), "Druh školy");
 			Field<ListGraphType<SubjectType>>(nameof(School.Subjects),
 											  "Předměty vyučované na škole",
@@ -35,9 +35,9 @@ namespace ApiGraphQL.GraphQL.Types
 													  dataLoader
 														  .Context
 														  .GetOrAddCollectionBatchLoader<int, Subject
-														  >("GetSchoolSubjectsBySchoolIds", schools.GetSchoolSubjectsBySchoolIds);
+														  >("GetSchoolSubjectsBySchoolIdsAsync", schools.GetSchoolSubjectsBySchoolIdsAsync);
 												  return loader.LoadAsync(x.Source.ID);
-												  return schools.GetSchoolSubjects(x.Source.ID);
+												  //return schools.GetSchoolSubjects(x.Source.ID);
 											  });
 		}
 	}

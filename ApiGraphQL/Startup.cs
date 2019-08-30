@@ -9,6 +9,7 @@ using DataAccess.Models;
 using GraphQL;
 using GraphQL.Server;
 using GraphQL.Server.Ui.Playground;
+using GraphQL.Validation.Complexity;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -37,11 +38,17 @@ namespace ApiGraphQL
 
 			services.AddScoped<IZolikRepository, ZolikRepository>();
 			services.AddScoped<ISchoolRepository, SchoolRepository>();
+			services.AddScoped<ITransactionRepository, TransactionRepository>();
 
 			services.AddScoped<IDependencyResolver>(s => new FuncDependencyResolver(s.GetRequiredService));
 			services.AddScoped<AppSchema>();
 
-			services.AddGraphQL(o => { o.ExposeExceptions = false; })
+			services.AddGraphQL(o => {
+						o.ExposeExceptions = false;
+						o.ComplexityConfiguration = new ComplexityConfiguration() {
+							MaxDepth = 10
+						};
+					})
 					.AddGraphTypes(ServiceLifetime.Scoped)
 					.AddDataLoader();
 

@@ -5,12 +5,10 @@ using DataAccess.Models;
 
 namespace ApiGraphQL.Repository.Interfaces
 {
-	public interface ISchoolRepository
+	public interface ISchoolRepository : IBaseRepository<School>
 	{
-		IEnumerable<School> GetAll();
-		School GetById(int id);
 		IEnumerable<School> GetByType(int type);
 		IEnumerable<Subject> GetSchoolSubjects(int schoolId);
-		Task<ILookup<int, Subject>> GetSchoolSubjectsBySchoolIds(IEnumerable<int> schoolIds);
+		Task<ILookup<int, Subject>> GetSchoolSubjectsBySchoolIdsAsync(IEnumerable<int> schoolIds);
 	}
 }

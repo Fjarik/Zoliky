@@ -13,7 +13,8 @@ namespace ApiGraphQL.GraphQL.Queries
 	public class AppQuery : ObjectGraphType
 	{
 		public AppQuery(IZolikRepository zoliks,
-						ISchoolRepository schools)
+						ISchoolRepository schools,
+						ITransactionRepository transactions)
 		{
 #region Zoliks
 
@@ -81,6 +82,26 @@ namespace ApiGraphQL.GraphQL.Queries
 								  x.Errors.Add(new ExecutionError("Špatná hodnota ID"));
 								  return null;
 							  });
+
+#endregion
+
+#region Transactions
+
+			Field<ListGraphType<TransactionType>>("transactions", resolve: x => transactions.GetAll());
+
+			Field<TransactionType>("transaction",
+								   arguments: new QueryArguments(
+																 new QueryArgument<NonNullGraphType<IdGraphType>> {
+																	 Name = "id"
+																 }
+																),
+								   resolve: x => {
+									   if (x.GetArgument<int>("id") is int id) {
+										   return transactions.GetById(id);
+									   }
+									   x.Errors.Add(new ExecutionError("Špatná hodnota ID"));
+									   return null;
+								   });
 
 #endregion
 		}

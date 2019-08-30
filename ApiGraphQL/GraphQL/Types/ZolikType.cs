@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ApiGraphQL.Repository.Interfaces;
 using DataAccess.Models;
+using GraphQL.DataLoader;
 //using DataAccessCore.Models;
 using GraphQL.Types;
 
@@ -10,7 +12,7 @@ namespace ApiGraphQL.GraphQL.Types
 {
 	public class ZolikType : ObjectGraphType<Zolik>
 	{
-		public ZolikType()
+		public ZolikType(IZolikRepository zoliks, IDataLoaderContextAccessor dataLoader)
 		{
 			Field(x => x.ID, type: typeof(IdGraphType))
 				.Description("ID žolíka");
@@ -40,6 +42,16 @@ namespace ApiGraphQL.GraphQL.Types
 				.Description("Udává, zda je dovoleno žolíka rozdělit");
 			Field<ZolikEnumType>(nameof(Zolik.Type), "Typ žolíka");
 			Field<SubjectType>(nameof(Zolik.Subject), "Předmět, ze kterého byl žolík udělen");
+			Field<ListGraphType<TransactionType>>(nameof(Zolik.Transactions),
+												  "Transakce daného žolíka",
+												  resolve: x => {
+													  var loader = dataLoader.Context
+																			 .GetOrAddCollectionBatchLoader<int,
+																				 Transaction
+																			 >("GetTransactionsByZolikIdsAsync",
+																			   zoliks.GetTransactionsByZolikIdsAsync);
+													  return loader.LoadAsync(x.Source.ID);
+												  });
 		}
 	}
 }

@@ -44,7 +44,7 @@ namespace ApiGraphQL.Repository
 						   .ToList();
 		}
 
-		public async Task<ILookup<int, Subject>> GetSchoolSubjectsBySchoolIds(IEnumerable<int> schoolIds)
+		public async Task<ILookup<int, Subject>> GetSchoolSubjectsBySchoolIdsAsync(IEnumerable<int> schoolIds)
 		{
 			var subjects = await _context.SchoolSubjects
 										 .Include(x => x.Subject)

@@ -216,7 +216,7 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" MaxLength="200" />
+          <Property Name="Name" Type="nvarchar" MaxLength="200" Nullable="false" />
           <Property Name="Shortcut" Type="varchar" MaxLength="5" Nullable="false" />
         </EntityType>
         <EntityType Name="TeacherSubjects">
@@ -378,8 +378,8 @@
           <Property Name="SubjectID" Type="int" Nullable="false" />
           <Property Name="OwnerID" Type="int" Nullable="false" />
           <Property Name="OriginalOwnerID" Type="int" Nullable="false" />
-          <Property Name="Type" Type="tinyint" />
-          <Property Name="Title" Type="nvarchar(max)" />
+          <Property Name="Type" Type="tinyint" Nullable="false" />
+          <Property Name="Title" Type="nvarchar(max)" Nullable="false" />
           <Property Name="OwnerSince" Type="datetime" Nullable="false" />
           <Property Name="Created" Type="datetime" Nullable="false" />
           <Property Name="Enabled" Type="bit" Nullable="false" />
@@ -1263,7 +1263,7 @@
           <Property Name="TeacherID" Type="Int32" Nullable="false" />
           <Property Name="OriginalOwnerID" Type="Int32" Nullable="false" />
           <Property Name="Type" Type="ZoliksModel.ZolikType" Nullable="false" />
-          <Property Name="Title" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Title" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Enabled" Type="Boolean" Nullable="false" />
           <Property Name="OwnerSince" Type="DateTime" Precision="3" Nullable="false" />
           <Property Name="Created" Type="DateTime" Precision="3" Nullable="false" />
@@ -1884,7 +1884,7 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Shortcut" Type="String" MaxLength="5" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="Teachers" Relationship="ZoliksModel.FK_TeacherSubjects_Subjects" FromRole="Subject" ToRole="TeacherSubject" />
         </EntityType>

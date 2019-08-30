@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using ApiGraphQL.Repository.Interfaces;
@@ -38,6 +39,15 @@ namespace ApiGraphQL.Repository
 						   .Where(x => x.Enabled)
 						   .Where(x => x.OwnerID == userId)
 						   .ToList();
+		}
+
+		public async Task<ILookup<int, Transaction>> GetTransactionsByZolikIdsAsync(IEnumerable<int> zolikIds)
+		{
+			var trans = await _context.Transactions
+									  .Include(x => x.Zolik)
+									  .Where(x => zolikIds.Contains(x.ZolikID))
+									  .ToListAsync();
+			return trans.ToLookup(x => x.ZolikID);
 		}
 	}
 }
