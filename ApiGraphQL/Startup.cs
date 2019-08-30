@@ -46,7 +46,7 @@ namespace ApiGraphQL
 			services.AddGraphQL(o => {
 						o.ExposeExceptions = false;
 						o.ComplexityConfiguration = new ComplexityConfiguration() {
-							MaxDepth = 10
+							MaxDepth = 15
 						};
 					})
 					.AddGraphTypes(ServiceLifetime.Scoped)
