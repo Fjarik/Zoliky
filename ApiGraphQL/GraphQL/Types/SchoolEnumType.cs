@@ -8,12 +8,14 @@ using SharedLibrary.Enums;
 
 namespace ApiGraphQL.GraphQL.Types
 {
-	public class SchoolEnumType : EnumerationGraphType<SchoolTypes>
+	public class SchoolEnumType : EnumerationGraphType
 	{
 		public SchoolEnumType()
 		{
-			Name = nameof(School.Type);
+			Name = "SchoolTypes";
 			Description = "Druh školy";
+
+			this.AddValues<SchoolTypes>();
 		}
 	}
 }

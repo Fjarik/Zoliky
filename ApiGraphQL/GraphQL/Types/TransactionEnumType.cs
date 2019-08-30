@@ -8,12 +8,14 @@ using SharedLibrary.Enums;
 
 namespace ApiGraphQL.GraphQL.Types
 {
-	public class TransactionEnumType : EnumerationGraphType<TransactionAssignment>
+	public class TransactionEnumType : EnumerationGraphType
 	{
 		public TransactionEnumType()
 		{
-			Name = nameof(Zolik.Type);
+			Name = "TransactionTypes";
 			Description = "Druh transakce";
+
+			this.AddValues<TransactionAssignment>();
 		}
 	}
 }

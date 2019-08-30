@@ -14,6 +14,9 @@ namespace ApiGraphQL.GraphQL.Types
 	{
 		public ZolikType(IZolikRepository zoliks, IDataLoaderContextAccessor dataLoader)
 		{
+			this.Name = "Zolik";
+			this.Description = "Prostě žolík";
+
 			Field("id", x => x.ID, type: typeof(IdGraphType))
 				.Description("ID žolíka");
 			Field(x => x.OwnerID, type: typeof(IdGraphType))

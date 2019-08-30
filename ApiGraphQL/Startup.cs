@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ApiGraphQL.GraphQL;
 using ApiGraphQL.GraphQL.Schemas;
 using ApiGraphQL.Repository;
 using ApiGraphQL.Repository.Interfaces;
@@ -9,6 +10,7 @@ using DataAccess.Models;
 using GraphQL;
 using GraphQL.Server;
 using GraphQL.Server.Ui.Playground;
+using GraphQL.Server.Ui.Voyager;
 using GraphQL.Validation.Complexity;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -36,12 +38,9 @@ namespace ApiGraphQL
 			services.AddScoped(x => new ZoliksEntities(Configuration
 														   .GetConnectionString("ZolikEntities")));
 
-			services.AddScoped<IZolikRepository, ZolikRepository>();
-			services.AddScoped<ISchoolRepository, SchoolRepository>();
-			services.AddScoped<ITransactionRepository, TransactionRepository>();
-
-			services.AddScoped<IDependencyResolver>(s => new FuncDependencyResolver(s.GetRequiredService));
-			services.AddScoped<AppSchema>();
+			services.SetProjectRepositories()
+					.AddScoped<IDependencyResolver>(s => new FuncDependencyResolver(s.GetRequiredService))
+					.AddScoped<AppSchema>();
 
 			services.AddGraphQL(o => {
 						o.ExposeExceptions = false;
@@ -67,8 +66,9 @@ namespace ApiGraphQL
 
 			app.UseHttpsRedirection();
 
-			app.UseGraphQL<AppSchema>();
-			app.UseGraphQLPlayground(options: new GraphQLPlaygroundOptions());
+			app.UseGraphQL<AppSchema>()
+			   .UseGraphQLPlayground(new GraphQLPlaygroundOptions {Path = "/"})
+			   .UseGraphQLVoyager(new GraphQLVoyagerOptions {Path = "/voyager"});
 
 			app.UseMvc();
 		}
