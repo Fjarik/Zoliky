@@ -13,7 +13,7 @@ namespace ApiGraphQL.GraphQL.Types
 	{
 		public SchoolType(ISchoolRepository schools, IDataLoaderContextAccessor dataLoader)
 		{
-			Field(x => x.ID, type: typeof(IdGraphType))
+			Field("id", x => x.ID, type: typeof(IdGraphType))
 				.Description("ID školy");
 			Field(x => x.Name)
 				.Description("Celý název školy");
@@ -35,7 +35,8 @@ namespace ApiGraphQL.GraphQL.Types
 													  dataLoader
 														  .Context
 														  .GetOrAddCollectionBatchLoader<int, Subject
-														  >("GetSchoolSubjectsBySchoolIdsAsync", schools.GetSchoolSubjectsBySchoolIdsAsync);
+														  >("GetSchoolSubjectsBySchoolIdsAsync",
+															schools.GetSchoolSubjectsBySchoolIdsAsync);
 												  return loader.LoadAsync(x.Source.ID);
 												  //return schools.GetSchoolSubjects(x.Source.ID);
 											  });

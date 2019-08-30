@@ -11,7 +11,7 @@ namespace ApiGraphQL.GraphQL.Types
 	{
 		public TransactionType()
 		{
-			Field(x => x.ID, type: typeof(IdGraphType))
+			Field("id", x => x.ID, type: typeof(IdGraphType))
 				.Description("ID transakce");
 			Field(x => x.FromID, type: typeof(IdGraphType))
 				.Description("ID uživatele od kterého byl žolík odeslán");

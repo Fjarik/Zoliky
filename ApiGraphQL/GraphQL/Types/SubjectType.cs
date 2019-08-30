@@ -11,7 +11,7 @@ namespace ApiGraphQL.GraphQL.Types
 	{
 		public SubjectType()
 		{
-			Field(x => x.ID, type: typeof(IdGraphType))
+			Field("id", x => x.ID, type: typeof(IdGraphType))
 				.Description("ID předmětu");
 			Field(x => x.Name)
 				.Description("Název předmětu");
