@@ -80,6 +80,7 @@
 	$(window).on("load",
 		function() {
 			smoothScrolling($(".main-menu > nav > ul > li > a[href^='#']"), 70);
+			smoothScrolling($(".mobile_menu ul > li > a[href^='#']"), 70);
 			smoothScrolling($(".scroll"), 70);
 		});
 
