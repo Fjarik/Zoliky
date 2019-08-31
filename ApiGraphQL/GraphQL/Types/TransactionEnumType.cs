@@ -12,7 +12,7 @@ namespace ApiGraphQL.GraphQL.Types
 	{
 		public TransactionEnumType()
 		{
-			Name = "TransactionTypes";
+			Name = "TransactionType";
 			Description = "Druh transakce";
 
 			this.AddValues<TransactionAssignment>();

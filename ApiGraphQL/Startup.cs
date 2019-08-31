@@ -35,14 +35,12 @@ namespace ApiGraphQL
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
-			services.AddScoped(x => new ZoliksEntities(Configuration
-														   .GetConnectionString("ZolikEntities")));
-
-			services.SetProjectRepositories()
+			var conString = Configuration.GetConnectionString("ZolikEntities");
+			services.AddScoped(x => new ZoliksEntities(conString))
 					.AddScoped<IDependencyResolver>(s => new FuncDependencyResolver(s.GetRequiredService))
-					.AddScoped<AppSchema>();
-
-			services.AddGraphQL(o => {
+					.SetProjectRepositories()
+					.SetSchemas()
+					.AddGraphQL(o => {
 						o.ExposeExceptions = false;
 						o.ComplexityConfiguration = new ComplexityConfiguration() {
 							MaxDepth = 15

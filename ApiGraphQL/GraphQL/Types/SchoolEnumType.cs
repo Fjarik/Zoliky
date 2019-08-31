@@ -12,7 +12,7 @@ namespace ApiGraphQL.GraphQL.Types
 	{
 		public SchoolEnumType()
 		{
-			Name = "SchoolTypes";
+			Name = "SchoolType";
 			Description = "Druh školy";
 
 			this.AddValues<SchoolTypes>();

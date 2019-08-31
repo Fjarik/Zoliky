@@ -13,6 +13,9 @@ namespace ApiGraphQL.GraphQL.Types
 	{
 		public SchoolType(ISchoolRepository schools, IDataLoaderContextAccessor dataLoader)
 		{
+			this.Name = "Skola";
+			this.Description = "Prostě školy...";
+
 			Field("id", x => x.ID, type: typeof(IdGraphType))
 				.Description("ID školy");
 			Field(x => x.Name)

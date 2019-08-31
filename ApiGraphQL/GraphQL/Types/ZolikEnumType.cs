@@ -12,7 +12,7 @@ namespace ApiGraphQL.GraphQL.Types
 	{
 		public ZolikEnumType()
 		{
-			Name = "ZolikTypes";
+			Name = "ZolikType";
 			Description = "Typ žolíka";
 
 			this.AddValues<SharedLibrary.Enums.ZolikType>();

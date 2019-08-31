@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ApiGraphQL.GraphQL.Schemas;
 using ApiGraphQL.Repository;
 using ApiGraphQL.Repository.Interfaces;
 using GraphQL.Types;
@@ -17,6 +18,11 @@ namespace ApiGraphQL.GraphQL
 			return services.AddScoped<IZolikRepository, ZolikRepository>()
 						   .AddScoped<ISchoolRepository, SchoolRepository>()
 						   .AddScoped<ITransactionRepository, TransactionRepository>();
+		}
+
+		public static IServiceCollection SetSchemas(this IServiceCollection services)
+		{
+			return services.AddScoped<AppSchema>();
 		}
 
 		public static void AddValues<TEnum>(this EnumerationGraphType enumType)

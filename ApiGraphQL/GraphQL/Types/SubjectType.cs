@@ -11,13 +11,15 @@ namespace ApiGraphQL.GraphQL.Types
 	{
 		public SubjectType()
 		{
+			this.Name = "Predmet";
+			this.Description = "Školní předmět";
+
 			Field("id", x => x.ID, type: typeof(IdGraphType))
 				.Description("ID předmětu");
 			Field(x => x.Name)
 				.Description("Název předmětu");
 			Field(x => x.Shortcut)
 				.Description("Zkratka předmětu");
-			
 		}
 	}
 }
