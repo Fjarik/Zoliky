@@ -126,6 +126,34 @@ namespace DataAccess.Managers
 			return new MActionResult<AchievementUnlock>(StatusCode.OK, ent);
 		}
 
+		public async Task<bool> CheckAsync(int userId)
+		{
+			var sMgr = Context.Get<UserSettingManager>();
+			var achs = await this.GetAllAsync();
+
+			var res = false;
+			foreach (var ach in achs) {
+				var check = await CheckAsync(sMgr, userId, ach);
+				if (check) {
+					res = true;
+				}
+			}
+			return res;
+		}
+
+		private async Task<bool> CheckAsync(UserSettingManager mgr, int userId, Achievement ach)
+		{
+			if (userId < 1 || ach == null || mgr == null || ach.ValueToUnlock == null) {
+				return false;
+			}
+			var val = await mgr.GetIntAsync(userId, ach.RelatedKey);
+			if (val < 1 || val < ach.ValueToUnlock) {
+				return false;
+			}
+			var res = await this.UnlockAsync(userId, ach.ID);
+			return res.IsSuccess;
+		}
+
 #endregion
 
 #endregion

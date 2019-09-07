@@ -15,6 +15,7 @@
           <Property Name="XP" Type="int" Nullable="false" />
           <Property Name="Enabled" Type="bit" Nullable="false" />
           <Property Name="ValueToUnlock" Type="int" />
+          <Property Name="RelatedKey" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="AchievementUnlocks">
           <Key>
@@ -1509,6 +1510,7 @@
           <Property Name="XP" Type="Int32" Nullable="false" />
           <Property Name="Enabled" Type="Boolean" Nullable="false" />
           <Property Name="ValueToUnlock" Type="Int32" Nullable="true" />
+          <Property Name="RelatedKey" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Rank">
           <Key>
@@ -2115,6 +2117,7 @@
           <EntitySetMapping Name="Achievements">
             <EntityTypeMapping TypeName="ZoliksModel.Achievement">
               <MappingFragment StoreEntitySet="Achievements">
+                <ScalarProperty Name="RelatedKey" ColumnName="RelatedKey" />
                 <ScalarProperty Name="ValueToUnlock" ColumnName="ValueToUnlock" />
                 <ScalarProperty Name="Enabled" ColumnName="Enabled" />
                 <ScalarProperty Name="XP" ColumnName="XP" />

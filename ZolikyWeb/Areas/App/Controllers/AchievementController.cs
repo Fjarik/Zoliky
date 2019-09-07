@@ -60,12 +60,17 @@ namespace ZolikyWeb.Areas.App.Controllers
 			var now = DateTime.Now;
 			if (!string.IsNullOrEmpty(set) &&
 				DateTime.TryParse(set, out DateTime lastCheck) &&
-				(lastCheck - now).Days < 1) {
+				(now - lastCheck).Days < 1) {
 				this.AddErrorToastMessage("Tuto akci lze spustit pouze 1x za den!");
 				return RedirectToAction("Dashboard");
 			}
-			// TODO: Check
 			var aMgr = this.GetManager<AchievementManager>();
+			var res = await aMgr.CheckAsync(id);
+			if (res) {
+				this.AddSuccessToastMessage("Byl odemčen nový achievement");
+			} else {
+				this.AddWarningToastMessage("Bohužel se neodemkl žádný nový achievement");
+			}
 
 			await sMgr.CreateAsync(id,
 								   SettingKeys.LastAchievementsCheck,

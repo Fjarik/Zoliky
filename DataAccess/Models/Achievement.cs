@@ -20,5 +20,6 @@ namespace DataAccess.Models
         public int XP { get; set; }
         public bool Enabled { get; set; }
         public Nullable<int> ValueToUnlock { get; set; }
+        public string RelatedKey { get; set; }
     }
 }
