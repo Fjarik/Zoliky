@@ -34,6 +34,13 @@ namespace SharedLibrary.Shared
 
 #endregion
 
+#region Achievements
+
+		// Poslední kontrola achievementů
+		public static string LastAchievementsCheck => "LastAchievementsCheck";
+
+#endregion
+
 #region Statistics
 
 		// Kolik žolíků získal (celkem)

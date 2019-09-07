@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using DataAccess;
 using DataAccess.Managers;
 using DataAccess.Models;
+using SharedLibrary.Shared;
 using ZolikyWeb.Areas.App.Models.Achievement;
 using ZolikyWeb.Models.Base;
 using ZolikyWeb.Tools;
@@ -25,6 +26,12 @@ namespace ZolikyWeb.Areas.App.Controllers
 		{
 			var id = this.User.Identity.GetId();
 
+			var sMgr = this.GetManager<UserSettingManager>();
+			var set = await sMgr.GetStringValueAsync(id, SettingKeys.LastAchievementsCheck);
+			if (!string.IsNullOrEmpty(set) && DateTime.TryParse(set, out DateTime lastCheck)) {
+				ViewBag.LastCheck = lastCheck;
+			}
+
 			var achs = await Mgr.GetAllAsync();
 			var unlocked = await Mgr.GetUnlockedIdsAsync(id);
 			var ids = unlocked.Select(x => x.AchievementId);
@@ -40,6 +47,31 @@ namespace ZolikyWeb.Areas.App.Controllers
 			var res = un.Concat(model);
 
 			return View(res);
+		}
+
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<ActionResult> CheckAchievements()
+		{
+			var id = this.User.Identity.GetId();
+
+			var sMgr = this.GetManager<UserSettingManager>();
+			var set = await sMgr.GetStringValueAsync(id, SettingKeys.LastAchievementsCheck);
+			var now = DateTime.Now;
+			if (!string.IsNullOrEmpty(set) &&
+				DateTime.TryParse(set, out DateTime lastCheck) &&
+				(lastCheck - now).Days < 1) {
+				this.AddErrorToastMessage("Tuto akci lze spustit pouze 1x za den!");
+				return RedirectToAction("Dashboard");
+			}
+			// TODO: Check
+			var aMgr = this.GetManager<AchievementManager>();
+
+			await sMgr.CreateAsync(id,
+								   SettingKeys.LastAchievementsCheck,
+								   DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff"),
+								   true);
+			return RedirectToAction("Dashboard");
 		}
 	}
 }

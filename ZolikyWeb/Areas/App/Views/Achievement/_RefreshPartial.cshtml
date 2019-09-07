@@ -1,0 +1,49 @@
+﻿@{
+	DateTime? lastCheck = ViewBag.LastCheck as DateTime?;
+}
+<a title="Zkontrolovat úspěchy" data-toggle="modal" data-target="#modalRefresh" class="btn btn-secondary">
+	Zkontrolovat
+</a>
+
+<div id="modalRefresh" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modalRefreshLabel" style="display: none;" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title" id="modalRefreshLabel">
+					Zkontrolovat achievementy
+				</h4>
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			</div>
+			@using (Html.BeginForm("CheckAchievements", "Achievement", new {Area = "App"}, FormMethod.Post)) {
+				<div class="modal-body">
+					<p>
+						Po potvrzení tohoto dialogu se spustí algoritmus, který zkontroluje, zda máte nárok na odemčení nových achievementů.
+					</p>
+					<br />
+					<p class="text-danger text-center">
+						Tato akce může trvat i
+						<strong>několik minut</strong>, nezavírejte tedy tuto stránku ve svém prohlížeči.
+					</p>
+					<br />
+					<p>
+						Kontrolu je možné spustit
+						<strong>pouze 1x denně</strong>.
+					</p>
+					@if (lastCheck != null) {
+						<br />
+						<p>
+							Poslední kontrola proběhla @(((DateTime) lastCheck).ToString("dd.MM.yyyy HH:mm"))
+						</p>
+					}
+					@Html.AntiForgeryToken()
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-white" data-dismiss="modal">Zavřít</button>
+					<button type="submit" class="btn btn-info waves-effect">Spustit</button>
+				</div>
+			}
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>

@@ -95,22 +95,17 @@ namespace DataAccess.Managers
 		public async Task<MActionResult<Achievement>> CreateAsync(string title,
 																  string desc,
 																  int xp,
-																  int? lockedId = null,
-																  int? unlockedId = null)
+																  int? valToUnlock = null)
 		{
 			if (Methods.AreNullOrWhiteSpace(title, desc) || xp < 0) {
 				return new MActionResult<Achievement>(StatusCode.InvalidInput);
 			}
-			if ((lockedId != null && lockedId < 1) || (unlockedId != null && unlockedId < 1)) {
-				return new MActionResult<Achievement>(StatusCode.NotValidID);
-			}
 
 			var ent = new Achievement() {
-				ImageLockedID = lockedId,
-				UnlockedImageID = unlockedId,
 				Title = title,
 				Description = desc,
 				XP = xp,
+				ValueToUnlock = valToUnlock,
 				Enabled = true
 			};
 			return await base.CreateAsync(ent);

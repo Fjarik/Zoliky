@@ -1083,6 +1083,7 @@
     <Content Include="Content\Images\Pages\Default\Transfer.webp" />
     <Content Include="Content\Images\Pages\Default\Zolici.webp" />
     <Content Include="Content\Images\Pages\Default\ZolikEdit.webp" />
+    <Content Include="Areas\App\Views\Achievement\_RefreshPartial.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />

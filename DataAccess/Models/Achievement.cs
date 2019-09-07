@@ -19,10 +19,6 @@ namespace DataAccess.Models
         public string Description { get; set; }
         public int XP { get; set; }
         public bool Enabled { get; set; }
-        public Nullable<int> UnlockedImageID { get; set; }
-        public Nullable<int> ImageLockedID { get; set; }
-    
-        public virtual Image LockedImage { get; set; }
-        public virtual Image UnlockedImage { get; set; }
+        public Nullable<int> ValueToUnlock { get; set; }
     }
 }

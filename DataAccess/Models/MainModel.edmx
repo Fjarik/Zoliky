@@ -10,12 +10,11 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="UnlockedImageID" Type="int" />
-          <Property Name="ImageLockedID" Type="int" />
           <Property Name="Title" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="XP" Type="int" Nullable="false" />
           <Property Name="Enabled" Type="bit" Nullable="false" />
+          <Property Name="ValueToUnlock" Type="int" />
         </EntityType>
         <EntityType Name="AchievementUnlocks">
           <Key>
@@ -386,30 +385,6 @@
           <Property Name="Lock" Type="nvarchar" MaxLength="50" />
           <Property Name="AllowSplit" Type="bit" Nullable="false" />
         </EntityType>
-        <Association Name="FK_Achievements_LockedImage">
-          <End Role="Images" Type="Self.Images" Multiplicity="0..1" />
-          <End Role="Achievements" Type="Self.Achievements" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Images">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="Achievements">
-              <PropertyRef Name="ImageLockedID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Achievements_UnlockedImage">
-          <End Role="Images" Type="Self.Images" Multiplicity="0..1" />
-          <End Role="Achievements" Type="Self.Achievements" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Images">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="Achievements">
-              <PropertyRef Name="UnlockedImageID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_AchievementUnlocks_Achievements">
           <End Role="Achievements" Type="Self.Achievements" Multiplicity="1" />
           <End Role="AchievementUnlocks" Type="Self.AchievementUnlocks" Multiplicity="*" />
@@ -1037,14 +1012,6 @@
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserSettings" EntityType="Self.UserSettings" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Zoliky" EntityType="Self.Zoliky" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK_Achievements_LockedImage" Association="Self.FK_Achievements_LockedImage">
-            <End Role="Images" EntitySet="Images" />
-            <End Role="Achievements" EntitySet="Achievements" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Achievements_UnlockedImage" Association="Self.FK_Achievements_UnlockedImage">
-            <End Role="Images" EntitySet="Images" />
-            <End Role="Achievements" EntitySet="Achievements" />
-          </AssociationSet>
           <AssociationSet Name="FK_AchievementUnlocks_Achievements" Association="Self.FK_AchievementUnlocks_Achievements">
             <End Role="Achievements" EntitySet="Achievements" />
             <End Role="AchievementUnlocks" EntitySet="AchievementUnlocks" />
@@ -1353,14 +1320,6 @@
           </AssociationSet>
           <EntitySet Name="Achievements" EntityType="ZoliksModel.Achievement" />
           <EntitySet Name="Ranks" EntityType="ZoliksModel.Rank" />
-          <AssociationSet Name="FK_Achievements_LockedImage" Association="ZoliksModel.FK_Achievements_LockedImage">
-            <End Role="Image" EntitySet="Images" />
-            <End Role="Achievement" EntitySet="Achievements" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Achievements_UnlockedImage" Association="ZoliksModel.FK_Achievements_UnlockedImage">
-            <End Role="Image" EntitySet="Images" />
-            <End Role="Achievement" EntitySet="Achievements" />
-          </AssociationSet>
           <EntitySet Name="Subjects" EntityType="ZoliksModel.Subject" />
           <AssociationSet Name="FK_Zoliky_Subjects" Association="ZoliksModel.FK_Zoliky_Subjects">
             <End Role="Subject" EntitySet="Subjects" />
@@ -1840,10 +1799,7 @@
           <Property Name="Description" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="XP" Type="Int32" Nullable="false" />
           <Property Name="Enabled" Type="Boolean" Nullable="false" />
-          <Property Name="UnlockedImageID" Type="Int32" Nullable="true" />
-          <Property Name="ImageLockedID" Type="Int32" Nullable="true" />
-          <NavigationProperty Name="LockedImage" Relationship="ZoliksModel.FK_Achievements_LockedImage" FromRole="Achievement" ToRole="Image" />
-          <NavigationProperty Name="UnlockedImage" Relationship="ZoliksModel.FK_Achievements_UnlockedImage" FromRole="Achievement" ToRole="Image" />
+          <Property Name="ValueToUnlock" Type="Int32" Nullable="true" />
         </EntityType>
         <EntityType Name="Rank">
           <Key>
@@ -1855,30 +1811,6 @@
           <Property Name="ToXP" Type="Int32" />
           <Property Name="Colour" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
         </EntityType>
-        <Association Name="FK_Achievements_LockedImage">
-          <End Type="ZoliksModel.Image" Role="Image" Multiplicity="0..1" />
-          <End Type="ZoliksModel.Achievement" Role="Achievement" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Image">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="Achievement">
-              <PropertyRef Name="ImageLockedID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Achievements_UnlockedImage">
-          <End Type="ZoliksModel.Image" Role="Image" Multiplicity="0..1" />
-          <End Type="ZoliksModel.Achievement" Role="Achievement" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Image">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="Achievement">
-              <PropertyRef Name="UnlockedImageID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="Subject">
           <Key>
             <PropertyRef Name="ID" />
@@ -2684,8 +2616,7 @@
           <EntitySetMapping Name="Achievements">
             <EntityTypeMapping TypeName="ZoliksModel.Achievement">
               <MappingFragment StoreEntitySet="Achievements">
-                <ScalarProperty Name="ImageLockedID" ColumnName="ImageLockedID" />
-                <ScalarProperty Name="UnlockedImageID" ColumnName="UnlockedImageID" />
+                <ScalarProperty Name="ValueToUnlock" ColumnName="ValueToUnlock" />
                 <ScalarProperty Name="Enabled" ColumnName="Enabled" />
                 <ScalarProperty Name="XP" ColumnName="XP" />
                 <ScalarProperty Name="Description" ColumnName="Description" />

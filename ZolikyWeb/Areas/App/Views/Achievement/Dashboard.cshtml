@@ -8,6 +8,16 @@
 	<div class="col">
 		<div class="card">
 			<div class="card-body">
+				<div class="row justify-content-around align-items-center mb-3">
+					<div class="col ">
+						<span>
+							Níže jsou vypsané veškeré Vaše odemčené i zamčené úspěchy v rámci systému
+						</span>
+					</div>
+					<div class="col-auto">
+						@Html.Partial("_RefreshPartial")
+					</div>
+				</div>
 				<div class="row">
 					@foreach (var ent in Model) {
 						<div class="col-xl-3 col-lg-4 col-md-6">
@@ -21,7 +31,7 @@
 											<h4>@ent.Title</h4>
 											<small>@ent.Description</small>
 											@if (ent.IsUnlocked) {
-												<br/>
+												<br />
 												<small>Datum získání: @(ent.When?.ToString("dd.MM.yyyy"))</small>
 											}
 										</div>

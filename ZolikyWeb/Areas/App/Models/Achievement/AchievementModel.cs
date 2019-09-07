@@ -23,8 +23,6 @@ namespace ZolikyWeb.Areas.App.Models.Achievement
 			this.Description = ach.Description;
 			this.XP = ach.XP;
 			this.Enabled = ach.Enabled;
-			this.UnlockedImageID = ach.UnlockedImageID;
-			this.ImageLockedID = ach.ImageLockedID;
 		}
 	}
 }

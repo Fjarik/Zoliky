@@ -10,7 +10,6 @@ namespace SharedLibrary.Interfaces
 		string Description { get; set; }
 		int XP { get; set; }
 		bool Enabled { get; set; }
-		int? UnlockedImageID { get; set; }
-		int? ImageLockedID { get; set; }
+		int? ValueToUnlock { get; set; }
 	}
 }
