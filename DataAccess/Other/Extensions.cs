@@ -36,6 +36,7 @@ namespace DataAccess
 			app.CreatePerOwinContext<ProjectSettingManager>(ProjectSettingManager.Create);
 			app.CreatePerOwinContext<RankManager>(RankManager.Create);
 			app.CreatePerOwinContext<SchoolManager>(SchoolManager.Create);
+			app.CreatePerOwinContext<StatisticsManager>(StatisticsManager.Create);
 			app.CreatePerOwinContext<SubjectManager>(SubjectManager.Create);
 			app.CreatePerOwinContext<TeacherSubjectManager>(TeacherSubjectManager.Create);
 			app.CreatePerOwinContext<TokenManager>(TokenManager.Create);

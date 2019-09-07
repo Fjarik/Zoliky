@@ -193,6 +193,21 @@ namespace DataAccess.Managers
 			return success;
 		}
 
+#region Templates
+
+		public Task<MActionResult<Notification>> NewZolikAsync(int toId, string zolikTitle, string from = null)
+		{
+			var title = "Máte nového žolíka!";
+			var sub = $"Právě Vám přistál na účtě nový žolík '{zolikTitle}'";
+			if (!string.IsNullOrEmpty(from)) {
+				sub = $"Uživatel {from} Vám právě poslal žolíka '{zolikTitle}'";
+			}
+			var exp = Ext.SchoolYearEnd;
+			return CreateAsync(toId, title, sub, NotificationSeverity.Normal, exp);
+		}
+
+#endregion
+
 		public Task<MActionResult<Notification>> CreateAsync(int toId,
 															 string title,
 															 string subtitle,

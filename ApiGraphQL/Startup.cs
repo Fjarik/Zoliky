@@ -12,6 +12,7 @@ using GraphQL.Server;
 using GraphQL.Server.Ui.Playground;
 using GraphQL.Server.Ui.Voyager;
 using GraphQL.Validation.Complexity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -49,6 +50,12 @@ namespace ApiGraphQL
 					.AddGraphTypes(ServiceLifetime.Scoped)
 					.AddDataLoader();
 
+			services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+					.AddJwtBearer(options => {
+						options.Authority = "";
+						options.Audience = "";
+					});
+
 			services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 		}
 
@@ -62,9 +69,9 @@ namespace ApiGraphQL
 				app.UseHsts();
 			}
 
-			app.UseHttpsRedirection();
-
-			app.UseGraphQL<AppSchema>()
+			app.UseHttpsRedirection()
+			   .UseAuthentication()
+			   .UseGraphQL<AppSchema>()
 			   .UseGraphQLPlayground(new GraphQLPlaygroundOptions {Path = "/"})
 			   .UseGraphQLVoyager(new GraphQLVoyagerOptions {Path = "/voyager"});
 

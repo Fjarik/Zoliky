@@ -46,6 +46,21 @@ namespace SharedLibrary.Shared
 			}
 		}
 
+		public static DateTime SchoolYearEnd
+		{
+			get
+			{
+				var today = DateTime.Today;
+				var year = today.Year;
+				var month = 6;
+				var curr = new DateTime(year, month, 30);
+				if (today > curr) {
+					return new DateTime(year + 1, month, 30);
+				}
+				return curr;
+			}
+		}
+
 #endregion
 
 #region Code settings

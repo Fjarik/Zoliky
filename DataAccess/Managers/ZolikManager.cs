@@ -312,7 +312,9 @@ namespace DataAccess.Managers
 				}
 				var tran = tranRes.Content;
 
-				var notify = type.IsNotifyType(); // Nespamovat email při odebírání 
+				await UpdateStatisticsAsync(fromId, toId, z.Type, type);
+
+				var notify = type.IsNotifyType() && toId != Ext.BankId; // Nespamovat email při odebírání 
 				if (notify) {
 					var eMgr = Context.Get<MailManager>();
 					var email = await eMgr.NewZolikAsync(toId, z, tran);
@@ -324,7 +326,7 @@ namespace DataAccess.Managers
 					var notification = await fMgr.NewZolikAsync(z, fromId, toId);
 
 					var nMgr = Context.Get<NotificationManager>();
-					// TODO: Create notification
+					await nMgr.NewZolikAsync(toId, z.Title);
 				}
 
 				return new MActionResult<Transaction>(StatusCode.OK, tran);
@@ -334,6 +336,31 @@ namespace DataAccess.Managers
 #else
 				return new MActionResult<Transaction>(SharedLibrary.Enums.StatusCode.SeeException, ex);
 #endif
+			}
+		}
+
+		private async Task UpdateStatisticsAsync(int fromId, int toId, ZolikType type, TransactionAssignment tranType)
+		{
+			if (tranType == TransactionAssignment.ZerziRemoval || tranType == TransactionAssignment.Split) {
+				return;
+			}
+
+			var sMgr = Context.Get<StatisticsManager>();
+
+			switch (type) {
+				case ZolikType.Normal:
+					await sMgr.IncreaseValueAsync(fromId, SettingKeys.StatZoliksSent);
+					await sMgr.IncreaseValueAsync(toId, SettingKeys.StatZoliksAccepted);
+					await sMgr.IncreaseValueAsync(toId, SettingKeys.StatZoliksReceived);
+					break;
+				case ZolikType.Joker:
+					await sMgr.IncreaseValueAsync(fromId, SettingKeys.StatJokersSent);
+					await sMgr.IncreaseValueAsync(toId, SettingKeys.StatJokersAccepted);
+					await sMgr.IncreaseValueAsync(toId, SettingKeys.StatJokersReceived);
+					break;
+				case ZolikType.Black:
+					await sMgr.IncreaseValueAsync(toId, SettingKeys.StatBlackReceived);
+					break;
 			}
 		}
 

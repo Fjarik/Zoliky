@@ -16,9 +16,6 @@ namespace DataAccess.Managers
 	public class UserSettingManager : BaseManager<UserSetting>, IDisposable
 	{
 		/// 
-		/// Fields
-		///
-		/// 
 		/// Constructors
 		/// 
 		public UserSettingManager(IOwinContext context) : this(context, new ZoliksEntities()) { }
