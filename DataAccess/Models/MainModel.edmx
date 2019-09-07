@@ -25,33 +25,6 @@
           <Property Name="AchievementId" Type="int" Nullable="false" />
           <Property Name="When" Type="datetime" Nullable="false" />
         </EntityType>
-        <EntityType Name="AnonymTicketComments">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="TicketId" Type="int" Nullable="false" />
-          <Property Name="UserId" Type="int" />
-          <Property Name="Message" Type="nvarchar" MaxLength="1000" Nullable="false" />
-          <Property Name="Created" Type="datetime" Nullable="false" />
-          <Property Name="Ip" Type="varchar" MaxLength="50" />
-        </EntityType>
-        <EntityType Name="AnonymTickets">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="CategoryId" Type="int" Nullable="false" />
-          <Property Name="AdminId" Type="int" />
-          <Property Name="Status" Type="int" Nullable="false" />
-          <Property Name="Title" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="Message" Type="nvarchar" MaxLength="1000" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="Email" Type="varchar" MaxLength="100" Nullable="false" />
-          <Property Name="Created" Type="datetime" Nullable="false" />
-          <Property Name="Code" Type="int" Nullable="false" />
-          <Property Name="Ip" Type="varchar" MaxLength="50" />
-        </EntityType>
         <EntityType Name="Bans">
           <Key>
             <PropertyRef Name="ID" />
@@ -72,25 +45,6 @@
           <Property Name="Since" Type="date" Nullable="false" />
           <Property Name="Graduation" Type="date" Nullable="false" />
           <Property Name="Enabled" Type="bit" Nullable="false" />
-        </EntityType>
-        <EntityType Name="FaQ">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="CategoryID" Type="int" Nullable="false" />
-          <Property Name="Question" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="Response" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="IsFirst" Type="bit" Nullable="false" />
-        </EntityType>
-        <EntityType Name="FaqCategories">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="Type" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="IsFirst" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Images">
           <Key>
@@ -227,37 +181,6 @@
           <Property Name="TeacherID" Type="int" Nullable="false" />
           <Property Name="SubjectID" Type="int" Nullable="false" />
           <Property Name="ClassID" Type="int" Nullable="false" />
-          <Property Name="Created" Type="datetime" Nullable="false" />
-        </EntityType>
-        <EntityType Name="TicketCategories">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="Description" Type="nvarchar(max)" />
-        </EntityType>
-        <EntityType Name="TicketComments">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="TicketId" Type="int" Nullable="false" />
-          <Property Name="UserId" Type="int" Nullable="false" />
-          <Property Name="Message" Type="nvarchar" MaxLength="1000" Nullable="false" />
-          <Property Name="Created" Type="datetime" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Tickets">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="UserId" Type="int" Nullable="false" />
-          <Property Name="CategoryId" Type="int" Nullable="false" />
-          <Property Name="AdminId" Type="int" />
-          <Property Name="Status" Type="int" Nullable="false" />
-          <Property Name="Title" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="Message" Type="nvarchar" MaxLength="1000" Nullable="false" />
           <Property Name="Created" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="Tokens">
@@ -409,54 +332,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_AnonymTicketComments_Admin">
-          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
-          <End Role="AnonymTicketComments" Type="Self.AnonymTicketComments" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Users">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="AnonymTicketComments">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_AnonymTicketComments_AnonymTicketComments">
-          <End Role="AnonymTickets" Type="Self.AnonymTickets" Multiplicity="1" />
-          <End Role="AnonymTicketComments" Type="Self.AnonymTicketComments" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AnonymTickets">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="AnonymTicketComments">
-              <PropertyRef Name="TicketId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_AnonymTickets_TicketCategories">
-          <End Role="TicketCategories" Type="Self.TicketCategories" Multiplicity="1" />
-          <End Role="AnonymTickets" Type="Self.AnonymTickets" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TicketCategories">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="AnonymTickets">
-              <PropertyRef Name="CategoryId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_AnonymTickets_Users">
-          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
-          <End Role="AnonymTickets" Type="Self.AnonymTickets" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Users">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="AnonymTickets">
-              <PropertyRef Name="AdminId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Bans_Users">
           <End Role="Users" Type="Self.Users" Multiplicity="1" />
           <End Role="Bans" Type="Self.Bans" Multiplicity="*" />
@@ -478,18 +353,6 @@
             </Principal>
             <Dependent Role="Classes">
               <PropertyRef Name="SchoolID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_FaQ_FaqCategories">
-          <End Role="FaqCategories" Type="Self.FaqCategories" Multiplicity="1" />
-          <End Role="FaQ" Type="Self.FaQ" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="FaqCategories">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="FaQ">
-              <PropertyRef Name="CategoryID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -658,66 +521,6 @@
             </Principal>
             <Dependent Role="TeacherSubjects">
               <PropertyRef Name="TeacherID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_TicketComments_Ticket">
-          <End Role="Tickets" Type="Self.Tickets" Multiplicity="1" />
-          <End Role="TicketComments" Type="Self.TicketComments" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Tickets">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="TicketComments">
-              <PropertyRef Name="TicketId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_TicketComments_Users">
-          <End Role="Users" Type="Self.Users" Multiplicity="1" />
-          <End Role="TicketComments" Type="Self.TicketComments" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Users">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="TicketComments">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Tickets_Admin">
-          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
-          <End Role="Tickets" Type="Self.Tickets" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Users">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="Tickets">
-              <PropertyRef Name="AdminId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Tickets_TicketCategories">
-          <End Role="TicketCategories" Type="Self.TicketCategories" Multiplicity="1" />
-          <End Role="Tickets" Type="Self.Tickets" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TicketCategories">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="Tickets">
-              <PropertyRef Name="CategoryId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Tickets_Users">
-          <End Role="Users" Type="Self.Users" Multiplicity="1" />
-          <End Role="Tickets" Type="Self.Tickets" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Users">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="Tickets">
-              <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -981,12 +784,8 @@
         <EntityContainer Name="ZoliksModelStoreContainer">
           <EntitySet Name="Achievements" EntityType="Self.Achievements" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AchievementUnlocks" EntityType="Self.AchievementUnlocks" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="AnonymTicketComments" EntityType="Self.AnonymTicketComments" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="AnonymTickets" EntityType="Self.AnonymTickets" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Bans" EntityType="Self.Bans" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Classes" EntityType="Self.Classes" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="FaQ" EntityType="Self.FaQ" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="FaqCategories" EntityType="Self.FaqCategories" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Images" EntityType="Self.Images" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="News" EntityType="Self.News" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Notifications" EntityType="Self.Notifications" Schema="dbo" store:Type="Tables" />
@@ -999,9 +798,6 @@
           <EntitySet Name="SchoolSubjects" EntityType="Self.SchoolSubjects" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Subjects" EntityType="Self.Subjects" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TeacherSubjects" EntityType="Self.TeacherSubjects" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="TicketCategories" EntityType="Self.TicketCategories" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="TicketComments" EntityType="Self.TicketComments" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Tickets" EntityType="Self.Tickets" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tokens" EntityType="Self.Tokens" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Transactions" EntityType="Self.Transactions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Unavailabilities" EntityType="Self.Unavailabilities" Schema="dbo" store:Type="Tables" />
@@ -1020,22 +816,6 @@
             <End Role="Users" EntitySet="Users" />
             <End Role="AchievementUnlocks" EntitySet="AchievementUnlocks" />
           </AssociationSet>
-          <AssociationSet Name="FK_AnonymTicketComments_Admin" Association="Self.FK_AnonymTicketComments_Admin">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="AnonymTicketComments" EntitySet="AnonymTicketComments" />
-          </AssociationSet>
-          <AssociationSet Name="FK_AnonymTicketComments_AnonymTicketComments" Association="Self.FK_AnonymTicketComments_AnonymTicketComments">
-            <End Role="AnonymTickets" EntitySet="AnonymTickets" />
-            <End Role="AnonymTicketComments" EntitySet="AnonymTicketComments" />
-          </AssociationSet>
-          <AssociationSet Name="FK_AnonymTickets_TicketCategories" Association="Self.FK_AnonymTickets_TicketCategories">
-            <End Role="TicketCategories" EntitySet="TicketCategories" />
-            <End Role="AnonymTickets" EntitySet="AnonymTickets" />
-          </AssociationSet>
-          <AssociationSet Name="FK_AnonymTickets_Users" Association="Self.FK_AnonymTickets_Users">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="AnonymTickets" EntitySet="AnonymTickets" />
-          </AssociationSet>
           <AssociationSet Name="FK_Bans_Users" Association="Self.FK_Bans_Users">
             <End Role="Users" EntitySet="Users" />
             <End Role="Bans" EntitySet="Bans" />
@@ -1043,10 +823,6 @@
           <AssociationSet Name="FK_Classes_Schools" Association="Self.FK_Classes_Schools">
             <End Role="Schools" EntitySet="Schools" />
             <End Role="Classes" EntitySet="Classes" />
-          </AssociationSet>
-          <AssociationSet Name="FK_FaQ_FaqCategories" Association="Self.FK_FaQ_FaqCategories">
-            <End Role="FaqCategories" EntitySet="FaqCategories" />
-            <End Role="FaQ" EntitySet="FaQ" />
           </AssociationSet>
           <AssociationSet Name="FK_Images_Owner" Association="Self.FK_Images_Owner">
             <End Role="Users" EntitySet="Users" />
@@ -1103,26 +879,6 @@
           <AssociationSet Name="FK_TeacherSubjects_Teachers" Association="Self.FK_TeacherSubjects_Teachers">
             <End Role="Users" EntitySet="Users" />
             <End Role="TeacherSubjects" EntitySet="TeacherSubjects" />
-          </AssociationSet>
-          <AssociationSet Name="FK_TicketComments_Ticket" Association="Self.FK_TicketComments_Ticket">
-            <End Role="Tickets" EntitySet="Tickets" />
-            <End Role="TicketComments" EntitySet="TicketComments" />
-          </AssociationSet>
-          <AssociationSet Name="FK_TicketComments_Users" Association="Self.FK_TicketComments_Users">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="TicketComments" EntitySet="TicketComments" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Tickets_Admin" Association="Self.FK_Tickets_Admin">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="Tickets" EntitySet="Tickets" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Tickets_TicketCategories" Association="Self.FK_Tickets_TicketCategories">
-            <End Role="TicketCategories" EntitySet="TicketCategories" />
-            <End Role="Tickets" EntitySet="Tickets" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Tickets_Users" Association="Self.FK_Tickets_Users">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="Tickets" EntitySet="Tickets" />
           </AssociationSet>
           <AssociationSet Name="FK_Tokens_Users" Association="Self.FK_Tokens_Users">
             <End Role="Users" EntitySet="Users" />
@@ -1385,53 +1141,6 @@
             <Parameter Name="projectId" Mode="In" Type="Int32" />
             <Parameter Name="date" Mode="In" Type="DateTime" />
           </FunctionImport>
-          <EntitySet Name="Tickets" EntityType="ZoliksModel.Ticket" />
-          <AssociationSet Name="FK_Tickets_Admin" Association="ZoliksModel.FK_Tickets_Admin">
-            <End Role="User" EntitySet="Users" />
-            <End Role="Ticket" EntitySet="Tickets" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Tickets_Users" Association="ZoliksModel.FK_Tickets_Users">
-            <End Role="User" EntitySet="Users" />
-            <End Role="Ticket" EntitySet="Tickets" />
-          </AssociationSet>
-          <EntitySet Name="AnonymTicketComments" EntityType="ZoliksModel.AnonymTicketComment" />
-          <EntitySet Name="AnonymTickets" EntityType="ZoliksModel.AnonymTicket" />
-          <EntitySet Name="FaQs" EntityType="ZoliksModel.FaQ" />
-          <EntitySet Name="FaqCategories" EntityType="ZoliksModel.FaqCategory" />
-          <EntitySet Name="TicketCategories" EntityType="ZoliksModel.TicketCategory" />
-          <EntitySet Name="TicketComments" EntityType="ZoliksModel.TicketComment" />
-          <AssociationSet Name="FK_AnonymTicketComments_Admin" Association="ZoliksModel.FK_AnonymTicketComments_Admin">
-            <End Role="User" EntitySet="Users" />
-            <End Role="AnonymTicketComment" EntitySet="AnonymTicketComments" />
-          </AssociationSet>
-          <AssociationSet Name="FK_AnonymTicketComments_AnonymTicketComments" Association="ZoliksModel.FK_AnonymTicketComments_AnonymTicketComments">
-            <End Role="AnonymTicket" EntitySet="AnonymTickets" />
-            <End Role="AnonymTicketComment" EntitySet="AnonymTicketComments" />
-          </AssociationSet>
-          <AssociationSet Name="FK_AnonymTickets_TicketCategories" Association="ZoliksModel.FK_AnonymTickets_TicketCategories">
-            <End Role="TicketCategory" EntitySet="TicketCategories" />
-            <End Role="AnonymTicket" EntitySet="AnonymTickets" />
-          </AssociationSet>
-          <AssociationSet Name="FK_AnonymTickets_Users" Association="ZoliksModel.FK_AnonymTickets_Users">
-            <End Role="User" EntitySet="Users" />
-            <End Role="AnonymTicket" EntitySet="AnonymTickets" />
-          </AssociationSet>
-          <AssociationSet Name="FK_FaQ_FaqCategories" Association="ZoliksModel.FK_FaQ_FaqCategories">
-            <End Role="FaqCategory" EntitySet="FaqCategories" />
-            <End Role="FaQ" EntitySet="FaQs" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Tickets_TicketCategories" Association="ZoliksModel.FK_Tickets_TicketCategories">
-            <End Role="TicketCategory" EntitySet="TicketCategories" />
-            <End Role="Ticket" EntitySet="Tickets" />
-          </AssociationSet>
-          <AssociationSet Name="FK_TicketComments_Ticket" Association="ZoliksModel.FK_TicketComments_Ticket">
-            <End Role="Ticket" EntitySet="Tickets" />
-            <End Role="TicketComment" EntitySet="TicketComments" />
-          </AssociationSet>
-          <AssociationSet Name="FK_TicketComments_Users" Association="ZoliksModel.FK_TicketComments_Users">
-            <End Role="User" EntitySet="Users" />
-            <End Role="TicketComment" EntitySet="TicketComments" />
-          </AssociationSet>
           <EntitySet Name="UserLogs" EntityType="ZoliksModel.UserLog" />
           <AssociationSet Name="FK_UserLogs_Users" Association="ZoliksModel.FK_UserLogs_Users">
             <End Role="User" EntitySet="Users" />
@@ -1960,216 +1669,6 @@
           <Property Type="Int32" Name="Size" Nullable="true" a:GetterAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" a:SetterAccess="Private" />
           <Property Type="Int32" Name="ImageID" Nullable="true" a:SetterAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" a:GetterAccess="Private" />
         </ComplexType>
-        <EntityType Name="Ticket">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UserId" Type="Int32" Nullable="false" />
-          <Property Name="CategoryId" Type="Int32" Nullable="false" />
-          <Property Name="AdminId" Type="Int32" />
-          <Property Name="Status" Type="ZoliksModel.TicketStatus" Nullable="false" />
-          <Property Name="Title" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Message" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <Property Name="Created" Type="DateTime" Nullable="false" Precision="3" />
-          <NavigationProperty Name="Admin" Relationship="ZoliksModel.FK_Tickets_Admin" FromRole="Ticket" ToRole="User" />
-          <NavigationProperty Name="User" Relationship="ZoliksModel.FK_Tickets_Users" FromRole="Ticket" ToRole="User" />
-          <NavigationProperty Name="TicketCategory" Relationship="ZoliksModel.FK_Tickets_TicketCategories" FromRole="Ticket" ToRole="TicketCategory" />
-          <NavigationProperty Name="Comments" Relationship="ZoliksModel.FK_TicketComments_Ticket" FromRole="Ticket" ToRole="TicketComment" />
-        </EntityType>
-        <Association Name="FK_Tickets_Admin">
-          <End Type="ZoliksModel.User" Role="User" Multiplicity="0..1" />
-          <End Type="ZoliksModel.Ticket" Role="Ticket" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="Ticket">
-              <PropertyRef Name="AdminId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Tickets_Users">
-          <End Type="ZoliksModel.User" Role="User" Multiplicity="1" />
-          <End Type="ZoliksModel.Ticket" Role="Ticket" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="Ticket">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityType Name="AnonymTicketComment">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="TicketId" Type="Int32" Nullable="false" />
-          <Property Name="UserId" Type="Int32" />
-          <Property Name="Message" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <Property Name="Created" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Ip" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Admin" Relationship="ZoliksModel.FK_AnonymTicketComments_Admin" FromRole="AnonymTicketComment" ToRole="User" />
-          <NavigationProperty Name="Ticket" Relationship="ZoliksModel.FK_AnonymTicketComments_AnonymTicketComments" FromRole="AnonymTicketComment" ToRole="AnonymTicket" />
-        </EntityType>
-        <EntityType Name="AnonymTicket">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="CategoryId" Type="Int32" Nullable="false" />
-          <Property Name="AdminId" Type="Int32" />
-          <Property Name="Status" Type="Int32" Nullable="false" />
-          <Property Name="Title" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Message" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Email" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="Created" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Code" Type="Int32" Nullable="false" />
-          <Property Name="Ip" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Comments" Relationship="ZoliksModel.FK_AnonymTicketComments_AnonymTicketComments" FromRole="AnonymTicket" ToRole="AnonymTicketComment" />
-          <NavigationProperty Name="TicketCategory" Relationship="ZoliksModel.FK_AnonymTickets_TicketCategories" FromRole="AnonymTicket" ToRole="TicketCategory" />
-          <NavigationProperty Name="Admin" Relationship="ZoliksModel.FK_AnonymTickets_Users" FromRole="AnonymTicket" ToRole="User" />
-        </EntityType>
-        <EntityType Name="FaQ">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="CategoryID" Type="Int32" Nullable="false" />
-          <Property Name="Question" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Response" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="IsFirst" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="FaqCategory" Relationship="ZoliksModel.FK_FaQ_FaqCategories" FromRole="FaQ" ToRole="FaqCategory" />
-        </EntityType>
-        <EntityType Name="FaqCategory">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Type" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="IsFirst" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="FaQs" Relationship="ZoliksModel.FK_FaQ_FaqCategories" FromRole="FaqCategory" ToRole="FaQ" />
-        </EntityType>
-        <EntityType Name="TicketCategory">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="TicketComment">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="TicketId" Type="Int32" Nullable="false" />
-          <Property Name="UserId" Type="Int32" Nullable="false" />
-          <Property Name="Message" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <Property Name="Created" Type="DateTime" Nullable="false" Precision="3" />
-          <NavigationProperty Name="Ticket" Relationship="ZoliksModel.FK_TicketComments_Ticket" FromRole="TicketComment" ToRole="Ticket" />
-          <NavigationProperty Name="User" Relationship="ZoliksModel.FK_TicketComments_Users" FromRole="TicketComment" ToRole="User" />
-        </EntityType>
-        <Association Name="FK_AnonymTicketComments_Admin">
-          <End Type="ZoliksModel.User" Role="User" Multiplicity="0..1" />
-          <End Type="ZoliksModel.AnonymTicketComment" Role="AnonymTicketComment" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="AnonymTicketComment">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_AnonymTicketComments_AnonymTicketComments">
-          <End Type="ZoliksModel.AnonymTicket" Role="AnonymTicket" Multiplicity="1" />
-          <End Type="ZoliksModel.AnonymTicketComment" Role="AnonymTicketComment" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AnonymTicket">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="AnonymTicketComment">
-              <PropertyRef Name="TicketId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_AnonymTickets_TicketCategories">
-          <End Type="ZoliksModel.TicketCategory" Role="TicketCategory" Multiplicity="1" />
-          <End Type="ZoliksModel.AnonymTicket" Role="AnonymTicket" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TicketCategory">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="AnonymTicket">
-              <PropertyRef Name="CategoryId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_AnonymTickets_Users">
-          <End Type="ZoliksModel.User" Role="User" Multiplicity="0..1" />
-          <End Type="ZoliksModel.AnonymTicket" Role="AnonymTicket" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="AnonymTicket">
-              <PropertyRef Name="AdminId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_FaQ_FaqCategories">
-          <End Type="ZoliksModel.FaqCategory" Role="FaqCategory" Multiplicity="1" />
-          <End Type="ZoliksModel.FaQ" Role="FaQ" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="FaqCategory">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="FaQ">
-              <PropertyRef Name="CategoryID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Tickets_TicketCategories">
-          <End Type="ZoliksModel.TicketCategory" Role="TicketCategory" Multiplicity="1" />
-          <End Type="ZoliksModel.Ticket" Role="Ticket" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TicketCategory">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="Ticket">
-              <PropertyRef Name="CategoryId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_TicketComments_Ticket">
-          <End Type="ZoliksModel.Ticket" Role="Ticket" Multiplicity="1" />
-          <End Type="ZoliksModel.TicketComment" Role="TicketComment" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Ticket">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="TicketComment">
-              <PropertyRef Name="TicketId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_TicketComments_Users">
-          <End Type="ZoliksModel.User" Role="User" Multiplicity="1" />
-          <End Type="ZoliksModel.TicketComment" Role="TicketComment" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="TicketComment">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EnumType Name="TicketStatus" a:ExternalTypeName="SharedLibrary.Enums.TicketStatus" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
         <EntityType Name="UserLog">
           <Key>
@@ -2762,90 +2261,6 @@
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="GetUnavailabilities" FunctionName="ZoliksModel.Store.GetUnavailabilities">
           </FunctionImportMapping>
-          <EntitySetMapping Name="Tickets">
-            <EntityTypeMapping TypeName="ZoliksModel.Ticket">
-              <MappingFragment StoreEntitySet="Tickets">
-                <ScalarProperty Name="Created" ColumnName="Created" />
-                <ScalarProperty Name="Message" ColumnName="Message" />
-                <ScalarProperty Name="Title" ColumnName="Title" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="AdminId" ColumnName="AdminId" />
-                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="AnonymTicketComments">
-            <EntityTypeMapping TypeName="ZoliksModel.AnonymTicketComment">
-              <MappingFragment StoreEntitySet="AnonymTicketComments">
-                <ScalarProperty Name="Ip" ColumnName="Ip" />
-                <ScalarProperty Name="Created" ColumnName="Created" />
-                <ScalarProperty Name="Message" ColumnName="Message" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="TicketId" ColumnName="TicketId" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="AnonymTickets">
-            <EntityTypeMapping TypeName="ZoliksModel.AnonymTicket">
-              <MappingFragment StoreEntitySet="AnonymTickets">
-                <ScalarProperty Name="Ip" ColumnName="Ip" />
-                <ScalarProperty Name="Code" ColumnName="Code" />
-                <ScalarProperty Name="Created" ColumnName="Created" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Message" ColumnName="Message" />
-                <ScalarProperty Name="Title" ColumnName="Title" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="AdminId" ColumnName="AdminId" />
-                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="FaQs">
-            <EntityTypeMapping TypeName="ZoliksModel.FaQ">
-              <MappingFragment StoreEntitySet="FaQ">
-                <ScalarProperty Name="IsFirst" ColumnName="IsFirst" />
-                <ScalarProperty Name="Response" ColumnName="Response" />
-                <ScalarProperty Name="Question" ColumnName="Question" />
-                <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="FaqCategories">
-            <EntityTypeMapping TypeName="ZoliksModel.FaqCategory">
-              <MappingFragment StoreEntitySet="FaqCategories">
-                <ScalarProperty Name="IsFirst" ColumnName="IsFirst" />
-                <ScalarProperty Name="Type" ColumnName="Type" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="TicketCategories">
-            <EntityTypeMapping TypeName="ZoliksModel.TicketCategory">
-              <MappingFragment StoreEntitySet="TicketCategories">
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="TicketComments">
-            <EntityTypeMapping TypeName="ZoliksModel.TicketComment">
-              <MappingFragment StoreEntitySet="TicketComments">
-                <ScalarProperty Name="Created" ColumnName="Created" />
-                <ScalarProperty Name="Message" ColumnName="Message" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="TicketId" ColumnName="TicketId" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="UserLogs">
             <EntityTypeMapping TypeName="ZoliksModel.UserLog">
               <MappingFragment StoreEntitySet="UserLogs">

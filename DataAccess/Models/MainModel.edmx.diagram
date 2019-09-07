@@ -77,20 +77,6 @@
         <AssociationConnector Association="ZoliksModel.FK_SchoolSubjects_Schools" />
         <AssociationConnector Association="ZoliksModel.FK_SchoolSubjects_Subjects" />
         </Diagram>
-      <Diagram DiagramId="667462baa1f84e3eb3fa1facae8a8a2d" Name="Support" >
-        <EntityTypeShape EntityType="ZoliksModel.Ticket" Width="1.5" PointX="3" PointY="1.25" />
-        <EntityTypeShape EntityType="ZoliksModel.AnonymTicketComment" Width="1.5" PointX="5.25" PointY="5.875" />
-        <EntityTypeShape EntityType="ZoliksModel.AnonymTicket" Width="1.5" PointX="3" PointY="5.25" />
-        <EntityTypeShape EntityType="ZoliksModel.FaQ" Width="1.5" PointX="10" PointY="0.875" />
-        <EntityTypeShape EntityType="ZoliksModel.FaqCategory" Width="1.5" PointX="7.75" PointY="1" />
-        <EntityTypeShape EntityType="ZoliksModel.TicketCategory" Width="1.5" PointX="0.75" PointY="4.125" />
-        <EntityTypeShape EntityType="ZoliksModel.TicketComment" Width="1.5" PointX="5.25" PointY="1.75" />
-        <AssociationConnector Association="ZoliksModel.FK_AnonymTicketComments_AnonymTicketComments" />
-        <AssociationConnector Association="ZoliksModel.FK_AnonymTickets_TicketCategories" />
-        <AssociationConnector Association="ZoliksModel.FK_FaQ_FaqCategories" />
-        <AssociationConnector Association="ZoliksModel.FK_Tickets_TicketCategories" />
-        <AssociationConnector Association="ZoliksModel.FK_TicketComments_Ticket" />
-      </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>

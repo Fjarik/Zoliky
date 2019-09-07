@@ -44,13 +44,6 @@ namespace DataAccess.Models
         public virtual DbSet<UserSetting> UserSettings { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<UserLoginToken> UserLoginTokens { get; set; }
-        public virtual DbSet<Ticket> Tickets { get; set; }
-        public virtual DbSet<AnonymTicketComment> AnonymTicketComments { get; set; }
-        public virtual DbSet<AnonymTicket> AnonymTickets { get; set; }
-        public virtual DbSet<FaQ> FaQs { get; set; }
-        public virtual DbSet<FaqCategory> FaqCategories { get; set; }
-        public virtual DbSet<TicketCategory> TicketCategories { get; set; }
-        public virtual DbSet<TicketComment> TicketComments { get; set; }
         public virtual DbSet<UserLog> UserLogs { get; set; }
         public virtual DbSet<TeacherSubject> TeacherSubjects { get; set; }
         public virtual DbSet<School> Schools { get; set; }
