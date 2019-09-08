@@ -1085,6 +1085,9 @@
     <Content Include="Content\Images\Pages\Default\ZolikEdit.webp" />
     <Content Include="Areas\App\Views\Achievement\_RefreshPartial.cshtml" />
     <Content Include="Areas\App\Views\Main\_StatisticsPartial.cshtml" />
+    <Content Include="Areas\Global\Views\Subject\Dashboard.cshtml" />
+    <Content Include="Areas\Global\Views\Subject\Edit.cshtml" />
+    <Content Include="Areas\Global\Views\Subject\_RemovePartial.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -1551,6 +1554,7 @@
     <Compile Include="Areas\Admin\Models\Zoliky\ZolikRemoveModel.cs" />
     <Compile Include="Areas\Global\Controllers\ClassController.cs" />
     <Compile Include="Areas\Global\Controllers\SettingsController.cs" />
+    <Compile Include="Areas\Global\Controllers\SubjectController.cs" />
     <Compile Include="Areas\Global\Models\Admin\DashboardModel.cs" />
     <Compile Include="Areas\Global\Models\Admin\Dashboard\SendMobileNotModel.cs" />
     <Compile Include="Areas\Global\Models\Admin\Dashboard\SendNotificationsModel.cs" />
@@ -1561,6 +1565,8 @@
     <Compile Include="Areas\Admin\Models\Class\ClassModel.cs" />
     <Compile Include="Areas\Global\Controllers\BanController.cs" />
     <Compile Include="Areas\Global\Models\School\SchoolModel.cs" />
+    <Compile Include="Areas\Global\Models\Subject\SubjectDashboardModel.cs" />
+    <Compile Include="Areas\Global\Models\Subject\SubjectModel.cs" />
     <Compile Include="Areas\Global\Models\User\UserModel.cs" />
     <Compile Include="Areas\App\AppAreaRegistration.cs" />
     <Compile Include="Areas\App\Controllers\AccountController.cs" />

@@ -28,7 +28,7 @@ namespace ZolikyWeb.Areas.Global.Models.School
 		public byte TypeID { get; set; }
 
 		public List<int> SubjectIds { get; set; }
-		public List<Subject> AllSubjects { get; set; }
+		public List<DataAccess.Models.Subject> AllSubjects { get; set; }
 
 		public string ActionName { get; set; }
 
@@ -73,12 +73,12 @@ namespace ZolikyWeb.Areas.Global.Models.School
 			this.SubjectIds = new List<int>() {
 				4
 			};
-			this.AllSubjects = new List<Subject>();
+			this.AllSubjects = new List<DataAccess.Models.Subject>();
 			this.Users = new List<DataAccess.Models.User>();
 			this.AllowRemove = false;
 		}
 
-		public SchoolModel(List<Subject> allSubjects) : this()
+		public SchoolModel(List<DataAccess.Models.Subject> allSubjects) : this()
 		{
 			this.ID = -1;
 			this.AllSubjects = allSubjects;
@@ -87,7 +87,7 @@ namespace ZolikyWeb.Areas.Global.Models.School
 			this.IsCreate = true;
 		}
 
-		public SchoolModel(DataAccess.Models.School s, List<Subject> allSubjects, bool allowEdit, int previousId,
+		public SchoolModel(DataAccess.Models.School s, List<DataAccess.Models.Subject> allSubjects, bool allowEdit, int previousId,
 						   int nextId) : this()
 		{
 			this.AllSubjects = allowEdit ? allSubjects : s.Subjects;

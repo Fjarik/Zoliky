@@ -1,0 +1,78 @@
+﻿@model ZolikyWeb.Areas.Global.Models.Subject.SubjectDashboardModel
+
+@{
+	ViewBag.Title = "Přehled";
+	Layout = "~/Areas/Global/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="row">
+	<div class="col">
+		<div class="card">
+			<div class="card-body">
+				<h3 class="card-title">Předměty</h3>
+				<h6 class="card-subtitle">Níže vypsané jsou předměty, které se vyskytují v rámci celého systému</h6>
+				<hr />
+				<div class="table-responsive">
+					<table id="table-subject" class="table table-hover toggle-arrow-tiny" data-page-size="15">
+						<thead>
+							<tr>
+								<th data-type="number" data-toggle="true">
+									ID
+								</th>
+								<th data-hide="phone">
+									Název
+								</th>
+								<th>
+									Zkratka
+								</th>
+								<th data-sort-ignore="true" class="text-center">
+									Akce
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							@foreach (var subject in Model.Subjects) {
+								<tr>
+									<td data-value="@subject.ID">
+										@subject.ID
+									</td>
+									<td>
+										@subject.Name
+									</td>
+									<td>
+										@subject.Shortcut
+									</td>
+									<td class="d-flex justify-content-around">
+										<a href="@Url.Action("Edit", "Subject", new {Area = "Global", id = subject.ID})" data-toggle="tooltip" data-original-title="Upravit">
+											<i class="fa fa-pencil text-inverse"></i>
+										</a>
+										<a href="@Url.Action("Detail", "Subject", new {Area = "Global", id = subject.ID})" data-toggle="tooltip" data-original-title="Detaily">
+											<i class="fa fa-eye text-inverse"></i>
+										</a>
+									</td>
+								</tr>
+							}
+						</tbody>
+						<tfoot>
+							<tr>
+								<td colspan="5">
+									<div class="text-right">
+										<ul class="pagination"> </ul>
+									</div>
+								</td>
+							</tr>
+						</tfoot>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+@section footer {
+	<script type="text/javascript">
+		$(() => {
+			$("#table-subject").footable();
+		});
+	</script>
+}

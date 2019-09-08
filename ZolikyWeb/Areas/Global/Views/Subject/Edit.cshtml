@@ -1,0 +1,136 @@
+﻿@using ZolikyWeb.Tools
+@model ZolikyWeb.Areas.Global.Models.Subject.SubjectModel
+@{
+	ViewBag.Title = "Předmět";
+	Layout = "~/Areas/Global/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<div class="row">
+	<div class="col">
+		<div class="card card-outline-info">
+			<div class="card-header">
+				<h4 class="mb-0 text-white">
+					@if (Model.IsCreate) {
+						@:Vytvoření předmětu
+					} else {
+						if (Model.AllowEdit) {
+							@:Úprava předmětu
+						} else {
+							@:Detaily předmětu
+						}
+					}
+				</h4>
+			</div>
+			<div class="card-body">
+				@using (Html.BeginForm(Model.ActionName, "Subject", new {Area = "Global"}, FormMethod.Post, new {@class = "form-horizontal"})) {
+					@Html.AntiForgeryToken()
+					@Html.SecureHiddenFor(x => x.ID)
+					<div class="form-body">
+						<h3 class="card-title">
+							Obecné
+						</h3>
+						<hr class="mt-0 m-b-40" />
+						<!-- row -->
+						<div class="row">
+							<!-- item -->
+							<div class="col-md-6">
+								<div class="form-group row">
+									<label class="control-label text-right col-md-3">ID</label>
+									<div class="col-md-9">
+										<p class="form-control-static text-right text-md-left">
+											@Model.ID
+										</p>
+									</div>
+								</div>
+							</div>
+							<!-- /item -->
+							<!-- item -->
+							<div class="col-md-6">
+								<div class="form-group row">
+									<label class="control-label text-right col-md-3"></label>
+									<div class="col-md-8">
+									</div>
+								</div>
+							</div>
+							<!-- /item -->
+						</div>
+						<!-- /row -->
+
+						<h3 class="card-title">
+							Nastavení
+						</h3>
+						<hr class="mt-0 m-b-40" />
+						<!-- row -->
+						<div class="row">
+							<!-- item -->
+							<div class="col-md-6">
+								<div class="form-group row">
+									<label class="control-label text-right col-md-3">Název</label>
+									<div class="col-md-9">
+										@if (Model.AllowEdit) {
+											@Html.MaterialTextBoxFor(x => x.Name, 1)
+											@Html.ValidationMessageFor(x => x.Name)
+										} else {
+											<p class="form-control-static">
+												@(Model.Name)
+											</p>
+										}
+									</div>
+								</div>
+							</div>
+							<!-- /item -->
+							<!-- item -->
+							<div class="col-md-6">
+								<div class="form-group row">
+									<label class="control-label text-right col-md-3">Zkratka</label>
+									<div class="col-md-8">
+										@if (Model.AllowEdit) {
+											@Html.MaterialTextBoxFor(x => x.Shortcut, 2)
+											@Html.ValidationMessageFor(x => x.Shortcut)
+										} else {
+											<p class="form-control-static">
+												@(Model.Shortcut)
+											</p>
+										}
+									</div>
+								</div>
+							</div>
+							<!-- /item -->
+						</div>
+						<!-- /row -->
+					</div>
+					<hr />
+					<div class="form-actions">
+						<div class="row">
+							<div class="col-md-6">
+								@if (Model.AllowEdit) {
+									<button type="submit" class="btn btn-primary" tabindex="5">
+										Uložit
+									</button>
+								} else {
+									<a href="@Url.Action("Edit", new {id = Model.ID})" class="btn btn-primary" tabindex="6">
+										Režim úprav
+									</a>
+								}
+								<a href="@Url.Action("Dashboard")" class="btn btn-success" tabindex="7">
+									Zpět
+								</a>
+							</div>
+							<div class="col-md-6 text-right">
+								@if (Model.AllowRemove) {
+									<a href="#" class="text-danger" data-toggle="modal" data-target="#modalDelete">
+										Odstranit předmět
+									</a>
+								}
+							</div>
+						</div>
+					</div>
+				}
+			</div>
+		</div>
+	</div>
+</div>
+@if (Model.AllowRemove) {
+	@Html.Partial("_RemovePartial", Model)
+}
