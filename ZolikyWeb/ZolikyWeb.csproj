@@ -1084,6 +1084,7 @@
     <Content Include="Content\Images\Pages\Default\Zolici.webp" />
     <Content Include="Content\Images\Pages\Default\ZolikEdit.webp" />
     <Content Include="Areas\App\Views\Achievement\_RefreshPartial.cshtml" />
+    <Content Include="Areas\App\Views\Main\_StatisticsPartial.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -1575,7 +1576,7 @@
     <Compile Include="Areas\App\Models\Account\NotificationModel.cs" />
     <Compile Include="Areas\App\Models\Account\PrivacyModel.cs" />
     <Compile Include="Areas\App\Models\Achievement\AchievementModel.cs" />
-    <Compile Include="Areas\App\Models\DashboardModel.cs" />
+    <Compile Include="Areas\App\Models\Main\DashboardModel.cs" />
     <Compile Include="Areas\App\Models\ExternalLoginModel.cs" />
     <Compile Include="Areas\App\Models\SettingsModel.cs" />
     <Compile Include="Areas\App\Models\Zoliky\ZolikLockModel.cs" />

@@ -6,7 +6,7 @@ using DataAccess.Models;
 using SharedLibrary.Interfaces;
 using SharedLibrary.Shared;
 
-namespace ZolikyWeb.Areas.App.Models
+namespace ZolikyWeb.Areas.App.Models.Main
 {
 	public class DashboardModel
 	{
@@ -97,5 +97,6 @@ namespace ZolikyWeb.Areas.App.Models
 		public bool IsInClass => !string.IsNullOrWhiteSpace(this.ClassName);
 
 		public bool IsPublic => HttpContext.Current.User.IsInRole(UserRoles.Public);
+
 	}
 }

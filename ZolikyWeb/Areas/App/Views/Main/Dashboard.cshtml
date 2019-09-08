@@ -1,6 +1,6 @@
 ﻿@using SharedLibrary.Enums
 @using ZolikyWeb.Tools
-@model ZolikyWeb.Areas.App.Models.DashboardModel
+@model ZolikyWeb.Areas.App.Models.Main.DashboardModel
 @{
 	ViewBag.Title = "Přehled";
 	Layout = "~/Areas/App/Views/Shared/_LayoutMenu.cshtml";
@@ -261,3 +261,43 @@
 	<!-- /Column -->
 </div>
 <!-- /Row -->
+<!-- Row -->
+<div class="row">
+	<!-- Column -->
+	<div class="col-xlg-3 col-lg-4 col-md-5">
+		<div class="card" id="statsDiv" style="display: none">
+			<div class="card-header">
+				<div class="card-actions">
+					<a class="" data-action="collapse">
+						<i class="ti-minus"></i>
+					</a>
+					<a class="btn-close" data-action="close">
+						<i class="ti-close"></i>
+					</a>
+				</div>
+				<h4 class="card-title m-b-0">Statistiky</h4>
+			</div>
+			<div class="card-body b-t collapse show">
+				@Html.Partial("_StatisticsPartial")
+			</div>
+		</div>
+	</div>
+	<!-- /Column -->
+</div>
+<!-- /Row -->
+
+@section scripts {
+	<script type="text/javascript">
+		$(() => {
+			$.get('@Url.Action("GetStatistics")',
+				null,
+				(data) => {
+					data.forEach((elm) => {
+						$(`#${elm.Key}`).text(elm.Value);
+					});
+					$("#statsDiv").fadeIn();
+				});
+		});
+	</script>
+
+}

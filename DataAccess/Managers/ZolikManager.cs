@@ -350,12 +350,16 @@ namespace DataAccess.Managers
 			switch (type) {
 				case ZolikType.Normal:
 					await sMgr.IncreaseValueAsync(fromId, SettingKeys.StatZoliksSent);
-					await sMgr.IncreaseValueAsync(toId, SettingKeys.StatZoliksAccepted);
+					if (tranType != TransactionAssignment.NewAssignment) {
+						await sMgr.IncreaseValueAsync(toId, SettingKeys.StatZoliksAccepted);
+					}
 					await sMgr.IncreaseValueAsync(toId, SettingKeys.StatZoliksReceived);
 					break;
 				case ZolikType.Joker:
 					await sMgr.IncreaseValueAsync(fromId, SettingKeys.StatJokersSent);
-					await sMgr.IncreaseValueAsync(toId, SettingKeys.StatJokersAccepted);
+					if (tranType != TransactionAssignment.NewAssignment) {
+						await sMgr.IncreaseValueAsync(toId, SettingKeys.StatJokersAccepted);
+					}
 					await sMgr.IncreaseValueAsync(toId, SettingKeys.StatJokersReceived);
 					break;
 				case ZolikType.Black:

@@ -13,6 +13,7 @@ using SharedLibrary.Interfaces;
 using SharedLibrary.Shared;
 using SharedLibrary.Shared.ApiModels;
 using ZolikyWeb.Areas.App.Models;
+using ZolikyWeb.Areas.App.Models.Main;
 using ZolikyWeb.Tools;
 
 namespace ZolikyWeb.Areas.App.Controllers
@@ -56,7 +57,7 @@ namespace ZolikyWeb.Areas.App.Controllers
 				SpecialDateDesc = "Nový školní rok",
 				ClassName = className,
 				LeaderboardClass = studentsClass,
-				Leaderboard = students
+				Leaderboard = students,
 			};
 
 			return View(model);
@@ -71,6 +72,22 @@ namespace ZolikyWeb.Areas.App.Controllers
 		public ActionResult Mobile()
 		{
 			return View();
+		}
+
+		[OutputCache(Duration = 60 * 5, VaryByParam = "c")]
+		public async Task<JsonResult> GetStatistics()
+		{
+			var userId = this.User.Identity.GetId();
+
+			var sMgr = this.GetManager<StatisticsManager>();
+			var all = await sMgr.GetAllAsync(userId);
+
+			var data = all.Select(x => new {
+				x.Key,
+				x.Value
+			});
+
+			return Json(data, JsonRequestBehavior.AllowGet);
 		}
 	}
 }

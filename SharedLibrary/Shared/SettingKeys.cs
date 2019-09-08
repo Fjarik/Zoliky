@@ -43,6 +43,11 @@ namespace SharedLibrary.Shared
 
 #region Statistics
 
+		public static string[] StatisticsKeys => new[] {
+			StatZoliksReceived, StatBlackReceived, StatJokersReceived, StatZoliksSent, StatJokersSent,
+			StatZoliksAccepted, StatJokersAccepted, StatZoliksGraphics, StatZoliksZerzan
+		};
+
 		// Kolik žolíků získal (celkem)
 		public static string StatZoliksReceived => "StatZoliksReceived";
 

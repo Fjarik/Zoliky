@@ -41,6 +41,14 @@ namespace DataAccess.Managers
 
 #endregion
 
+		public async Task<List<UserSetting>> GetAllAsync(int userId)
+		{
+			return await _ctx.UserSettings
+							 .Where(x => x.UserID == userId &&
+										 SettingKeys.StatisticsKeys.Contains(x.Key))
+							 .ToListAsync();
+		}
+
 		public async Task<MActionResult<UserSetting>> IncreaseValueAsync(int userId,
 																		 string key,
 																		 int step = 1,
