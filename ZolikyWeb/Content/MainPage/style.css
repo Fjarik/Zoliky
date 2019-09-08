@@ -766,6 +766,15 @@ END Screen Area
 	color: var(--main-color);
 }
 
+.single-team a.scroll {
+	border: 1px solid rgba(0, 0, 0, .1) !important;
+}
+
+.single-team a.scroll:hover {
+	color: #333 !important;
+	background-color: rgba(0, 0, 0, .08) !important;
+}
+
 .testimonial-slider .owl-dots {
 	text-align: center;
 	margin-top: 50px;
@@ -967,7 +976,7 @@ END Video Area
 	letter-spacing: 0;
 }
 
-.single-price a {
+.single-price a, .single-team a.scroll {
 	font-size: 18px;
 	font-weight: 400;
 	letter-spacing: 0;
@@ -979,7 +988,7 @@ END Video Area
 	margin-top: 30px;
 }
 
-.single-price a:hover {
+.single-price a:hover, .single-team a.scroll:hover {
 	color: #fff;
 	background-color: var(--main-color);
 }
