@@ -122,8 +122,8 @@
 	<!-- /Column -->
 	<!-- Column -->
 	@if (Model.IsInClass) {
-		<div class="col-xlg-3 col-lg-4 col-md-5 ">
-			<div class="card NoSelectAll">
+		<div class="col-xlg-3 col-lg-4 col-md-5">
+			<div class="card NoSelectAll" data-drag="true">
 				<div class="card-header">
 					<div class="card-actions">
 						<a class="" data-action="collapse">
@@ -161,8 +161,8 @@
 	<!-- /Column -->
 	<!-- Column -->
 	@if (!Model.IsPublic) {
-		<div class="col-xlg-3 col-lg-4 col-md-5 ">
-			<div class="card NoSelectAll">
+		<div class="col-xlg-3 col-lg-4 col-md-5">
+			<div class="card NoSelectAll" data-drag="true">
 				<div class="card-header">
 					<div class="card-actions">
 						<a class="" href="@Url.Action("RefreshProfilePhotos")" target="_self" data-toggle="tooltip" data-placement="bottom" title="Přenačíst profilové obrázky">
@@ -203,7 +203,7 @@
 	<!-- /Column -->
 	<!-- Column -->
 	<div class="col-xlg-3 col-lg-4 col-md-5">
-		<div class="card">
+		<div class="card" data-drag="true">
 			<div class="card-header">
 				<div class="card-actions">
 					<a class="" data-action="collapse">
@@ -265,7 +265,7 @@
 <div class="row">
 	<!-- Column -->
 	<div class="col-xlg-3 col-lg-4 col-md-5">
-		<div class="card" id="statsDiv" style="display: none">
+		<div class="card" id="statsDiv" style="display: none" data-drag="true">
 			<div class="card-header">
 				<div class="card-actions">
 					<a class="" data-action="collapse">
@@ -286,7 +286,13 @@
 </div>
 <!-- /Row -->
 
+@section styles {
+	<link href="@Url.Content("~/Content/themes/base/jquery-ui.min.css")" rel="stylesheet" />
+	<link href="@Url.Content("~/Content/themes/base/theme.css")" rel="stylesheet" />
+}
+
 @section scripts {
+	<script src="@Url.Content("~/Scripts/jquery-ui-1.12.1.min.js")"></script>
 	<script type="text/javascript">
 		$(() => {
 			$.get('@Url.Action("GetStatistics")',
@@ -297,6 +303,14 @@
 					});
 					$("#statsDiv").fadeIn();
 				});
+			$("div[data-drag='true']").draggable({
+				containment: ".page-wrapper > .container-fluid",
+				scroll: false,
+				snap: true,
+				handle: ".card-header",
+				snapMode: "outer",
+				stack: "div[data-drag='true']"
+			});
 		});
 	</script>
 
