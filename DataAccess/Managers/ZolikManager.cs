@@ -100,8 +100,7 @@ namespace DataAccess.Managers
 			var query = _ctx.Zoliky.Where(x => x.OriginalOwner.SchoolID == schoolId &&
 											   x.OriginalOwner.ClassID != null &&
 											   x.Teacher.SchoolID == schoolId &&
-											   !x.Teacher.Roles.Any(y => y.Name == UserRoles.Robot ||
-																		 y.Name == UserRoles.Administrator) &&
+											   x.Teacher.Roles.All(y => y.Name != UserRoles.Robot) &&
 											   x.Created > date);
 			if (onlyEnabled) {
 				query = query.Where(x => x.Enabled);
