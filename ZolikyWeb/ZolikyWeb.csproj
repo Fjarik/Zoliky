@@ -1552,7 +1552,6 @@
     <Compile Include="Areas\Admin\Models\Zoliky\ZolikDashboardModel.cs" />
     <Compile Include="Areas\Admin\Models\Zoliky\ZolikModel.cs" />
     <Compile Include="Areas\Admin\Models\Zoliky\ZolikRemoveModel.cs" />
-    <Compile Include="Areas\Global\Controllers\ClassController.cs" />
     <Compile Include="Areas\Global\Controllers\SettingsController.cs" />
     <Compile Include="Areas\Global\Controllers\SubjectController.cs" />
     <Compile Include="Areas\Global\Models\Admin\DashboardModel.cs" />
@@ -1680,7 +1679,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Areas\Global\Views\Class\" />
     <Folder Include="fonts\" />
   </ItemGroup>
   <ItemGroup>

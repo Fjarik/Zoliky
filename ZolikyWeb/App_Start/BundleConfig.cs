@@ -39,7 +39,7 @@ namespace ZolikyWeb
 
 			bundles.Add(new StyleBundle("~/bundles/css/main")
 						// JQuery Ui
-						.Include("~/Content/themes/base/jquery-ui.min.css")
+						//.Include("~/Content/themes/base/jquery-ui.min.css")
 						//.Include("~/Content/themes/base/all.css")
 						.Include("~/Content/themes/base/theme.min.css")
 
@@ -104,8 +104,8 @@ namespace ZolikyWeb
 						.Include("~/Scripts/jquery.validate*")
 
 						// JQuery UI
-						.Include("~/Scripts/jquery-ui-1.12.1.js")
-						.Include("~/Scripts/jquery-ui-1.12.1.min.js")
+						//.Include("~/Scripts/jquery-ui-1.12.1.js")
+						//.Include("~/Scripts/jquery-ui-1.12.1.min.js")
 
 						// Modernizr
 						//.Include("~/Scripts/modernizr-*")

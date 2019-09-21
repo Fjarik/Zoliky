@@ -246,10 +246,6 @@ namespace DataAccess.Managers
 
 			input = input.Trim().ToLower();
 
-			if (input.Contains("petatrunda")) {
-				input = input.Replace("petatrunda", "zerzpe");
-			}
-
 			if (input.Contains('@')) {
 				check = WhatToCheck.Email;
 			}

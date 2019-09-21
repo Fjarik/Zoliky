@@ -12,6 +12,7 @@ using GraphQL.Server;
 using GraphQL.Server.Ui.Playground;
 using GraphQL.Server.Ui.Voyager;
 using GraphQL.Validation.Complexity;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -26,23 +27,25 @@ namespace ApiGraphQL
 {
 	public class Startup
 	{
-		public Startup(IConfiguration configuration)
+		public Startup(IConfiguration configuration, IHostingEnvironment environment)
 		{
-			Configuration = configuration;
+			this.Configuration = configuration;
+			this.Environment = environment;
 		}
 
 		public IConfiguration Configuration { get; }
+		public IHostingEnvironment Environment { get; }
 
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
-			var conString = Configuration.GetConnectionString("ZolikEntities");
+			var conString = this.Configuration.GetConnectionString("ZolikEntities");
 			services.AddScoped(x => new ZoliksEntities(conString))
 					.AddScoped<IDependencyResolver>(s => new FuncDependencyResolver(s.GetRequiredService))
 					.SetProjectRepositories()
 					.SetSchemas()
 					.AddGraphQL(o => {
-						o.ExposeExceptions = false;
+						o.ExposeExceptions = this.Environment.IsDevelopment();
 						o.ComplexityConfiguration = new ComplexityConfiguration() {
 							MaxDepth = 15
 						};
@@ -50,11 +53,11 @@ namespace ApiGraphQL
 					.AddGraphTypes(ServiceLifetime.Scoped)
 					.AddDataLoader();
 
-			services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-					.AddJwtBearer(options => {
-						options.Authority = "";
-						options.Audience = "";
-					});
+			services.AddAuthentication(x => {
+				x.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+				x.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+				x.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+			}).AddCookie(CookieAuthenticationDefaults.AuthenticationScheme);
 
 			services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 		}
