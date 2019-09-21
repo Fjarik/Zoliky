@@ -1,23 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using DataAccess.Managers;
 using ZolikyWeb.Models.Base;
 
 namespace ZolikyWeb.Areas.App.Controllers
 {
-    public class NewsController : OwnController
+    public class NewsController : OwnController<NewsManager>
     {
-        // GET: App/News
-        public ActionResult Index()
-        {
-            return RedirectToAction("Dashboard");
-        }
-
-		public ActionResult Dashboard()
+		public async Task<ActionResult> Dashboard()
 		{
-			return View();
+			var news = await Mgr.GetAllActive();
+			return View(news);
 		}
     }
 }

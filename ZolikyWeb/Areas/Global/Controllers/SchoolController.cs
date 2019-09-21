@@ -14,7 +14,7 @@ using ZolikyWeb.Tools;
 
 namespace ZolikyWeb.Areas.Global.Controllers
 {
-	[Authorize(Roles = UserRoles.AdminOrDeveloperOrTeacher)]
+	[Authorize(Roles = UserRoles.AdminOrDeveloper)]
 	public class SchoolController : OwnController<SchoolManager>
 	{
 		public async Task<ActionResult> Dashboard()

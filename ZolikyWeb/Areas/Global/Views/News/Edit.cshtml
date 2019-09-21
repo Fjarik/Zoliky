@@ -1,0 +1,195 @@
+﻿@using ZolikyWeb.Tools
+@model ZolikyWeb.Areas.Global.Models.News.NewsModel
+@{
+	ViewBag.Title = "Novinka";
+	Layout = "~/Areas/Global/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<div class="row">
+	<div class="col">
+		<div class="card card-outline-info">
+			<div class="card-header">
+				<h4 class="mb-0 text-white">
+					@if (Model.IsCreate) {
+						@:Vytvoření novinky
+					} else {
+						if (Model.AllowEdit) {
+							@:Úprava novinky
+						} else {
+							@:Detaily novinky
+						}
+					}
+				</h4>
+			</div>
+			<div class="card-body">
+				@using (Html.BeginForm(Model.ActionName, "News", new { Area = "Global" }, FormMethod.Post, new { @class = "form-horizontal" })) {
+					@Html.AntiForgeryToken()
+					@Html.SecureHiddenFor(x => x.ID)
+					<div class="form-body">
+						<h3 class="card-title">
+							Obecné
+						</h3>
+						<hr class="mt-0 m-b-40" />
+						<!-- row -->
+						<div class="row">
+							<!-- item -->
+							<div class="col-md-6">
+								<div class="form-group row">
+									<label class="control-label text-right col-md-3">ID</label>
+									<div class="col-md-9">
+										<p class="form-control-static text-right text-md-left">
+											@Model.ID
+										</p>
+									</div>
+								</div>
+							</div>
+							<!-- /item -->
+							<!-- item -->
+							<div class="col-md-6">
+								<div class="form-group row">
+									<label class="control-label text-right col-md-3">Autor</label>
+									<div class="col-md-8">
+										<p>
+											@if (Model.IsCreate) {
+												@("Vy")
+											} else {
+												@(Model.AuthorName)
+											}
+										</p>
+									</div>
+								</div>
+							</div>
+							<!-- /item -->
+						</div>
+						<!-- /row -->
+
+						<h3 class="card-title">
+							Nastavení
+						</h3>
+						<hr class="mt-0 m-b-40" />
+						<!-- row -->
+						<div class="row">
+							<!-- item -->
+							<div class="col-md-6">
+								<div class="form-group row">
+									<label class="control-label text-right col-md-3">Nadpis</label>
+									<div class="col-md-9">
+										@if (Model.AllowEdit) {
+											@Html.MaterialTextBoxFor(x => x.Title, 1)
+											@Html.ValidationMessageFor(x => x.Title)
+										} else {
+											<p class="form-control-static">
+												@(Model.Title)
+											</p>
+										}
+									</div>
+								</div>
+							</div>
+							<!-- /item -->
+							<!-- item -->
+							<div class="col-md-6">
+								<div class="form-group row">
+									<label class="control-label text-right col-md-3">Expirace</label>
+									<div class="col-md-8">
+										@if (Model.AllowEdit) {
+											@Html.TextBoxFor(x => x.Expiration, "{0:dd.MM.yyyy}", new { @class = "form-control", tabindex = 2, data_type = "date", placeholder = "Vyberte datum" })
+											@Html.ValidationMessageFor(x => x.Expiration)
+										} else {
+											<p class="form-control-static">
+												@(Model.Expiration?.ToString("dd.MM.yyyy"))
+											</p>
+										}
+									</div>
+								</div>
+							</div>
+							<!-- /item -->
+						</div>
+						<!-- /row -->
+						<!-- row -->
+						<div class="row">
+							<!-- item -->
+							<div class="col-md-12">
+								<div class="form-group mx-5">
+									<label class="control-label mb-2">Obsah:</label>
+									@if (Model.AllowEdit) {
+										@Html.TextAreaFor(x => x.Message, new { tabindex = 3, rows = 10 })
+										@Html.ValidationMessageFor(x => x.Message)
+									} else {
+										<p class="form-control-static">
+											@Html.Raw(Model.Message)
+										</p>
+									}
+								</div>
+							</div>
+							<!-- /item -->
+						</div>
+						<!-- /row -->
+					</div>
+					<hr />
+					<div class="form-actions">
+						<div class="row">
+							<div class="col-md-6">
+								@if (Model.AllowEdit) {
+									<button type="submit" class="btn btn-primary" tabindex="5">
+										Uložit
+									</button>
+								} else {
+									<a href="@Url.Action("Edit", new {id = Model.ID})" class="btn btn-primary" tabindex="6">
+										Režim úprav
+									</a>
+								}
+								<a href="@Url.Action("Dashboard")" class="btn btn-success" tabindex="7">
+									Zpět
+								</a>
+							</div>
+							<div class="col-md-6 text-right">
+								@if (Model.AllowRemove) {
+									<a href="#" class="text-danger" data-toggle="modal" data-target="#modalDelete">
+										Odstranit novinku
+									</a>
+								}
+							</div>
+						</div>
+					</div>
+				}
+			</div>
+		</div>
+	</div>
+</div>
+@if (Model.AllowRemove) {
+	@Html.Partial("_RemovePartial", Model)
+}
+
+@section header {
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" integrity="sha256-siyOpF/pBWUPgIcQi17TLBkjvNgNQArcmwJB8YvkAgg=" crossorigin="anonymous" />
+}
+
+@section footer {
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js" integrity="sha256-4iQZ6BVL4qNKlQ27TExEhBN1HFPvAvAMbFavKKosSWQ=" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js" integrity="sha256-bqVeqGdJ7h/lYPq6xrPv/YGzMEb6dNxlfiTUHSgRCp8=" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.cs.min.js" integrity="sha256-pbW7ult8QcDlimj+JQplrsCieqCvQ/8VGr7ZdTuev8c=" crossorigin="anonymous"></script>
+	<script type="text/javascript" src="@Url.Content("~/Scripts/tinymce/tinymce.min.js")"></script>
+	<script type="text/javascript">
+		$(() => {
+			tinymce.init({
+				selector: "textarea#Message",
+				plugins: "advlist lists",
+				toolbar: 'undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist checklist | forecolor backcolor casechange permanentpen formatpainter removeformat | pagebreak | charmap emoticons | fullscreen  preview save print | insertfile image media pageembed template link anchor codesample | a11ycheck ltr rtl | showcomments addcomment'
+			});
+
+			$.validator.methods.date = function (value, element) {
+				return this.optional(element) || moment(value, "DD.MM.YYYY", true).isValid();
+			}
+
+			$("[data-type='date']").datepicker({
+				clearBtn: true,
+				language: "cs",
+				format: "dd.mm.yyyy",
+				autoclose: true,
+				daysOfWeekHighlighted: "0,6",
+				startDate: new Date()
+			});
+		});
+	</script>
+}

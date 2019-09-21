@@ -1,4 +1,5 @@
-﻿@{
+﻿@model List<DataAccess.Models.News>
+@{
 	ViewBag.Title = "Novinky";
 	Layout = "~/Areas/App/Views/Shared/_LayoutMenu.cshtml";
 }
@@ -9,78 +10,26 @@
 		<div class="card">
 			<div class="card-body">
 				<div class="news">
-					<div class="news-content">
-						<div class="news-title">
-							<h4>Nový web spuštěn</h4>
+					@foreach (var news in Model.Take(3)) {
+						<div class="news-content">
+							<div class="news-title">
+								<div class="row justify-content-around ">
+									<div class="col">
+										<h4>@news.Title</h4>
+									</div>
+									<div class="col text-right">
+										<span>@news.Created.ToString("dd.MM.yyyy")</span>
+									</div>
+								</div>
+								<span class="news-author text-muted">Autor: @news.Author.FullName</span>
+								<hr />
+							</div>
+							<div class="news-body mt-4">
+								@Html.Raw(news.Message)
+							</div>
 						</div>
-						<div class="news-body mt-4">
-							<p>Dne 1. 6. 2019 byl oficiálně spuštěň nový web žolíků, který s sebou přináší velké změny hlavně v administraci.</p>
-							<h5>Změny a nové funkce</h5>
-							<ul>
-								<li>Změna navigačního menu hlavní stránky</li>
-								<li>Nový návod na Android aplikaci</li>
-								<li>
-									<strong>Přihlašování aj.</strong>
-									<ul>
-										<li>Nový design</li>
-										<li>
-											Možnost přihlášení přes externí stránky
-											(<strong>Google, Facebook, Microsoft</strong>)
-										</li>
-										<li>Změna hesla</li>
-										<li>Možnost opětovného zaslání aktivačního emailu</li>
-										<li>
-											Vypnutí/Zapnutí
-											<abbr title="Tři tečky vlevo dole">animace pozadí</abbr>
-										</li>
-										<li>
-											Přepnutí
-											<abbr title="Tři tečky vlevo dole">loga Žolíků</abbr>
-										</li>
-									</ul>
-								</li>
-								<li>
-									<strong>Administrace</strong>
-									<ul>
-										<li>Nový design</li>
-										<li>Nový přehled</li>
-										<li>
-											<strong>Žolíci</strong>
-											<ul>
-												<li>
-													<span class="badge badge-warning">Důležité</span>
-													<strong>Zamknutí žolíka</strong> - Napiště si sami, za co chcete daného žolíka použít
-												</li>
-												<li>
-													<span class="badge badge-warning">Důležité</span>
-													<strong>Rozklad jokéra</strong> - Jokér lze nyní rozložit na
-													<strong>3 až 5</strong> normálních žolíků
-												</li>
-												<li>Nový design darování žolíků</li>
-											</ul>
-										</li>
-										<li>Nový design transakcí</li>
-										<li>Nový design historie přihlášení</li>
-										<li>
-											<strong>Nastavení</strong>
-											<ul>
-												<li>Nový design</li>
-												<li>Možnost nastavení soukromí</li>
-												<li>Možnost nastavení oznámení</li>
-												<li>Možnost připojení externích účtů (Google, Facebook, ...)</li>
-											</ul>
-										</li>
-										<li>Novinky</li>
-									</ul>
-								</li>
-							</ul>
-							<p>
-								Nevíte-li si rady s jakoukoliv novou funkcionalitou či pokud jste nalezl/a chybu, neváhejte se obrátit na
-								<a href="https://support.zoliky.eu/">podporu</a>
-							</p>
-
-						</div>
-					</div>
+						<hr />
+					}
 				</div>
 			</div>
 		</div>

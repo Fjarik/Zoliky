@@ -286,13 +286,7 @@
 </div>
 <!-- /Row -->
 
-@section styles {
-	<link href="@Url.Content("~/Content/themes/base/jquery-ui.min.css")" rel="stylesheet" />
-	<link href="@Url.Content("~/Content/themes/base/theme.css")" rel="stylesheet" />
-}
-
 @section scripts {
-	<script src="@Url.Content("~/Scripts/jquery-ui-1.12.1.min.js")"></script>
 	<script type="text/javascript">
 		$(() => {
 			$.get('@Url.Action("GetStatistics")',
@@ -303,15 +297,6 @@
 					});
 					$("#statsDiv").fadeIn();
 				});
-			$("div[data-drag='true']").draggable({
-				containment: ".page-wrapper > .container-fluid",
-				scroll: false,
-				snap: true,
-				handle: ".card-header",
-				snapMode: "outer",
-				stack: "div[data-drag='true']"
-			});
 		});
 	</script>
-
 }

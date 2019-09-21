@@ -4,23 +4,22 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using DataAccess;
 using DataAccess.Managers;
-using SharedLibrary.Interfaces;
 using SharedLibrary.Shared;
-using ZolikyWeb.Areas.Admin.Models.Class;
-using ZolikyWeb.Areas.Global.Models.Subject;
+using ZolikyWeb.Areas.Global.Models.News;
 using ZolikyWeb.Models.Base;
 using ZolikyWeb.Tools;
 
 namespace ZolikyWeb.Areas.Global.Controllers
 {
 	[Authorize(Roles = UserRoles.AdminOrDeveloper)]
-	public class SubjectController : OwnController<SubjectManager>
+	public class NewsController : OwnController<NewsManager>
 	{
 		public async Task<ActionResult> Dashboard()
 		{
-			var subjects = await Mgr.GetAllAsync();
-			var model = new SubjectDashboardModel(subjects);
+			var res = await Mgr.GetAllAsync();
+			var model = new NewsDashboardModel(res);
 			return View(model);
 		}
 
@@ -28,14 +27,14 @@ namespace ZolikyWeb.Areas.Global.Controllers
 
 		public ActionResult Create()
 		{
-			var model = SubjectModel.CreateModel();
+			var model = NewsModel.CreateModel();
 			return View("Edit", model);
 		}
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		[ValidateSecureHiddenInputs(nameof(SubjectModel.ID))]
-		public async Task<ActionResult> Create(SubjectModel model)
+		[ValidateSecureHiddenInputs(nameof(NewsModel.ID))]
+		public async Task<ActionResult> Create(NewsModel model)
 		{
 			if (model == null) {
 				return RedirectToAction("Dashboard");
@@ -45,9 +44,12 @@ namespace ZolikyWeb.Areas.Global.Controllers
 				this.AddErrorToastMessage("Neplatné hodnoty");
 				return RedirectToAction("Edit");
 			}
+			var loggedId = this.User.Identity.GetId();
 
-			var res = await Mgr.CreateAsync(model.Name,
-											model.Shortcut);
+			var res = await Mgr.CreateAsync(loggedId,
+											model.Title,
+											model.Message,
+											expiration: model.Expiration);
 
 			if (!res.IsSuccess) {
 				this.AddErrorToastMessage($"Nezdařilo se vytvořit záznam. Chyba: {res.GetStatusMessage()}");
@@ -55,7 +57,7 @@ namespace ZolikyWeb.Areas.Global.Controllers
 			}
 			var original = res.Content;
 
-			this.AddSuccessToastMessage("Předmět byl úspěšně vytvořen");
+			this.AddSuccessToastMessage("Novinka byla úspěšně vytvořena");
 			return RedirectToAction("Detail", new {id = original.ID});
 		}
 
@@ -72,8 +74,8 @@ namespace ZolikyWeb.Areas.Global.Controllers
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		[ValidateSecureHiddenInputs(nameof(SubjectModel.ID))]
-		public async Task<ActionResult> Edit(SubjectModel model)
+		[ValidateSecureHiddenInputs(nameof(NewsModel.ID))]
+		public async Task<ActionResult> Edit(NewsModel model)
 		{
 			if (model == null) {
 				return RedirectToAction("Dashboard");
@@ -94,8 +96,9 @@ namespace ZolikyWeb.Areas.Global.Controllers
 			var original = res.Content;
 
 			// Edit
-			original.Name = model.Name;
-			original.Shortcut = model.Shortcut;
+			original.Title = model.Title;
+			original.Message = model.Message;
+			original.Expiration = model.Expiration;
 			// Edit end
 
 			await Mgr.SaveAsync(original);
@@ -129,13 +132,13 @@ namespace ZolikyWeb.Areas.Global.Controllers
 		{
 			var res = await Mgr.GetByIdAsync(id);
 			if (!res.IsSuccess) {
-				this.AddErrorToastMessage("Neplatný předmět");
+				this.AddErrorToastMessage("Neplatná novinka");
 				return RedirectToAction("Dashboard");
 			}
 			var previousId = await Mgr.GetPreviousIdAsync(id);
 			var nextId = await Mgr.GetNextIdAsync(id);
 
-			var model = new SubjectModel(res.Content, allowEdit, previousId, nextId) {
+			var model = new NewsModel(res.Content, allowEdit, previousId, nextId) {
 				ActionName = actionName
 			};
 
@@ -150,8 +153,8 @@ namespace ZolikyWeb.Areas.Global.Controllers
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		[ValidateSecureHiddenInputs(nameof(SubjectModel.ID))]
-		public Task<ActionResult> Remove(SubjectModel model)
+		[ValidateSecureHiddenInputs(nameof(NewsModel.ID))]
+		public Task<ActionResult> Remove(NewsModel model)
 		{
 			return RemoveAsync(model?.ID);
 		}
@@ -169,9 +172,9 @@ namespace ZolikyWeb.Areas.Global.Controllers
 		{
 			var res = await Mgr.DeleteAsync(id);
 			if (res) {
-				this.AddSuccessToastMessage("Předmět úspěšně odstraněn");
+				this.AddSuccessToastMessage("Novinka byla úspěšně odstraněna");
 			} else {
-				this.AddErrorToastMessage("Nezdařilo se odstranit předmět");
+				this.AddErrorToastMessage("Nezdařilo se odstranit novinku");
 			}
 
 			return RedirectToAction("Dashboard");

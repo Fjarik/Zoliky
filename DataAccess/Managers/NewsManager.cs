@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -52,6 +53,14 @@ namespace DataAccess.Managers
 #endregion
 
 #region Own Methods
+
+		public Task<List<News>> GetAllActive()
+		{
+			return _ctx.News
+					   .Where(x => x.Expiration == null ||
+								   x.Expiration > DateTime.Now)
+					   .ToListAsync();
+		}
 
 		public async Task<MActionResult<News>> CreateAsync(int authorId,
 														   string title,

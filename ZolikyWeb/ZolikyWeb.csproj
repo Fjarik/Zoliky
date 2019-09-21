@@ -1088,6 +1088,9 @@
     <Content Include="Areas\Global\Views\Subject\Dashboard.cshtml" />
     <Content Include="Areas\Global\Views\Subject\Edit.cshtml" />
     <Content Include="Areas\Global\Views\Subject\_RemovePartial.cshtml" />
+    <Content Include="Areas\Global\Views\News\Dashboard.cshtml" />
+    <Content Include="Areas\Global\Views\News\_RemovePartial.cshtml" />
+    <Content Include="Areas\Global\Views\News\Edit.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -1552,6 +1555,7 @@
     <Compile Include="Areas\Admin\Models\Zoliky\ZolikDashboardModel.cs" />
     <Compile Include="Areas\Admin\Models\Zoliky\ZolikModel.cs" />
     <Compile Include="Areas\Admin\Models\Zoliky\ZolikRemoveModel.cs" />
+    <Compile Include="Areas\Global\Controllers\NewsController.cs" />
     <Compile Include="Areas\Global\Controllers\SettingsController.cs" />
     <Compile Include="Areas\Global\Controllers\SubjectController.cs" />
     <Compile Include="Areas\Global\Models\Admin\DashboardModel.cs" />
@@ -1563,6 +1567,8 @@
     <Compile Include="Areas\Admin\Models\Class\ClassDashboardModel.cs" />
     <Compile Include="Areas\Admin\Models\Class\ClassModel.cs" />
     <Compile Include="Areas\Global\Controllers\BanController.cs" />
+    <Compile Include="Areas\Global\Models\News\NewsDashboardModel.cs" />
+    <Compile Include="Areas\Global\Models\News\NewsModel.cs" />
     <Compile Include="Areas\Global\Models\School\SchoolModel.cs" />
     <Compile Include="Areas\Global\Models\Subject\SubjectDashboardModel.cs" />
     <Compile Include="Areas\Global\Models\Subject\SubjectModel.cs" />
