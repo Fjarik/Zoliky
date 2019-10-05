@@ -168,6 +168,18 @@ namespace DataAccess.Models
 	[MetadataType(typeof(ClassMetaData))]
 	public partial class Class : IClass
 	{
+		public Class() { }
+
+		public Class(IClass c)
+		{
+			this.ID = c.ID;
+			this.SchoolID = c.SchoolID;
+			this.Name = c.Name;
+			this.Since = c.Since;
+			this.Graduation = c.Graduation;
+			this.Enabled = c.Enabled;
+		}
+
 		private sealed class ClassMetaData
 		{
 			[JsonIgnore]

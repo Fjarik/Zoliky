@@ -246,6 +246,7 @@
     <Compile Include="Models\Zolik.cs">
       <DependentUpon>MainModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Other\ClassLeaderboard.cs" />
     <Compile Include="Other\Extensions.cs" />
     <Compile Include="Other\DGlobals.cs" />
     <Compile Include="Other\GoogleConnector.cs" />

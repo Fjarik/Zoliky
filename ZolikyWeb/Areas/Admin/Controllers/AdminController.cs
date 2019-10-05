@@ -29,14 +29,17 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 			var students = await Mgr.GetStudentCountAsync(schoolId);
 			var teachers = await Mgr.GetTeacherCountAsync(schoolId);
 			var zoliks = await Mgr.GetZolikCountAsync(schoolId);
+			var classes = await Mgr.TestAsync(schoolId);
 
 			var model = new DashboardModel {
 				SchoolStudentsCount = students,
 				SchoolTeachersCount = teachers,
 				SchoolZoliksCount = zoliks,
-				SpecialDate = new DateTime(2019, 09, 02),
-				SpecialDateDesc = "Nový školní rok"
+				SpecialDate = new DateTime(2020, 01, 31),
+				SpecialDateDesc = "Konec prvního pololetí",
+				ClassesLeaderboard = classes.Take(10)
 			};
+
 			return View(model);
 		}
 
@@ -47,6 +50,5 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 			this.Session[Ext.Session.SchoolID] = model.SchoolId;
 			return RedirectToAction("Dashboard");
 		}
-
 	}
 }

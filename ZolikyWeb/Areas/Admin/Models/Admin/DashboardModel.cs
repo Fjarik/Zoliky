@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using DataAccess;
 
 namespace ZolikyWeb.Areas.Admin.Models.Admin
 {
@@ -10,6 +11,8 @@ namespace ZolikyWeb.Areas.Admin.Models.Admin
 		public int SchoolStudentsCount { get; set; }
 		public int SchoolTeachersCount { get; set; }
 		public int SchoolZoliksCount { get; set; }
+
+		public IEnumerable<ClassLeaderboard> ClassesLeaderboard { get; set; } = new List<ClassLeaderboard>();
 
 #region Special date
 

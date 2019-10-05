@@ -1092,6 +1092,7 @@
     <Content Include="Areas\Global\Views\News\Dashboard.cshtml" />
     <Content Include="Areas\Global\Views\News\_RemovePartial.cshtml" />
     <Content Include="Areas\Global\Views\News\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Admin\DPartials\_ClassesLeaderboard.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />

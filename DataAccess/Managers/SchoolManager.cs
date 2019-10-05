@@ -102,6 +102,32 @@ namespace DataAccess.Managers
 					   .CountAsync();
 		}
 
+		public async Task<IEnumerable<ClassLeaderboard>> TestAsync(int schoolId)
+		{
+			var students = await this._ctx.Users.Where(x => x.Enabled &&
+															x.ClassID != null &&
+															x.SchoolID == schoolId)
+									 .GroupBy(x => x.ClassID)
+									 .Select(x => new {
+										 classId = x.Key,
+										 count = x.Select(y => y.OriginalZoliks
+																.Where(z => z.Type != ZolikType.Debug &&
+																			z.Type != ZolikType.DebugJoker)
+																.Count(z => z.Enabled)).Sum()
+									 })
+									 .ToListAsync();
+
+			var classes = await this._ctx.Classes
+									.Where(x => x.Enabled &&
+												x.SchoolID == schoolId)
+									.ToListAsync();
+
+			var res = from s in students
+					  join c in classes on s.classId equals c.ID into g
+					  select new ClassLeaderboard(g.Any() ? g.First() : null, s.count);
+			return res.OrderByDescending(x => x.ZolikCount);
+		}
+
 #endregion
 
 		public Task<SchoolTypes> GetSchoolTypeAsync(int schoolId)
