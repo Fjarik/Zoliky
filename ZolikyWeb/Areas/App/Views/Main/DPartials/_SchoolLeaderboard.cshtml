@@ -1,0 +1,37 @@
+﻿@using ZolikyWeb.Tools
+@model IEnumerable<DataAccess.Models.GetTopStudents_Result>
+
+<div class="card-header">
+	<div class="card-actions">
+		<a class="" href="@Url.Action("RefreshProfilePhotos")" target="_self" data-toggle="tooltip" data-placement="bottom" title="Přenačíst profilové obrázky">
+			<i class="ti-reload"></i>
+		</a>
+		<a class="" data-action="collapse">
+			<i class="ti-minus"></i>
+		</a>
+		<a class="btn-minimize" data-action="expand">
+			<i class="mdi mdi-arrow-expand"></i>
+		</a>
+		<a class="btn-close" data-action="close">
+			<i class="ti-close"></i>
+		</a>
+	</div>
+	<h4 class="card-title m-b-0">Žebříček - Škola</h4>
+</div>
+<div class="card-body b-t collapse show">
+	<table class="table v-middle no-border">
+		<tbody>
+			@foreach (var student in Model) {
+				<tr>
+					<td style="width: 40px">
+						<img src="@Url.GetProfilePhotoUrl(student.ID)" width="50" height="50" class="img-circle" alt="Profilový obrázek">
+					</td>
+					<td>@student.FullName</td>
+					<td align="right">
+						<span class="label label-light-info" data-toggle="tooltip" data-placement="bottom" title="Počet žolíků">@student.ZolikCount</span>
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+</div>

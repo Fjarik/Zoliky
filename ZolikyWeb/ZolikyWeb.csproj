@@ -1085,7 +1085,7 @@
     <Content Include="Content\Images\Pages\Default\Zolici.webp" />
     <Content Include="Content\Images\Pages\Default\ZolikEdit.webp" />
     <Content Include="Areas\App\Views\Achievement\_RefreshPartial.cshtml" />
-    <Content Include="Areas\App\Views\Main\_StatisticsPartial.cshtml" />
+    <Content Include="Areas\App\Views\Main\DPartials\_StatisticsPartial.cshtml" />
     <Content Include="Areas\Global\Views\Subject\Dashboard.cshtml" />
     <Content Include="Areas\Global\Views\Subject\Edit.cshtml" />
     <Content Include="Areas\Global\Views\Subject\_RemovePartial.cshtml" />
@@ -1093,6 +1093,12 @@
     <Content Include="Areas\Global\Views\News\_RemovePartial.cshtml" />
     <Content Include="Areas\Global\Views\News\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\Admin\DPartials\_ClassesLeaderboard.cshtml" />
+    <Content Include="Areas\Admin\Views\Admin\DPartials\_Completed.cshtml" />
+    <Content Include="Areas\App\Views\Main\DPartials\_NewestZoliks.cshtml" />
+    <Content Include="Areas\App\Views\Main\DPartials\_ClassLeaderboard.cshtml" />
+    <Content Include="Areas\App\Views\Main\DPartials\_SchoolLeaderboard.cshtml" />
+    <Content Include="Areas\App\Views\Main\DPartials\_Completed.cshtml" />
+    <Content Include="Areas\Global\Views\Admin\Partials\_Completed.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />

@@ -92,8 +92,6 @@ namespace ZolikyWeb.Areas.App.Models.Main
 			return $"Zbývá {diff} (dny)";
 		}
 
-		public bool HasZoliks => this.Zoliky.Any();
-
 		public bool IsInClass => !string.IsNullOrWhiteSpace(this.ClassName);
 
 		public bool IsPublic => HttpContext.Current.User.IsInRole(UserRoles.Public);

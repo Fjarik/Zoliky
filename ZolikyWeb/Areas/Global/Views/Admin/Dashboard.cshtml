@@ -18,61 +18,7 @@
 	<!-- Column -->
 	<div class="col-xlg-3 col-lg-4 col-md-5">
 		<div class="card">
-			<div class="card-header">
-				<div class="card-actions">
-					<a class="" data-action="collapse">
-						<i class="ti-minus"></i>
-					</a>
-					<a class="btn-minimize" data-action="expand">
-						<i class="mdi mdi-arrow-expand"></i>
-					</a>
-					<a class="btn-close" data-action="close">
-						<i class="ti-close"></i>
-					</a>
-				</div>
-				<h4 class="card-title m-b-0">Dokončené stránky</h4>
-			</div>
-			<div class="card-body b-t collapse show">
-				<ul>
-					<li>Přehled</li>
-					<li>
-						Uživatelé:
-						<ul>
-							<li>Přehled</li>
-							<li>Blokace</li>
-						</ul>
-					</li>
-					<li>
-						Školy:
-						<ul>
-							<li>Přehled</li>
-							<li>Vytvoření</li>
-							<li>Detaily</li>
-							<li>Odstranění</li>
-						</ul>
-					</li>
-					<li>
-						Novinky:
-						<ul>
-							<li>Přehled</li>
-							<li>Vytvoření</li>
-							<li>Detaily</li>
-							<li>Odstranění</li>
-						</ul>
-					</li>
-					<li>
-						Předměty:
-						<ul>
-							<li>Přehled</li>
-							<li>Vytvoření</li>
-							<li>Detaily</li>
-							<li>Odstranění</li>
-						</ul>
-					</li>
-					<li>Nastavení</li>
-					<li>Odhlašování</li>
-				</ul>
-			</div>
+			@Html.Partial("Partials/_Completed")
 		</div>
 	</div>
 	<!-- /Column -->
