@@ -14,9 +14,7 @@ namespace ZolikyWeb.Areas.Admin.Models.Class
 		public override bool AllowRemove { get; set; }
 		public override bool AllowEdit { get; set; }
 		public override bool IsCreate { get; set; }
-		public override int PreviousID { get; set; }
 		public override int ID { get; set; }
-		public override int NextID { get; set; }
 		public override string ActionName { get; set; }
 
 		public List<DataAccess.Models.School> Schools { get; set; }
@@ -98,7 +96,8 @@ namespace ZolikyWeb.Areas.Admin.Models.Class
 						  List<string> studentNames,
 						  bool allowEdit,
 						  int previousId,
-						  int nextId) : base(ent, allowEdit, previousId, nextId)
+						  int nextId,
+						  string url) : base(ent, allowEdit, previousId, nextId, url)
 		{
 			this.StudentNames = studentNames;
 			this.SchoolID = ent.SchoolID;

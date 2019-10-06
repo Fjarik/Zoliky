@@ -30,6 +30,7 @@
 					@Html.AntiForgeryToken()
 					@Html.SecureHiddenFor(x => x.ID)
 					<div class="form-body">
+						@Html.Partial("_PrevNextRecord", Model)
 						<h3 class="card-title">
 							Obecné
 						</h3>

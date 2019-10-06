@@ -169,7 +169,9 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 				allowRemove = sRes.Content.AllowTeacherRemove;
 			}
 
-			var model = new ZolikModel(res.Content, subjects, allowRemove, allowEdit, previousId, nextId) {
+			string url = Url.Action(actionName, "Zolik", new {Area = "Admin", id = UrlParameter.Optional});
+
+			var model = new ZolikModel(res.Content, subjects, allowRemove, allowEdit, previousId, nextId, url) {
 				ActionName = actionName
 			};
 

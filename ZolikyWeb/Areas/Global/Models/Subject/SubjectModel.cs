@@ -15,9 +15,7 @@ namespace ZolikyWeb.Areas.Global.Models.Subject
 		public override bool AllowRemove { get; set; } = false;
 		public override bool AllowEdit { get; set; }
 		public override bool IsCreate { get; set; }
-		public override int PreviousID { get; set; }
 		public override int ID { get; set; }
-		public override int NextID { get; set; }
 		public override string ActionName { get; set; }
 
 #region Entity
@@ -54,9 +52,10 @@ namespace ZolikyWeb.Areas.Global.Models.Subject
 		}
 
 		public SubjectModel(DataAccess.Models.Subject ent,
-								bool allowEdit,
-								int previousId,
-								int nextId) : base(ent, allowEdit, previousId, nextId)
+							bool allowEdit,
+							int previousId,
+							int nextId,
+							string url) : base(ent, allowEdit, previousId, nextId, url)
 		{
 			this.Name = ent.Name;
 			this.Shortcut = ent.Shortcut;

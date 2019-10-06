@@ -12,28 +12,59 @@ using ZolikyWeb.Tools;
 
 namespace ZolikyWeb.Areas.Global.Models.School
 {
-	[MetadataType(typeof(SchoolMetadata))]
-	public sealed class SchoolModel : DataAccess.Models.School, IValidable
+	public sealed class SchoolModel : UniversalModel<DataAccess.Models.School>
 	{
-		public bool AllowRemove { get; }
+		public override bool AllowRemove { get; set; } = false;
+		public override bool AllowEdit { get; set; }
+		public override bool IsCreate { get; set; } = false;
+		public override int ID { get; set; }
+		public override string ActionName { get; set; }
 
-		public bool AllowEdit { get; set; }
-		public bool IsCreate { get; set; } = false;
-		public int PreviousID { get; set; }
-		public int NextID { get; set; }
+#region Entity
+
+		[Display(Name = "Název")]
+		[Required(ErrorMessage = "Musíte zadat název školy")]
+		[PlaceHolder(Text = "Zadejte název školy")]
+		[StringLength(200)]
+		public string Name { get; set; }
+
+		public SharedLibrary.Enums.SchoolTypes Type { get; set; }
+
+		[Display(Name = "Ulice")]
+		[Required(ErrorMessage = "Musíte zadat ulici")]
+		[PlaceHolder(Text = "Zadejte ulici")]
+		[StringLength(200)]
+		public string Street { get; set; }
+
+		[Display(Name = "Město")]
+		[Required(ErrorMessage = "Musíte zadat město")]
+		[PlaceHolder(Text = "Zadejte město")]
+		[StringLength(200)]
+		public string City { get; set; }
+
+		[Display(Name = "Ano/Ne")]
+		public bool AllowTransfer { get; set; }
+
+		[Display(Name = "Povoleno/Zakázáno")]
+		public bool AllowTeacherRemove { get; set; }
+
+		[Display(Name = "Povoleno/Zakázáno")]
+		public bool AllowZolikSplik { get; set; }
+
+		public ICollection<Class> Classes { get; set; }
+		public ICollection<DataAccess.Models.User> Users { get; set; }
 
 		[Display(Name = "Druh")]
 		[Required(ErrorMessage = "Musíte vybrat druh školy")]
 		[Range(0, 3)]
 		public byte TypeID { get; set; }
 
+#endregion
+
+#region Extends
+
 		public List<int> SubjectIds { get; set; }
 		public List<DataAccess.Models.Subject> AllSubjects { get; set; }
-
-		public string ActionName { get; set; }
-
-		public bool IsFirst => this.PreviousID == 0;
-		public bool IsLast => this.NextID == 0;
 
 		public IEnumerable<SelectListItem> ClassList => this.Classes
 															.OrderBy(x => x.Name)
@@ -64,11 +95,13 @@ namespace ZolikyWeb.Areas.Global.Models.School
 																 Selected = x == Type
 															 });
 
-		public bool IsValid => (this.ID == -1 || this.ID > 0) &&
-							   Enum.IsDefined(typeof(SchoolTypes), this.TypeID) &&
-							   !Methods.AreNullOrWhiteSpace(this.Name, this.Street, this.City);
+#endregion
 
-		public SchoolModel()
+		public override bool IsValid => (this.ID == -1 || this.ID > 0) &&
+										Enum.IsDefined(typeof(SchoolTypes), this.TypeID) &&
+										!Methods.AreNullOrWhiteSpace(this.Name, this.Street, this.City);
+
+		public SchoolModel() : base()
 		{
 			this.SubjectIds = new List<int>() {
 				4
@@ -78,22 +111,25 @@ namespace ZolikyWeb.Areas.Global.Models.School
 			this.AllowRemove = false;
 		}
 
-		public SchoolModel(List<DataAccess.Models.Subject> allSubjects) : this()
+		public static SchoolModel CreateModel(List<DataAccess.Models.Subject> allSubjects)
 		{
-			this.ID = -1;
-			this.AllSubjects = allSubjects;
-			this.ActionName = "Create";
-			this.AllowEdit = true;
-			this.IsCreate = true;
+			return new SchoolModel() {
+				ID = -1,
+				AllSubjects = allSubjects,
+				ActionName = "Create",
+				AllowEdit = true,
+				IsCreate = true
+			};
 		}
 
-		public SchoolModel(DataAccess.Models.School s, List<DataAccess.Models.Subject> allSubjects, bool allowEdit, int previousId,
-						   int nextId) : this()
+		public SchoolModel(DataAccess.Models.School s,
+						   List<DataAccess.Models.Subject> allSubjects,
+						   bool allowEdit,
+						   int previousId,
+						   int nextId,
+						   string url) : base(s, allowEdit, previousId, nextId, url)
 		{
 			this.AllSubjects = allowEdit ? allSubjects : s.Subjects;
-			this.AllowEdit = allowEdit;
-			this.PreviousID = previousId;
-			this.NextID = nextId;
 
 			this.ID = s.ID;
 			this.Type = s.Type;
@@ -116,36 +152,6 @@ namespace ZolikyWeb.Areas.Global.Models.School
 			this.AllowRemove = !IsCreate &&
 							   !s.Classes.Any() &&
 							   !s.Users.Any();
-		}
-
-		private sealed class SchoolMetadata
-		{
-			[Display(Name = "Název")]
-			[Required(ErrorMessage = "Musíte zadat název školy")]
-			[PlaceHolder(Text = "Zadejte název školy")]
-			[StringLength(200)]
-			public string Name { get; set; }
-
-			[Display(Name = "Ulice")]
-			[Required(ErrorMessage = "Musíte zadat ulici")]
-			[PlaceHolder(Text = "Zadejte ulici")]
-			[StringLength(200)]
-			public string Street { get; set; }
-
-			[Display(Name = "Město")]
-			[Required(ErrorMessage = "Musíte zadat město")]
-			[PlaceHolder(Text = "Zadejte město")]
-			[StringLength(200)]
-			public string City { get; set; }
-
-			[Display(Name = "Ano/Ne")]
-			public bool AllowTransfer { get; set; }
-
-			[Display(Name = "Povoleno/Zakázáno")]
-			public bool AllowTeacherRemove { get; set; }
-
-			[Display(Name = "Povoleno/Zakázáno")]
-			public bool AllowZolikSplik { get; set; }
 		}
 	}
 }

@@ -77,7 +77,7 @@ namespace ZolikyWeb.Areas.Global.Controllers
 
 		private ActionResult Create(List<Subject> allSubjects)
 		{
-			var model = new SchoolModel(allSubjects);
+			var model = SchoolModel.CreateModel(allSubjects);
 			return View("Edit", model);
 		}
 
@@ -196,7 +196,9 @@ namespace ZolikyWeb.Areas.Global.Controllers
 										  int previousId,
 										  int nextId)
 		{
-			var model = new SchoolModel(school, allSubjects, allowEdit, previousId, nextId) {
+			string url = Url.Action(actionName, "School", new {Area = "Global", id = UrlParameter.Optional});
+
+			var model = new SchoolModel(school, allSubjects, allowEdit, previousId, nextId, url) {
 				ActionName = actionName
 			};
 

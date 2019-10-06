@@ -1,0 +1,18 @@
+﻿@model ZolikyWeb.Tools.UniversalPrevNextModel
+
+<div class="row justify-content-between">
+	<div class="col-auto">
+		@if (Model.PreviousID > 0) {
+			<a href="@Model.Url/@Model.PreviousID" data-toggle="tooltip" title="Předchozí záznam">
+				<i class="mdi mdi-arrow-left mdi-24px"></i>
+			</a>
+		}
+	</div>
+	<div class="col-auto">
+		@if (Model.NextID > 0) {
+			<a href="@Model.Url/@Model.NextID" data-toggle="tooltip" title="Další záznam">
+				<i class="mdi mdi-arrow-right mdi-24px"></i>
+			</a>
+		}
+	</div>
+</div>

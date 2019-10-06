@@ -1099,6 +1099,10 @@
     <Content Include="Areas\App\Views\Main\DPartials\_SchoolLeaderboard.cshtml" />
     <Content Include="Areas\App\Views\Main\DPartials\_Completed.cshtml" />
     <Content Include="Areas\Global\Views\Admin\Partials\_Completed.cshtml" />
+    <Content Include="Areas\Admin\Views\Admin\DPartials\_QuickActions.cshtml" />
+    <Content Include="Areas\Admin\Views\Admin\DPartials\_QuickZolik.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\_PrevNextRecord.cshtml" />
+    <Content Include="Areas\Global\Views\Shared\_PrevNextRecord.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -1636,6 +1640,7 @@
     <Compile Include="Tools\SignInManager.cs" />
     <Compile Include="Tools\Toasts.cs" />
     <Compile Include="Tools\UniversalModel.cs" />
+    <Compile Include="Tools\UniversalPrevNextModel.cs" />
     <Compile Include="Tools\WebExtensions.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -162,7 +162,9 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 			var nextId = await Mgr.GetNextIdAsync(id);
 			var names = await Mgr.GetStudentNamesAsync(id);
 
-			var model = new ClassModel(res.Content, names, allowEdit, previousId, nextId) {
+			string url = Url.Action(actionName, "Class", new {Area = "Admin", id = UrlParameter.Optional});
+
+			var model = new ClassModel(res.Content, names, allowEdit, previousId, nextId, url) {
 				ActionName = actionName
 			};
 

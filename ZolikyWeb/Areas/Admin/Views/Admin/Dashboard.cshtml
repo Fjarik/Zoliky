@@ -81,14 +81,28 @@
 	<!-- Column -->
 	<div class="col-xlg-3 col-lg-4 col-md-5">
 		<div class="card">
-			@Html.Partial("DPartials/_Completed")
+			@Html.Partial("DPartials/_QuickActions")
+		</div>
+	</div>
+	<!-- /Column -->
+	<!-- Column -->
+	<div class="col-xlg-3 col-lg-4 col-md-5">
+		<div class="card">
+			@Html.Partial("DPartials/_ClassesLeaderboard", Model.ClassesLeaderboard)
+		</div>
+	</div>
+	<!-- /Column -->
+	<!-- Column -->
+	<div class="col-xlg-3 col-lg-4 col-md-5">
+		<div class="card">
+			@Html.Partial("DPartials/_QuickZolik")
 		</div>
 	</div>
 	<!-- /Column -->
 	<!-- Column -->
 	<div class="col-xlg-3 col-lg-4 col-md-5">
 		<div class="card NoSelectAll">
-			@Html.Partial("DPartials/_ClassesLeaderboard", Model.ClassesLeaderboard)
+			@Html.Partial("DPartials/_Completed")
 		</div>
 	</div>
 	<!-- /Column -->

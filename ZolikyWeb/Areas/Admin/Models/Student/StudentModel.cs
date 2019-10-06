@@ -17,9 +17,7 @@ namespace ZolikyWeb.Areas.Admin.Models.Student
 		public override bool AllowRemove { get; set; }
 		public override bool AllowEdit { get; set; }
 		public override bool IsCreate { get; set; }
-		public override int PreviousID { get; set; }
 		public override int ID { get; set; }
-		public override int NextID { get; set; }
 		public override string ActionName { get; set; }
 		public override bool IsValid { get; }
 
@@ -133,7 +131,8 @@ namespace ZolikyWeb.Areas.Admin.Models.Student
 							List<School> schools,
 							bool allowEdit,
 							int previousId,
-							int nextId) : base(ent, allowEdit, previousId, nextId)
+							int nextId,
+							string url) : base(ent, allowEdit, previousId, nextId, url)
 		{
 			this.Classes = classes;
 			this.Schools = schools;

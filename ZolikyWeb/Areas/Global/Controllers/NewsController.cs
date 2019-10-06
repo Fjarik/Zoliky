@@ -138,7 +138,9 @@ namespace ZolikyWeb.Areas.Global.Controllers
 			var previousId = await Mgr.GetPreviousIdAsync(id);
 			var nextId = await Mgr.GetNextIdAsync(id);
 
-			var model = new NewsModel(res.Content, allowEdit, previousId, nextId) {
+			string url = Url.Action(actionName, "News", new {Area = "Global", id = UrlParameter.Optional});
+
+			var model = new NewsModel(res.Content, allowEdit, previousId, nextId, url) {
 				ActionName = actionName
 			};
 
