@@ -99,8 +99,8 @@ namespace DataAccess.Managers
 			var date = Ext.SchoolYearStart;
 			var query = _ctx.Zoliky.Where(x => x.OriginalOwner.SchoolID == schoolId &&
 											   x.OriginalOwner.ClassID != null &&
-											   x.Teacher.SchoolID == schoolId &&
-											   x.Teacher.Roles.All(y => y.Name != UserRoles.Robot) &&
+											   x.Owner.SchoolID == schoolId &&
+											   // x.Teacher.Roles.All(y => y.Name != UserRoles.Robot) &&
 											   x.Created > date);
 			if (onlyEnabled) {
 				query = query.Where(x => x.Enabled);
@@ -446,14 +446,16 @@ namespace DataAccess.Managers
 			if (joker.SubjectID < 1 || joker.OriginalOwnerID < 1) {
 				return new MActionResult<List<Transaction>>(StatusCode.NotValidID);
 			}
+			var teacherId = joker.TeacherID;
 			var title = joker.Title;
 			var subjectId = joker.SubjectID;
 			var tMessage = $"Rozdělení \"{joker.Title}\"";
 			var originalOwnerId = joker.OriginalOwnerID;
-			return await this.SplitAsync(toId, originalOwnerId, toType, subjectId, title, tMessage, count, deleteTran);
+			return await this.SplitAsync(teacherId, toId, originalOwnerId, toType, subjectId, title, tMessage, count, deleteTran);
 		}
 
-		private async Task<MActionResult<List<Transaction>>> SplitAsync(int toId,
+		private async Task<MActionResult<List<Transaction>>> SplitAsync(int teacherId,
+			int toId,
 																		int originalOwnerId,
 																		ZolikType toType,
 																		int subjectId,
@@ -472,7 +474,8 @@ namespace DataAccess.Managers
 				};
 				for (int i = 0; i < count; i++) {
 					var newTitle = $"{title} [{i + 1}/{count}]";
-					var tran = await this.BankCreateAndTransferAsync(toId: toId,
+					var tran = await this.BankCreateAndTransferAsync(teacherId: teacherId,
+																	 toId: toId,
 																	 originalOwnerId: originalOwnerId,
 																	 toType: toType,
 																	 subjectId: subjectId,
@@ -493,15 +496,35 @@ namespace DataAccess.Managers
 			}
 		}
 
-		private async Task<MActionResult<Transaction>> BankCreateAndTransferAsync(int toId,
-																				  int originalOwnerId,
-																				  ZolikType toType,
-																				  int subjectId,
-																				  string title,
-																				  string tMessage)
+		private Task<MActionResult<Transaction>> BankCreateAndTransferAsync(int teacherId,
+																			int toId,
+																			int originalOwnerId,
+																			ZolikType toType,
+																			int subjectId,
+																			string title,
+																			string tMessage)
 		{
 			int bank = Ext.BankId;
-			var res = await this.CreateAsync(teacherId: bank,
+			return CreateAndTransferAsync(teacherId,
+										  bank,
+										  toId,
+										  originalOwnerId,
+										  toType,
+										  subjectId,
+										  title,
+										  tMessage);
+		}
+
+		private async Task<MActionResult<Transaction>> CreateAndTransferAsync(int teacherId,
+																			  int fromId,
+																			  int toId,
+																			  int originalOwnerId,
+																			  ZolikType toType,
+																			  int subjectId,
+																			  string title,
+																			  string tMessage)
+		{
+			var res = await this.CreateAsync(teacherId: teacherId,
 											 originalOwnerId: originalOwnerId,
 											 type: toType,
 											 subjectId: subjectId,
@@ -511,7 +534,7 @@ namespace DataAccess.Managers
 				return new MActionResult<Transaction>(res.Status);
 			}
 			var zolik = res.Content;
-			var tran = await this.TransferAsync(fromId: bank,
+			var tran = await this.TransferAsync(fromId: fromId,
 												toId: toId,
 												z: zolik,
 												type: TransactionAssignment.Split,

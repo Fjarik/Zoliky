@@ -64,8 +64,7 @@ namespace ZolikyWeb.Areas.Global.Models.News
 		public NewsModel(DataAccess.Models.News ent,
 						 bool allowEdit,
 						 int previousId,
-						 int nextId,
-						 string url) : base(ent, allowEdit, previousId, nextId, url)
+						 int nextId) : base(ent, allowEdit, previousId, nextId)
 		{
 			this.Title = ent.Title;
 			this.Message = ent.Message;

@@ -126,8 +126,7 @@ namespace ZolikyWeb.Areas.Global.Models.School
 						   List<DataAccess.Models.Subject> allSubjects,
 						   bool allowEdit,
 						   int previousId,
-						   int nextId,
-						   string url) : base(s, allowEdit, previousId, nextId, url)
+						   int nextId) : base(s, allowEdit, previousId, nextId)
 		{
 			this.AllSubjects = allowEdit ? allSubjects : s.Subjects;
 

@@ -38,7 +38,11 @@
 									<label class="control-label text-right col-md-3">ID</label>
 									<div class="col-md-9">
 										<p class="form-control-static text-right text-md-left">
-											@Model.ID
+											@if (Model.IsCreate) {
+												@:Nový záznam
+											} else {
+												@Model.ID
+											}
 										</p>
 									</div>
 								</div>

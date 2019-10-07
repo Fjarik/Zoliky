@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 using DataAccess;
 using DataAccess.Managers;
 using DataAccess.Managers.New;
@@ -44,16 +45,16 @@ namespace ZolikyWeb.Tools
 
 		public static int GetSchoolId(this System.Security.Principal.IPrincipal principal)
 		{
-			if (principal.IsInRolesOr(UserRoles.Administrator, UserRoles.Developer) && HttpContext.Current.Session[Ext.Session.SchoolID] is int schoolId) {
+			if (principal.IsInRolesOr(UserRoles.Administrator, UserRoles.Developer) &&
+				HttpContext.Current.Session[Ext.Session.SchoolID] is int schoolId) {
 				return schoolId;
 			}
 			return principal.Identity.GetValue<int>("schoolId");
 		}
 
+#endregion
 
-		#endregion
-
-		#region Entities
+#region Entities
 
 		public static TManager GetManager<TManager>(this Controller controller) where TManager : class, IDisposable
 		{
@@ -137,6 +138,50 @@ namespace ZolikyWeb.Tools
 					break;
 			}
 			return lbl;
+		}
+
+#endregion
+
+#region Url
+
+		///
+		/// https://stackoverflow.com/questions/21932635/how-to-add-a-parameter-to-the-current-url-in-a-view
+		/// 
+		private static RouteValueDictionary GetKeyValuePairs(this UrlHelper urlHelper)
+		{
+			var routeValueDictionary = new RouteValueDictionary(urlHelper.RequestContext.RouteData.Values);
+			var queryString = HttpContext.Current.Request.QueryString;
+			foreach (var key in queryString.AllKeys)
+				routeValueDictionary.Add(key, queryString[key]);
+
+			return routeValueDictionary;
+		}
+
+		public static string BuildUrl(this UrlHelper urlHelper)
+		{
+			var routeValueDictionary = GetKeyValuePairs(urlHelper);
+			return urlHelper.RouteUrl(routeValueDictionary);
+		}
+
+		public static string BuildUrl(this UrlHelper urlHelper, string key)
+		{
+			var routeValueDictionary = GetKeyValuePairs(urlHelper);
+
+			if (routeValueDictionary.Keys.Contains(key))
+				routeValueDictionary.Remove(key);
+
+			return urlHelper.RouteUrl(routeValueDictionary);
+		}
+
+		public static string BuildUrl(this UrlHelper urlHelper, string key, object value)
+		{
+			var routeValueDictionary = GetKeyValuePairs(urlHelper);
+			if (routeValueDictionary.ContainsKey(key))
+				routeValueDictionary[key] = value;
+			else
+				routeValueDictionary.Add(key, value);
+
+			return urlHelper.RouteUrl(routeValueDictionary);
 		}
 
 #endregion

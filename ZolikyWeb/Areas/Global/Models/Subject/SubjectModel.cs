@@ -54,8 +54,7 @@ namespace ZolikyWeb.Areas.Global.Models.Subject
 		public SubjectModel(DataAccess.Models.Subject ent,
 							bool allowEdit,
 							int previousId,
-							int nextId,
-							string url) : base(ent, allowEdit, previousId, nextId, url)
+							int nextId) : base(ent, allowEdit, previousId, nextId)
 		{
 			this.Name = ent.Name;
 			this.Shortcut = ent.Shortcut;

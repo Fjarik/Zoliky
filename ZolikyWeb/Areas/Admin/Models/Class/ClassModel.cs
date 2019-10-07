@@ -96,8 +96,7 @@ namespace ZolikyWeb.Areas.Admin.Models.Class
 						  List<string> studentNames,
 						  bool allowEdit,
 						  int previousId,
-						  int nextId,
-						  string url) : base(ent, allowEdit, previousId, nextId, url)
+						  int nextId) : base(ent, allowEdit, previousId, nextId)
 		{
 			this.StudentNames = studentNames;
 			this.SchoolID = ent.SchoolID;

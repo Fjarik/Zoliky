@@ -24,7 +24,7 @@ namespace ZolikyWeb.Tools
 			this.AllowRemove = false;
 		}
 
-		public UniversalModel(T ent, bool allowEdit, int previousId, int nextId, string url) : base(previousId, nextId, url)
+		public UniversalModel(T ent, bool allowEdit, int previousId, int nextId) : base(previousId, nextId)
 		{
 			this.AllowEdit = allowEdit;
 			this.ID = ent.ID;

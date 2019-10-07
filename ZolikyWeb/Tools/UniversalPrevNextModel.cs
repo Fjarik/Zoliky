@@ -9,15 +9,13 @@ namespace ZolikyWeb.Tools
 	{
 		public int PreviousID { get; set; }
 		public int NextID { get; set; }
-		public string Url { get; set; }
 
 		public UniversalPrevNextModel() { }
 
-		public UniversalPrevNextModel(int previousID, int nextID, string url)
+		public UniversalPrevNextModel(int previousID, int nextID)
 		{
 			this.PreviousID = previousID;
 			this.NextID = nextID;
-			this.Url = url;
 		}
 	}
 }

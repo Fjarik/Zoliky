@@ -8,6 +8,9 @@
 	Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
+@section header {
+	<link href="@Url.Content("~/assets/plugins/select2/css/select2.min.css")" rel="stylesheet" />
+}
 
 <div class="row">
 	<div class="col">
@@ -43,7 +46,11 @@
 									<label class="control-label text-right col-md-3">ID</label>
 									<div class="col-md-9">
 										<p class="form-control-static text-right text-md-left">
-											@Model.ID
+											@if (Model.IsCreate) {
+												@:Nový záznam
+											} else {
+												@Model.ID
+											}
 										</p>
 									</div>
 								</div>
@@ -100,11 +107,17 @@
 							<!-- item -->
 							<div class="col-md-6">
 								<div class="form-group row">
-									<label class="control-label text-right col-md-3">Aktuální vlastník</label>
+									<label class="control-label text-right col-md-3">
+										@if (Model.IsCreate) {
+											@:Vlastník
+										} else {
+											@:Aktuální vlastník
+										}
+									</label>
 									<div class="col-md-9">
 										<p class="form-control-static">
 											@if (Model.IsCreate) {
-												@Html.DropDownListFor(x => x.OwnerID, Model.StudentSelect, new {@class = "form-control custom-select", tabindex = 2})
+												@Html.DropDownListFor(x => x.OwnerID, Model.StudentSelect, new { @class = "select2", tabindex = 2 })
 												@Html.ValidationMessageFor(x => x.OwnerID)
 											} else {
 												@Html.HiddenFor(x => x.OwnerID)
@@ -196,7 +209,7 @@
 									<label class="control-label text-right col-md-3">Předmět</label>
 									<div class="col-md-8">
 										@if (Model.AllowEdit) {
-											@Html.DropDownListFor(x => x.SubjectID, Model.SubjectSelect, new {@class = "form-control custom-select", tabindex = 5})
+											@Html.DropDownListFor(x => x.SubjectID, Model.SubjectSelect, new { @class = "form-control custom-select", tabindex = 5 })
 											@Html.ValidationMessageFor(x => x.SubjectID)
 										} else {
 											@Html.HiddenFor(x => x.SubjectID)
@@ -219,7 +232,7 @@
 										<label class="control-label text-right col-md-3">Aktivní</label>
 										<div class="col-md-9">
 											@if (Model.AllowEdit) {
-												@Html.CheckBoxSimple(x => x.Enabled, new {@class = "filled-in chk-col-light-blue", tabindex = 8})
+												@Html.CheckBoxSimple(x => x.Enabled, new { @class = "filled-in chk-col-light-blue", tabindex = 8 })
 												@Html.NoSelectLaberFor(x => x.Enabled)
 												@Html.ValidationMessageFor(x => x.Enabled)
 											} else {
@@ -283,7 +296,7 @@
 							</div>
 							<!-- /row -->
 						}
-						</div>
+					</div>
 					<hr />
 					<div class="form-actions">
 						<div class="row">
@@ -320,9 +333,10 @@
 }
 
 @section footer {
+	<script src="@Url.Content("~/assets/plugins/select2/js/select2.full.min.js")"></script>
 	<script type="text/javascript">
 		$(() => {
-			$("#table-trans").footable();
+			$(".select2").select2();
 		});
 	</script>
 }

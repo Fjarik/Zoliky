@@ -19,7 +19,6 @@ namespace ZolikyWeb.Areas.Admin.Models.Student
 		public override bool IsCreate { get; set; }
 		public override int ID { get; set; }
 		public override string ActionName { get; set; }
-		public override bool IsValid { get; }
 
 #region Entity
 
@@ -121,6 +120,13 @@ namespace ZolikyWeb.Areas.Admin.Models.Student
 
 #endregion
 
+		public override bool IsValid => (this.ID == -1 || this.ID > 0) &&
+										!Methods.AreNullOrWhiteSpace(this.Username,
+																	 this.Name,
+																	 this.Lastname,
+																	 this.Email) &&
+										Methods.IsEmailValid(this.Email);
+
 		public StudentModel() : base()
 		{
 			this.AllowRemove = false;
@@ -131,8 +137,7 @@ namespace ZolikyWeb.Areas.Admin.Models.Student
 							List<School> schools,
 							bool allowEdit,
 							int previousId,
-							int nextId,
-							string url) : base(ent, allowEdit, previousId, nextId, url)
+							int nextId) : base(ent, allowEdit, previousId, nextId)
 		{
 			this.Classes = classes;
 			this.Schools = schools;

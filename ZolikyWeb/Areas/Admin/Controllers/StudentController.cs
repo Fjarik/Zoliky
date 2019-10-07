@@ -182,9 +182,7 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 
 			var schools = new List<School> {sRes.Content};
 
-			string url = Url.Action(actionName, "Student", new {Area = "Admin", id = UrlParameter.Optional});
-
-			var model = new StudentModel(res.Content, classes, schools, allowEdit, previousId, nextId, url) {
+			var model = new StudentModel(res.Content, classes, schools, allowEdit, previousId, nextId) {
 				ActionName = actionName
 			};
 

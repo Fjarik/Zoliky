@@ -146,8 +146,7 @@ namespace ZolikyWeb.Areas.Admin.Models.Zoliky
 						  bool allowRemove,
 						  bool allowEdit,
 						  int previousId,
-						  int nextId,
-						  string url) : base(ent, allowEdit, previousId, nextId, url)
+						  int nextId) : base(ent, allowEdit, previousId, nextId)
 		{
 			this.ID = ent.ID;
 			this.OwnerID = ent.OwnerID;

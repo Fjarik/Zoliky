@@ -196,9 +196,7 @@ namespace ZolikyWeb.Areas.Global.Controllers
 										  int previousId,
 										  int nextId)
 		{
-			string url = Url.Action(actionName, "School", new {Area = "Global", id = UrlParameter.Optional});
-
-			var model = new SchoolModel(school, allSubjects, allowEdit, previousId, nextId, url) {
+			var model = new SchoolModel(school, allSubjects, allowEdit, previousId, nextId) {
 				ActionName = actionName
 			};
 
