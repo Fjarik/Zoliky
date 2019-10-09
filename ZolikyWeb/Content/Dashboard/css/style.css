@@ -598,7 +598,7 @@ html body .text-purple {
 }
 
 html body .text-primary {
-	color: #7460ee;
+	color: #7460ee !important;
 }
 
 html body .text-megna {

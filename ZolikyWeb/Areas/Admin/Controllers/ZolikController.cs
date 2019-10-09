@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.Mvc;
 using DataAccess;
 using DataAccess.Managers;
+using SharedLibrary.Enums;
 using SharedLibrary.Interfaces;
 using SharedLibrary.Shared;
 using ZolikyWeb.Areas.Admin.Models.Zoliky;
@@ -30,7 +31,7 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 
 #region Create
 
-		public async Task<ActionResult> Create()
+		public async Task<ActionResult> Create(string title = null, ZolikType? type = null, int? subjectId = null)
 		{
 			var logged = await this.GetLoggedUserAsync();
 			var schoolId = this.User.GetSchoolId();
@@ -42,6 +43,15 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 			var students = await sMgr.GetStudentsAsync(schoolId, logged.ID);
 
 			var model = ZolikModel.CreateModel(logged, subjects, students.ToList<IUser>());
+			if (!string.IsNullOrEmpty(title)) {
+				model.Title = title;
+			}
+			if (type != null) {
+				model.Type = (ZolikType) type;
+			}
+			if (subjectId != null) {
+				model.SubjectID = (int) subjectId;
+			}
 			return View("Edit", model);
 		}
 

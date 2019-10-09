@@ -12,6 +12,8 @@ namespace ZolikyWeb.Areas.Admin.Models.Admin
 		public int SchoolTeachersCount { get; set; }
 		public int SchoolZoliksCount { get; set; }
 
+		public QuickZolik QuickZolik { get; set; }
+
 		public IEnumerable<ClassLeaderboard> ClassesLeaderboard { get; set; } = new List<ClassLeaderboard>();
 
 #region Special date
@@ -24,7 +26,12 @@ namespace ZolikyWeb.Areas.Admin.Models.Admin
 
 #endregion
 
-		public DashboardModel() { }
+		public DashboardModel() : this(new List<DataAccess.Models.Subject>()) { }
+
+		public DashboardModel(List<DataAccess.Models.Subject> subjects)
+		{
+			this.QuickZolik = new QuickZolik(subjects);
+		}
 
 		private string GetSpecDateText(int diff)
 		{

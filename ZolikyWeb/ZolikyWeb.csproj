@@ -1103,6 +1103,7 @@
     <Content Include="Areas\Admin\Views\Admin\DPartials\_QuickZolik.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_PrevNextRecord.cshtml" />
     <Content Include="Areas\Global\Views\Shared\_PrevNextRecord.cshtml" />
+    <Content Include="Areas\Admin\Views\Admin\DPartials\_LogoutPartial.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -1561,6 +1562,7 @@
     <Compile Include="Areas\Admin\Controllers\SubjectController.cs" />
     <Compile Include="Areas\Admin\Controllers\ZolikController.cs" />
     <Compile Include="Areas\Admin\Models\Admin\DashboardModel.cs" />
+    <Compile Include="Areas\Admin\Models\Admin\QuickZolik.cs" />
     <Compile Include="Areas\Admin\Models\Student\StudentModel.cs" />
     <Compile Include="Areas\Admin\Models\Subject\SubjectDashboardModel.cs" />
     <Compile Include="Areas\Admin\Models\Subject\SubjectEditModel.cs" />

@@ -30,8 +30,9 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 			var teachers = await Mgr.GetTeacherCountAsync(schoolId);
 			var zoliks = await Mgr.GetZolikCountAsync(schoolId);
 			var classes = await Mgr.TestAsync(schoolId);
+			var subjects = await Mgr.GetSubjectsAsync(schoolId);
 
-			var model = new DashboardModel {
+			var model = new DashboardModel(subjects) {
 				SchoolStudentsCount = students,
 				SchoolTeachersCount = teachers,
 				SchoolZoliksCount = zoliks,

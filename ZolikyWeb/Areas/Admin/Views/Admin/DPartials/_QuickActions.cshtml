@@ -7,4 +7,41 @@
 	<h4 class="card-title m-b-0">Rychlé akce</h4>
 </div>
 <div class="card-body b-t collapse show">
+	<a href="@Url.Action("Create", "Zolik", new {Area = "Admin"})">
+		<div class="row mb-3">
+			<div class="col-4 text-center">
+				<button type="button" class="btn btn-lg btn-info btn-circle">
+					<i class="mdi mdi-laptop"></i>
+				</button>
+			</div>
+			<p class="col-auto text-info m-auto">
+				Vytvoření žolíka
+			</p>
+		</div>
+	</a>
+	<a href="@Url.Action("Dashboard", "Class", new {Area = "Admin"})">
+		<div class="row mb-3">
+			<div class="col-4 text-center">
+				<button type="button" class="btn btn-lg btn-success btn-circle">
+					<i class="mdi mdi-developer-board"></i>
+				</button>
+			</div>
+			<p class="col-auto text-success m-auto">
+				Upravit třídu
+			</p>
+		</div>
+	</a>
+	<a href="@Url.Action("Dashboard", "Subject", new {Area = "Admin"})">
+		<div class="row mb-3">
+			<div class="col-4 text-center">
+				<button type="button" class="btn btn-lg btn-primary btn-circle">
+					<i class="mdi mdi-book-open-page-variant"></i>
+				</button>
+			</div>
+			<p class="col-auto text-primary m-auto">
+				Vypsat předměty
+			</p>
+		</div>
+	</a>
+	@Html.Partial("~/Areas/Admin/Views/Admin/DPartials/_LogoutPartial.cshtml")
 </div>

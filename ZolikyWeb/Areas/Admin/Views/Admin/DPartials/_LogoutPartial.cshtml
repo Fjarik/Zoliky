@@ -1,0 +1,15 @@
+﻿@using (Html.BeginForm("Logout", "Account", new {Area = ""}, FormMethod.Post)) {
+	@Html.AntiForgeryToken()
+	<a href="#" class="" data-click="submit">
+		<div class="row">
+			<div class="col-4 text-center">
+				<button type="button" class="btn btn-lg btn-danger btn-circle">
+					<i class="mdi mdi-power"></i>
+				</button>
+			</div>
+			<p class="col-auto text-danger m-auto">
+				Odhlásit se
+			</p>
+		</div>
+	</a>
+}
