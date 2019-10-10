@@ -20,6 +20,7 @@ namespace DataAccess.Models
         public System.DateTime Since { get; set; }
         public System.DateTime Graduation { get; set; }
         public bool Enabled { get; set; }
+        public string Colour { get; set; }
     
         public virtual School School { get; set; }
     }

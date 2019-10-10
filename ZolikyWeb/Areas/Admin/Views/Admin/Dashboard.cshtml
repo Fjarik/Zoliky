@@ -77,6 +77,7 @@
 	<!-- /Column -->
 </div>
 <!-- /Row -->
+<!-- Row -->
 <div class="row">
 	<!-- Column -->
 	<div class="col-xlg-3 col-lg-4 col-md-5">
@@ -107,3 +108,66 @@
 	</div>
 	<!-- /Column -->
 </div>
+<!-- /Row -->
+<!-- Row -->
+<div class="row">
+	<div class="col-xlg-6 col-lg-8 col-md-10">
+		<div class="card">
+			@Html.Partial("DPartials/_ClassChart")
+		</div>
+	</div>
+</div>
+<!-- /Row -->
+
+@section footer {
+	<script type="text/javascript" src="@Url.Content("~/Scripts/Chart.min.js")"></script>
+	<script>
+		$(() => {
+			const $ctx = $("#classChart");
+			const randomColor = () => { 
+				return '#' + (Math.random().toString(16) + '0000000').slice(2, 8); 
+			};
+			const drawChart = (datasets) => {
+				const cChart = new Chart($ctx,
+					{
+						type: "bar",
+						data: {
+							labels: ["Žolíci"],
+							datasets: datasets
+						},
+						options: {
+							responsive: true
+						}
+					}
+				);
+				console.log(datasets);
+				console.log(cChart);
+			}
+
+			drawChart([
+				{
+					label: "1.A",
+					data: [0],
+					backgroundColor: randomColor()
+				}, {
+					label: "2.A",
+					data: [1],
+					backgroundColor: randomColor()
+				}, {
+					label: "3.A",
+					data: [3],
+					backgroundColor: randomColor()
+				}, {
+					label: "4.A",
+					data: [5],
+					backgroundColor: randomColor()
+				}, {
+					label: "5.A",
+					data: [0],
+					backgroundColor: randomColor()
+				},
+			]);
+
+		});
+	</script>
+}

@@ -1014,6 +1014,8 @@
     <Content Include="Content\bootstrap-reboot.css.map" />
     <Content Include="Content\bootstrap-grid.min.css.map" />
     <Content Include="Content\bootstrap-grid.css.map" />
+    <Content Include="Scripts\Chart.js" />
+    <Content Include="Scripts\Chart.min.js" />
     <Content Include="Scripts\cldr.js" />
     <Content Include="Scripts\cldr\event.js" />
     <Content Include="Scripts\cldr\supplemental.js" />
@@ -1104,6 +1106,7 @@
     <Content Include="Areas\Admin\Views\Shared\_PrevNextRecord.cshtml" />
     <Content Include="Areas\Global\Views\Shared\_PrevNextRecord.cshtml" />
     <Content Include="Areas\Admin\Views\Admin\DPartials\_LogoutPartial.cshtml" />
+    <Content Include="Areas\Admin\Views\Admin\DPartials\_ClassChart.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -1111,6 +1114,9 @@
     <Content Include="Scripts\jquery-3.4.1.slim.min.js" />
     <Content Include="Scripts\js-cookie\js.cookie-2.2.1.min.js" />
     <Content Include="Scripts\js-cookie\js.cookie.js" />
+    <Content Include="Scripts\jscolor.min.js">
+      <DependentUpon>jscolor.js</DependentUpon>
+    </Content>
     <Content Include="Scripts\main.min.js">
       <DependentUpon>main.js</DependentUpon>
     </Content>
@@ -1126,6 +1132,7 @@
       <DependentUpon>theme.js</DependentUpon>
     </Content>
     <Content Include="Scripts\tinymce\jquery.tinymce.min.js" />
+    <Content Include="Scripts\jscolor.js" />
     <Content Include="Scripts\tinymce\license.txt" />
     <Content Include="Scripts\tinymce\plugins\advlist\plugin.js" />
     <Content Include="Scripts\tinymce\plugins\advlist\plugin.min.js" />

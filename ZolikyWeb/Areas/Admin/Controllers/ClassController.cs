@@ -72,7 +72,8 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 			var res = await Mgr.CreateAsync(model.Name,
 											model.SchoolID,
 											model.Since,
-											model.Graduation);
+											model.Graduation,
+											model.Colour);
 
 			if (!res.IsSuccess) {
 				this.AddErrorToastMessage($"Nezdařilo se vytvořit záznam. Chyba: {res.GetStatusMessage()}");
@@ -114,7 +115,10 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 				this.AddErrorToastMessage($"Nezdařilo se načíst originální záznam. Chyba: {res.GetStatusMessage()}");
 				return RedirectToAction("Dashboard");
 			}
-
+			var colour = model.Colour;
+			if (!colour.StartsWith("#")) {
+				colour = $"#{colour}";
+			}
 
 			var original = res.Content;
 
@@ -122,6 +126,7 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 			original.Name = model.Name;
 			original.Since = model.Since;
 			original.Graduation = model.Graduation;
+			original.Colour = colour;
 			// Edit end
 
 			await Mgr.SaveAsync(original);

@@ -46,6 +46,7 @@
           <Property Name="Since" Type="date" Nullable="false" />
           <Property Name="Graduation" Type="date" Nullable="false" />
           <Property Name="Enabled" Type="bit" Nullable="false" />
+          <Property Name="Colour" Type="nvarchar" MaxLength="20" Nullable="false" />
         </EntityType>
         <EntityType Name="Images">
           <Key>
@@ -1222,6 +1223,7 @@
           <Property Name="Graduation" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="Enabled" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="School" Relationship="ZoliksModel.FK_Classes_Schools" FromRole="Class" ToRole="School" />
+          <Property Name="Colour" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="News">
           <Key>
@@ -1985,6 +1987,7 @@
           <EntitySetMapping Name="Classes">
             <EntityTypeMapping TypeName="ZoliksModel.Class">
               <MappingFragment StoreEntitySet="Classes">
+                <ScalarProperty Name="Colour" ColumnName="Colour" />
                 <ScalarProperty Name="SchoolID" ColumnName="SchoolID" />
                 <ScalarProperty Name="Enabled" ColumnName="Enabled" />
                 <ScalarProperty Name="Graduation" ColumnName="Graduation" />

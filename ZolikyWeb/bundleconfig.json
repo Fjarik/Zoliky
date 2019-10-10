@@ -70,5 +70,11 @@
     "inputFiles": [
       "Scripts/MainPage/theme.js"
     ]
+  },
+  {
+    "outputFileName": "Scripts/jscolor.min.js",
+    "inputFiles": [
+      "Scripts/jscolor.js"
+    ]
   }
 ]

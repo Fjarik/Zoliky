@@ -127,21 +127,30 @@ namespace DataAccess.Managers
 
 		public Task<MActionResult<Class>> CreateAsync(string name,
 													  int schoolId,
-													  DateTime since)
+													  DateTime since,
+													  string colour)
 		{
 			return this.CreateAsync(name,
 									schoolId,
 									since,
-									since.AddYears(4));
+									since.AddYears(4),
+									colour);
 		}
 
 		public async Task<MActionResult<Class>> CreateAsync(string name,
 															int schoolId,
 															DateTime since,
-															DateTime graduation)
+															DateTime graduation,
+															string colour)
 		{
 			if (string.IsNullOrWhiteSpace(name)) {
 				return new MActionResult<Class>(StatusCode.InvalidInput);
+			}
+			if (string.IsNullOrEmpty(colour)) {
+				colour = "#e6e6e6";
+			}
+			if (!colour.StartsWith("#")) {
+				colour = $"#{colour}";
 			}
 
 			Class c = new Class() {
@@ -149,6 +158,7 @@ namespace DataAccess.Managers
 				Name = name,
 				Since = since,
 				Graduation = graduation,
+				Colour =  colour,
 				Enabled = true
 			};
 			return await this.CreateAsync(c);

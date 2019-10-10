@@ -65,6 +65,11 @@ namespace ZolikyWeb.Areas.Admin.Models.Class
 		[DataType(DataType.Date)]
 		public DateTime Graduation { get; set; }
 
+		[Display(Name = "Barva")]
+		[Required(ErrorMessage = "Musíte vybrat barvu")]
+		[DataType(DataType.Text)]
+		public string Colour { get; set; }
+
 		public bool Enabled { get; set; }
 
 		public string SchoolName { get; set; }
@@ -104,6 +109,7 @@ namespace ZolikyWeb.Areas.Admin.Models.Class
 			this.Since = ent.Since;
 			this.Graduation = ent.Graduation;
 			this.Enabled = ent.Enabled;
+			this.Colour = ent.Colour;
 			this.SchoolName = ent.School.Name;
 			this.AllowRemove = !this.IsCreate &&
 							   !studentNames.Any();

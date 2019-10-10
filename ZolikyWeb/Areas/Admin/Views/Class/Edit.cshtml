@@ -118,6 +118,26 @@
 						<hr class="mt-0 m-b-40" />
 						<!-- row -->
 						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group row">
+									<label class="control-label text-right col-md-3">Barva</label>
+									<div class="col-md-9">
+										@if (Model.AllowEdit) {
+											@Html.MaterialTextBoxFor(x => x.Colour, 4, new Dictionary<string, object>() {{ "class", "jscolor"}})
+										} else {
+											<span style="background-color: @Model.Colour; padding: 5px;" >
+												@Model.Colour
+											</span>
+										}
+									</div>
+								</div>
+							</div>
+							<div class="col-md-6">
+							</div>
+						</div>
+						<!-- /row -->
+						<!-- row -->
+						<div class="row">
 							<!-- item -->
 							<div class="col-md-6">
 								<div class="form-group row">
@@ -125,7 +145,7 @@
 									<div class="col-md-9">
 										@Html.HiddenFor(x=> x.SchoolID)
 										@if (Model.IsCreate) {
-											@Html.DropDownListFor(x => x.SchoolID, Model.SchoolList, new {@class = "form-control custom-select", tabindex = 4})
+											@Html.DropDownListFor(x => x.SchoolID, Model.SchoolList, new {@class = "form-control custom-select", tabindex = 5})
 										} else {
 											<span class="c-help" data-toggle="tooltip" data-original-title="Školu nelze změnit">
 												@Model.SchoolName
@@ -140,7 +160,7 @@
 								<div class="form-group row">
 									<label class="control-label text-right col-md-3">Studenti</label>
 									<div class="col-md-9">
-										@Html.ListBox("AAA", Model.StudentList, new {multiple = "multiple", @class = "form-control c-help", size = 8, disabled = "disabled", title = "Studenty je nutné upravit jednotlivě"})
+										@Html.ListBox("AAA", Model.StudentList, new {multiple = "multiple", @class = "form-control c-help", size = 6, disabled = "disabled", title = "Studenty je nutné upravit jednotlivě"})
 									</div>
 								</div>
 							</div>
@@ -153,15 +173,15 @@
 						<div class="row">
 							<div class="col-md-6">
 								@if (Model.AllowEdit) {
-									<button type="submit" class="btn btn-primary" tabindex="5">
+									<button type="submit" class="btn btn-primary" tabindex="7">
 										Uložit
 									</button>
 								} else {
-									<a href="@Url.Action("Edit", new {id = Model.ID})" class="btn btn-primary" tabindex="6">
+									<a href="@Url.Action("Edit", new {id = Model.ID})" class="btn btn-primary" tabindex="8">
 										Režim úprav
 									</a>
 								}
-								<a href="@Url.Action("Dashboard")" class="btn btn-success" tabindex="7">
+								<a href="@Url.Action("Dashboard")" class="btn btn-success" tabindex="9">
 									Zpět
 								</a>
 							</div>
@@ -189,6 +209,7 @@
 }
 
 @section footer{
+	<script type="text/javascript" src="@Url.Content("~/Scripts/jscolor.min.js")"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js" integrity="sha256-4iQZ6BVL4qNKlQ27TExEhBN1HFPvAvAMbFavKKosSWQ=" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js" integrity="sha256-bqVeqGdJ7h/lYPq6xrPv/YGzMEb6dNxlfiTUHSgRCp8=" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.cs.min.js" integrity="sha256-pbW7ult8QcDlimj+JQplrsCieqCvQ/8VGr7ZdTuev8c=" crossorigin="anonymous"></script>
