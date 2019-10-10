@@ -1217,6 +1217,8 @@
     <Content Include="Scripts\tinymce\plugins\visualchars\plugin.min.js" />
     <Content Include="Scripts\tinymce\plugins\wordcount\plugin.js" />
     <Content Include="Scripts\tinymce\plugins\wordcount\plugin.min.js" />
+    <Content Include="Scripts\tinymce\skins\content\dark\content.css" />
+    <Content Include="Scripts\tinymce\skins\content\dark\content.min.css" />
     <Content Include="Scripts\tinymce\skins\content\default\content.css" />
     <Content Include="Scripts\tinymce\skins\content\default\content.min.css" />
     <Content Include="Scripts\tinymce\skins\content\document\content.css" />
