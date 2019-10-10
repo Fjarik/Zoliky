@@ -5,7 +5,6 @@ namespace DataAccess
 {
 	public class ClassLeaderboard : Class
 	{
-		public IClass Class { get; set; }
 		public int ZolikCount { get; set; }
 
 		public ClassLeaderboard() { }

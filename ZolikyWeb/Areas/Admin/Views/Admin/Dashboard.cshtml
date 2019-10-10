@@ -116,6 +116,11 @@
 			@Html.Partial("DPartials/_ClassChart")
 		</div>
 	</div>
+	<div class="col-xlg-6 col-lg-8 col-md-10">
+		<div class="card">
+			@Html.Partial("DPartials/_ZolikChart")
+		</div>
+	</div>
 </div>
 <!-- /Row -->
 
@@ -123,12 +128,20 @@
 	<script type="text/javascript" src="@Url.Content("~/Scripts/Chart.min.js")"></script>
 	<script>
 		$(() => {
-			const $ctx = $("#classChart");
-			const randomColor = () => { 
-				return '#' + (Math.random().toString(16) + '0000000').slice(2, 8); 
+
+			const chartColours = {
+				blue: "rgb(54, 162, 235)",
+				green: "rgb(75, 192, 192)",
+				grey: "rgb(201, 203, 207)",
+				orange: "rgb(255, 159, 64)",
+				purple: "rgb(153, 102, 255)",
+				red: "rgb(255, 99, 132)",
+				yellow: "rgb(255, 205, 86)"
 			};
-			const drawChart = (datasets) => {
-				const cChart = new Chart($ctx,
+
+			const $classCtx = $("#classChart");
+			const drawClassChart = (datasets) => {
+				const cChart = new Chart($classCtx,
 					{
 						type: "bar",
 						data: {
@@ -136,37 +149,63 @@
 							datasets: datasets
 						},
 						options: {
-							responsive: true
+							responsive: true,
+							scales: {
+								yAxes: [
+									{
+										ticks: {
+											precision: 0
+										}
+									}
+								]
+							}
 						}
 					}
 				);
-				console.log(datasets);
-				console.log(cChart);
 			}
 
-			drawChart([
-				{
-					label: "1.A",
-					data: [0],
-					backgroundColor: randomColor()
-				}, {
-					label: "2.A",
-					data: [1],
-					backgroundColor: randomColor()
-				}, {
-					label: "3.A",
-					data: [3],
-					backgroundColor: randomColor()
-				}, {
-					label: "4.A",
-					data: [5],
-					backgroundColor: randomColor()
-				}, {
-					label: "5.A",
-					data: [0],
-					backgroundColor: randomColor()
-				},
-			]);
+			$.get('@Url.Action("GetClassJson")',
+				null,
+				(data) => {
+					drawClassChart(data);
+				});
+
+			const $zolikCtx = $("#zolikChart");
+			const drawZolikChart = (data, labels) => {
+				const cChart = new Chart($zolikCtx,
+					{
+						type: 'doughnut',
+						data: {
+							datasets: [
+								{
+									data: data,
+									backgroundColor: [
+										chartColours.red,
+										chartColours.green,
+										chartColours.yellow,
+										chartColours.blue,
+										chartColours.orange,
+									]
+								}
+							],
+							labels: labels
+						},
+						options: {
+							responsive: true,
+						}
+					}
+				);
+			}
+
+			$.get('@Url.Action("GetZoliksJson")',
+				null,
+				(data) => {
+					console.log(data);
+					drawZolikChart(
+						data.map(x => x.count),
+						data.map(x => x.label)
+					);
+				});
 
 		});
 	</script>

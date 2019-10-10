@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using DataAccess;
 using DataAccess.Managers;
 using DataAccess.Managers.New;
+using SharedLibrary.Enums;
 using SharedLibrary.Shared;
 using ZolikyWeb.Areas.Admin.Models.Admin;
 using ZolikyWeb.Models.Base;
@@ -29,7 +30,7 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 			var students = await Mgr.GetStudentCountAsync(schoolId);
 			var teachers = await Mgr.GetTeacherCountAsync(schoolId);
 			var zoliks = await Mgr.GetZolikCountAsync(schoolId);
-			var classes = await Mgr.TestAsync(schoolId);
+			var classes = await Mgr.GetClassLeaderboardAsync(schoolId);
 			var subjects = await Mgr.GetSubjectsAsync(schoolId);
 
 			var model = new DashboardModel(subjects) {
@@ -50,6 +51,41 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 		{
 			this.Session[Ext.Session.SchoolID] = model.SchoolId;
 			return RedirectToAction("Dashboard");
+		}
+
+		[HttpGet]
+		public async Task<JsonResult> GetClassJson()
+		{
+			var schoolId = this.User.GetSchoolId();
+			var classes = await Mgr.GetClassLeaderboardAsync(schoolId);
+
+			var res = classes.OrderBy(x => x.Name).Select(x => new {
+				label = x.Name,
+				data = new[] {
+					x.ZolikCount > 0 ? x.ZolikCount : 0.1
+				},
+				backgroundColor = x.Colour
+			});
+
+			return Json(res, JsonRequestBehavior.AllowGet);
+		}
+
+		// Poměr žolíků:Jokérů:Černých petrů
+		[HttpGet]
+		public async Task<JsonResult> GetZoliksJson()
+		{
+			var schoolId = this.User.GetSchoolId();
+
+			var zoliks = await Mgr.GetZoliksAsync(schoolId);
+
+			var a = zoliks.GroupBy(x => x.Type);
+
+			var res = a.Select(x => new {
+				label = x.Key.GetDescription(),
+				count = x.Count()
+			});
+
+			return Json(res, JsonRequestBehavior.AllowGet);
 		}
 	}
 }

@@ -178,6 +178,7 @@ namespace DataAccess.Models
 			this.Since = c.Since;
 			this.Graduation = c.Graduation;
 			this.Enabled = c.Enabled;
+			this.Colour = c.Colour;
 		}
 
 		private sealed class ClassMetaData

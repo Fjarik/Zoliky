@@ -1107,6 +1107,7 @@
     <Content Include="Areas\Global\Views\Shared\_PrevNextRecord.cshtml" />
     <Content Include="Areas\Admin\Views\Admin\DPartials\_LogoutPartial.cshtml" />
     <Content Include="Areas\Admin\Views\Admin\DPartials\_ClassChart.cshtml" />
+    <Content Include="Areas\Admin\Views\Admin\DPartials\_ZolikChart.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />

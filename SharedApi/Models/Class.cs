@@ -10,6 +10,7 @@ namespace SharedApi.Models
 		public string Name { get; set; }
 		public System.DateTime Since { get; set; }
 		public System.DateTime Graduation { get; set; }
+		public string Colour { get; set; }
 		public bool Enabled { get; set; }
 	}
 }

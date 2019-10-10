@@ -10,5 +10,6 @@ namespace SharedLibrary.Interfaces
 		string Name { get; set; }
 		System.DateTime Since { get; set; }
 		System.DateTime Graduation { get; set; }
+		string Colour { get; set; }
 	}
 }
