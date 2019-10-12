@@ -168,7 +168,7 @@ namespace DataAccess.Managers
 		{
 			return _ctx.Users
 					   .Where(x => x.SchoolID == schoolId &&
-								   x.Enabled &&
+								   // x.Enabled &&
 								   x.ClassID != null &&
 								   x.Roles.Any(y => y.Name == UserRoles.Student) &&
 								   x.Roles.All(y => y.Name != UserRoles.HiddenStudent &&

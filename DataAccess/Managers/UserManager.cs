@@ -461,6 +461,23 @@ namespace DataAccess.Managers
 
 #region Register
 
+		public Task<MActionResult<User>> StudentCreateAsync(string email, string password,
+															string name, string lastname,
+															string username, Sex gender,
+															int classId, int schoolId,
+															string ip, bool enabled)
+		{
+			return RegisterAsync(email, password,
+								 name, lastname,
+								 username, gender,
+								 classId, schoolId,
+								 false, false,
+								 ip, string.Empty,
+								 enabled, true,
+								 false,
+								 UserRoles.Student);
+		}
+
 		public async Task<MActionResult<User>> RegisterAsync(string email, string password,
 															 string name, string lastname,
 															 string username, byte gender,
@@ -478,6 +495,8 @@ namespace DataAccess.Managers
 											classId, schoolId,
 											newsletter, futureNews,
 											ip, url,
+											false, false,
+											true,
 											roles);
 		}
 
@@ -487,6 +506,8 @@ namespace DataAccess.Managers
 															 int? classId, int schoolId,
 															 bool newsletter, bool futureNews,
 															 string ip, string url,
+															 bool enabled = false, bool emailConfirmed = false,
+															 bool regEmail = true,
 															 params string[] roles)
 		{
 			var r = roles.Distinct().ToList();
@@ -506,6 +527,8 @@ namespace DataAccess.Managers
 											classId, schoolId,
 											newsletter, futureNews,
 											ip, url,
+											enabled, emailConfirmed,
+											regEmail,
 											rolesFinal);
 		}
 
@@ -515,9 +538,11 @@ namespace DataAccess.Managers
 															  int? classId, int schoolId,
 															  bool newsletter, bool futureNews,
 															  string ip, string url,
+															  bool enabled = false, bool emailConfirmed = false,
+															  bool regEmail = true,
 															  params Role[] roles)
 		{
-			if (Methods.AreNullOrWhiteSpace(email, password, name, lastname, username, url) ||
+			if (Methods.AreNullOrWhiteSpace(email, password, name, lastname, username) ||
 				!Methods.IsEmailValid(email) ||
 				!roles.Any()) {
 				return new MActionResult<User>(StatusCode.InvalidInput);
@@ -552,7 +577,7 @@ namespace DataAccess.Managers
 				Name = name,
 				Lastname = lastname,
 				Type = UserPermission.User,
-				Enabled = false,
+				Enabled = enabled,
 				MemberSince = DateTime.Now,
 				RegistrationIp = ip,
 				Description = null,
@@ -560,7 +585,7 @@ namespace DataAccess.Managers
 				ProfilePhotoID = Ext.DefaultProfilePhotoId,
 				Sex = gender,
 				VersionS = "1.0.1",
-				EmailConfirmed = false
+				EmailConfirmed = emailConfirmed
 			};
 			foreach (var role in roles) {
 				var attached = _ctx.Roles.Attach(role);
@@ -599,6 +624,15 @@ namespace DataAccess.Managers
 				var res = await settingsMgr.CreateAsync(u.ID, key, true);
 			}
 
+			if (regEmail && !string.IsNullOrEmpty(url)) {
+				return await SendRegisterEmailAsync(u, url);
+			}
+
+			return new MActionResult<User>(StatusCode.OK, u);
+		}
+
+		private async Task<MActionResult<User>> SendRegisterEmailAsync(User u, string url)
+		{
 			var tokenMgr = this.Context.Get<TokenManager>();
 			var tokenRes = await tokenMgr.CreateActivationTokenAsync(u.ID);
 			if (!tokenRes.IsSuccess) {
@@ -614,7 +648,6 @@ namespace DataAccess.Managers
 				return new MActionResult<User>(StatusCode.JustALittleError);
 			}
 			var adminMail = await mailMgr.AdminRegAsync(u, u.RegistrationIp);
-
 			return new MActionResult<User>(StatusCode.OK, u);
 		}
 

@@ -215,11 +215,13 @@ $(() => {
 	}
 
 	function gen() {
-		let txt = $("input#Username");
-		let fname = removeDiacritics($("input#Firstname").val().trim().toLowerCase());
-		let lname = removeDiacritics($("input#Lastname").val().trim().toLowerCase());
+		const txt = $("input#Username");
+		if ($("input#Firstname").length && $("input#Lastname").length) {
+			const fname = removeDiacritics($("input#Firstname").val().trim().toLowerCase());
+			const lname = removeDiacritics($("input#Lastname").val().trim().toLowerCase());
 
-		txt.val(lname.substr(0, 4) + fname.substr(0, 2));
+			txt.val(lname.substr(0, 4) + fname.substr(0, 2));
+		}
 	}
 
 	function blockSpace(e) {

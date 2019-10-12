@@ -104,7 +104,7 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 			}
 
 			var res = await Mgr.GetByIdAsync(model.ID);
-			if (!res.IsSuccess) {
+			if (res.Status != StatusCode.NotEnabled && !res.IsSuccess) {
 				this.AddErrorToastMessage($"Nezdařilo se načíst originální záznam. Chyba: {res.GetStatusMessage()}");
 				return RedirectToAction("Dashboard");
 			}
@@ -156,7 +156,7 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 		private async Task<ActionResult> EditOrDetail(int id, string actionName, bool allowEdit)
 		{
 			var res = await Mgr.GetByIdAsync(id);
-			if (!res.IsSuccess) {
+			if (res.Status != StatusCode.NotEnabled && !res.IsSuccess) {
 				this.AddErrorToastMessage("Neplatný uživatel");
 				return RedirectToAction("Dashboard");
 			}
@@ -195,12 +195,95 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 
 #region Create
 
-		public ActionResult Create()
+		public async Task<ActionResult> Create()
 		{
-			this.AddErrorToastMessage("Každý student se musí zaregistovat sám za sebe");
+			var schoolId = this.User.GetSchoolId();
+			// var schools = await this.GetSchoolAsync();
+
+			// Pouze škola registrovaného správce školy - Nemůže přidat třídu do cizí školy
+			var sMgr = this.GetManager<SchoolManager>();
+			var res = await sMgr.GetByIdAsync(schoolId);
+			if (!res.IsSuccess) {
+				this.AddErrorToastMessage("Nezdařilo se nalézt Vaši školu");
+				return RedirectToAction("Dashboard");
+			}
+			var classes = await sMgr.GetClassesAsync(schoolId);
+
+			var schools = new List<School> {
+				res.Content
+			};
+
+			var model = StudentModel.CreateModel(classes, schools);
+			return View("Edit", model);
+		}
+
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		[ValidateSecureHiddenInputs(nameof(StudentModel.ID))]
+		public async Task<ActionResult> Create(StudentModel model)
+		{
+			if (model == null) {
+				return RedirectToAction("Dashboard");
+			}
+
+			if (!model.IsValid) {
+				this.AddErrorToastMessage("Neplatné hodnoty");
+				return RedirectToAction("Edit");
+			}
+
+			var schoolId = this.User.GetSchoolId();
+			var ip = this.Request.GetIPAddress();
+
+			var res = await Mgr.StudentCreateAsync(model.Email, model.Password,
+												   model.Name, model.Lastname,
+												   model.Username, model.Sex,
+												   model.ClassID, schoolId,
+												   ip, model.Enabled);
+
+			if (!res.IsSuccess) {
+				this.AddErrorToastMessage($"Nezdařilo se vytvořit záznam. Chyba: {res.GetStatusMessage()}");
+				return RedirectToAction("Dashboard");
+			}
+			var original = res.Content;
+
+			this.AddSuccessToastMessage("Student byl úspěšně vytvořen");
+			return RedirectToAction("Detail", new {id = original.ID});
+		}
+
+		#endregion
+
+#region Remove
+
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		[ValidateSecureHiddenInputs(nameof(StudentModel.ID))]
+		public Task<ActionResult> Remove(StudentModel model)
+		{
+			return RemoveAsync(model?.ID);
+		}
+
+		private async Task<ActionResult> RemoveAsync(int? id = null)
+		{
+			if (id == null || id < 1) {
+				this.AddErrorToastMessage("Neplatné ID");
+				return RedirectToAction("Dashboard");
+			}
+			return await RemoveAsync((int)id);
+		}
+
+		private async Task<ActionResult> RemoveAsync(int id)
+		{
+			var res = await Mgr.DeleteAsync(id);
+			if (res) {
+				this.AddSuccessToastMessage("Student úspěšně odstraněn");
+			} else {
+				this.AddErrorToastMessage("Nezdařilo se odstranit studenta");
+			}
+
 			return RedirectToAction("Dashboard");
 		}
 
 #endregion
+
 	}
 }

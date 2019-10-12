@@ -68,10 +68,19 @@ namespace ZolikyWeb.Areas.Admin.Models.Student
 		[Display(Name = "Ano/Ne")]
 		public bool EmailConfirmed { get; set; }
 
+		[Display(Name = "Heslo")]
+		[DataType(DataType.Password)]
+		[Required(ErrorMessage = "Musíte vyplnit heslo")]
+		[PlaceHolder(Text = "Zadejte heslo")]
+		[StringLength(50, MinimumLength = 4, ErrorMessage = "heslo musí být dlouhé minimálně {2} znaky")]
+		public string Password { get; set; }
+
 		public string SchoolName { get; set; }
 		public string ClassName { get; set; }
 
 		public string ClassDate { get; set; }
+
+		public string Fullname => $"{this.Name} {this.Lastname}";
 
 #endregion
 
@@ -132,6 +141,20 @@ namespace ZolikyWeb.Areas.Admin.Models.Student
 			this.AllowRemove = false;
 		}
 
+		public static StudentModel CreateModel(List<DataAccess.Models.Class> classes,
+											   List<School> schools)
+		{
+			return new StudentModel {
+				ID = -1,
+				ActionName = "Create",
+				AllowEdit = true,
+				IsCreate = true,
+				Classes = classes,
+				Schools = schools,
+				Enabled = true
+			};
+		}
+
 		public StudentModel(User ent,
 							List<DataAccess.Models.Class> classes,
 							List<School> schools,
@@ -155,7 +178,7 @@ namespace ZolikyWeb.Areas.Admin.Models.Student
 			this.ClassName = ent.ClassName;
 			this.ClassDate = $"{ent.Class.Since.Year} - {ent.Class.Graduation.Year}";
 
-			this.AllowRemove = false;
+			this.AllowRemove = !this.Enabled;
 		}
 	}
 }

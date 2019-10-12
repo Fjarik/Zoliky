@@ -76,5 +76,11 @@
     "inputFiles": [
       "Scripts/jscolor.js"
     ]
+  },
+  {
+    "outputFileName": "Scripts/register.min.js",
+    "inputFiles": [
+      "Scripts/register.js"
+    ]
   }
 ]

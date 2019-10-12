@@ -1108,6 +1108,7 @@
     <Content Include="Areas\Admin\Views\Admin\DPartials\_LogoutPartial.cshtml" />
     <Content Include="Areas\Admin\Views\Admin\DPartials\_ClassChart.cshtml" />
     <Content Include="Areas\Admin\Views\Admin\DPartials\_ZolikChart.cshtml" />
+    <Content Include="Areas\Admin\Views\Class\_RemovePartial.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -1131,6 +1132,9 @@
     <Content Include="Scripts\MainPage\theme.js" />
     <Content Include="Scripts\MainPage\theme.min.js">
       <DependentUpon>theme.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\register.min.js">
+      <DependentUpon>register.js</DependentUpon>
     </Content>
     <Content Include="Scripts\tinymce\jquery.tinymce.min.js" />
     <Content Include="Scripts\jscolor.js" />
@@ -1493,7 +1497,7 @@
     <Content Include="Areas\Global\Views\School\_RemovePartial.cshtml" />
     <Content Include="Areas\Admin\Views\Class\Dashboard.cshtml" />
     <Content Include="Areas\Admin\Views\Class\Edit.cshtml" />
-    <Content Include="Areas\Admin\Views\Class\_RemovePartial.cshtml" />
+    <Content Include="Areas\Admin\Views\Student\_RemovePartial.cshtml" />
     <Content Include="Areas\Global\Views\web.config" />
     <Content Include="Areas\Global\Views\Shared\_AdminLayout.cshtml" />
     <Content Include="Areas\Global\Views\Shared\_LayoutMenu.cshtml" />

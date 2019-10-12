@@ -1,0 +1,62 @@
+﻿@using ZolikyWeb.Tools
+@model ZolikyWeb.Areas.Admin.Models.Student.StudentModel
+
+
+<div id="modalDelete" class="modal fade text-left" tabindex="-1" role="dialog" aria-labelledby="modalDeleteLabel" style="display: none;" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title" id="modalDeleteLabel">
+					Odstranění studenta
+				</h4>
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			</div>
+			@using (Html.BeginForm("Remove", "Student", new { Area = "Admin" }, FormMethod.Post)) {
+				<div class="modal-body">
+					@Html.AntiForgeryToken()
+					@Html.SecureHiddenFor(x => x.ID)
+					<p class="font-bold">
+						Opravdu si přejete odstranit tohoto studenta?
+					</p>
+					<p class="text-danger">
+						<strong>VAROVÁNÍ:</strong> Tento krok nelze vrátit zpět!
+					</p>
+					<p class="text-warning">
+						Pokud chcete studenta pouze deaktivovat, zavřete toto dialogové okno a odškrtněte možnost "Aktivní" u uživatele.
+					</p>
+					<br />
+					<div class="row mb-3">
+						<div class="col-md-4">
+							<h4 class="mb-0">Jméno (ID):</h4>
+						</div>
+						<div class="col">
+							@Model.Fullname (@Model.ID)
+						</div>
+					</div>
+					<div class="row mb-3">
+						<div class="col-md-4">
+							<h4 class="mb-0">Třída (ID):</h4>
+						</div>
+						<div class="col">
+							@Model.ClassName (@Model.ClassID)
+						</div>
+					</div>
+					<div class="row mb-3">
+						<div class="col-md-4">
+							<h4 class="mb-0">Škola:</h4>
+						</div>
+						<div class="col">
+							@(Model.SchoolName)
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-info" data-dismiss="modal">Zavřít</button>
+					<button type="submit" class="btn btn-danger waves-effect">Odstranit</button>
+				</div>
+			}
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>
