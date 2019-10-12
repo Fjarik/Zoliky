@@ -652,6 +652,17 @@ namespace ZolikyWeb.Controllers
 			return new EmptyResult();
 		}
 
+		public async Task<JsonResult> DbConnection()
+		{
+			using (ZoliksEntities ent = new ZoliksEntities()) {
+				var conn = ent.Database.Connection;
+				await conn.OpenAsync();
+				conn.Close();
+				conn.Dispose();
+				return Json(true, JsonRequestBehavior.AllowGet);
+			}
+		}
+
 #endregion
 
 #endregion
