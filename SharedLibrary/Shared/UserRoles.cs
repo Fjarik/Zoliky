@@ -17,9 +17,10 @@ namespace SharedLibrary.Shared
 		public const string Robot = "Robot";
 		public const string Developer = "Developer";
 		public const string LoginOnly = "LoginOnly";
+		public const string SchoolManager = "SchoolManager";
 
-		public const string SupportOrAdmin = Support + ", " + Administrator;
+		// public const string SupportOrAdmin = Support + ", " + Administrator;
 		public const string AdminOrDeveloper = Administrator + ", " + Developer;
-		public const string AdminOrDeveloperOrTeacher = AdminOrDeveloper + ", " + Teacher;
+		public const string AdminOrDeveloperOrTeacher = AdminOrDeveloper + ", " + SchoolManager + ", " + Teacher;
 	}
 }

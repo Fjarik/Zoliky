@@ -1109,6 +1109,10 @@
     <Content Include="Areas\Admin\Views\Admin\DPartials\_ClassChart.cshtml" />
     <Content Include="Areas\Admin\Views\Admin\DPartials\_ZolikChart.cshtml" />
     <Content Include="Areas\Admin\Views\Class\_RemovePartial.cshtml" />
+    <Content Include="Areas\Admin\Views\Teacher\Dashboard.cshtml" />
+    <Content Include="Areas\Admin\Views\Teacher\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\Student\Partials\_Upgrade.cshtml" />
+    <Content Include="Areas\Admin\Views\Student\Partials\_Downgrade.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -1574,6 +1578,7 @@
     <Compile Include="Areas\Admin\Controllers\ClassController.cs" />
     <Compile Include="Areas\Admin\Controllers\StudentController.cs" />
     <Compile Include="Areas\Admin\Controllers\SubjectController.cs" />
+    <Compile Include="Areas\Admin\Controllers\TeacherController.cs" />
     <Compile Include="Areas\Admin\Controllers\ZolikController.cs" />
     <Compile Include="Areas\Admin\Models\Admin\DashboardModel.cs" />
     <Compile Include="Areas\Admin\Models\Admin\QuickZolik.cs" />

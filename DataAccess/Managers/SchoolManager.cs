@@ -155,7 +155,8 @@ namespace DataAccess.Managers
 
 			var query = _ctx.Users.Where(x => x.SchoolID == schoolId &&
 											  x.ID != 22 &&
-											  x.Roles.Any(y => y.Name == UserRoles.Teacher));
+											  x.Roles.Any(y => y.Name == UserRoles.Teacher ||
+															   y.Name == UserRoles.SchoolManager));
 
 			if (onlyActive) {
 				query = query.Where(x => x.Enabled);
@@ -167,13 +168,9 @@ namespace DataAccess.Managers
 		public Task<List<User>> GetStudentsAsync(int schoolId, params int[] excludeIds)
 		{
 			return _ctx.Users
+					   .OnlyVisibleStudents()
 					   .Where(x => x.SchoolID == schoolId &&
 								   // x.Enabled &&
-								   x.ClassID != null &&
-								   x.Roles.Any(y => y.Name == UserRoles.Student) &&
-								   x.Roles.All(y => y.Name != UserRoles.HiddenStudent &&
-													y.Name != UserRoles.FakeStudent &&
-													y.Name != UserRoles.Teacher) &&
 								   excludeIds.All(y => x.ID != y))
 					   .ToListAsync();
 		}

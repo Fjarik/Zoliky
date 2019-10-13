@@ -1,0 +1,47 @@
+﻿
+@{
+    ViewBag.Title = "Vytvoření vyučujícího";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="row">
+	<div class="col">
+		<div class="card">
+			<div class="card-header">
+				<div class="card-actions">
+					<a class="" data-action="collapse">
+						<i class="ti-minus"></i>
+					</a>
+				</div>
+				<h4 class="card-title m-b-0">Postup</h4>
+			</div>
+			<div class="card-body">
+				<p>Vyučujícího <strong>není</strong> možné z technických důvodů vytvořit přímo. Každý se musí zaregistrovat sám na sebe.</p>
+				<ol>
+					<li>
+						Vyučující se <strong>sám</strong> zaregistruje na svůj/školní email. Heslo si nastaví, jaké chce. <strong>Je důležité, aby vybral/a svou školu a JAKOUKOLIV třídu v dané škole.</strong>
+					</li>
+					<li>
+						Po úspěšné registraci se zobrazí v administraci mezi studenty. 
+					</li>
+					<li>
+						Přejděte do <a href="@Url.Action("Dashboard", "Student", new {Area = "Admin"})" target="_blank">úprav</a> daného uživatele.
+					</li>
+					<li>
+						Klikněte na "Povýšit na vyučujícího".
+					</li>
+					<li>
+						Uložte změny.
+					</li>
+					<li>
+						V administaci v sekci Předměty -> <a href="@Url.Action("Edit", "Subject", new {Area = "Admin"})" target="_blank">Úpravy</a> nastavte vyučujícímu jeho/její předměty.
+					</li>
+					<li>
+						Opakujte pro každého vyučujího zvlášť.
+					</li>
+				</ol>
+			</div>
+		</div>
+	</div>
+</div>
+

@@ -774,6 +774,28 @@ namespace DataAccess.Managers
 			return _ctx.GetFakeStudents(onlyActive, imageMaxSize, excludeIds);
 		}
 
+		public Task<int> GetPreviousStudentIdAsync(int currentId, int schoolId)
+		{
+			return _ctx.Users
+					   .OnlyVisibleStudents()
+					   .Where(x => x.ID < currentId &&
+								   x.SchoolID == schoolId)
+					   .OrderByDescending(x => x.ID)
+					   .Select(x => x.ID)
+					   .FirstOrDefaultAsync();
+		}
+
+		public Task<int> GetNextStudentIdAsync(int currentId, int schoolId)
+		{
+			return _ctx.Users
+					   .OnlyVisibleStudents()
+					   .Where(x => x.ID > currentId &&
+								   x.SchoolID == schoolId)
+					   .OrderBy(x => x.ID)
+					   .Select(x => x.ID)
+					   .FirstOrDefaultAsync();
+		}
+
 #endregion
 
 #region Social methods (Most zoliks,...)
@@ -1234,6 +1256,74 @@ namespace DataAccess.Managers
 		}
 
 #endregion
+
+#endregion
+
+#region Roles
+
+		public async Task<MActionResult<Role>> GetRoleByNameAsync(string roleName)
+		{
+			var role = await _ctx.Roles.FirstOrDefaultAsync(x => x.Name.Trim().ToLower() == roleName.Trim().ToLower());
+			if (role == null) {
+				return new MActionResult<Role>(StatusCode.NotFound);
+			}
+			return new MActionResult<Role>(StatusCode.OK, role);
+		}
+
+		public async Task<MActionResult<User>> AddToRoleAsync(int userId, string role)
+		{
+			var res = await _ctx.Users.FirstOrDefaultAsync(x => x.ID == userId);
+			if (res == null) {
+				return new MActionResult<User>(StatusCode.NotFound);
+			}
+			return await this.AddToRoleAsync(res, role);
+		}
+
+		public async Task<MActionResult<User>> AddToRoleAsync(User u, string role)
+		{
+			var res = await this.GetRoleByNameAsync(role);
+			if (!res.IsSuccess) {
+				return new MActionResult<User>(res.Status);
+			}
+			return await this.AddToRoleAsync(u, res.Content);
+		}
+
+		private async Task<MActionResult<User>> AddToRoleAsync(User u, Role role)
+		{
+			if (u.IsInRole(role.Name)) {
+				return new MActionResult<User>(StatusCode.AlreadyExists);
+			}
+			u.Roles.Add(role);
+			//_ctx.Entry(u).State = EntityState.Modified;
+			await this.SaveAsync(u);
+			return new MActionResult<User>(StatusCode.OK, u);
+		}
+
+		public async Task<MActionResult<User>> RemoveFromRoleAsync(int userId, string role)
+		{
+			var res = await _ctx.Users.FirstOrDefaultAsync(x => x.ID == userId);
+			if (res == null) {
+				return new MActionResult<User>(StatusCode.NotFound);
+			}
+			return await this.RemoveFromRoleAsync(res, role);
+		}
+
+		public async Task<MActionResult<User>> RemoveFromRoleAsync(User u, string role)
+		{
+			var res = await this.GetRoleByNameAsync(role);
+			if (!res.IsSuccess) {
+				return new MActionResult<User>(res.Status);
+			}
+			return await this.RemoveFromRoleAsync(u, res.Content);
+		}
+
+		private async Task<MActionResult<User>> RemoveFromRoleAsync(User u, Role role)
+		{
+			u.Roles.Remove(role);
+			//_ctx.Entry(u).State = EntityState.Modified;
+			await this.SaveAsync(u);
+			return new MActionResult<User>(StatusCode.OK, u);
+		}
 
 #endregion
 

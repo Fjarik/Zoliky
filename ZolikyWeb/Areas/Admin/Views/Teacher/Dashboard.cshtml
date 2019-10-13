@@ -1,0 +1,82 @@
+﻿@using SharedLibrary.Shared
+@model IEnumerable<DataAccess.Models.User>
+@{
+	ViewBag.Title = "Vyučující";
+	Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="row">
+	<div class="col">
+		<div class="card">
+			<div class="card-body">
+				<div class="table-responsive">
+					<table id="table-teachers" class="table table-hover contact-list toggle-arrow-tiny" data-page-size="10">
+						<thead>
+							<tr>
+								<th data-type="number" data-toggle="true">
+									ID
+								</th>
+								<th>
+									Celé jméno
+								</th>
+								<th data-type="number">
+									Počet předmětů
+								</th>
+								<th data-type="date" data-hide="phone">
+									Poslední přihlášení
+								</th>
+								<th data-sort-ignore="true" class="text-center">
+									Akce
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							@foreach (var teacher in Model) {
+								var cl = teacher.Enabled ? "" : "text-danger";
+								<tr class="@cl">
+									<td data-value="@teacher.ID">
+										@teacher.ID
+									</td>
+									<td>
+										@teacher.FullName
+									</td>
+									<td data-toggle="tooltip" data-original-title="Počet předmětů, které vyučující vyučuje">
+										@(teacher.Teaching.Select(x=> x.SubjectID).Distinct().Count())
+									</td>
+									<td data-value="@(teacher.LastLogin?.Date.GetJsTimestamp())">
+										@(teacher.LastLogin?.Date.ToString("dd.MM.yyyy") ?? "-")
+									</td>
+									<td class="d-flex justify-content-around">
+										<a href="@Url.Action("Edit", "Student", new {Area = "Admin", id = teacher.ID})" data-toggle="tooltip" data-original-title="Upravit">
+											<i class="fa fa-pencil text-inverse"></i>
+										</a>
+										<a href="@Url.Action("Detail", "Student", new {Area = "Admin", id = teacher.ID})" data-toggle="tooltip" data-original-title="Detaily">
+											<i class="fa fa-eye text-inverse"></i>
+										</a>
+									</td>
+								</tr>
+							}
+						</tbody>
+						<tfoot>
+							<tr>
+								<td colspan="5">
+									<div class="text-right">
+										<ul class="pagination"> </ul>
+									</div>
+								</td>
+							</tr>
+						</tfoot>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+@section footer {
+	<script type="text/javascript">
+		$(() => {
+			$("#table-teachers").footable();
+		});
+	</script>
+}

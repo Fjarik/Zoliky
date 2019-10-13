@@ -113,7 +113,9 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 			var original = res.Content;
 
 			// Edit
-			original.ClassID = model.ClassID;
+			if (!original.IsInRolesOr(UserRoles.Teacher, UserRoles.SchoolManager)) {
+				original.ClassID = model.ClassID;
+			}
 			//original.SchoolID = model.SchoolID;
 			original.Username = model.Username;
 			original.Email = model.Email;
@@ -160,14 +162,32 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 				this.AddErrorToastMessage("Neplatný uživatel");
 				return RedirectToAction("Dashboard");
 			}
+
 			var loggedId = this.User.Identity.GetId();
 			if (loggedId == id) {
 				allowEdit = false;
 			}
 
 			var schoolId = this.User.GetSchoolId();
-			var previousId = await Mgr.GetPreviousIdAsync(id);
-			var nextId = await Mgr.GetNextIdAsync(id);
+
+			var user = res.Content;
+
+			if (!this.User.IsInRolesOr(UserRoles.SchoolManager, UserRoles.Administrator, UserRoles.Developer) &&
+				user.IsInRole(UserRoles.SchoolManager)) {
+				this.AddErrorToastMessage("Nemůžete upravovat svého nadřízeného");
+				return RedirectToAction("Dashboard");
+			}
+
+			if (!this.User.IsInRolesOr(UserRoles.Administrator, UserRoles.Developer)) {
+				if (user.SchoolID != schoolId || user.IsInRolesOr(UserRoles.Administrator, UserRoles.LoginOnly,
+																  UserRoles.Public, UserRoles.HiddenStudent)) {
+					this.AddErrorToastMessage("Nemáte oprávnění upravovat tohoto uživatele");
+					return RedirectToAction("Dashboard");
+				}
+			}
+
+			var previousId = await Mgr.GetPreviousStudentIdAsync(id, schoolId);
+			var nextId = await Mgr.GetNextStudentIdAsync(id, schoolId);
 
 			var sMgr = this.GetManager<SchoolManager>();
 			var cMgr = this.GetManager<ClassManager>();
@@ -182,7 +202,7 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 
 			var schools = new List<School> {sRes.Content};
 
-			var model = new StudentModel(res.Content, classes, schools, allowEdit, previousId, nextId) {
+			var model = new StudentModel(user, classes, schools, allowEdit, previousId, nextId) {
 				ActionName = actionName
 			};
 
@@ -250,7 +270,7 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 			return RedirectToAction("Detail", new {id = original.ID});
 		}
 
-		#endregion
+#endregion
 
 #region Remove
 
@@ -268,7 +288,7 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 				this.AddErrorToastMessage("Neplatné ID");
 				return RedirectToAction("Dashboard");
 			}
-			return await RemoveAsync((int)id);
+			return await RemoveAsync((int) id);
 		}
 
 		private async Task<ActionResult> RemoveAsync(int id)
@@ -285,5 +305,48 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 
 #endregion
 
+#region Down/Upgrade
+
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		[ValidateSecureHiddenInputs(nameof(StudentModel.ID))]
+		public async Task<ActionResult> Upgrade(StudentModel model)
+		{
+			var uMgr = this.GetManager<UserManager>();
+
+			var res = await uMgr.AddToRoleAsync(model.ID, UserRoles.Teacher);
+			if (res.IsSuccess) {
+				res = await uMgr.RemoveFromRoleAsync(model.ID, UserRoles.Student);
+			}
+
+			if (res.IsSuccess) {
+				this.AddSuccessToastMessage("Uživatel byl úspěšně povýšen");
+			} else {
+				this.AddErrorToastMessage("Nezdařilo se povýšit uživatele");
+			}
+			return RedirectToAction("Dashboard");
+		}
+
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		[ValidateSecureHiddenInputs(nameof(StudentModel.ID))]
+		public async Task<ActionResult> Downgrade(StudentModel model)
+		{
+			var uMgr = this.GetManager<UserManager>();
+
+			var res = await uMgr.AddToRoleAsync(model.ID, UserRoles.Student);
+			if (res.IsSuccess) {
+				res = await uMgr.RemoveFromRoleAsync(model.ID, UserRoles.Teacher);
+			}
+
+			if (res.IsSuccess) {
+				this.AddSuccessToastMessage("Uživatel byl úspěšně degradován");
+			} else {
+				this.AddErrorToastMessage("Nezdařilo se degradovat uživatele");
+			}
+			return RedirectToAction("Dashboard");
+		}
+
+#endregion
 	}
 }

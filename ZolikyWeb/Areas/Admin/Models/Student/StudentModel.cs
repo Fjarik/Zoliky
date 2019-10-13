@@ -82,6 +82,8 @@ namespace ZolikyWeb.Areas.Admin.Models.Student
 
 		public string Fullname => $"{this.Name} {this.Lastname}";
 
+		public bool IsTeacher { get; set; }
+
 #endregion
 
 #region Lists
@@ -175,10 +177,12 @@ namespace ZolikyWeb.Areas.Admin.Models.Student
 			this.Enabled = ent.Enabled;
 			this.EmailConfirmed = ent.EmailConfirmed;
 			this.SchoolName = ent.SchoolName;
-			this.ClassName = ent.ClassName;
-			this.ClassDate = $"{ent.Class.Since.Year} - {ent.Class.Graduation.Year}";
+			this.ClassName = ent.ClassName ?? "-";
+			this.ClassDate = $"{ent.Class?.Since.Year} - {ent.Class?.Graduation.Year}";
 
-			this.AllowRemove = !this.Enabled;
+			this.IsTeacher = ent.IsInRolesOr(UserRoles.Teacher, UserRoles.SchoolManager);
+			this.AllowRemove = !this.Enabled &&
+							   !this.IsTeacher;
 		}
 	}
 }

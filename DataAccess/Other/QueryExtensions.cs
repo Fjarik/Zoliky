@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using DataAccess.Models;
 using SharedLibrary.Enums;
 using SharedLibrary.Interfaces;
+using SharedLibrary.Shared;
 using SharedLibrary.Shared.ApiModels;
 
 namespace DataAccess
@@ -46,6 +47,18 @@ namespace DataAccess
 			return query.AsNoTracking()
 						.Where(x => x.ProjectID == projectId &&
 									x.Key == key);
+		}
+
+		public static IQueryable<User> OnlyVisibleStudents(this IQueryable<User> query)
+		{
+			return query.Where(x => x.ClassID != null &&
+									x.Roles.Any(y => y.Name == UserRoles.Student) &&
+									x.Roles.All(y => y.Name != UserRoles.Administrator &&
+													 y.Name != UserRoles.HiddenStudent &&
+													 y.Name != UserRoles.LoginOnly &&
+													 y.Name != UserRoles.FakeStudent &&
+													 y.Name != UserRoles.Teacher &&
+													 y.Name != UserRoles.SchoolManager));
 		}
 	}
 }

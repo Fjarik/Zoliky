@@ -1,4 +1,6 @@
-﻿@using SharedLibrary.Enums
+﻿@using DataAccess
+@using SharedLibrary.Enums
+@using SharedLibrary.Shared
 @using ZolikyWeb.Tools
 @model ZolikyWeb.Areas.Admin.Models.Student.StudentModel
 
@@ -234,22 +236,51 @@
 							<!-- /item -->
 							<!-- item -->
 							<div class="col-md-6">
-								<div class="form-group row">
-									<label class="control-label text-right col-md-3">Třída</label>
-									<div class="col-md-9">
-										@if (Model.AllowEdit) {
-											@Html.DropDownListFor(x => x.ClassID, Model.ClassSelect, new { @class = "form-control custom-select", tabindex = 8 })
-										} else {
-											<span class="c-help" data-toggle="tooltip" data-original-title="@Model.ClassDate">
-												@Model.ClassName
-											</span>
-										}
+								@if (!Model.IsTeacher) {
+									<div class="form-group row">
+										<label class="control-label text-right col-md-3">Třída</label>
+										<div class="col-md-9">
+											@if (Model.AllowEdit) {
+												@Html.DropDownListFor(x => x.ClassID, Model.ClassSelect, new { @class = "form-control custom-select", tabindex = 8 })
+											} else {
+												<span class="c-help" data-toggle="tooltip" data-original-title="@Model.ClassDate">
+													@Model.ClassName
+												</span>
+											}
+										</div>
 									</div>
-								</div>
+								}
 							</div>
 							<!-- /item -->
 						</div>
 						<!-- /row -->
+						@if (this.User.IsInRolesOr(UserRoles.SchoolManager, UserRoles.Administrator, UserRoles.Developer)) {
+							<!-- row -->
+							<div class="row">
+								<!-- item -->
+								<div class="col-md-6"></div>
+								<!-- /item -->
+								<!-- item -->
+								<div class="col-md-6">
+									<div class="form-group row">
+										<div class="col-md-3"></div>
+										<div class="col-md-9">
+											@if (Model.IsTeacher) {
+												<a href="#" class="text-danger" data-toggle="modal" data-target="#modalDowngrade">
+													Degradovat na studenta
+												</a>
+											} else {
+												<a href="#" class="text-success" data-toggle="modal" data-target="#modalUpgrade">
+													Povýšit na vyučujícího
+												</a>
+											}
+										</div>
+									</div>
+								</div>
+								<!-- /item -->
+							</div>
+							<!-- /row -->
+						}
 					</div>
 					<hr />
 					<div class="form-actions">
@@ -290,7 +321,13 @@
 @if (Model.AllowRemove) {
 	@Html.Partial("_RemovePartial", Model)
 }
-
+@if (this.User.IsInRolesOr(UserRoles.SchoolManager, UserRoles.Administrator, UserRoles.Developer)) {
+	if (Model.IsTeacher) {
+		@Html.Partial("Partials/_Downgrade", Model)
+	} else {
+		@Html.Partial("Partials/_Upgrade", Model)
+	}
+}
 @section footer {
 	<script type="text/javascript">
 		$(() => {

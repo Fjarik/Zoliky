@@ -73,20 +73,36 @@
 			</li>
 		</ul>
 	</li>
-	<li>
-		<a class="has-arrow" href="#" aria-expanded="false">
-			<i class="mdi mdi-book-open-page-variant"></i>
-			<span class="hide-menu">Předměty</span>
-		</a>
-		<ul aria-expanded="false" class="collapse">
-			<li>
-				<a href="@Url.Action("Dashboard", "Subject", new {Area = "Admin"})">Přehled</a>
-			</li>
-			<li>
-				<a href="@Url.Action("Edit", "Subject", new {Area = "Admin"})">Úpravy</a>
-			</li>
-		</ul>
-	</li>
+	@if (this.User.IsInRolesOr(UserRoles.SchoolManager, UserRoles.Administrator, UserRoles.Developer)) {
+		<li>
+			<a class="has-arrow" href="#" aria-expanded="false">
+				<i class="mdi mdi-book-open-page-variant"></i>
+				<span class="hide-menu">Předměty</span>
+			</a>
+			<ul aria-expanded="false" class="collapse">
+				<li>
+					<a href="@Url.Action("Dashboard", "Subject", new {Area = "Admin"})">Přehled</a>
+				</li>
+				<li>
+					<a href="@Url.Action("Edit", "Subject", new {Area = "Admin"})">Úpravy</a>
+				</li>
+			</ul>
+		</li>
+		<li>
+			<a class="has-arrow" href="#" aria-expanded="false">
+				<i class="mdi mdi-account-card-details"></i>
+				<span class="hide-menu">Vyučující</span>
+			</a>
+			<ul aria-expanded="false" class="collapse">
+				<li>
+					<a href="@Url.Action("Dashboard", "Teacher", new {Area = "Admin"})">Přehled</a>
+				</li>
+				<li>
+					<a href="@Url.Action("Create", "Teacher", new {Area = "Admin"})">Vytvoření</a>
+				</li>
+			</ul>
+		</li>
+	}
 	@if (this.User.IsInRolesOr(UserRoles.Administrator, UserRoles.Developer)) {
 		<li class="nav-devider"></li>
 		<li class="nav-small-cap">OSTATNÍ</li>
