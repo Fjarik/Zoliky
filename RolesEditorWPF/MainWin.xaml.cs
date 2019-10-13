@@ -34,7 +34,8 @@ namespace RolesEditor
 				ChBoxStudent, ChBoxTester,
 				ChBoxPublic, ChBoxStudentFake,
 				ChBoxSupport, ChBoxStudentHidden,
-				ChBoxRobot, ChBoxDeveloper
+				ChBoxRobot, ChBoxDeveloper,
+				ChBoxManager
 			};
 			BtnLoadUsers_Click(null, new RoutedEventArgs());
 		}
@@ -42,7 +43,7 @@ namespace RolesEditor
 		private void BtnLoadUsers_Click(object sender, RoutedEventArgs e)
 		{
 			ListUsers.Items.Clear();
-			using (ZoliksEntities ent = new ZoliksEntities()) {
+			using (var ent = new ZoliksEntities()) {
 				foreach (var user in ent.Users
 										.Include(x => x.Class)
 										.Include(x => x.Roles)
@@ -67,13 +68,13 @@ namespace RolesEditor
 			if (!(ListUsers.SelectedItem is ListBoxItem item) || !(item.Tag is int id)) {
 				return;
 			}
-			using (ZoliksEntities ent = new ZoliksEntities()) {
+			using (var ent = new ZoliksEntities()) {
 				var u = await ent.Users.Include(x => x.Roles).FirstOrDefaultAsync(x => x.ID == id);
 				if (u == null) {
 					return;
 				}
 
-				foreach (CheckBox checkBox in _checkBoxes) {
+				foreach (var checkBox in _checkBoxes) {
 					if (int.TryParse(checkBox.Tag.ToString(), out int cid) && u.Roles.Any(x => x.ID == cid)) {
 						checkBox.IsChecked = true;
 					} else {
@@ -99,7 +100,7 @@ namespace RolesEditor
 												  .Select(x => int.Parse(x.Tag.ToString()))
 												  .ToList();
 
-			using (ZoliksEntities ent = new ZoliksEntities()) {
+			using (var ent = new ZoliksEntities()) {
 				var u = await ent.Users.Include(x => x.Roles).FirstOrDefaultAsync(x => x.ID == id);
 				if (u == null) {
 					return;

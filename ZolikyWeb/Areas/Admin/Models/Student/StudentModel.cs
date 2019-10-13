@@ -12,7 +12,7 @@ using ZolikyWeb.Tools;
 
 namespace ZolikyWeb.Areas.Admin.Models.Student
 {
-	public class StudentModel : UniversalModel<User>
+	public sealed class StudentModel : UniversalModel<User>
 	{
 		public override bool AllowRemove { get; set; }
 		public override bool AllowEdit { get; set; }

@@ -9,7 +9,7 @@ using ZolikyWeb.Tools;
 
 namespace ZolikyWeb.Areas.Admin.Models.Class
 {
-	public class ClassModel : UniversalModel<DataAccess.Models.Class>, IClass
+	public sealed class ClassModel : UniversalModel<DataAccess.Models.Class>, IClass
 	{
 		public override bool AllowRemove { get; set; }
 		public override bool AllowEdit { get; set; }

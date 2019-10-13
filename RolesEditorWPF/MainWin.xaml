@@ -38,6 +38,7 @@
 				<RowDefinition />
 				<RowDefinition />
 				<RowDefinition />
+				<RowDefinition />
 			</Grid.RowDefinitions>
 			<CheckBox x:Name="ChBoxTeacher" Grid.Row="0" Tag="1" Content="Učitel" />
 			<CheckBox x:Name="ChBoxAdmin" Grid.Row="1" Tag="2" Content="Administrator" />
@@ -49,6 +50,7 @@
 			<CheckBox x:Name="ChBoxStudentHidden" Grid.Row="7" Tag="8" Content="Student (Skrytý)" />
 			<CheckBox x:Name="ChBoxRobot" Grid.Row="8" Tag="9" Content="Robot" />
 			<CheckBox x:Name="ChBoxDeveloper" Grid.Row="9" Tag="10" Content="Vývojář" />
+			<CheckBox x:Name="ChBoxManager" Grid.Row="10" Tag="12" Content="Vedoucí" />
 		</Grid>
 
 		<Button Grid.Row="2" Grid.Column="1" Content="Uložit" Margin="10" Click="BtnSave_Click" />
