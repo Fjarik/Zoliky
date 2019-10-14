@@ -1,0 +1,90 @@
+﻿@using ZolikyWeb.Tools
+@model ZolikyWeb.Areas.Admin.Models.Student.ImportStudentModel2
+
+<h3 class="card-title">
+	Načtená data
+</h3>
+<hr class="mt-0 m-b-40" />
+<div class="row">
+	<div class="col">
+		<div class="table-responsive">
+			<table id="table-students" class="table table-hover contact-list toggle-arrow-tiny" data-page-size="10">
+				<thead>
+					<tr>
+						<th data-type="number" data-toggle="true">
+							Email
+						</th>
+						<th>
+							Křestní jméno
+						</th>
+						<th>
+							Příjmení
+						</th>
+						<th>
+							Třída
+						</th>
+						<th data-sort-ignore="true" class="text-center">
+							Akce
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (var student in Model.Students) {
+						<tr>
+							<td>
+								@student.Email
+							</td>
+							<td>
+								@student.Name
+							</td>
+							<td>
+								@student.Lastname
+							</td>
+							<td>
+								@student.Classname
+							</td>
+							<td class="d-flex justify-content-around">
+								<a href="#" data-toggle="tooltip" data-original-title="Upravit">
+									<i class="fa fa-pencil text-inverse"></i>
+								</a>
+							</td>
+						</tr>
+					}
+				</tbody>
+				<tfoot>
+					<tr>
+						<td colspan="8">
+							<div class="text-right">
+								<ul class="pagination"> </ul>
+							</div>
+						</td>
+					</tr>
+				</tfoot>
+			</table>
+		</div>
+	</div>
+</div>
+<h3 class="card-title">
+	Nastavení
+</h3>
+<hr class="mt-0 m-b-40" />
+<div class="row">
+	<div class="col">
+		@using (Html.BeginForm("", "Student", new {Area = "Admin"}, FormMethod.Post, new {@class = "form-horizontal", enctype = "multipart/form-data"})) {
+			@Html.AntiForgeryToken()			
+			<div class="row">
+				<!-- item -->
+				<div class="col-md-6">
+					<div class="form-group row">
+						<label class="control-label text-right col-md-3">Společné heslo</label>
+						<div class="col-md-9">
+							@Html.MaterialTextBoxFor(x => x.Password, 4, "new-password")
+							@Html.ValidationMessageFor(x => x.Password)
+						</div>
+					</div>
+				</div>
+				<!-- /item -->
+			</div>
+		}
+	</div>
+</div>

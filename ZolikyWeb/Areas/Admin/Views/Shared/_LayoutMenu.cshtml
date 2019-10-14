@@ -54,6 +54,11 @@
 			<li>
 				<a href="@Url.Action("Edit", "Student", new {Area = "Admin"})">Úpravy</a>
 			</li>
+			@if (this.User.IsInRolesOr(UserRoles.SchoolManager, UserRoles.Administrator, UserRoles.Developer)) {
+				<li>
+					<a href="@Url.Action("Import", "Student", new {Area = "Admin"})">Import</a>
+				</li>
+			}
 		</ul>
 	</li>
 	<li>

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -7,6 +9,7 @@ using System.Web.Mvc;
 using DataAccess;
 using DataAccess.Managers;
 using DataAccess.Models;
+using FileHelpers;
 using SharedLibrary.Enums;
 using SharedLibrary.Shared;
 using ZolikyWeb.Areas.Admin.Models.Student;
@@ -353,14 +356,93 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 
 		public ActionResult Import()
 		{
-			return View();
+			var model = new ImportStudentsModel {
+				HasHeader = true
+			};
+
+			return View(model);
 		}
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<ActionResult> UploadFile()
+		public ActionResult UploadFile(ImportStudentsModel model)
 		{
-			return View();
+			if (model == null) {
+				model = new ImportStudentsModel();
+			}
+			if (model.File == null && Request.Files.Count > 0) {
+				model.File = Request.Files[0];
+			}
+
+
+			var file = model.File;
+
+			if (file == null) {
+				return View("Import", model);
+			}
+
+			byte[] bytes;
+			using (var br = new BinaryReader(file.InputStream)) {
+				bytes = br.ReadBytes((int) file.InputStream.Length);
+			}
+
+			var folder = Server.MapPath("~/Content/temp_csv/");
+
+			var g = Guid.NewGuid().ToString("N");
+
+			var filename = $"{g.Substring(0, 10)}.csv";
+
+			var path = WriteFile(folder, filename, bytes);
+
+			var students = ReadFile(path, model.HasHeader);
+
+			RemoveFile(path);
+
+			model.Step2 = new ImportStudentModel2(students);
+
+			return View("Import", model);
+		}
+
+		private List<ImportStudent> ReadFile(string path, bool hasHeader)
+		{
+			var engine = new FileHelperAsyncEngine<ImportStudent>();
+
+			var students = new List<ImportStudent>();
+
+			using (engine.BeginReadFile(path)) {
+				if (hasHeader) {
+					foreach (var student in engine.Skip(1)) {
+						students.Add(student);
+					}
+				} else {
+					foreach (var student in engine) {
+						students.Add(student);
+					}
+				}
+			}
+			return students;
+		}
+
+		private string WriteFile(string folder, string fileName, byte[] bytes)
+		{
+			if (!Directory.Exists(folder)) {
+				var path = new Uri(folder).LocalPath;
+
+				Directory.CreateDirectory(path);
+			}
+
+			var full = Path.Combine(folder, fileName);
+
+			System.IO.File.WriteAllBytes(full, bytes);
+
+			return full;
+		}
+
+		private void RemoveFile(string path)
+		{
+			if (System.IO.File.Exists(path)) {
+				System.IO.File.Delete(path);
+			}
 		}
 
 #endregion
