@@ -464,7 +464,7 @@ namespace DataAccess.Managers
 		public Task<MActionResult<User>> StudentCreateAsync(string email, string password,
 															string name, string lastname,
 															string username, Sex gender,
-															int classId, int schoolId,
+															int? classId, int schoolId,
 															string ip, bool enabled)
 		{
 			return RegisterAsync(email, password,
@@ -1260,6 +1260,40 @@ namespace DataAccess.Managers
 #endregion
 
 #region Roles
+
+		public async Task<MActionResult<User>> SetRolesAsync(int userId, List<int> roleIds)
+		{
+			var res = await _ctx.Users.FirstOrDefaultAsync(x => x.ID == userId);
+			if (res == null) {
+				return new MActionResult<User>(StatusCode.NotFound);
+			}
+			return await this.SetRolesAsync(res, roleIds);
+		}
+
+		private async Task<MActionResult<User>> SetRolesAsync(User user, List<int> roleIds)
+		{
+			var res = await _ctx.Roles.Where(x => roleIds.Any(y => y == x.ID)).ToListAsync();
+			if (!res.Any()) {
+				return new MActionResult<User>(StatusCode.NotFound);
+			}
+			return await this.SetRolesAsync(user, res);
+		}
+
+		private async Task<MActionResult<User>> SetRolesAsync(User user, List<Role> roles)
+		{
+			user.Roles.Clear();
+
+			roles.ForEach(x=> user.Roles.Add(x));
+
+			await this.SaveAsync(user);
+			return new MActionResult<User>(StatusCode.OK, user);
+		}
+
+		public Task<List<Role>> GetAllRolesAsync()
+		{
+			return _ctx.Roles
+					   .ToListAsync();
+		}
 
 		public async Task<MActionResult<Role>> GetRoleByNameAsync(string roleName)
 		{

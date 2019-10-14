@@ -38,6 +38,7 @@ namespace ZolikyWeb.Areas.Admin.Models.Student
 		[RegularExpression(Ext.UsernameRegEx, ErrorMessage = "Přezdívka může obsahovat pouze znaky a-Z a čísla")]
 		public string Username { get; set; }
 
+		[DataType(DataType.EmailAddress)]
 		[Required(ErrorMessage = "Musíte vyplnit email")]
 		[PlaceHolder(Text = "Zadejte email")]
 		[StringLength(300, MinimumLength = 6, ErrorMessage = "Email musí být dlouhý minimálně {2} znaků")]
@@ -48,7 +49,7 @@ namespace ZolikyWeb.Areas.Admin.Models.Student
 		[Required(ErrorMessage = "Musíte vyplnit křestní jméno")]
 		[PlaceHolder(Text = "Zadejte křestní jméno")]
 		[StringLength(50, MinimumLength = 2, ErrorMessage = "Křestní jméno musí být dlouhé minimálně {2} znaky")]
-		[RegularExpression(Ext.NameRegEx, ErrorMessage = "Jméo není ve správném formátu")]
+		[RegularExpression(Ext.NameRegEx, ErrorMessage = "Jméno není ve správném formátu")]
 		public string Name { get; set; }
 
 		[Display(Name = "Příjmení")]
@@ -56,7 +57,7 @@ namespace ZolikyWeb.Areas.Admin.Models.Student
 		[Required(ErrorMessage = "Musíte vyplnit příjmení")]
 		[PlaceHolder(Text = "Zadejte příjmení")]
 		[StringLength(50, MinimumLength = 3, ErrorMessage = "Příjmení musí být dlouhé minimálně {2} znaky")]
-		[RegularExpression(Ext.NameRegEx, ErrorMessage = "Jméo není ve správném formátu")]
+		[RegularExpression(Ext.NameRegEx, ErrorMessage = "Příjmení není ve správném formátu")]
 		public string Lastname { get; set; }
 
 		[Required(ErrorMessage = "Musíte vybrat pohlaví")]
@@ -72,7 +73,7 @@ namespace ZolikyWeb.Areas.Admin.Models.Student
 		[DataType(DataType.Password)]
 		[Required(ErrorMessage = "Musíte vyplnit heslo")]
 		[PlaceHolder(Text = "Zadejte heslo")]
-		[StringLength(50, MinimumLength = 4, ErrorMessage = "heslo musí být dlouhé minimálně {2} znaky")]
+		[StringLength(50, MinimumLength = 4, ErrorMessage = "Heslo musí být dlouhé minimálně {2} znaky")]
 		public string Password { get; set; }
 
 		public string SchoolName { get; set; }

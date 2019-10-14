@@ -4,9 +4,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using DataAccess;
 using DataAccess.Managers;
+using DataAccess.Models;
 using SharedLibrary.Enums;
 using SharedLibrary.Shared;
+using ZolikyWeb.Areas.Global.Models.User;
 using ZolikyWeb.Models.Base;
 using ZolikyWeb.Tools;
 
@@ -66,8 +69,8 @@ namespace ZolikyWeb.Areas.Global.Controllers
 				actions = new {
 					edit = x.IsInRolesOr(UserRoles.Administrator, UserRoles.Developer)
 							   ? ""
-							   : Url.Action("Edit", "User", new {Area = "Admin", id = x.ID}),
-					display = Url.Action("Detail", "User", new {Area = "Admin", id = x.ID})
+							   : Url.Action("Edit", "User", new {Area = "Global", id = x.ID}),
+					display = Url.Action("Detail", "User", new {Area = "Global", id = x.ID})
 				}
 			});
 
@@ -76,28 +79,196 @@ namespace ZolikyWeb.Areas.Global.Controllers
 
 #endregion
 
-		public async Task<ActionResult> Edit(int? id = null)
-		{
-			if (id == null || id < 1) {
-				this.AddErrorToastMessage("Nejdříve vyberte uživatele");
-				return RedirectToAction("Dashboard");
-			}
-			var userId = (int) id;
-			var user = await this.Mgr.GetByIdAsync(userId);
+#region Edit & Detail
 
-			return View(user);
+#region Edit
+
+		public Task<ActionResult> Edit(int? id = null)
+		{
+			return EditOrDetail(id, "Edit", true);
 		}
 
-		public async Task<ActionResult> Detail(int? id = null)
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		[ValidateSecureHiddenInputs(nameof(UserModel.ID))]
+		public async Task<ActionResult> Edit(UserModel model)
 		{
-			if (id == null || id < 1) {
-				this.AddErrorToastMessage("Nejdříve vyberte uživatele");
+			if (model == null) {
 				return RedirectToAction("Dashboard");
 			}
-			var userId = (int) id;
-			var user = await this.Mgr.GetByIdAsync(userId);
 
-			return View(user);
+			if (!model.IsValid) {
+				this.AddErrorToastMessage("Neplatné hodnoty");
+				return RedirectToAction("Edit");
+			}
+
+			var res = await Mgr.GetByIdAsync(model.ID);
+			if (res.Status != StatusCode.NotEnabled && !res.IsSuccess) {
+				this.AddErrorToastMessage($"Nezdařilo se načíst originální záznam. Chyba: {res.GetStatusMessage()}");
+				return RedirectToAction("Dashboard");
+			}
+
+
+			var original = res.Content;
+
+			// Edit
+			if (!original.IsInRolesOr(UserRoles.Teacher, UserRoles.SchoolManager)) {
+				original.ClassID = model.ClassID;
+			}
+			original.SchoolID = model.SchoolID;
+			original.Username = model.Username;
+			original.Email = model.Email;
+			original.Name = model.Name;
+			original.Lastname = model.Lastname;
+			original.Sex = model.Sex;
+			original.Enabled = model.Enabled;
+			if (!original.EmailConfirmed) {
+				original.EmailConfirmed = model.EmailConfirmed;
+			}
+			// Edit end
+
+			await Mgr.SaveAsync(original);
+
+			// Roles edit
+			res = await Mgr.SetRolesAsync(original.ID, model.RoleIds);
+			// Roles edit end
+
+			if (res.IsSuccess) {
+				this.AddSuccessToastMessage("Úspěšně uloženo");
+			} else {
+				this.AddErrorToastMessage("Nezdařilo se upravit role");
+			}
+			return RedirectToAction("Detail", new {id = model.ID});
 		}
+
+#endregion
+
+#region Detail
+
+		public Task<ActionResult> Detail(int? id = null)
+		{
+			return EditOrDetail(id, "Edit", false);
+		}
+
+#endregion
+
+#region Edit or Detail
+
+		private async Task<ActionResult> EditOrDetail(int? id, string actionName, bool allowEdit)
+		{
+			if (id == null || id < 1) {
+				this.AddErrorToastMessage("Neplatné ID");
+				return RedirectToAction("Dashboard");
+			}
+			return await EditOrDetail((int) id, actionName, allowEdit);
+		}
+
+		private async Task<ActionResult> EditOrDetail(int id, string actionName, bool allowEdit)
+		{
+			var res = await Mgr.GetByIdAsync(id);
+			if (res.Status != StatusCode.NotEnabled && !res.IsSuccess) {
+				this.AddErrorToastMessage("Neplatný uživatel");
+				return RedirectToAction("Dashboard");
+			}
+
+			var loggedId = this.User.Identity.GetId();
+			if (loggedId == id) {
+				allowEdit = false;
+			}
+
+			var schoolId = this.User.GetSchoolId();
+
+			var user = res.Content;
+
+			if (!this.User.IsInRolesOr(UserRoles.SchoolManager, UserRoles.Administrator, UserRoles.Developer) &&
+				user.IsInRole(UserRoles.SchoolManager)) {
+				this.AddErrorToastMessage("Nemůžete upravovat svého nadřízeného");
+				return RedirectToAction("Dashboard");
+			}
+
+			if (!this.User.IsInRolesOr(UserRoles.Administrator, UserRoles.Developer)) {
+				if (user.SchoolID != schoolId || user.IsInRolesOr(UserRoles.Administrator, UserRoles.LoginOnly,
+																  UserRoles.Public, UserRoles.HiddenStudent)) {
+					this.AddErrorToastMessage("Nemáte oprávnění upravovat tohoto uživatele");
+					return RedirectToAction("Dashboard");
+				}
+			}
+
+			var previousId = await Mgr.GetPreviousStudentIdAsync(id, schoolId);
+			var nextId = await Mgr.GetNextStudentIdAsync(id, schoolId);
+
+			var sMgr = this.GetManager<SchoolManager>();
+			var cMgr = this.GetManager<ClassManager>();
+
+			var classes = await cMgr.GetAllAsync(schoolId, true);
+			var schools = await sMgr.GetAllAsync();
+			var roles = await Mgr.GetAllRolesAsync();
+
+			var model = new UserModel(user, classes, schools, roles, allowEdit, previousId, nextId) {
+				ActionName = actionName
+			};
+
+			return View("Edit", model);
+		}
+
+#endregion
+
+#endregion
+
+#region Create
+
+		public async Task<ActionResult> Create()
+		{
+			var schoolId = this.User.GetSchoolId();
+
+			var sMgr = this.GetManager<SchoolManager>();
+
+			var classes = await sMgr.GetClassesAsync(schoolId);
+			var schools = await sMgr.GetAllAsync();
+			var roles = await Mgr.GetAllRolesAsync();
+
+			var model = UserModel.CreateModel(classes, schools, roles);
+			return View("Edit", model);
+		}
+
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		[ValidateSecureHiddenInputs(nameof(UserModel.ID))]
+		public async Task<ActionResult> Create(UserModel model)
+		{
+			if (model == null) {
+				return RedirectToAction("Dashboard");
+			}
+
+			if (!model.IsValid) {
+				this.AddErrorToastMessage("Neplatné hodnoty");
+				return RedirectToAction("Edit");
+			}
+
+			var schoolId = this.User.GetSchoolId();
+			var ip = this.Request.GetIPAddress();
+
+			var res = await Mgr.StudentCreateAsync(model.Email, model.Password,
+												   model.Name, model.Lastname,
+												   model.Username, model.Sex,
+												   model.ClassID, schoolId,
+												   ip, model.Enabled);
+
+			if (!res.IsSuccess) {
+				this.AddErrorToastMessage($"Nezdařilo se vytvořit záznam. Chyba: {res.GetStatusMessage()}");
+				return RedirectToAction("Dashboard");
+			}
+
+			var original = res.Content;
+			res = await Mgr.SetRolesAsync(original.ID, model.RoleIds);
+			if (!res.IsSuccess) {
+				this.AddErrorToastMessage($"Nezdařilo se nastavit role");
+			} else {
+				this.AddSuccessToastMessage("Uživatel byl úspěšně vytvořen");
+			}
+			return RedirectToAction("Detail", new {id = original.ID});
+		}
+
+#endregion
 	}
 }

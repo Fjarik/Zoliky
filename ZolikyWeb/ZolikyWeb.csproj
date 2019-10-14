@@ -1113,6 +1113,7 @@
     <Content Include="Areas\Admin\Views\Teacher\Create.cshtml" />
     <Content Include="Areas\Admin\Views\Student\Partials\_Upgrade.cshtml" />
     <Content Include="Areas\Admin\Views\Student\Partials\_Downgrade.cshtml" />
+    <Content Include="Areas\Global\Views\User\Edit.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -1605,7 +1606,6 @@
     <Compile Include="Areas\Global\Models\School\SchoolModel.cs" />
     <Compile Include="Areas\Global\Models\Subject\SubjectDashboardModel.cs" />
     <Compile Include="Areas\Global\Models\Subject\SubjectModel.cs" />
-    <Compile Include="Areas\Global\Models\User\UserModel.cs" />
     <Compile Include="Areas\App\AppAreaRegistration.cs" />
     <Compile Include="Areas\App\Controllers\AccountController.cs" />
     <Compile Include="Areas\App\Controllers\AchievementController.cs" />
@@ -1629,6 +1629,7 @@
     <Compile Include="Areas\Global\Controllers\SchoolController.cs" />
     <Compile Include="Areas\Global\Controllers\UserController.cs" />
     <Compile Include="Areas\Global\GlobalAreaRegistration.cs" />
+    <Compile Include="Areas\Global\Models\User\UserModel.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Areas\App\Controllers\MainController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
