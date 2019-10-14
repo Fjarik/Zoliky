@@ -27,7 +27,7 @@
 	</h4>
 </div>
 <div class="card-body">
-@using (Html.BeginForm(Model.ActionName, "User", new { Area = "Global" }, FormMethod.Post, new { @class = "form-horizontal" })) {
+@using (Html.BeginForm(Model.ActionName, "User", new {Area = "Global"}, FormMethod.Post, new {@class = "form-horizontal"})) {
 	@Html.AntiForgeryToken()
 	@Html.SecureHiddenFor(x => x.ID)
 	<div class="form-body">
@@ -61,7 +61,7 @@
 				<div class="col-md-8">
 					@if (Model.AllowEdit) {
 						<div class="input-group">
-							@Html.MaterialTextBoxFor(x => x.Username, 1, "username", new Dictionary<string, object> { { "ID", "Username" } })
+							@Html.MaterialTextBoxFor(x => x.Username, 1, "username", new Dictionary<string, object> {{"ID", "Username"}})
 							<div class="input-group-addon">
 								<button class="btn btn-secondary" type="button" id="btn-generate">
 									Generovat
@@ -88,7 +88,7 @@
 				<label class="control-label text-right col-md-3">Jméno</label>
 				<div class="col-md-9">
 					@if (Model.AllowEdit) {
-						@Html.MaterialTextBoxFor(x => x.Name, 2, "given-name", new Dictionary<string, object> { { "ID", "Firstname" } })
+						@Html.MaterialTextBoxFor(x => x.Name, 2, "given-name", new Dictionary<string, object> {{"ID", "Firstname"}})
 						@Html.ValidationMessageFor(x => x.Name)
 					} else {
 						<p class="form-control-static">
@@ -105,7 +105,7 @@
 				<label class="control-label text-right col-md-3">Příjmení</label>
 				<div class="col-md-8">
 					@if (Model.AllowEdit) {
-						@Html.MaterialTextBoxFor(x => x.Lastname, 3, "family-name", new Dictionary<string, object> { { "ID", "Lastname" } })
+						@Html.MaterialTextBoxFor(x => x.Lastname, 3, "family-name", new Dictionary<string, object> {{"ID", "Lastname"}})
 						@Html.ValidationMessageFor(x => x.Lastname)
 					} else {
 						<p class="form-control-static">
@@ -148,7 +148,7 @@
 				<label class="control-label text-right col-md-3">Pohlaví</label>
 				<div class="col-md-8">
 					@if (Model.AllowEdit) {
-						@Html.DropDownListFor(x => x.Sex, Model.GenderSelect, new { @class = "form-control custom-select", autocomplete = "sex", tabindex = 6 })
+						@Html.DropDownListFor(x => x.Sex, Model.GenderSelect, new {@class = "form-control custom-select", autocomplete = "sex", tabindex = 6})
 					} else {
 						<p class="form-control-static">
 							@Model.Sex.GetDescription()
@@ -168,7 +168,7 @@
 				<label class="control-label text-right col-md-3">Aktivní</label>
 				<div class="col-md-9">
 					@if (Model.AllowEdit) {
-						@Html.CheckBoxSimple(x => x.Enabled, new { @class = "filled-in chk-col-light-blue", tabindex = 5 })
+						@Html.CheckBoxSimple(x => x.Enabled, new {@class = "filled-in chk-col-light-blue", tabindex = 5})
 						@Html.NoSelectLaberFor(x => x.Enabled)
 						@Html.ValidationMessageFor(x => x.Enabled)
 					} else {
@@ -195,7 +195,7 @@
 					<label class="control-label text-right col-md-3">Email potvrzen</label>
 					<div class="col-md-8">
 						@if (Model.AllowEdit) {
-							@Html.CheckBoxSimple(x => x.EmailConfirmed, new { @class = "filled-in chk-col-light-blue", tabindex = 6 })
+							@Html.CheckBoxSimple(x => x.EmailConfirmed, new {@class = "filled-in chk-col-light-blue", tabindex = 6})
 							@Html.NoSelectLaberFor(x => x.EmailConfirmed)
 							@Html.ValidationMessageFor(x => x.EmailConfirmed)
 						} else {
@@ -224,7 +224,7 @@
 				<div class="col-md-9">
 					@Html.HiddenFor(x => x.SchoolID)
 					@if (Model.AllowEdit) {
-						@Html.DropDownListFor(x => x.SchoolID, Model.SchoolSelect, new { @class = "form-control custom-select", tabindex = 7 })
+						@Html.DropDownListFor(x => x.SchoolID, Model.SchoolSelect, new {@class = "form-control custom-select", id = "schools", tabindex = 7})
 					} else {
 						<span class="c-help" data-toggle="tooltip" data-original-title="Školu nelze změnit">
 							@Model.SchoolName
@@ -241,7 +241,12 @@
 					<label class="control-label text-right col-md-3">Třída</label>
 					<div class="col-md-9">
 						@if (Model.AllowEdit) {
-							@Html.DropDownListFor(x => x.ClassID, Model.ClassSelect, new { @class = "form-control custom-select", tabindex = 8 })
+							<div class="linear-activity" title="Probíhá načítání" data-toggle="tooltip" style="display: none;">
+								<div class="indeterminate"></div>
+							</div>
+							<div id="classContainer">
+								@Html.DropDownListFor(x => x.ClassID, Model.ClassSelect, new {@class = "form-control custom-select", id = "classes", tabindex = 8})
+							</div>
 						} else {
 							<span class="c-help" data-toggle="tooltip" data-original-title="@Model.ClassDate">
 								@Model.ClassName
@@ -262,9 +267,9 @@
 				<label class="control-label text-right col-md-3">Role</label>
 				<div class="col-md-9">
 					@if (Model.AllowEdit) {
-						@Html.ListBoxFor(x => x.RoleIds, Model.RoleList, new { multiple = "multiple", @class = "form-control", size = 8, id = "select-roles" })
+						@Html.ListBoxFor(x => x.RoleIds, Model.RoleList, new {multiple = "multiple", @class = "form-control", size = 8, id = "select-roles"})
 					} else {
-						@Html.ListBox("AAA", Model.RoleList, new { multiple = "multiple", @class = "form-control", size = 8, disabled = "disabled" })
+						@Html.ListBox("AAA", Model.RoleList, new {multiple = "multiple", @class = "form-control", size = 8, disabled = "disabled"})
 					}
 				</div>
 			</div>
@@ -318,6 +323,7 @@
 @section header {
 	<link type="text/css" href="@Url.Content("~/assets/plugins/multiselect/css/multi-select.min.css")" rel="stylesheet" />
 }
+
 @section footer {
 	<script type="text/javascript" src="@Url.Content("~/assets/plugins/multiselect/js/jquery.multi-select.min.js")"></script>
 	<script type="text/javascript">
@@ -564,6 +570,43 @@
 				selectableHeader: "<div class='custom-header'>Na výběr</div>",
 				selectionHeader: "<div class='custom-header'>Vybrané</div>",
 				keepOrder: true
+			});
+
+			const $classContainer = $("#classContainer");
+			const $classes = $("#classes");
+			const $schools = $("#schools");
+			const $loading = $(".linear-activity");
+			let loading = false;
+			$schools.change(() => {
+				if (loading) {
+					console.log("Načítání již probíhá");
+					return;
+				}
+				loading = true;
+				$loading.show();
+				$classContainer.hide();
+
+				const schoolId = $schools.val();
+
+				$.get('@Url.Action("GetClasses", "Account", new {Area = ""})',
+					{
+						schoolId: schoolId
+					},
+					(res) => {
+						var test = $.parseHTML(res);
+						$classes.children().not(":first").remove();
+						$(test).children().each(function() {
+							$classes.append(this);
+						});
+						$classes.trigger("change");
+						$classes.val(-1);
+						$loading.hide();
+						$classContainer.show();
+						loading = false;
+					},
+					"html"
+				);
+
 			});
 
 		});

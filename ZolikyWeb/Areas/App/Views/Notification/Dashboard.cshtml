@@ -25,8 +25,11 @@
 		$(() => {
 			const url = "@Url.Action("NotificationSeen")";
 			$(".list-group .notification").mouseenter((event) => {
-				let $not = $(event.target);
-				let seen = $not.data("seen") === "True";
+				if (!event.target) {
+					return;
+				}
+				const $not = $(event.target);
+				const seen = $not.data("seen") !== "False";
 				if (!seen) {
 					let id = $not.data("id");
 					$not.data("seen", "True");

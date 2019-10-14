@@ -349,12 +349,15 @@ $(() => {
 	const $classSelect = $("#ClassId");
 	const $schoolSelect = $("#SchoolId");
 	const classesUrl = $("#Classes").val();
-
+	let loading = false;
 	$schoolSelect.change(() => {
+		if (loading) {
+			return;
+		}
+		loading = true;
 		$(".linear-activity").show();
 
 		const schoolId = $schoolSelect.val();
-		console.log(schoolId);
 
 		$.get(classesUrl,
 			{
@@ -362,6 +365,7 @@ $(() => {
 			},
 			(res) => {
 				var test = $.parseHTML(res);
+				$classSelect.children().not(":first").remove();
 				$(test).children().each(function() {
 					$classSelect.append(this);
 				});
@@ -369,6 +373,7 @@ $(() => {
 				$classSelect.val(-1);
 				$(".linear-activity").hide();
 				$classContainer.show();
+				loading = false;
 			},
 			"html");
 	});

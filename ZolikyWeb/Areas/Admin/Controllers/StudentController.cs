@@ -348,5 +348,21 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 		}
 
 #endregion
+
+#region Import
+
+		public ActionResult Import()
+		{
+			return View();
+		}
+
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<ActionResult> UploadFile()
+		{
+			return View();
+		}
+
+#endregion
 	}
 }
