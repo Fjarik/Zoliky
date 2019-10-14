@@ -7,6 +7,7 @@ using FileHelpers;
 namespace ZolikyWeb.Areas.Admin.Models.Student
 {
 	[DelimitedRecord(";")]
+	[IgnoreEmptyLines(true)]
 	public class ImportStudent
 	{
 		[FieldOrder(30)]
@@ -19,6 +20,10 @@ namespace ZolikyWeb.Areas.Admin.Models.Student
 		public string Lastname { get; set; }
 
 		[FieldOrder(40)]
+		[FieldOptional]
 		public string Classname { get; set; }
+
+		[FieldHidden]
+		public string Username { get; set; }
 	}
 }

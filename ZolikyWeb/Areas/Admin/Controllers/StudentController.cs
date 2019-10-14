@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -410,15 +412,11 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 			var students = new List<ImportStudent>();
 
 			using (engine.BeginReadFile(path)) {
+				IEnumerable<ImportStudent> s = engine;
 				if (hasHeader) {
-					foreach (var student in engine.Skip(1)) {
-						students.Add(student);
-					}
-				} else {
-					foreach (var student in engine) {
-						students.Add(student);
-					}
+					s = s.Skip(1);
 				}
+				students.AddRange(s.Select(FillStudent));
 			}
 			return students;
 		}
@@ -443,6 +441,37 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 			if (System.IO.File.Exists(path)) {
 				System.IO.File.Delete(path);
 			}
+		}
+
+		private ImportStudent FillStudent(ImportStudent student)
+		{
+			if (student == null) {
+				return new ImportStudent();
+			}
+
+			var fname = RemoveDiacritics(student.Name.Trim());
+			var lname = RemoveDiacritics(student.Lastname.Trim());
+
+			student.Username = lname.Substring(0, 4).ToLower() + fname.Substring(0, 2).ToLower();
+			return student;
+		}
+
+		private string RemoveDiacritics(string text)
+		{
+			//
+			// https://stackoverflow.com/questions/249087/how-do-i-remove-diacritics-accents-from-a-string-in-net
+			// 
+			var normalizedString = text.Normalize(NormalizationForm.FormD);
+			var stringBuilder = new StringBuilder();
+
+			foreach (var c in normalizedString) {
+				var unicodeCategory = CharUnicodeInfo.GetUnicodeCategory(c);
+				if (unicodeCategory != UnicodeCategory.NonSpacingMark) {
+					stringBuilder.Append(c);
+				}
+			}
+
+			return stringBuilder.ToString().Normalize(NormalizationForm.FormC);
 		}
 
 #endregion
