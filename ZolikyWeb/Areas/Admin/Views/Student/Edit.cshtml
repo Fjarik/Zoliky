@@ -254,7 +254,7 @@
 							<!-- /item -->
 						</div>
 						<!-- /row -->
-						@if (this.User.IsInRolesOr(UserRoles.SchoolManager, UserRoles.Administrator, UserRoles.Developer)) {
+						@if (this.User.IsInRolesOr(UserRoles.SchoolManager, UserRoles.Administrator, UserRoles.Developer) && !Model.IsCreate) {
 							<!-- row -->
 							<div class="row">
 								<!-- item -->
@@ -321,7 +321,7 @@
 @if (Model.AllowRemove) {
 	@Html.Partial("_RemovePartial", Model)
 }
-@if (this.User.IsInRolesOr(UserRoles.SchoolManager, UserRoles.Administrator, UserRoles.Developer)) {
+@if (this.User.IsInRolesOr(UserRoles.SchoolManager, UserRoles.Administrator, UserRoles.Developer) && !Model.IsCreate) {
 	if (Model.IsTeacher) {
 		@Html.Partial("Partials/_Downgrade", Model)
 	} else {
