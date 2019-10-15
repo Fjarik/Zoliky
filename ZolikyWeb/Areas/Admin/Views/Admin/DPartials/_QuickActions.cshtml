@@ -1,4 +1,6 @@
-﻿<div class="card-header">
+﻿@using DataAccess
+@using SharedLibrary.Shared
+<div class="card-header">
 	<div class="card-actions">
 		<a class="" data-action="collapse">
 			<i class="ti-minus"></i>
@@ -31,6 +33,20 @@
 			</p>
 		</div>
 	</a>
+	@if (this.User.IsInRolesOr(UserRoles.SchoolManager, UserRoles.Administrator, UserRoles.Developer)) {
+		<a href="@Url.Action("Import", "Student", new {Area = "Admin"})">
+			<div class="row mb-3">
+				<div class="col-4 text-center">
+					<button type="button" class="btn btn-lg btn-success btn-circle">
+						<i class="mdi mdi-account-multiple"></i>
+					</button>
+				</div>
+				<p class="col-auto text-success m-auto">
+					Import studentů
+				</p>
+			</div>
+		</a>
+	}
 	<a href="@Url.Action("Dashboard", "Subject", new {Area = "Admin"})">
 		<div class="row mb-3">
 			<div class="col-4 text-center">
