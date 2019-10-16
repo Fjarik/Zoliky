@@ -7,6 +7,78 @@
 <div class="row">
 	<!-- Column -->
 	<div class="col-lg-3 col-md-6">
+		<div class="card">
+			<div class="card-body">
+				<div class="d-flex c-help flex-row" data-toggle="tooltip" data-placement="bottom" title="Včetně jokérů, černých petrů...">
+					<div class="round round-lg align-self-center round-info">
+						<i class="ti-wallet"></i>
+					</div>
+					<div class="m-l-10 align-self-center">
+						<h3 class="mb-0 font-light">
+							@Model.ZoliksCount
+						</h3>
+						<h5 class="text-muted mb-0">Žolíků</h5>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- /Column -->
+	<!-- Column -->
+	<div class="col-lg-3 col-md-6">
+		<div class="card">
+			<div class="card-body">
+				<div class="d-flex flex-row">
+					<div class="round round-lg align-self-center round-danger">
+						<i class="mdi mdi-domain"></i>
+					</div>
+					<div class="m-l-10 align-self-center">
+						<h3 class="mb-0 font-light">@Model.SchoolsCount</h3>
+						<h5 class="text-muted mb-0">Počet škol</h5>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- /Column -->
+	<!-- Column -->
+	<div class="col-lg-3 col-md-6">
+		<div class="card">
+			<div class="card-body">
+				<div class="d-flex flex-row">
+					<div class="round round-lg align-self-center round-warning">
+						<i class="mdi mdi-account-multiple"></i>
+					</div>
+					<div class="m-l-10 align-self-center">
+						<h3 class="mb-0 font-light">@Model.StudentsCount</h3>
+						<h5 class="text-muted mb-0">Studentů</h5>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- /Column -->
+	<!-- Column -->
+	<div class="col-lg-3 col-md-6">
+		<div class="card">
+			<div class="card-body">
+				<div class="d-flex flex-row">
+					<div class="round round-lg align-self-center round-success">
+						<i class="mdi mdi-developer-board"></i>
+					</div>
+					<div class="m-l-10 align-self-center">
+						<h3 class="mb-0 font-light">@Model.TeachersCount</h3>
+						<h5 class="text-muted mb-0">Počet vyučujících</h5>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- /Column -->
+</div>
+<div class="row">
+	<!-- Column -->
+	<div class="col-lg-3 col-md-6">
 		@Html.Partial("Partials/_SendMobileNotPartial", Model.SendMobileNot)
 	</div>
 	<!-- /Column -->
@@ -16,7 +88,7 @@
 	</div>
 	<!-- /Column -->
 	<!-- Column -->
-	<div class="col-xlg-3 col-lg-4 col-md-5">
+	<div class="col-xlg-3 col-md-6">
 		<div class="card">
 			@Html.Partial("Partials/_Completed")
 		</div>

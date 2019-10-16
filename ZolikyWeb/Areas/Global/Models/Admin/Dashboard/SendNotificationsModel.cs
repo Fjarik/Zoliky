@@ -20,6 +20,11 @@ namespace ZolikyWeb.Areas.Global.Models.Admin.Dashboard
 		[StringLength(200)]
 		public string Subtitle { get; set; }
 
+		[Display(Name = "ID uživatele")]
+		[Required(ErrorMessage = "Musíte zadat ID uživatele")]
+		[Range(1, int.MaxValue, ErrorMessage = "Musíte zadat platné ID")]
+		public int ToID { get; set; }
+
 		public bool IsValid => !Methods.AreNullOrWhiteSpace(this.Title, this.Subtitle);
 	}
 }

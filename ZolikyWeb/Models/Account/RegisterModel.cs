@@ -162,6 +162,11 @@ namespace ZolikyWeb.Models.Account
 
 #region Other
 
+		public string ProviderKey { get; set; }
+		public string Provider { get; set; }
+
+		public bool IsExternal => !Methods.AreNullOrWhiteSpace(ProviderKey, Provider);
+
 		public bool IsValid => !string.IsNullOrWhiteSpace(Email) &&
 							   Methods.IsEmailValid(Email) &&
 							   !string.IsNullOrWhiteSpace(Password) &&

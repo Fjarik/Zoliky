@@ -68,21 +68,21 @@
 <hr class="mt-0 m-b-40" />
 <div class="row">
 	<div class="col">
-		@using (Html.BeginForm("", "Student", new {Area = "Admin"}, FormMethod.Post, new {@class = "form-horizontal", enctype = "multipart/form-data"})) {
-			@Html.AntiForgeryToken()			
-			<div class="row">
-				<!-- item -->
-				<div class="col-md-6">
-					<div class="form-group row">
-						<label class="control-label text-right col-md-3">Společné heslo</label>
-						<div class="col-md-9">
-							@Html.MaterialTextBoxFor(x => x.Password, 4, "new-password")
-							@Html.ValidationMessageFor(x => x.Password)
-						</div>
-					</div>
-				</div>
-				<!-- /item -->
-			</div>
+		<p>
+			<span class="text-danger">Zkontrolujte věškeré údaje.</span> Jestliže údaje
+			<strong>ne</strong>souhlasí, opravte vstupní soubor a opět ho nahrajte.
+		</p>
+		<br />
+		<p>
+			Pokud údaje souhlasí, klikněte níže na tlačíko "Potvrdit".
+		</p>
+	</div>
+</div>
+<div class="row">
+	<div class="col text-center">
+		@using (Html.BeginForm("Import", "Student", new {Area = "Admin"}, FormMethod.Post, new {@class = "form-horizontal"})) {
+			@Html.AntiForgeryToken()
+			<button type="submit" class="btn btn-primary">Potvrdit</button>
 		}
 	</div>
 </div>

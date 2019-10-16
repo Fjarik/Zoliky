@@ -33,20 +33,6 @@
 			</p>
 		</div>
 	</a>
-	@if (this.User.IsInRolesOr(UserRoles.SchoolManager, UserRoles.Administrator, UserRoles.Developer)) {
-		<a href="@Url.Action("Import", "Student", new {Area = "Admin"})">
-			<div class="row mb-3">
-				<div class="col-4 text-center">
-					<button type="button" class="btn btn-lg btn-success btn-circle">
-						<i class="mdi mdi-account-multiple"></i>
-					</button>
-				</div>
-				<p class="col-auto text-success m-auto">
-					Import studentů
-				</p>
-			</div>
-		</a>
-	}
 	<a href="@Url.Action("Dashboard", "Subject", new {Area = "Admin"})">
 		<div class="row mb-3">
 			<div class="col-4 text-center">
@@ -59,5 +45,19 @@
 			</p>
 		</div>
 	</a>
+	@if (this.User.IsInRolesOr(UserRoles.SchoolManager, UserRoles.Administrator, UserRoles.Developer)) {
+		<a href="@Url.Action("Import", "Student", new {Area = "Admin"})">
+			<div class="row mb-3">
+				<div class="col-4 text-center">
+					<button type="button" class="btn btn-lg btn-warning btn-circle">
+						<i class="mdi mdi-account-multiple"></i>
+					</button>
+				</div>
+				<p class="col-auto text-warning m-auto">
+					Import studentů
+				</p>
+			</div>
+		</a>
+	}
 	@Html.Partial("~/Areas/Admin/Views/Admin/DPartials/_LogoutPartial.cshtml")
 </div>

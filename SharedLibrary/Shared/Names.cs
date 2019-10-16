@@ -37,6 +37,7 @@ namespace SharedLibrary.Shared
 		public string ResetUser => "resetPwd";
 		public string Manager => "manager";
 		public string SchoolID => "schoolId";
+		public string ImportedStudents => "importedStudents";
 
 	}
 

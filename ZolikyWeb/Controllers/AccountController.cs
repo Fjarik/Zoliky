@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -184,7 +185,11 @@ namespace ZolikyWeb.Controllers
 					msg = "K přihlášení nemáte dostatečné oprávnění";
 					break;
 				case StatusCode.NotFound:
-					msg = $"Tento {loginInfo.Login.LoginProvider} účet není připojen k žádnému účtu žolíků";
+					var exists = await Mgr.ExistsAsync(loginInfo.Email, WhatToCheck.Email);
+					if (exists) {
+						return RedirectToRegister(loginInfo);
+					}
+					msg = $"Tento {loginInfo.Login.LoginProvider} účet není připojen k účtu žolíků";
 					break;
 				case StatusCode.WrongPassword:
 					msg = "Nesprávné jméno nebo heslo";
@@ -225,6 +230,23 @@ namespace ZolikyWeb.Controllers
 			return View("Login", lg);
 		}
 
+		private ActionResult RedirectToRegister(ExternalLoginInfo info)
+		{
+			var email = info.Email;
+			var name = "";
+			if (info.ExternalIdentity.HasClaim(x => x.Type == ClaimTypes.Name)) {
+				name = info.ExternalIdentity.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;
+			}
+			var lastname = "";
+			if (info.ExternalIdentity.HasClaim(x => x.Type == ClaimTypes.Name)) {
+				lastname = info.ExternalIdentity.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;
+			}
+			var providerKey = info.Login.ProviderKey;
+			var provider = info.Login.LoginProvider;
+
+			return RedirectToAction("Register", new {email, name, lastname, providerKey, provider});
+		}
+
 #endregion
 
 #region Logout
@@ -250,7 +272,8 @@ namespace ZolikyWeb.Controllers
 #region Registration
 
 		[HttpGet]
-		public async Task<ActionResult> Register()
+		public async Task<ActionResult> Register(string email = null, string name = null, string lastname = null,
+												 string providerKey = null, string provider = null)
 		{
 			var sMgr = this.GetManager<ProjectSettingManager>();
 			var allow = await sMgr.GetBoolAsync(null, ProjectSettingKeys.RegistrationEnabled);
@@ -259,15 +282,25 @@ namespace ZolikyWeb.Controllers
 				return RedirectToLogin();
 			}
 
-			//var cMgr = this.GetManager<ClassManager>();
 			var schoolMgr = this.GetManager<SchoolManager>();
 
-			//var classes = await cMgr.GetAllAsync();
 			var schools = await schoolMgr.GetAllAsync();
 			var model = new RegisterModel {
-				//Classes = classes,
 				Schools = schools
 			};
+			if (!string.IsNullOrEmpty(email)) {
+				model.Email = email;
+			}
+			if (!string.IsNullOrEmpty(name)) {
+				model.Firstname = name;
+			}
+			if (!string.IsNullOrEmpty(lastname)) {
+				model.Lastname = lastname;
+			}
+			if (!Methods.AreNullOrWhiteSpace(providerKey, provider)) {
+				model.ProviderKey = providerKey;
+				model.Provider = provider;
+			}
 			return View(model);
 		}
 
@@ -304,7 +337,23 @@ namespace ZolikyWeb.Controllers
 				classId = null;
 			}
 			var url = Url.Action("Activate", "Account", new {Area = ""}, "https");
-			var res = await Mgr.RegisterAsync(m.Email,
+			MActionResult<User> res;
+			if (m.IsExternal) {
+				res = await Mgr.RegisterExternalAsync(m.Email,
+													  m.ProviderKey,
+													  m.Provider,
+													  m.Firstname,
+													  m.Lastname,
+													  m.Username,
+													  (byte) m.Gender,
+													  classId,
+													  m.SchoolId,
+													  m.Newsletter,
+													  m.FutureNews,
+													  this.Request.GetIPAddress(),
+													  url);
+			} else {
+				res = await Mgr.RegisterAsync(m.Email,
 											  m.Password,
 											  m.Firstname,
 											  m.Lastname,
@@ -316,6 +365,7 @@ namespace ZolikyWeb.Controllers
 											  m.FutureNews,
 											  this.Request.GetIPAddress(),
 											  url);
+			}
 			var msg = res.GetStatusMessage();
 			switch (res.Status) {
 				case StatusCode.InvalidInput:

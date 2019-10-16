@@ -473,9 +473,44 @@ namespace DataAccess.Managers
 								 classId, schoolId,
 								 false, false,
 								 ip, string.Empty,
+								 string.Empty, string.Empty,
 								 enabled, true,
 								 false,
 								 UserRoles.Student);
+		}
+
+		public Task<MActionResult<User>> RegisterExternalAsync(string email, string providerKey,
+															   string provider, string name, string lastname,
+															   string username, byte gender,
+															   int? classId, int schoolId,
+															   bool newsletter, bool futureNews,
+															   string ip, string url)
+		{
+			return RegisterAsync(email, null,
+								 name, lastname,
+								 username, gender,
+								 classId, schoolId,
+								 newsletter, futureNews,
+								 ip, url,
+								 providerKey, provider);
+		}
+
+		public Task<MActionResult<User>> RegisterAsync(string email, string password,
+													   string name, string lastname,
+													   string username, byte gender,
+													   int? classId, int schoolId,
+													   bool newsletter, bool futureNews,
+													   string ip, string url,
+													   params string[] roles)
+		{
+			return this.RegisterAsync(email, password,
+									  name, lastname,
+									  username, gender,
+									  classId, schoolId,
+									  newsletter, futureNews,
+									  ip, url,
+									  string.Empty, string.Empty,
+									  roles);
 		}
 
 		public async Task<MActionResult<User>> RegisterAsync(string email, string password,
@@ -484,6 +519,7 @@ namespace DataAccess.Managers
 															 int? classId, int schoolId,
 															 bool newsletter, bool futureNews,
 															 string ip, string url,
+															 string providerKey, string provider,
 															 params string[] roles)
 		{
 			if (!Enum.IsDefined(typeof(Sex), gender)) {
@@ -495,6 +531,7 @@ namespace DataAccess.Managers
 											classId, schoolId,
 											newsletter, futureNews,
 											ip, url,
+											providerKey, provider,
 											false, false,
 											true,
 											roles);
@@ -506,6 +543,7 @@ namespace DataAccess.Managers
 															 int? classId, int schoolId,
 															 bool newsletter, bool futureNews,
 															 string ip, string url,
+															 string providerKey, string provider,
 															 bool enabled = false, bool emailConfirmed = false,
 															 bool regEmail = true,
 															 params string[] roles)
@@ -527,6 +565,7 @@ namespace DataAccess.Managers
 											classId, schoolId,
 											newsletter, futureNews,
 											ip, url,
+											providerKey, provider,
 											enabled, emailConfirmed,
 											regEmail,
 											rolesFinal);
@@ -538,18 +577,26 @@ namespace DataAccess.Managers
 															  int? classId, int schoolId,
 															  bool newsletter, bool futureNews,
 															  string ip, string url,
+															  string providerKey, string provider,
 															  bool enabled = false, bool emailConfirmed = false,
 															  bool regEmail = true,
 															  params Role[] roles)
 		{
-			if (Methods.AreNullOrWhiteSpace(email, password, name, lastname, username) ||
+			bool regExternal = !Methods.AreNullOrWhiteSpace(providerKey, provider);
+
+			if (Methods.AreNullOrWhiteSpace(email, name, lastname, username) ||
 				!Methods.IsEmailValid(email) ||
 				!roles.Any()) {
 				return new MActionResult<User>(StatusCode.InvalidInput);
 			}
-			var validResult = await PasswordValidator.ValidateAsync(password);
-			if (!validResult.Succeeded) {
-				return new MActionResult<User>(StatusCode.WrongPassword);
+			if (!regExternal) {
+				if (string.IsNullOrEmpty(password)) {
+					return new MActionResult<User>(StatusCode.InvalidInput);
+				}
+				var validResult = await PasswordValidator.ValidateAsync(password);
+				if (!validResult.Succeeded) {
+					return new MActionResult<User>(StatusCode.WrongPassword);
+				}
 			}
 			if (classId != null && classId < 1 || schoolId < 1) {
 				return new MActionResult<User>(StatusCode.NotValidID);
@@ -597,15 +644,22 @@ namespace DataAccess.Managers
 				return registrationRes;
 			}
 			u = registrationRes.Content;
+			if (regExternal) {
+				var lMgr = this.Context.Get<LoginTokenManager>();
+				var lRes = await lMgr.CreateAsync(u.ID, provider, providerKey);
+				if (!lRes.IsSuccess) {
+					return new MActionResult<User>(lRes.Status);
+				}
+			} else {
+				var hashMgr = this.Context.Get<HashManager>();
+				var pwdRes = await hashMgr.CreatePasswordAsync(password, u.ID);
+				if (!pwdRes.IsSuccess) {
+					return new MActionResult<User>(pwdRes.Status);
+				}
+				var hash = pwdRes.Content;
 
-			var hashMgr = this.Context.Get<HashManager>();
-			var pwdRes = await hashMgr.CreatePasswordAsync(password, u.ID);
-			if (!pwdRes.IsSuccess) {
-				return new MActionResult<User>(pwdRes.Status);
+				u.PasswordID = hash.ID;
 			}
-			var hash = pwdRes.Content;
-
-			u.PasswordID = hash.ID;
 			await this.SaveAsync(u);
 
 			var settingsMgr = this.Context.Get<UserSettingManager>();
@@ -1259,6 +1313,21 @@ namespace DataAccess.Managers
 
 #endregion
 
+#region Classes
+
+		public async Task<MActionResult<User>> SetClassAsync(int userId, int? classId)
+		{
+			var res = await _ctx.Users.FirstOrDefaultAsync(x => x.ID == userId);
+			if (res == null) {
+				return new MActionResult<User>(StatusCode.NotFound);
+			}
+			res.ClassID = classId;
+			await this.SaveAsync(res);
+			return new MActionResult<User>(StatusCode.OK, res);
+		}
+
+#endregion
+
 #region Roles
 
 		public async Task<MActionResult<User>> SetRolesAsync(int userId, List<int> roleIds)
@@ -1283,7 +1352,7 @@ namespace DataAccess.Managers
 		{
 			user.Roles.Clear();
 
-			roles.ForEach(x=> user.Roles.Add(x));
+			roles.ForEach(x => user.Roles.Add(x));
 
 			await this.SaveAsync(user);
 			return new MActionResult<User>(StatusCode.OK, user);

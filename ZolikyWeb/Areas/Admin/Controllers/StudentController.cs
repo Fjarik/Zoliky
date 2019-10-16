@@ -4,10 +4,12 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Management.Instrumentation;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Xml.Serialization;
 using DataAccess;
 using DataAccess.Managers;
 using DataAccess.Models;
@@ -317,11 +319,13 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 		[ValidateSecureHiddenInputs(nameof(StudentModel.ID))]
 		public async Task<ActionResult> Upgrade(StudentModel model)
 		{
-			var uMgr = this.GetManager<UserManager>();
-
-			var res = await uMgr.AddToRoleAsync(model.ID, UserRoles.Teacher);
+			var res = await Mgr.AddToRoleAsync(model.ID, UserRoles.Teacher);
 			if (res.IsSuccess) {
-				res = await uMgr.RemoveFromRoleAsync(model.ID, UserRoles.Student);
+				res = await Mgr.RemoveFromRoleAsync(model.ID, UserRoles.Student);
+				if (res.IsSuccess) {
+					// Povýšení na učitele = Nadále není student => Nutnost odpojit od třídy
+					res = await Mgr.SetClassAsync(model.ID, null);
+				}
 			}
 
 			if (res.IsSuccess) {
@@ -337,11 +341,19 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 		[ValidateSecureHiddenInputs(nameof(StudentModel.ID))]
 		public async Task<ActionResult> Downgrade(StudentModel model)
 		{
-			var uMgr = this.GetManager<UserManager>();
+			var sMgr = this.GetManager<SchoolManager>();
 
-			var res = await uMgr.AddToRoleAsync(model.ID, UserRoles.Student);
+			var schoolId = this.User.GetSchoolId();
+
+			var res = await Mgr.AddToRoleAsync(model.ID, UserRoles.Student);
 			if (res.IsSuccess) {
-				res = await uMgr.RemoveFromRoleAsync(model.ID, UserRoles.Teacher);
+				res = await Mgr.RemoveFromRoleAsync(model.ID, UserRoles.Teacher);
+				// Nalezení tříd ve škole
+				var cl = await sMgr.GetClassesAsync(schoolId);
+				if (res.IsSuccess && cl.Any()) {
+					// Přiřezení do náhodné třídy
+					res = await Mgr.SetClassAsync(model.ID, cl.First().ID);
+				}
 			}
 
 			if (res.IsSuccess) {
@@ -367,7 +379,41 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public ActionResult UploadFile(ImportStudentsModel model)
+		public async Task<ActionResult> Import(ImportStudentsModel model)
+		{
+			if (model == null ||
+				!(this.Session[Ext.Session.ImportedStudents] is List<ImportStudent> students) ||
+				!students.Any()) {
+				this.AddErrorToastMessage("Žádní studenti k importu");
+				return RedirectToAction("Import");
+			}
+
+			var schoolId = this.User.GetSchoolId();
+
+			foreach (var student in students) {
+				var pwd = Guid.NewGuid().ToString("N").Substring(0, 15);
+				var res = await Mgr.StudentCreateAsync(student.Email,
+													   pwd,
+													   student.Name,
+													   student.Lastname,
+													   student.Username,
+													   Sex.NotKnown,
+													   student.ClassID,
+													   schoolId,
+													   this.Request.GetIPAddress(),
+													   true);
+				if (!res.IsSuccess) {
+					this.AddErrorToastMessage($"Nezdařilo se vytvořit studenta {student.Fullname}");
+				}
+			}
+
+
+			return RedirectToAction("Dashboard", "Admin", new {Area = "Admin"});
+		}
+
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<ActionResult> UploadFile(ImportStudentsModel model)
 		{
 			if (model == null) {
 				model = new ImportStudentsModel();
@@ -388,7 +434,7 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 				bytes = br.ReadBytes((int) file.InputStream.Length);
 			}
 
-			var folder = Server.MapPath("~/Content/temp_csv/");
+			var folder = Server.MapPath("~/Content/temp_import/");
 
 			var g = Guid.NewGuid().ToString("N");
 
@@ -399,14 +445,55 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 			var students = ReadFile(path, model.HasHeader);
 
 			RemoveFile(path);
+			try {
+				students = await ValidateClasses(students);
+			} catch (InstanceNotFoundException ex) {
+				this.AddErrorToastMessage(ex.Message);
+				return View("Import");
+			}
 
 			model.Step2 = new ImportStudentModel2(students);
+
+			this.Session.Add(Ext.Session.ImportedStudents, students);
 
 			return View("Import", model);
 		}
 
+		private async Task<List<ImportStudent>> ValidateClasses(List<ImportStudent> students)
+		{
+			var sMgr = this.GetManager<SchoolManager>();
+
+			var schoolId = this.User.GetSchoolId();
+
+			var classes = await sMgr.GetClassesAsync(schoolId);
+
+			foreach (var student in students) {
+				if (!classes.Any(x => string.Equals(x.Name, student.Classname,
+													StringComparison.CurrentCultureIgnoreCase))) {
+					throw new
+						InstanceNotFoundException($"Třída {student.Classname} u studenta {student.Fullname} nebyla nalezena v systému žolíků");
+				}
+				student.ClassID = classes
+								  .First(x => string.Equals(x.Name,
+															student.Classname,
+															StringComparison.CurrentCultureIgnoreCase)
+										).ID;
+			}
+
+			return students;
+		}
+
 		private List<ImportStudent> ReadFile(string path, bool hasHeader)
 		{
+			/*
+			var xml = System.IO.File.ReadAllText(path);
+
+			var serializer = new XmlSerializer(typeof(ImportStudent));
+			using (var sr = new StringReader(xml)) {
+				var res = serializer.Deserialize(sr);
+			}
+			*/
+
 			var engine = new FileHelperAsyncEngine<ImportStudent>();
 
 			var students = new List<ImportStudent>();

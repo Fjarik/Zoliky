@@ -147,14 +147,14 @@
 				return toReturn;
 			};
 
-			$dropdowns.change(() => {
+			const dropChange = () => {
 				const $cDiv = $("#classDiv");
 				$cDiv.hide();
 				if (!isSelected()) {
 					return;
 				}
-				const teacherId = $("#dropSubject").val();
-				const subjectId = $("#dropTeacher").val();
+				const subjectId = $("#dropSubject").val();
+				const teacherId = $("#dropTeacher").val();
 				$.ajax({
 					url: "@Url.Action("GetTeacherSubjectClasses")",
 					method: "GET",
@@ -172,8 +172,10 @@
 						$cDiv.fadeIn();
 					}
 				});
+			};
 
-			});
+			$dropdowns.change(dropChange);
+			dropChange();
 		});
 	</script>
 }

@@ -3,7 +3,7 @@
 
 <div class="card">
 	<div class="card-body">
-		<h4 class="card-title">Poslání notifikace studentům</h4>
+		<h4 class="card-title">Debug: Poslání notifikace studentům</h4>
 		@using (Html.BeginForm("SendNotifications", "Admin", new { Area = "Admin" }, FormMethod.Post, new { @class = "floating-labels m-t-40" })) {
 			@Html.AntiForgeryToken()
 			<div class="form-group m-b-40">
@@ -17,8 +17,14 @@
 				@Html.MaterialTextBoxFor(x => x.Subtitle, 5)
 				@Html.ValidationMessageFor(x => x.Subtitle)
 			</div>
+
+			<div class="form-group">
+				@Html.NoSelectLaberFor(x => x.ToID)
+				@Html.MaterialTextBoxFor(x => x.ToID, 6)
+				@Html.ValidationMessageFor(x => x.ToID)
+			</div>
 			<div class="form-group text-right">
-				<button class="btn btn-primary" type="submit" tabindex="6">Odeslat</button>
+				<button class="btn btn-primary" type="submit" tabindex="7">Odeslat</button>
 			</div>
 		}
 	</div>

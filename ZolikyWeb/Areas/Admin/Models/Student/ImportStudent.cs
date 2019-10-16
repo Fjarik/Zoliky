@@ -25,5 +25,11 @@ namespace ZolikyWeb.Areas.Admin.Models.Student
 
 		[FieldHidden]
 		public string Username { get; set; }
+
+		[FieldHidden]
+		public int ClassID { get; set; }
+
+		[FieldHidden]
+		public string Fullname => $"{this.Name} {this.Lastname}";
 	}
 }

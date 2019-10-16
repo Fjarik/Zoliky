@@ -1,4 +1,5 @@
-﻿@using SharedLibrary.Shared
+﻿@using DataAccess
+@using SharedLibrary.Shared
 @model IEnumerable<DataAccess.Models.User>
 @{
 	ViewBag.Title = "Vyučující";
@@ -47,9 +48,11 @@
 										@(teacher.LastLogin?.Date.ToString("dd.MM.yyyy") ?? "-")
 									</td>
 									<td class="d-flex justify-content-around">
-										<a href="@Url.Action("Edit", "Student", new {Area = "Admin", id = teacher.ID})" data-toggle="tooltip" data-original-title="Upravit">
-											<i class="fa fa-pencil text-inverse"></i>
-										</a>
+										@if (teacher.ID != this.User.Identity.GetId()) {
+											<a href="@Url.Action("Edit", "Student", new {Area = "Admin", id = teacher.ID})" data-toggle="tooltip" data-original-title="Upravit">
+												<i class="fa fa-pencil text-inverse"></i>
+											</a>
+										}
 										<a href="@Url.Action("Detail", "Student", new {Area = "Admin", id = teacher.ID})" data-toggle="tooltip" data-original-title="Detaily">
 											<i class="fa fa-eye text-inverse"></i>
 										</a>

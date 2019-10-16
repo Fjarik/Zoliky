@@ -153,7 +153,13 @@
 										<h4>
 											@User.Identity.Name
 										</h4>
-										<p class="text-muted">@User.Identity.GetClassName()</p>
+										<p class="text-muted">
+											@if (User.IsInRole(UserRoles.Teacher)) {
+												@:"Vyučující"
+											} else {
+												@User.Identity.GetClassName()
+											}
+										</p>
 										<p class="text-muted" title="@school" style="text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">@school</p>
 										@if (User.Identity.IsTester()) {
 											<p class="text-muted">Tester</p>

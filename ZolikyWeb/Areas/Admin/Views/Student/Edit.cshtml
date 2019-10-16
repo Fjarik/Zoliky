@@ -265,14 +265,16 @@
 									<div class="form-group row">
 										<div class="col-md-3"></div>
 										<div class="col-md-9">
-											@if (Model.IsTeacher) {
-												<a href="#" class="text-danger" data-toggle="modal" data-target="#modalDowngrade">
-													Degradovat na studenta
-												</a>
-											} else {
-												<a href="#" class="text-success" data-toggle="modal" data-target="#modalUpgrade">
-													Povýšit na vyučujícího
-												</a>
+											@if (Model.ID != this.User.Identity.GetId()) {
+												if (Model.IsTeacher) {
+													<a href="#" class="text-danger" data-toggle="modal" data-target="#modalDowngrade">
+														Degradovat na studenta
+													</a>
+												} else {
+													<a href="#" class="text-success" data-toggle="modal" data-target="#modalUpgrade">
+														Povýšit na vyučujícího
+													</a>
+												}
 											}
 										</div>
 									</div>
@@ -321,7 +323,7 @@
 @if (Model.AllowRemove) {
 	@Html.Partial("_RemovePartial", Model)
 }
-@if (this.User.IsInRolesOr(UserRoles.SchoolManager, UserRoles.Administrator, UserRoles.Developer) && !Model.IsCreate) {
+@if (this.User.IsInRolesOr(UserRoles.SchoolManager, UserRoles.Administrator, UserRoles.Developer) && !Model.IsCreate && Model.ID != this.User.Identity.GetId()) {
 	if (Model.IsTeacher) {
 		@Html.Partial("Partials/_Downgrade", Model)
 	} else {

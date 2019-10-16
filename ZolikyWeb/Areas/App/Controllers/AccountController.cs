@@ -31,13 +31,6 @@ namespace ZolikyWeb.Areas.App.Controllers
 			return RedirectToAction("Settings", "Account", new {Area = "App"});
 		}
 
-		/*
-		public new ActionResult Profile()
-		{
-			return View();
-		}
-		*/
-
 		public async Task<ActionResult> LoginHistory()
 		{
 			var id = this.User.Identity.GetId();

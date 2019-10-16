@@ -15,16 +15,27 @@ using ZolikyWeb.Tools;
 namespace ZolikyWeb.Areas.Global.Controllers
 {
 	[Authorize(Roles = UserRoles.AdminOrDeveloper)]
-	public class AdminController : OwnController
+	public class AdminController : OwnController<SchoolManager>
 	{
 		public ActionResult Index()
 		{
 			return RedirectToAction("Dashboard");
 		}
 
-		public ActionResult Dashboard()
+		public async Task<ActionResult> Dashboard()
 		{
-			var model = new DashboardModel(2);
+			var zoliks = await Mgr.GetZolikCountAsync();
+			var students = await Mgr.GetStudentCountAsync();
+			var teachers = await Mgr.GetTeacherCountAsync();
+			var schools = await Mgr.GetSchoolCountAsync();
+
+
+			var model = new DashboardModel(2) {
+				ZoliksCount = zoliks,
+				StudentsCount = students,
+				TeachersCount = teachers,
+				SchoolsCount = schools
+			};
 			return View(model);
 		}
 
@@ -50,9 +61,10 @@ namespace ZolikyWeb.Areas.Global.Controllers
 			if (model != null && model.IsValid) {
 				var nMgr = this.GetManager<NotificationManager>();
 
-				var res = await nMgr.SendNotificationToStudentsAsync(model.Title,
-																	 model.Subtitle);
-				if (!res) {
+				var res = await nMgr.CreateAsync(model.ToID,
+												 model.Title,
+												 model.Subtitle);
+				if (!res.IsSuccess) {
 					this.AddErrorToastMessage("Něco se nepovedlo");
 				}
 			}

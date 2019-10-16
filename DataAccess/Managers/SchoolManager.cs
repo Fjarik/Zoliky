@@ -67,6 +67,24 @@ namespace DataAccess.Managers
 
 #region Stats
 
+		public Task<int> GetSchoolCountAsync()
+		{
+			return _ctx.Schools
+					   //.Where(x=> x.Enabled)
+					   .CountAsync();
+		}
+
+		public Task<int> GetStudentCountAsync()
+		{
+			return _ctx.Users
+					   .Where(x => x.Enabled &&
+								   x.ClassID != null &&
+								   x.Roles.Any(y => y.Name == UserRoles.Student) &&
+								   x.Roles.All(y => y.Name != UserRoles.HiddenStudent &&
+													y.Name != UserRoles.FakeStudent))
+					   .CountAsync();
+		}
+
 		public Task<int> GetStudentCountAsync(int schoolId)
 		{
 			return _ctx.Users
@@ -76,6 +94,17 @@ namespace DataAccess.Managers
 								   x.Roles.Any(y => y.Name == UserRoles.Student) &&
 								   x.Roles.All(y => y.Name != UserRoles.HiddenStudent &&
 													y.Name != UserRoles.FakeStudent))
+					   .CountAsync();
+		}
+
+		public Task<int> GetTeacherCountAsync()
+		{
+			return _ctx.Users
+					   .Where(x => x.Enabled &&
+								   x.ClassID == null &&
+								   x.Roles.All(y => y.Name != UserRoles.Student &&
+													y.Name != UserRoles.Administrator) &&
+								   x.Roles.Any(y => y.Name == UserRoles.Teacher))
 					   .CountAsync();
 		}
 
@@ -91,6 +120,11 @@ namespace DataAccess.Managers
 					   .CountAsync();
 		}
 
+		public Task<int> GetZolikCountAsync()
+		{
+			return GetZoliksQuery().CountAsync();
+		}
+
 		public Task<int> GetZolikCountAsync(int schoolId)
 		{
 			return GetZoliksQuery(schoolId).CountAsync();
@@ -99,6 +133,15 @@ namespace DataAccess.Managers
 		public Task<List<Zolik>> GetZoliksAsync(int schoolId)
 		{
 			return GetZoliksQuery(schoolId).ToListAsync();
+		}
+
+		private IQueryable<Zolik> GetZoliksQuery()
+		{
+			return _ctx.Zoliky
+					   .Where(x => x.Owner.Roles.All(y => y.Name != UserRoles.HiddenStudent) &&
+								   x.Type != ZolikType.Debug &&
+								   x.Type != ZolikType.DebugJoker &&
+								   x.Enabled);
 		}
 
 		private IQueryable<Zolik> GetZoliksQuery(int schoolId)
