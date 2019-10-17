@@ -27,20 +27,25 @@
 
 					@Html.ValidationMessageFor(x => x.Email)
 				</div>
-				<div class="mb-4 ">
-					@Html.NoSelectLaberFor(x => x.Password)
+				@if (Model.IsExternal) {
+					@Html.HiddenFor(x => x.ProviderKey)
+					@Html.HiddenFor(x => x.Provider)
+				} else {
+					<div class="mb-4 ">
+						@Html.NoSelectLaberFor(x => x.Password)
 
-					@Html.MaterialPasswordFor(x => x.Password, 2, "new-password")
+						@Html.MaterialPasswordFor(x => x.Password, 2, "new-password")
 
-					@Html.ValidationMessageFor(x => x.Password)
-				</div>
-				<div class="mb-4 ">
-					@Html.NoSelectLaberFor(x => x.PasswordRepeat)
+						@Html.ValidationMessageFor(x => x.Password)
+					</div>
+					<div class="mb-4 ">
+						@Html.NoSelectLaberFor(x => x.PasswordRepeat)
 
-					@Html.MaterialPasswordFor(x => x.PasswordRepeat, 3, "new-password")
+						@Html.MaterialPasswordFor(x => x.PasswordRepeat, 3, "new-password")
 
-					@Html.ValidationMessageFor(x => x.PasswordRepeat)
-				</div>
+						@Html.ValidationMessageFor(x => x.PasswordRepeat)
+					</div>
+				}
 			</section>
 			<!-- Step 2 -->
 			<h6>Informace</h6>

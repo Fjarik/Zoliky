@@ -186,7 +186,7 @@ namespace ZolikyWeb.Controllers
 					break;
 				case StatusCode.NotFound:
 					var exists = await Mgr.ExistsAsync(loginInfo.Email, WhatToCheck.Email);
-					if (exists) {
+					if (!exists) {
 						return RedirectToRegister(loginInfo);
 					}
 					msg = $"Tento {loginInfo.Login.LoginProvider} účet není připojen k účtu žolíků";
@@ -234,12 +234,14 @@ namespace ZolikyWeb.Controllers
 		{
 			var email = info.Email;
 			var name = "";
-			if (info.ExternalIdentity.HasClaim(x => x.Type == ClaimTypes.Name)) {
-				name = info.ExternalIdentity.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;
-			}
 			var lastname = "";
 			if (info.ExternalIdentity.HasClaim(x => x.Type == ClaimTypes.Name)) {
-				lastname = info.ExternalIdentity.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;
+				var fullName = info.ExternalIdentity.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;
+				if (!string.IsNullOrEmpty(fullName)) {
+					var names = fullName.Split(' ');
+					name = names.First();
+					lastname = names.Last();
+				}
 			}
 			var providerKey = info.Login.ProviderKey;
 			var provider = info.Login.LoginProvider;
