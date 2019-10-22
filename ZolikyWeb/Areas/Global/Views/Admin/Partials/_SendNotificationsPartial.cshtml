@@ -3,8 +3,8 @@
 
 <div class="card">
 	<div class="card-body">
-		<h4 class="card-title">Debug: Poslání notifikace studentům</h4>
-		@using (Html.BeginForm("SendNotifications", "Admin", new { Area = "Admin" }, FormMethod.Post, new { @class = "floating-labels m-t-40" })) {
+		<h4 class="card-title">DEBUG: Poslání notifikace studentovi</h4>
+		@using (Html.BeginForm("SendNotifications", "Admin", new { Area = "Global" }, FormMethod.Post, new { @class = "floating-labels m-t-40" })) {
 			@Html.AntiForgeryToken()
 			<div class="form-group m-b-40">
 				@Html.NoSelectLaberFor(x => x.Title)

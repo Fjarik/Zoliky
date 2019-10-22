@@ -49,6 +49,8 @@ namespace ZolikyWeb.Areas.Global.Controllers
 			var res = await fMgr.NewZolikAsync(model.ZolikId, id, model.ToId);
 			if (res) {
 				this.AddSuccessToastMessage("Úspěch");
+			} else {
+				this.AddErrorToastMessage("Něco se nepovedlo");
 			}
 
 			return RedirectToAction("Dashboard");
@@ -65,7 +67,7 @@ namespace ZolikyWeb.Areas.Global.Controllers
 												 model.Title,
 												 model.Subtitle);
 				if (!res.IsSuccess) {
-					this.AddErrorToastMessage("Něco se nepovedlo");
+					this.AddErrorToastMessage($"Něco se nepovedlo: {res.GetStatusMessage()}");
 				}
 			}
 
