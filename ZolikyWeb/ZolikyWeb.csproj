@@ -1120,6 +1120,7 @@
     <Content Include="Areas\Global\Views\User\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\Student\Import.cshtml" />
     <Content Include="Areas\Admin\Views\Student\Partials\_ImportResult.cshtml" />
+    <Content Include="Areas\Global\Views\Admin\Partials\_QuickActions.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />

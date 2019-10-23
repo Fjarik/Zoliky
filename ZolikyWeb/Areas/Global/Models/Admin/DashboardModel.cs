@@ -25,7 +25,9 @@ namespace ZolikyWeb.Areas.Global.Models.Admin
 			this.SendMobileNot = new SendMobileNotModel {
 				ToId = defaultToId
 			};
-			this.SendNotifications = new SendNotificationsModel();
+			this.SendNotifications = new SendNotificationsModel {
+				ToID = defaultToId
+			};
 		}
 	}
 }

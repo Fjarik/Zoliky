@@ -1,0 +1,58 @@
+﻿<div class="card-header">
+	<div class="card-actions">
+		<a class="" data-action="collapse">
+			<i class="ti-minus"></i>
+		</a>
+	</div>
+	<h4 class="card-title m-b-0">Rychlé akce</h4>
+</div>
+<div class="card-body b-t collapse show">
+	<a href="@Url.Action("Create", "User", new {Area = "Global"})">
+		<div class="row mb-3">
+			<div class="col-4 text-center">
+				<button type="button" class="btn btn-lg btn-info btn-circle">
+					<i class="mdi mdi-account"></i>
+				</button>
+			</div>
+			<p class="col-auto text-info m-auto">
+				Vytvoření uživatele
+			</p>
+		</div>
+	</a>
+	<a href="@Url.Action("Dashboard", "School", new {Area = "Global"})">
+		<div class="row mb-3">
+			<div class="col-4 text-center">
+				<button type="button" class="btn btn-lg btn-success btn-circle">
+					<i class="mdi mdi-domain"></i>
+				</button>
+			</div>
+			<p class="col-auto text-success m-auto">
+				Upravit školu
+			</p>
+		</div>
+	</a>
+	<a href="@Url.Action("Create", "News", new {Area = "Global"})">
+		<div class="row mb-3">
+			<div class="col-4 text-center">
+				<button type="button" class="btn btn-lg btn-primary btn-circle">
+					<i class="mdi mdi-newspaper"></i>
+				</button>
+			</div>
+			<p class="col-auto text-primary m-auto">
+				Vytvořit novinku
+			</p>
+		</div>
+	</a>
+	<a href="@Url.Action("Import", "Student", new {Area = "Global"})">
+		<div class="row mb-3">
+			<div class="col-4 text-center">
+				<button type="button" class="btn btn-lg btn-warning btn-circle">
+					<i class="mdi mdi-book-open-page-variant"></i>
+				</button>
+			</div>
+			<p class="col-auto text-warning m-auto">
+				Import studentů
+			</p>
+		</div>
+	</a>
+</div>

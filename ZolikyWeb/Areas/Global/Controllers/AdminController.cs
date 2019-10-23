@@ -28,9 +28,9 @@ namespace ZolikyWeb.Areas.Global.Controllers
 			var students = await Mgr.GetStudentCountAsync();
 			var teachers = await Mgr.GetTeacherCountAsync();
 			var schools = await Mgr.GetSchoolCountAsync();
+			var id = User.Identity.GetId();
 
-
-			var model = new DashboardModel(2) {
+			var model = new DashboardModel(id) {
 				ZoliksCount = zoliks,
 				StudentsCount = students,
 				TeachersCount = teachers,
