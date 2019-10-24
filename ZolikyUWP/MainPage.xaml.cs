@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Storage;
 using Windows.UI.Notifications;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -16,9 +17,10 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using SharedApi.Models;
-using SharedApi.Connectors;
 using Microsoft.Toolkit.Uwp.Notifications;
 using ZolikyUWP.Account;
+using ZolikyUWP.Pages;
+using ZolikyUWP.Tools;
 using XmlDocument = Windows.Data.Xml.Dom.XmlDocument;
 using ZolikConnector = SharedApi.Connectors.New.ZolikConnector;
 
@@ -32,7 +34,7 @@ namespace ZolikyUWP
 		{
 			this.InitializeComponent();
 
-			string appName = Windows.ApplicationModel.Package.Current.DisplayName;
+			// string appName = Windows.ApplicationModel.Package.Current.DisplayName;
 			//AppTitle.Text = appName;
 		}
 
@@ -50,9 +52,12 @@ namespace ZolikyUWP
 
 			var api = new ZolikConnector(_me.Token);
 
-			var zoliks = await api.GetUserZoliksAsync(_me.ID);
 
+			var zoliks = await api.GetUserZoliksAsync(_me.ID);
 			RefreshNotification(_me.ID, zoliks.Count);
+
+			var localSettings = ApplicationData.Current.LocalSettings;
+			localSettings.Values[StorageKeys.LastZolikCount] = zoliks.Count;
 		}
 
 		private void NvSample_OnLoaded(object sender, RoutedEventArgs e)
@@ -76,6 +81,9 @@ namespace ZolikyUWP
 			}
 
 			switch (item.Tag.ToString()) {
+				case "Zolici":
+					NavigateTo(typeof(ZoliciPage));
+					break;
 				default:
 					NavigateTo(typeof(DefaultPage));
 					break;

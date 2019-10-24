@@ -6,12 +6,14 @@ using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
+using Windows.UI.Xaml.Navigation;
 using Newtonsoft.Json;
 using Plugin.Connectivity;
 using SharedApi.Connectors.New;
 using SharedApi.Models;
 using SharedLibrary;
 using SharedLibrary.Enums;
+using ZolikyUWP.Tools;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -27,6 +29,46 @@ namespace ZolikyUWP.Account
 			this.InitializeComponent();
 			GridName.Visibility = Visibility.Visible;
 			GridPwd.Visibility = Visibility.Collapsed;
+		}
+
+		protected override async void OnNavigatedTo(NavigationEventArgs e)
+		{
+			var localSettings = ApplicationData.Current.LocalSettings;
+			if (localSettings.Values.ContainsKey(StorageKeys.LastToken)) {
+				if (localSettings.Values[StorageKeys.LastToken] is string token) {
+					EnableElements(false);
+					var res = await TryTokenAsync(token);
+					if (res) {
+						base.OnNavigatedTo(e);
+						return;
+					}
+					EnableElements(true);
+				}
+			}
+
+			if (localSettings.Values.ContainsKey(StorageKeys.LastUsername)) {
+				if (localSettings.Values[StorageKeys.LastUsername] is string username) {
+					TxtLogin.Text = username;
+					BtnContinue_OnClick(this, new RoutedEventArgs());
+				}
+			}
+
+
+			base.OnNavigatedTo(e);
+		}
+
+		private async Task<bool> TryTokenAsync(string token)
+		{
+			var uc = new UserConnector(token);
+			var res = await uc.GetMe();
+			if (!res.IsSuccess) {
+				return false;
+			}
+			var user = res.Content;
+			user.Token = token;
+
+			this.Frame.Navigate(typeof(MainPage), user);
+			return true;
 		}
 
 		private async void BtnContinue_OnClick(object sender, RoutedEventArgs e)
@@ -156,9 +198,10 @@ namespace ZolikyUWP.Account
 			}
 
 			var localSettings = ApplicationData.Current.LocalSettings;
-			localSettings.Values["username"] = TxtLogin.Text;
+			localSettings.Values[StorageKeys.LastUsername] = TxtLogin.Text;
 
 			var u = res.Content;
+			localSettings.Values[StorageKeys.LastToken] = u.Token;
 			LblResult.Text = $"{u.FullName}";
 			this.Frame.Navigate(typeof(MainPage), u);
 		}

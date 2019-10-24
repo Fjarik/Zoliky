@@ -16,6 +16,17 @@ namespace SharedApi.Connectors.New
 	{
 		public UserConnector(string token, ApiUrl url = ApiUrl.Zoliky) : base(token, url) { }
 
-		
+		public async Task<MActionResult<User>> GetMe()
+		{
+			try {
+				var res = await Request("user/me").GetJsonAsync<MActionResult<User>>();
+				return res;
+			} catch (Exception ex) {
+#if (DEBUG)
+				throw;
+#endif
+				return new MActionResult<User>(StatusCode.SeeException, ex);
+			}
+		}
 	}
 }

@@ -6,6 +6,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Storage;
 using Windows.UI.Notifications;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -17,6 +18,7 @@ using Windows.UI.Xaml.Navigation;
 using SharedApi.Models;
 using ZolikyUWP.Account;
 using ZolikyUWP.Models;
+using ZolikyUWP.Tools;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -47,15 +49,11 @@ namespace ZolikyUWP
 			}
 
 			Lbl_Name.Text = _me.FullName;
-			//Lbl_Count.Text = _me.Zoliky.Count.ToString();
-			/*
-			UserConnector uc = new UserConnector(_me.Token);
-			var mAu = uc.GetTesterAccount(_me);
-			if (mAu.IsSuccess) {
-				_me = mAu.Content;
-				bool b = _me.IsTesterType;
-			}
-			*/
+			var localSettings = ApplicationData.Current.LocalSettings;
+			var count = localSettings.Values[StorageKeys.LastZolikCount];
+
+			Lbl_Count.Text = count.ToString();
+
 			/*
 			TilesItems = new List<DefaultTile>()
 			{
@@ -69,7 +67,7 @@ namespace ZolikyUWP
 				},
 				new DefaultTile()
 				{
-					Title = "Ahojky"
+					Title = "Zdravím"
 				},
 				new DefaultTile()
 				{
@@ -80,11 +78,6 @@ namespace ZolikyUWP
 			this.DataContext = this;
 		}
 
-
-		private void Tiles_OnItemClick(object sender, ItemClickEventArgs e)
-		{
-			
-
-		}
+		private void Tiles_OnItemClick(object sender, ItemClickEventArgs e) { }
 	}
 }

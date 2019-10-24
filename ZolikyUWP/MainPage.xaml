@@ -15,16 +15,16 @@
 		            IsTabStop="False"
 					Header="Žolíky">
 			<NavigationView.MenuItems>
-				<NavigationViewItem Icon="ContactInfo" Content="Moji žolíci"  />
+				<NavigationViewItem Icon="ContactInfo" Content="Moji žolíci" Tag="Zolici" />
 				<NavigationViewItem Content="Transakce" >
 					<NavigationViewItem.Icon>
 						<SymbolIcon Symbol="57660" />
 					</NavigationViewItem.Icon>
 				</NavigationViewItem>
 				<NavigationViewItem Icon="Send" Content="Přeposílání" />
-				<NavigationViewItem Content="Kurz" >
+				<NavigationViewItem Content="Statistiky" >
 					<NavigationViewItem.Icon>
-						<SymbolIcon Symbol="57677" />
+						<SymbolIcon Symbol="57833" />
 					</NavigationViewItem.Icon>
 				</NavigationViewItem>
 			</NavigationView.MenuItems>

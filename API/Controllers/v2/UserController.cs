@@ -41,6 +41,21 @@ namespace API.Controllers.v2
 			return Ok(res);
 		}
 
+		// GET /user/me
+		[HttpGet]
+		[OwnAuthorize]
+		[Route("me")]
+		[ResponseType(typeof(MActionResult<User>))]
+		public async Task<IHttpActionResult> Me()
+		{
+			var userId = HttpContext.Current.GetOwinContext()?.Authentication?.User?.Identity?.GetId() ?? -1;
+			if (userId < 1) {
+				return Ok(new MActionResult<User>(SharedLibrary.Enums.StatusCode.NotValidID));
+			}
+			var res = await Mgr.GetByIdAsync(userId);
+			return Ok(res);
+		}
+
 		// POST /user/login
 		[HttpPost]
 		[LoginOnly]
