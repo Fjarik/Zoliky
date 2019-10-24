@@ -20,6 +20,7 @@ using SharedApi.Connectors;
 using Microsoft.Toolkit.Uwp.Notifications;
 using ZolikyUWP.Account;
 using XmlDocument = Windows.Data.Xml.Dom.XmlDocument;
+using ZolikConnector = SharedApi.Connectors.New.ZolikConnector;
 
 namespace ZolikyUWP
 {
@@ -35,7 +36,7 @@ namespace ZolikyUWP
 			//AppTitle.Text = appName;
 		}
 
-		protected override void OnNavigatedTo(NavigationEventArgs e)
+		protected override async void OnNavigatedTo(NavigationEventArgs e)
 		{
 			base.OnNavigatedTo(e);
 			if (e.Parameter == null) {
@@ -46,7 +47,12 @@ namespace ZolikyUWP
 			if (e.Parameter is User u) {
 				_me = u;
 			}
-			RefreshNotification(_me.ID);
+
+			var api = new ZolikConnector(_me.Token);
+
+			var zoliks = await api.GetUserZoliksAsync(_me.ID);
+
+			RefreshNotification(_me.ID, zoliks.Count);
 		}
 
 		private void NvSample_OnLoaded(object sender, RoutedEventArgs e)
@@ -81,21 +87,24 @@ namespace ZolikyUWP
 			ContentFrame.Navigate(pageType, _me);
 		}
 
-		private void RefreshNotification(int id)
+		private void RefreshNotification(int userId, int zolikCount)
 		{
-			/*int count = _me.Zoliky.Count;
+			int count = zolikCount;
 
 			var tile = Tiles.GetTileXml(count.ToString());
 
 
 			var tileNot = new TileNotification(tile);
+
 			TileUpdateManager.CreateTileUpdaterForApplication().Update(tileNot);
-			ScheduleNotification(id);*/
+
+			ScheduleNotification(userId);
 		}
 
 		private void ScheduleNotification(int id)
 		{
-			var content = new Uri($"https://www.old.zoliky.eu/api/zolik/getuserzoliks/xml/{id}");
+			var content =
+				new Uri($"https://www.api.zoliky.eu/public/userZoliksXml?userId={id}&password=yCpJZrc18Dn5JSxE");
 			var interval = PeriodicUpdateRecurrence.SixHours;
 
 			var updater = TileUpdateManager.CreateTileUpdaterForApplication();

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Common;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -67,6 +68,58 @@ namespace API.Controllers.v2
 				return InternalServerError(ex);
 			}
 		}
+
+#region Xml
+
+		[HttpGet]
+		[Route("userZoliksXml")]
+		public async Task<IHttpActionResult> UserZolikCountXml([FromUri] int userId,
+															   [FromUri] string password)
+		{
+			if (userId < 1) {
+				return Ok();
+			}
+			if (password != "yCpJZrc18Dn5JSxE") {
+				return Ok();
+			}
+			try {
+				var zMgr = this.GetManager<ZolikManager>();
+				var count = await zMgr.CountUserZoliksAsync(userId);
+
+				var xml = GetXml(count);
+
+				return Ok(xml);
+			} catch {
+				return Ok();
+			}
+		}
+
+		private string GetXml(int count)
+		{
+			var path = System.Web.Hosting.HostingEnvironment.MapPath("~/Content/Tiles.xml");
+			if (string.IsNullOrEmpty(path) || !System.IO.File.Exists(path)) {
+				return string.Empty;
+			}
+
+			var content = System.IO.File.ReadAllText(path);
+
+			content = FixXml(content, count);
+
+			return content;
+		}
+
+		private string FixXml(string content, int count)
+		{
+			content = content.Replace("#Count#", count.ToString());
+			content = content.Replace("\r", "");
+			content = content.Replace("\n", "");
+			content = content.Replace("\t", "");
+			content = content.Replace("\\", "");
+			content = content.Trim('"');
+			return content;
+		}
+
+#endregion
 
 #region Status
 

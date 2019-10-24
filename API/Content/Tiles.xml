@@ -1,0 +1,18 @@
+﻿<tile>
+	<visual branding="NameAndLogo" displayName="Žolíky">
+
+		<binding template="TileMedium">
+			<text hint-style="Caption" hint-align="Left" hint-maxLines="1">Počet žolíků:</text>
+			<text hint-style="Subheader" hint-align="Center" hint-maxLines="1" >#Count#</text>
+		</binding>
+
+		<binding template="TileWide">
+
+		</binding>
+
+		<binding template="TileLarge">
+
+		</binding>
+
+	</visual>
+</tile>
