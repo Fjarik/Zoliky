@@ -509,6 +509,10 @@ namespace DataAccess.Models
 	{
 		public int SchoolID => this.Owner.SchoolID;
 
+		public string SubjectName => this.Subject.Name;
+
+		public string TeacherName => this.Teacher.FullName;
+
 		public bool IsLocked => !string.IsNullOrWhiteSpace(this.Lock);
 
 		public bool CanBeTransfered => this.Enabled && !this.IsLocked && this.Type != ZolikType.Black;

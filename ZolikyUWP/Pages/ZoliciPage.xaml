@@ -2,24 +2,70 @@
 	x:Class="ZolikyUWP.Pages.ZoliciPage"
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-	xmlns:local="using:ZolikyUWP.Pages"
+	xmlns:converters="using:Microsoft.Toolkit.Uwp.UI.Converters"
 	xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	mc:Ignorable="d"
 	Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
+	<Page.Resources>
+		<converters:FormatStringConverter x:Key="StringFormatConverter" />
+		<converters:BoolToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+	</Page.Resources>
 	<Grid>
 		<Grid.Resources>
 			<DataTemplate x:Key="RowDetailsTemplate">
 				<StackPanel>
-					<Grid>
+					<TextBlock Margin="20, 10, 0, 10"
+					           Text="Detailní informace:" />
+					<Grid Margin="25, 0, 0, 20">
 						<Grid.RowDefinitions>
-							<RowDefinition />
+							<RowDefinition Height="Auto" />
+							<RowDefinition Height="5" />
+							<RowDefinition Height="Auto" />
+							<RowDefinition Height="5" />
+							<RowDefinition Height="Auto" />
+							<RowDefinition Height="5" />
+							<RowDefinition Height="Auto" />
 						</Grid.RowDefinitions>
 						<Grid.ColumnDefinitions>
-							<ColumnDefinition />
+							<ColumnDefinition Width="Auto" />
+							<ColumnDefinition Width="10" />
+							<ColumnDefinition Width="Auto" />
 						</Grid.ColumnDefinitions>
+
+						<TextBlock Grid.Row="0" Grid.Column="0"
+						           Text="Vyučující: "
+						           FontWeight="SemiBold" />
+						<TextBlock Grid.Row="0" Grid.Column="2"
+						           Text="{Binding TeacherName}"
+						           HorizontalAlignment="Right" />
+
+						<TextBlock Grid.Row="2" Grid.Column="0"
+						           Text="Datum získání: "
+						           FontWeight="SemiBold" />
+						<TextBlock Grid.Row="2" Grid.Column="2"
+						           Text="{Binding OwnerSince,
+										  Converter={StaticResource StringFormatConverter },
+										  ConverterParameter='dd.MM.yyyy'}"
+						           HorizontalAlignment="Right" />
+
+						<TextBlock Grid.Row="4" Grid.Column="0"
+						           Text="Datum vytvoření žolíka: "
+						           FontWeight="SemiBold" />
+						<TextBlock Grid.Row="4" Grid.Column="2"
+						           Text="{Binding Created,
+										  Converter={StaticResource StringFormatConverter },
+										  ConverterParameter='dd.MM.yyyy'}"
+						           HorizontalAlignment="Right" />
+
+						<TextBlock Grid.Row="6" Grid.Column="0"
+						           Text="Použít na: "
+						           Visibility="{Binding Lock, Converter={StaticResource BooleanToVisibilityConverter}}"
+						           FontWeight="SemiBold" />
+						<TextBlock Grid.Row="6" Grid.Column="2"
+						           Text="{Binding Lock}"
+						           HorizontalAlignment="Right" />
 					</Grid>
 				</StackPanel>
 			</DataTemplate>
@@ -38,12 +84,14 @@
 			CanUserResizeColumns="False"
 			IsReadOnly="True"
 			RowDetailsTemplate="{StaticResource RowDetailsTemplate}"
-			RowDetailsVisibilityMode="VisibleWhenSelected">
+			RowDetailsVisibilityMode="VisibleWhenSelected"
+			AutoGenerateColumns="False">
 			<controls:DataGrid.Columns>
-				<controls:DataGridTextColumn Header="ID" Binding="{Binding AAA}" Tag="ID" />
-				<controls:DataGridTextColumn Header="Název" Binding="{Binding AAA}" Tag="Name" />
-				<controls:DataGridTextColumn Header="Druh" Binding="{Binding AAA}" Tag="Type" />
-				<controls:DataGridTextColumn Header="Předmět" Binding="{Binding AAA}" Tag="Subject" />
+				<controls:DataGridTextColumn Header="ID" Binding="{Binding ID}" Tag="ID" Width="*" />
+				<controls:DataGridTextColumn Header="Název" Binding="{Binding Title}" Tag="Title" Width="*" />
+				<controls:DataGridTextColumn Header="Druh" Binding="{Binding TypeText}" Tag="TypeText" Width="*" />
+				<controls:DataGridTextColumn Header="Předmět" Binding="{Binding SubjectName}" Tag="Subject" Width="*" />
+				<controls:DataGridTextColumn Header="Uzamčen" Binding="{Binding IsLocked}" Tag="Locked" Width="*" />
 			</controls:DataGrid.Columns>
 		</controls:DataGrid>
 	</Grid>

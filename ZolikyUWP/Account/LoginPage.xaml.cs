@@ -33,17 +33,16 @@ namespace ZolikyUWP.Account
 
 		protected override async void OnNavigatedTo(NavigationEventArgs e)
 		{
+			this.DataContext = this;
 			var localSettings = ApplicationData.Current.LocalSettings;
-			if (localSettings.Values.ContainsKey(StorageKeys.LastToken)) {
-				if (localSettings.Values[StorageKeys.LastToken] is string token) {
-					EnableElements(false);
-					var res = await TryTokenAsync(token);
-					if (res) {
-						base.OnNavigatedTo(e);
-						return;
-					}
-					EnableElements(true);
+			if (CrossConnectivity.Current.IsConnected) {
+				EnableElements(false);
+				var res = await InitByToken(localSettings);
+				if (res) {
+					base.OnNavigatedTo(e);
+					return;
 				}
+				EnableElements(true);
 			}
 
 			if (localSettings.Values.ContainsKey(StorageKeys.LastUsername)) {
@@ -53,8 +52,18 @@ namespace ZolikyUWP.Account
 				}
 			}
 
-
 			base.OnNavigatedTo(e);
+		}
+
+		private async Task<bool> InitByToken(ApplicationDataContainer localSettings)
+		{
+			if (localSettings.Values.ContainsKey(StorageKeys.LastToken)) {
+				if (localSettings.Values[StorageKeys.LastToken] is string token) {
+					var res = await TryTokenAsync(token);
+					return res;
+				}
+			}
+			return false;
 		}
 
 		private async Task<bool> TryTokenAsync(string token)
@@ -208,6 +217,7 @@ namespace ZolikyUWP.Account
 
 		private void EnableElements(bool isEnabled)
 		{
+			LoadingControl.IsLoading = !isEnabled;
 			BtnLogin.IsEnabled = isEnabled;
 			TxtLogin.IsEnabled = isEnabled;
 			TxtPwd.IsEnabled = isEnabled;

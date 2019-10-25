@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Core;
@@ -47,10 +48,12 @@ namespace ZolikyUWP
 		/// will be used such as when the application is launched to open a specific file.
 		/// </summary>
 		/// <param name="e">Details about the launch request and process.</param>
-		protected override void OnLaunched(LaunchActivatedEventArgs e)
+		protected override async void OnLaunched(LaunchActivatedEventArgs e)
 		{
-			InitNotificationsAsync();
-			Frame rootFrame = Window.Current.Content as Frame;
+			if (CrossConnectivity.Current.IsConnected) {
+				await InitNotificationsAsync();
+			}
+			var rootFrame = Window.Current.Content as Frame;
 
 			// Do not repeat app initialization when the Window already has content,
 			// just ensure that the window is active
@@ -67,12 +70,6 @@ namespace ZolikyUWP
 				// Place the frame in the current Window
 				Window.Current.Content = rootFrame;
 			}
-
-			if (!CrossConnectivity.Current.IsConnected) {
-				// TODO: No internetz
-				return;
-			}
-
 
 			if (e.PrelaunchActivated == false) {
 				if (rootFrame.Content == null) {
@@ -112,7 +109,7 @@ namespace ZolikyUWP
 			deferral.Complete();
 		}
 
-		private async void InitNotificationsAsync()
+		private async Task InitNotificationsAsync()
 		{
 			var channel = await PushNotificationChannelManager.CreatePushNotificationChannelForApplicationAsync();
 
@@ -122,7 +119,6 @@ namespace ZolikyUWP
 
 			var hub = new NotificationHub(hubname, listen);
 			var result = await hub.RegisterNativeAsync(channel.Uri);
-
 			// Displays the registration ID so you know it was successful
 			if (result.RegistrationId != null) {
 				/*var dialog = new MessageDialog("Registration successful: " + result.RegistrationId);

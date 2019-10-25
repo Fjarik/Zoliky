@@ -105,7 +105,7 @@ namespace ZolikyWeb
 
 						// JQuery UI
 						//.Include("~/Scripts/jquery-ui-1.12.1.js")
-						//.Include("~/Scripts/jquery-ui-1.12.1.min.js")
+						.Include("~/Scripts/jquery-ui-1.12.1.min.js")
 
 						// Modernizr
 						//.Include("~/Scripts/modernizr-*")

@@ -154,6 +154,12 @@ namespace SharedApi.Models
 
 	public partial class Zolik : IZolik
 	{
+		public string TypeText => this.Type.GetDescription();
+		public string SubjectName { get; set; }
+		public string TeacherName { get; set; }
+
+		public int SchoolID { get; set; }
+
 		public bool IsLocked { get; set; }
 
 		public bool CanBeTransfered { get; set; }
