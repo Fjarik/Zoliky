@@ -12,21 +12,34 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using Microsoft.Toolkit.Uwp.UI.Controls;
 using SharedApi.Connectors.New;
 using SharedApi.Models;
 using ZolikyUWP.Account;
 
-// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
-
 namespace ZolikyUWP.Pages
 {
-	/// <summary>
-	/// An empty page that can be used on its own or navigated to within a Frame.
-	/// </summary>
 	public sealed partial class ZoliciPage : Page
 	{
 		private User _me;
 		public List<Zolik> Zoliks { get; set; }
+
+		private Loading LoadingElement
+		{
+			get
+			{
+				if (!(this.Frame.Parent is NavigationView nav)) {
+					return null;
+				}
+				if (!(nav.Parent is Grid grid)) {
+					return null;
+				}
+				if (!(grid.FindName("LoadingControl") is Loading l)) {
+					return null;
+				}
+				return l;
+			}
+		}
 
 		public ZoliciPage()
 		{
@@ -35,7 +48,6 @@ namespace ZolikyUWP.Pages
 
 		protected override async void OnNavigatedTo(NavigationEventArgs e)
 		{
-			base.OnNavigatedTo(e);
 			if (e.Parameter == null) {
 				this.Frame.Navigate(typeof(LoginPage));
 				return;
@@ -43,13 +55,19 @@ namespace ZolikyUWP.Pages
 			if (e.Parameter is User u) {
 				_me = u;
 			}
-
-
+			SetLoading(true);
 			var api = new ZolikConnector(_me.Token);
 			Zoliks = await api.GetUserZoliksAsync(_me.ID);
-			//this.DataContext = this;
 			ZoliksGrid.ItemsSource = Zoliks;
+			SetLoading(false);
 			base.OnNavigatedTo(e);
+		}
+
+		private void SetLoading(bool loading)
+		{
+			if (LoadingElement != null) {
+				this.LoadingElement.IsLoading = loading;
+			}
 		}
 	}
 }

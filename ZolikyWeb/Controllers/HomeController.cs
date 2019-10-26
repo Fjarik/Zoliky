@@ -167,5 +167,17 @@ namespace ZolikyWeb.Controllers
 		}
 
 #endregion
+
+		[HttpGet]
+		public ActionResult PP()
+		{
+			return View();
+		}
+
+		[HttpGet]
+		public ActionResult TOS()
+		{
+			return View();
+		}
 	}
 }

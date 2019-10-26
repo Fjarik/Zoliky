@@ -1,28 +1,29 @@
 ﻿<Page
-    x:Class="ZolikyUWP.MainPage"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:ZolikyUWP"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+	x:Class="ZolikyUWP.MainPage"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:local="using:ZolikyUWP"
+	xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	mc:Ignorable="d"
+	Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
 	<Grid>
 
 		<NavigationView Loaded="NvSample_OnLoaded" Margin="0,12,0,0" SelectionChanged="NvSample_OnSelectionChanged"
-		            x:Name="NavMain" IsSettingsVisible="False" IsBackButtonVisible="Collapsed" AlwaysShowHeader="True"
-		            IsTabStop="False"
-					Header="Žolíky">
+		                x:Name="NavMain" IsSettingsVisible="False" IsBackButtonVisible="Collapsed" AlwaysShowHeader="True"
+		                IsTabStop="False"
+		                Header="Žolíky">
 			<NavigationView.MenuItems>
 				<NavigationViewItem Icon="ContactInfo" Content="Moji žolíci" Tag="Zolici" />
-				<NavigationViewItem Content="Transakce" >
+				<NavigationViewItem Content="Transakce">
 					<NavigationViewItem.Icon>
 						<SymbolIcon Symbol="57660" />
 					</NavigationViewItem.Icon>
 				</NavigationViewItem>
 				<NavigationViewItem Icon="Send" Content="Přeposílání" />
-				<NavigationViewItem Content="Statistiky" >
+				<NavigationViewItem Content="Statistiky">
 					<NavigationViewItem.Icon>
 						<SymbolIcon Symbol="57833" />
 					</NavigationViewItem.Icon>
@@ -35,7 +36,6 @@
 					</TransitionCollection>
 				</Frame.ContentTransitions>
 
-
 			</Frame>
 			<NavigationView.PaneFooter>
 				<StackPanel Orientation="Vertical">
@@ -44,6 +44,20 @@
 				</StackPanel>
 			</NavigationView.PaneFooter>
 		</NavigationView>
+		<controls:Loading x:Name="LoadingControl"
+		                  HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+			<controls:Loading.Background>
+				<SolidColorBrush Color="Black" Opacity="0.75" />
+			</controls:Loading.Background>
+			<StackPanel Orientation="Horizontal">
+				<ProgressRing IsActive="True" Margin="0,0,15,0"
+				              Foreground="DeepSkyBlue"
+				              Width="50" Height="50" />
+				<TextBlock Text="Probíhá načítání. Čekejte, prosím..."
+				           VerticalAlignment="Center"
+				           Foreground="White" FontSize="20" />
+			</StackPanel>
+		</controls:Loading>
 		<!--<TextBlock x:Name="AppTitle" Style="{StaticResource CaptionTextBlockStyle}" Margin="12,8" />-->
 	</Grid>
 </Page>

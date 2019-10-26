@@ -1,5 +1,6 @@
 ﻿using System;
 using JetBrains.Annotations;
+using ZolikyUWP.Pages;
 
 namespace ZolikyUWP.Models
 {
@@ -16,9 +17,5 @@ namespace ZolikyUWP.Models
 
 		[CanBeNull]
 		public object RedirectArgs { get; set; } = null;
-
-
-
-
 	}
 }
