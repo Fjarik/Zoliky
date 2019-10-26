@@ -26,7 +26,6 @@ namespace ZolikyUWP.Pages
 
 		protected override void OnNavigatedTo(NavigationEventArgs e)
 		{
-			base.OnNavigatedTo(e);
 			if (e.Parameter == null) {
 				this.Frame.Navigate(typeof(LoginPage));
 				return;
@@ -37,9 +36,9 @@ namespace ZolikyUWP.Pages
 
 			Lbl_Name.Text = _me.FullName;
 			var localSettings = ApplicationData.Current.LocalSettings;
-			var count = localSettings.Values[StorageKeys.LastZolikCount];
-
-			Lbl_Count.Text = count.ToString();
+			if (localSettings.Values[StorageKeys.LastZolikCount] is int count) {
+				Lbl_Count.Text = count.ToString();
+			}
 
 			/*
 			TilesItems = new List<DefaultTile>()
@@ -63,6 +62,7 @@ namespace ZolikyUWP.Pages
 			};*/
 
 			this.DataContext = this;
+			base.OnNavigatedTo(e);
 		}
 
 		private void Tiles_OnItemClick(object sender, ItemClickEventArgs e) { }

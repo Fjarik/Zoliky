@@ -24,12 +24,12 @@
     <SccProvider>SAK</SccProvider>
     <PackageCertificateThumbprint>0C66697DB81256F70DA9818DC9EED410F9EDB6CB</PackageCertificateThumbprint>
     <GenerateAppInstallerFile>False</GenerateAppInstallerFile>
-    <AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
+    <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
     <AppxBundle>Always</AppxBundle>
     <AppxBundlePlatforms>x86|x64|arm</AppxBundlePlatforms>
     <AppInstallerUpdateFrequency>1</AppInstallerUpdateFrequency>
     <AppInstallerCheckForUpdateFrequency>OnApplicationRun</AppInstallerCheckForUpdateFrequency>
-    <AppxPackageDir>D:\Visual Studio\Instalatory\Zoliky - UWP\1.1.9\</AppxPackageDir>
+    <AppxPackageDir>D:\Visual Studio\Instalatory\Zoliky - UWP\1.1.10\</AppxPackageDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>

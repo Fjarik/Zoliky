@@ -11,6 +11,7 @@
 	<Page.Resources>
 		<converters:FormatStringConverter x:Key="StringFormatConverter" />
 		<converters:BoolToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+		<converters:BoolToObjectConverter x:Key="BooleanToTextConverter" TrueValue="Ano" FalseValue="Ne" />
 	</Page.Resources>
 	<Grid>
 		<Grid.Resources>
@@ -91,7 +92,9 @@
 				<controls:DataGridTextColumn Header="Název" Binding="{Binding Title}" Tag="Title" Width="*" />
 				<controls:DataGridTextColumn Header="Druh" Binding="{Binding TypeText}" Tag="TypeText" Width="*" />
 				<controls:DataGridTextColumn Header="Předmět" Binding="{Binding SubjectName}" Tag="Subject" Width="*" />
-				<controls:DataGridTextColumn Header="Uzamčen" Binding="{Binding IsLocked}" Tag="Locked" Width="*" />
+				<controls:DataGridTextColumn Header="Uzamčen"
+				                             Binding="{Binding IsLocked, Converter={StaticResource BooleanToTextConverter}}"
+				                             Tag="Locked" Width="*" />
 			</controls:DataGrid.Columns>
 		</controls:DataGrid>
 	</Grid>

@@ -40,7 +40,6 @@ namespace ZolikyUWP
 
 		protected override async void OnNavigatedTo(NavigationEventArgs e)
 		{
-			base.OnNavigatedTo(e);
 			if (e.Parameter == null) {
 				this.Frame.Navigate(typeof(LoginPage));
 				return;
@@ -58,6 +57,7 @@ namespace ZolikyUWP
 
 			var localSettings = ApplicationData.Current.LocalSettings;
 			localSettings.Values[StorageKeys.LastZolikCount] = zoliks.Count;
+			base.OnNavigatedTo(e);
 		}
 
 		private void NvSample_OnLoaded(object sender, RoutedEventArgs e)
