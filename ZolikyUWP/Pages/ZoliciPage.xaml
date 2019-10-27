@@ -62,7 +62,7 @@
 
 						<TextBlock Grid.Row="6" Grid.Column="0"
 						           Text="Použít na: "
-						           Visibility="{Binding Lock, Converter={StaticResource BooleanToVisibilityConverter}}"
+						           Visibility="{Binding IsLocked, Converter={StaticResource BooleanToVisibilityConverter}}"
 						           FontWeight="SemiBold" />
 						<TextBlock Grid.Row="6" Grid.Column="2"
 						           Text="{Binding Lock}"
@@ -86,15 +86,59 @@
 			IsReadOnly="True"
 			RowDetailsTemplate="{StaticResource RowDetailsTemplate}"
 			RowDetailsVisibilityMode="VisibleWhenSelected"
+			SelectionChanged="ZoliksGrid_OnSelectionChanged"
 			AutoGenerateColumns="False">
 			<controls:DataGrid.Columns>
+				<controls:DataGridTemplateColumn>
+					<controls:DataGridTemplateColumn.CellTemplate>
+						<DataTemplate>
+							<FontIcon FontFamily="Segoe MDL2 Assets"
+							          Glyph="&#xE76C;" />
+						</DataTemplate>
+					</controls:DataGridTemplateColumn.CellTemplate>
+				</controls:DataGridTemplateColumn>
 				<controls:DataGridTextColumn Header="ID" Binding="{Binding ID}" Tag="ID" Width="*" />
-				<controls:DataGridTextColumn Header="Název" Binding="{Binding Title}" Tag="Title" Width="*" />
-				<controls:DataGridTextColumn Header="Druh" Binding="{Binding TypeText}" Tag="TypeText" Width="*" />
-				<controls:DataGridTextColumn Header="Předmět" Binding="{Binding SubjectName}" Tag="Subject" Width="*" />
+				<controls:DataGridTextColumn Header="Název" Binding="{Binding Title}" Tag="Title" Width="3*" />
+				<controls:DataGridTextColumn Header="Druh" Binding="{Binding TypeText}" Tag="TypeText" Width="2*" />
+				<controls:DataGridTextColumn Header="Předmět" Binding="{Binding SubjectName}" Tag="Subject" Width="2*" />
 				<controls:DataGridTextColumn Header="Uzamčen"
 				                             Binding="{Binding IsLocked, Converter={StaticResource BooleanToTextConverter}}"
 				                             Tag="Locked" Width="*" />
+				<controls:DataGridTemplateColumn Header="Akce" Width="3*">
+					<controls:DataGridTemplateColumn.CellTemplate>
+						<DataTemplate>
+							<Grid VerticalAlignment="Center" Margin="0, 10" HorizontalAlignment="Left">
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="Auto" />
+									<ColumnDefinition Width="10" />
+									<ColumnDefinition Width="Auto" />
+									<ColumnDefinition Width="10" />
+									<ColumnDefinition Width="Auto" />
+								</Grid.ColumnDefinitions>
+								<Button Content="Odemknout"
+								        Tag="Unlock"
+								        Grid.Column="0" Grid.Row="0"
+								        Click="BtnZolikAction_OnClick"
+								        Visibility="{Binding IsLocked, Converter={StaticResource BooleanToVisibilityConverter}}" />
+								<Button Content="Uzamknout"
+								        Tag="Lock"
+								        Grid.Column="0" Grid.Row="0"
+								        Click="BtnZolikAction_OnClick"
+								        Visibility="{Binding IsUnlocked, Converter={StaticResource BooleanToVisibilityConverter}}" />
+								<Button Content="Darovat"
+								        Tag="Give"
+								        Grid.Column="2" Grid.Row="0"
+								        Click="BtnZolikAction_OnClick"
+								        Visibility="{Binding CanBeTransfered, Converter={StaticResource BooleanToVisibilityConverter}}" />
+								<Button Content="Rozdělit"
+								        Tag="Split"
+								        Grid.Column="4" Grid.Row="0"
+								        Click="BtnZolikAction_OnClick"
+								        Visibility="{Binding IsSplittable, Converter={StaticResource BooleanToVisibilityConverter}}" />
+							</Grid>
+						</DataTemplate>
+					</controls:DataGridTemplateColumn.CellTemplate>
+				</controls:DataGridTemplateColumn>
 			</controls:DataGrid.Columns>
 		</controls:DataGrid>
 	</Grid>

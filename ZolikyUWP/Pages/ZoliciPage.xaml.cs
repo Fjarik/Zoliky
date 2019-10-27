@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -16,13 +17,17 @@ using Microsoft.Toolkit.Uwp.UI.Controls;
 using SharedApi.Connectors.New;
 using SharedApi.Models;
 using ZolikyUWP.Account;
+using ZolikyUWP.Tools;
 
 namespace ZolikyUWP.Pages
 {
-	public sealed partial class ZoliciPage : Page
+	public sealed partial class ZoliciPage : Page, IUpdatable
 	{
 		private User _me;
 		public List<Zolik> Zoliks { get; set; }
+
+		public bool IsLoading { get; set; }
+		public DateTime LastUpdate { get; set; }
 
 		private Loading LoadingElement
 		{
@@ -68,6 +73,51 @@ namespace ZolikyUWP.Pages
 			if (LoadingElement != null) {
 				this.LoadingElement.IsLoading = loading;
 			}
+		}
+
+		private void ZoliksGrid_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			if (!(ZoliksGrid.SelectedItem is Zolik selected)) {
+				return;
+			}
+
+			foreach (var zolik in Zoliks.Where(zolik => zolik.ID != selected.ID)) {
+				if (ZoliksGrid.Columns[0].GetCellContent(zolik) is FontIcon original) {
+					original.Glyph = "\uE76C";
+				}
+			}
+
+			if (ZoliksGrid.Columns[0].GetCellContent(selected) is FontIcon icon) {
+				icon.Glyph = "\uE70D";
+			}
+		}
+
+		private void BtnZolikAction_OnClick(object sender, RoutedEventArgs e)
+		{
+			if (!(sender is Button b) || b.Tag == null) {
+				return;
+			}
+			if (!(ZoliksGrid.SelectedItem is Zolik selected)) {
+				return;
+			}
+			var id = selected.ID;
+
+			var tag = b.Tag.ToString();
+			switch (tag) {
+				case "Lock":
+					break;
+				case "Unlock":
+					break;
+				case "Give":
+					break;
+				case "Split":
+					break;
+			}
+		}
+
+		public async Task UpdateAsync()
+		{
+
 		}
 	}
 }

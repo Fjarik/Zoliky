@@ -11,7 +11,7 @@
     <AssemblyName>ZolikyUWP</AssemblyName>
     <DefaultLanguage>cs-CZ</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
-    <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.17763.0</TargetPlatformVersion>
+    <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.18362.0</TargetPlatformVersion>
     <TargetPlatformMinVersion>10.0.16299.0</TargetPlatformMinVersion>
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
@@ -124,7 +124,10 @@
       <DependentUpon>ZoliciPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tools\Extensions.cs" />
+    <Compile Include="Tools\IUpdatable.cs" />
     <Compile Include="Tools\StorageKeys.cs" />
+    <Compile Include="Tools\Tiles.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">

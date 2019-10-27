@@ -8,27 +8,58 @@
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	mc:Ignorable="d"
 	Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
 	<Grid>
-
 		<NavigationView Loaded="NvSample_OnLoaded" Margin="0,12,0,0" SelectionChanged="NvSample_OnSelectionChanged"
-		                x:Name="NavMain" IsSettingsVisible="False" IsBackButtonVisible="Collapsed" AlwaysShowHeader="True"
+		                x:Name="NavMain" IsSettingsVisible="False" IsBackButtonVisible="Collapsed"
+		                AlwaysShowHeader="True"
 		                IsTabStop="False"
 		                Header="Žolíky">
 			<NavigationView.MenuItems>
-				<NavigationViewItem Icon="ContactInfo" Content="Moji žolíci" Tag="Zolici" />
+				<NavigationViewItem Content="Moji žolíci" Tag="Zolici">
+					<NavigationViewItem.Icon>
+						<FontIcon FontFamily="Segoe MDL2 Assets"
+						          Glyph="&#xF246;" />
+					</NavigationViewItem.Icon>
+				</NavigationViewItem>
 				<NavigationViewItem Content="Transakce">
 					<NavigationViewItem.Icon>
 						<SymbolIcon Symbol="57660" />
 					</NavigationViewItem.Icon>
 				</NavigationViewItem>
-				<NavigationViewItem Icon="Send" Content="Přeposílání" />
+				<NavigationViewItem Icon="OutlineStar" Content="Achievementy" />
 				<NavigationViewItem Content="Statistiky">
 					<NavigationViewItem.Icon>
-						<SymbolIcon Symbol="57833" />
+						<FontIcon FontFamily="Segoe MDL2 Assets"
+						          Glyph="&#xE9D2;" />
 					</NavigationViewItem.Icon>
 				</NavigationViewItem>
 			</NavigationView.MenuItems>
+			<NavigationView.HeaderTemplate>
+				<DataTemplate>
+					<Grid>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="Auto" />
+							<ColumnDefinition />
+						</Grid.ColumnDefinitions>
+						<TextBlock x:Name="TxtAppTitle" Style="{StaticResource TitleTextBlockStyle}"
+						           FontSize="28"
+						           VerticalAlignment="Center"
+						           Text="{Binding}" />
+						<CommandBar Grid.Column="1" Grid.Row="0"
+						            VerticalAlignment="Center"
+						            HorizontalAlignment="Right"
+						            DefaultLabelPosition="Right"
+						            Background="{ThemeResource SystemControlBackgroundAltHighBrush}">
+							<AppBarButton x:Name="UpdateButton"
+							              Label="Aktualizovat" Icon="Refresh"
+							              ClickMode="Release" Click="UpdateButton_OnClick" />
+							<AppBarButton x:Name="PinButton"
+							              Label="Připnout" Icon="Pin"
+							              ClickMode="Release" Click="BtnPin_OnClick" />
+						</CommandBar>
+					</Grid>
+				</DataTemplate>
+			</NavigationView.HeaderTemplate>
 			<Frame x:Name="ContentFrame">
 				<Frame.ContentTransitions>
 					<TransitionCollection>
@@ -39,7 +70,7 @@
 			</Frame>
 			<NavigationView.PaneFooter>
 				<StackPanel Orientation="Vertical">
-					<NavigationViewItem Icon="Help" Content="Návod" />
+					<NavigationViewItem Icon="ReportHacked" Content="Zabezpečení" />
 					<NavigationViewItem Icon="Setting" Content="Nastavení" />
 				</StackPanel>
 			</NavigationView.PaneFooter>
@@ -58,6 +89,5 @@
 				           Foreground="White" FontSize="20" />
 			</StackPanel>
 		</controls:Loading>
-		<!--<TextBlock x:Name="AppTitle" Style="{StaticResource CaptionTextBlockStyle}" Margin="12,8" />-->
 	</Grid>
 </Page>

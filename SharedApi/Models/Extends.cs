@@ -161,6 +161,7 @@ namespace SharedApi.Models
 		public int SchoolID { get; set; }
 
 		public bool IsLocked { get; set; }
+		public bool IsUnlocked => !IsLocked;
 
 		public bool CanBeTransfered { get; set; }
 

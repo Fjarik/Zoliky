@@ -10,6 +10,8 @@ namespace ZolikyUWP.Tools
 	{
 		public const string LastZolikCount = "LastZolikCount";
 		public const string LastUsername = "LastUsername";
-		public const string LastToken= "LastToken";
+		public const string LastToken = "LastToken";
+
+		public const string TileId = "ZolikCount0";
 	}
 }

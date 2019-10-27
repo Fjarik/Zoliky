@@ -1,27 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
-using System.Xml;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.Storage;
 using Windows.UI.Notifications;
+using Windows.UI.StartScreen;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using SharedApi.Models;
-using Microsoft.Toolkit.Uwp.Notifications;
 using ZolikyUWP.Account;
 using ZolikyUWP.Pages;
 using ZolikyUWP.Tools;
-using XmlDocument = Windows.Data.Xml.Dom.XmlDocument;
 using ZolikConnector = SharedApi.Connectors.New.ZolikConnector;
 
 namespace ZolikyUWP
@@ -29,13 +18,12 @@ namespace ZolikyUWP
 	public sealed partial class MainPage : Page
 	{
 		private User _me;
+		private AppBarButton UpdateButton => this.NavMain.FindControl<AppBarButton>("UpdateButton");
+		private AppBarButton PinButton => this.NavMain.FindControl<AppBarButton>("PinButton");
 
 		public MainPage()
 		{
 			this.InitializeComponent();
-
-			// string appName = Windows.ApplicationModel.Package.Current.DisplayName;
-			//AppTitle.Text = appName;
 		}
 
 		protected override async void OnNavigatedTo(NavigationEventArgs e)
@@ -80,82 +68,131 @@ namespace ZolikyUWP
 				return;
 			}
 
+			var type = typeof(DefaultPage);
 			switch (item.Tag.ToString()) {
 				case "Zolici":
-					NavigateTo(typeof(ZoliciPage));
+					type = typeof(ZoliciPage);
 					break;
 				default:
-					NavigateTo(typeof(DefaultPage));
+					// type = typeof(DefaultPage);
 					break;
 			}
+
+			NavigateTo(type);
+		}
+
+		private void UpdateButton_OnClick(object sender, RoutedEventArgs e)
+		{
+			if (this.ContentFrame.Content is IUpdatable page) {
+				page.UpdateAsync();
+			}
+		}
+
+		private async void BtnPin_OnClick(object sender, RoutedEventArgs e)
+		{
+			await InitOrDeleteTile();
 		}
 
 		private void NavigateTo(Type pageType)
 		{
+			var btn = UpdateButton;
+			if (btn != null) {
+				btn.Visibility = pageType.GetInterfaces().Contains(typeof(IUpdatable))
+									 ? Visibility.Visible
+									 : Visibility.Collapsed;
+			}
+
 			ContentFrame.Navigate(pageType, _me);
 		}
 
-		private void RefreshNotification(int userId, int zolikCount)
+#region Tiles
+
+#region InitOrDelete
+
+		private async Task InitOrDeleteTile()
 		{
-			int count = zolikCount;
-
-			var tile = Tiles.GetTileXml(count.ToString());
-
-
-			var tileNot = new TileNotification(tile);
-
-			TileUpdateManager.CreateTileUpdaterForApplication().Update(tileNot);
-
-			ScheduleNotification(userId);
+			var id = StorageKeys.TileId;
+			if (SecondaryTile.Exists(id)) {
+				await DeleteTile(id);
+				this.CheckIfPinned(id);
+				return;
+			}
+			var localSettings = ApplicationData.Current.LocalSettings;
+			if (localSettings.Values[StorageKeys.LastZolikCount] is int count) {
+				await InitTile(_me.ID, count, id);
+				this.CheckIfPinned(id);
+			}
 		}
 
-		private void ScheduleNotification(int id)
+		private async Task InitTile(int userId, int count, string id)
+		{
+			if (SecondaryTile.Exists(id)) {
+				return;
+			}
+			var tile = new SecondaryTile(id,
+										 "Žolíky",
+										 "action=zoliky",
+										 new Uri("ms-appx:///Assets/LargeTile.scale-150.png"),
+										 TileSize.Default);
+			var isPinned = await tile.RequestCreateAsync();
+			if (!isPinned) {
+				return;
+			}
+			RefreshNotification(userId, count, id);
+		}
+
+		private async Task DeleteTile(string id)
+		{
+			var toDelete = new SecondaryTile(id);
+			await toDelete.RequestDeleteAsync();
+		}
+
+#endregion
+
+#region Notifications
+
+		private void RefreshNotification(int userId, int count, string tileId = StorageKeys.TileId)
+		{
+			if (!SecondaryTile.Exists(tileId)) {
+				return;
+			}
+
+			var tile = Tiles.GetTileXml(count.ToString());
+			var tileNot = new TileNotification(tile);
+
+			var updater = TileUpdateManager.CreateTileUpdaterForSecondaryTile(tileId);
+			updater.Update(tileNot);
+
+			ScheduleNotification(userId, updater);
+			this.CheckIfPinned(tileId);
+		}
+
+		private void ScheduleNotification(int id, TileUpdater updater)
 		{
 			var content =
 				new Uri($"https://www.api.zoliky.eu/public/userZoliksXml?userId={id}&password=yCpJZrc18Dn5JSxE");
 			var interval = PeriodicUpdateRecurrence.SixHours;
 
-			var updater = TileUpdateManager.CreateTileUpdaterForApplication();
 			updater.StartPeriodicUpdate(content, interval);
 		}
-	}
 
-	public static class Tiles
-	{
-		public static XmlDocument GetTileXml(string count)
+#endregion
+
+		private void CheckIfPinned(string tileId)
 		{
-			var tileContent = new TileContent() {
-				Visual = new TileVisual() {
-					TileMedium = new TileBinding() {
-						Content = new TileBindingContentAdaptive() {
-							Children = {
-								new AdaptiveText() {
-									Text = "Počet žolíků:",
-									HintStyle = AdaptiveTextStyle.Caption,
-									HintAlign = AdaptiveTextAlign.Left,
-									HintMaxLines = 1
-								},
-								new AdaptiveText() {
-									Text = count,
-									HintStyle = AdaptiveTextStyle.Subheader,
-									HintAlign = AdaptiveTextAlign.Center,
-									HintMaxLines = 1
-								},
-								/*new AdaptiveText()
-								{
-									Text = name,
-									HintStyle = AdaptiveTextStyle.CaptionSubtle,
-									HintAlign = AdaptiveTextAlign.Left,
-									HintMaxLines = 1
-								}*/
-							}
-						},
-						DisplayName = "Žolíky",
-						Branding = TileBranding.NameAndLogo
-					}
-				}
-			};
-			return tileContent.GetXml();
+			var btn = PinButton;
+			if (btn == null) {
+				return;
+			}
+			if (SecondaryTile.Exists(tileId)) {
+				btn.Label = "Odepnout";
+				btn.Icon = new SymbolIcon(Symbol.UnPin);
+			} else {
+				btn.Label = "Připnout";
+				btn.Icon = new SymbolIcon(Symbol.Pin);
+			}
 		}
+
+#endregion
 	}
 }
