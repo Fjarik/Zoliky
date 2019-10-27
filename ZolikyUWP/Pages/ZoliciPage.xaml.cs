@@ -92,7 +92,7 @@ namespace ZolikyUWP.Pages
 			}
 		}
 
-		private void BtnZolikAction_OnClick(object sender, RoutedEventArgs e)
+		private async void BtnZolikAction_OnClick(object sender, RoutedEventArgs e)
 		{
 			if (!(sender is Button b) || b.Tag == null) {
 				return;
@@ -103,21 +103,52 @@ namespace ZolikyUWP.Pages
 			var id = selected.ID;
 
 			var tag = b.Tag.ToString();
+			bool success = false;
 			switch (tag) {
 				case "Lock":
 					break;
 				case "Unlock":
 					break;
 				case "Give":
+					success = await GiveAsync(id);
 					break;
 				case "Split":
+					success = await SplitAsync(id);
 					break;
+			}
+			if (success) {
+				var dialog = new ContentDialog {
+					Title = "Otevřeno okno přohlížeče",
+					Content =
+						"Přejděte do svého internetového přohlížeče, kde se Vám otevřela stránka s Vámi vyžadovanou funkcionalitou. " +
+						"Po dokončení klikněte na tlačítko níže." + Environment.NewLine + Environment.NewLine +
+						"Poznámka: Nejspíše se budete muset přihlásit a následně budete přesměrováni.",
+					CloseButtonText = "Hotovo"
+				};
+				var res = await dialog.ShowAsync();
 			}
 		}
 
-		public async Task UpdateAsync()
+		private async Task<bool> GiveAsync(int zolikId)
 		{
+			var url = $"https://www.zoliky.eu/App/Zoliky/Transfer?id={zolikId}";
 
+			var uri = new Uri(url);
+
+			var success = await Windows.System.Launcher.LaunchUriAsync(uri);
+			return success;
 		}
+
+		private async Task<bool> SplitAsync(int zolikId)
+		{
+			var url = $"https://www.zoliky.eu/App/Zoliky/Split?id={zolikId}";
+
+			var uri = new Uri(url);
+
+			var success = await Windows.System.Launcher.LaunchUriAsync(uri);
+			return success;
+		}
+
+		public async Task UpdateAsync() { }
 	}
 }
