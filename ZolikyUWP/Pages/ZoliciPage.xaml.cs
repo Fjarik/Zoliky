@@ -203,15 +203,22 @@ namespace ZolikyUWP.Pages
 
 		public async Task UpdateAsync()
 		{
+			if (IsLoading) {
+				return;
+			}
+			this.IsLoading = true;
 			SetLoading(true);
+
 			var api = new ZolikConnector(_me.Token);
 			Zoliks = await api.GetUserZoliksAsync(_me.ID);
 			ZoliksGrid.ItemsSource = Zoliks;
 
 			var localSettings = ApplicationData.Current.LocalSettings;
 			localSettings.Values[StorageKeys.LastZolikCount] = Zoliks.Count;
-
+			this.LastUpdate = DateTime.Now;
 			await Task.Delay(500);
+
+			this.IsLoading = false;
 			SetLoading(false);
 		}
 	}

@@ -45,7 +45,8 @@
 						           FontSize="28"
 						           VerticalAlignment="Center"
 						           Text="{Binding}" />
-						<CommandBar Grid.Column="1" Grid.Row="0"
+						<CommandBar x:Name="NavCommands"
+						            Grid.Column="1" Grid.Row="0"
 						            VerticalAlignment="Center"
 						            HorizontalAlignment="Right"
 						            DefaultLabelPosition="Right"
@@ -57,6 +58,26 @@
 							              Margin="0,0,10,0"
 							              Label="Připnout" Icon="Pin"
 							              ClickMode="Release" Click="BtnPin_OnClick" />
+							<CommandBar.SecondaryCommands>
+								<AppBarButton x:Name="InfoButton"
+								              Label="Informace"
+								              FontSize="14"
+								              ClickMode="Release" Click="BtnInfo_OnClick">
+									<AppBarButton.Icon>
+										<FontIcon FontFamily="Segoe MDL2 Assets"
+										          Glyph="&#xE946;" />
+									</AppBarButton.Icon>
+								</AppBarButton>
+								<AppBarSeparator />
+								<AppBarButton Label="Odhlásit se"
+								              FontSize="14"
+								              ClickMode="Release" Click="BtnLogout_OnClick">
+									<AppBarButton.Icon>
+										<FontIcon FontFamily="Segoe MDL2 Assets"
+										          Glyph="&#xE7E8;" />
+									</AppBarButton.Icon>
+								</AppBarButton>
+							</CommandBar.SecondaryCommands>
 						</CommandBar>
 					</Grid>
 				</DataTemplate>

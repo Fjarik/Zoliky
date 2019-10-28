@@ -18,12 +18,20 @@ namespace ZolikyUWP
 	public sealed partial class MainPage : Page
 	{
 		private User _me;
-		private AppBarButton UpdateButton => this.NavMain.FindControl<AppBarButton>("UpdateButton");
-		private AppBarButton PinButton => this.NavMain.FindControl<AppBarButton>("PinButton");
+
+		private CommandBar NavCommandsBar => this.NavMain.FindControl<CommandBar>("NavCommands");
+
+		private AppBarButton UpdateButton => this.NavCommandsBar.FindControl<AppBarButton>("UpdateButton");
+		private AppBarButton PinButton => this.NavCommandsBar.FindControl<AppBarButton>("PinButton");
+
+		private AppBarButton InfoButton =>
+			this.NavCommandsBar.SecondaryCommands.FirstOrDefault(x => x is AppBarButton btn && btn.Name == "InfoButton")
+				as AppBarButton;
 
 		public MainPage()
 		{
 			this.InitializeComponent();
+			this.DataContext = this;
 		}
 
 		protected override async void OnNavigatedTo(NavigationEventArgs e)
@@ -94,14 +102,37 @@ namespace ZolikyUWP
 
 		private void NavigateTo(Type pageType)
 		{
-			var btn = UpdateButton;
-			if (btn != null) {
-				btn.Visibility = pageType.GetInterfaces().Contains(typeof(IUpdatable))
-									 ? Visibility.Visible
-									 : Visibility.Collapsed;
+			var btns = new[] {UpdateButton, InfoButton};
+			foreach (var btn in btns) {
+				if (btn != null) {
+					btn.Visibility = pageType.GetInterfaces().Contains(typeof(IUpdatable))
+										 ? Visibility.Visible
+										 : Visibility.Collapsed;
+				}
 			}
 
 			ContentFrame.Navigate(pageType, _me);
+		}
+
+		private async void BtnInfo_OnClick(object sender, RoutedEventArgs e)
+		{
+			if (this.ContentFrame.Content is IUpdatable page) {
+				var dialog = new ContentDialog {
+					Title = "Info",
+					Content = "Poslední aktualizace: " + Environment.NewLine +
+							  page.LastUpdate,
+					PrimaryButtonText = "Ok",
+				};
+				await dialog.ShowAsync();
+			}
+		}
+
+		private void BtnLogout_OnClick(object sender, RoutedEventArgs e)
+		{
+			var localSettings = ApplicationData.Current.LocalSettings;
+			localSettings.Values.Remove(StorageKeys.LastToken);
+			localSettings.Values.Remove(StorageKeys.LastZolikCount);
+			this.Frame.Navigate(typeof(LoginPage));
 		}
 
 #region Tiles
