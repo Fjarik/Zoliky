@@ -39,12 +39,11 @@ namespace ZolikyUWP
 
 			var api = new ZolikConnector(_me.Token);
 
-
-			var zoliks = await api.GetUserZoliksAsync(_me.ID);
-			RefreshNotification(_me.ID, zoliks.Count);
+			var count = await api.GetUserZolikCountAsync(_me.ID);
+			RefreshNotification(_me.ID, count);
 
 			var localSettings = ApplicationData.Current.LocalSettings;
-			localSettings.Values[StorageKeys.LastZolikCount] = zoliks.Count;
+			localSettings.Values[StorageKeys.LastZolikCount] = count;
 			base.OnNavigatedTo(e);
 		}
 

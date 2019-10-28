@@ -7,6 +7,7 @@
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	mc:Ignorable="d"
+	xmlns:iconPacks="using:MahApps.Metro.IconPacks"
 	Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 	<Page.Resources>
 		<converters:FormatStringConverter x:Key="StringFormatConverter" />
@@ -71,23 +72,22 @@
 				</StackPanel>
 			</DataTemplate>
 		</Grid.Resources>
-		<controls:DataGrid
-			x:Name="ZoliksGrid"
-			SelectionMode="Single"
-			VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
-			Margin="20"
-			HorizontalScrollBarVisibility="Visible"
-			VerticalScrollBarVisibility="Visible"
-			AlternatingRowBackground="Transparent"
-			AlternatingRowForeground="Gold"
-			CanUserReorderColumns="False"
-			CanUserSortColumns="True"
-			CanUserResizeColumns="False"
-			IsReadOnly="True"
-			RowDetailsTemplate="{StaticResource RowDetailsTemplate}"
-			RowDetailsVisibilityMode="VisibleWhenSelected"
-			SelectionChanged="ZoliksGrid_OnSelectionChanged"
-			AutoGenerateColumns="False">
+		<controls:DataGrid x:Name="ZoliksGrid"
+		                   SelectionMode="Single"
+		                   VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+		                   Margin="20"
+		                   HorizontalScrollBarVisibility="Visible"
+		                   VerticalScrollBarVisibility="Visible"
+		                   AlternatingRowBackground="Transparent"
+		                   AlternatingRowForeground="Gold"
+		                   CanUserReorderColumns="False"
+		                   CanUserSortColumns="True"
+		                   CanUserResizeColumns="False"
+		                   IsReadOnly="True"
+		                   RowDetailsTemplate="{StaticResource RowDetailsTemplate}"
+		                   RowDetailsVisibilityMode="VisibleWhenSelected"
+		                   SelectionChanged="ZoliksGrid_OnSelectionChanged"
+		                   AutoGenerateColumns="False">
 			<controls:DataGrid.Columns>
 				<controls:DataGridTemplateColumn>
 					<controls:DataGridTemplateColumn.CellTemplate>
@@ -104,7 +104,7 @@
 				<controls:DataGridTextColumn Header="Uzamčen"
 				                             Binding="{Binding IsLocked, Converter={StaticResource BooleanToTextConverter}}"
 				                             Tag="Locked" Width="*" />
-				<controls:DataGridTemplateColumn Header="Akce" Width="3*">
+				<controls:DataGridTemplateColumn Header="Akce" Width="2*" CanUserSort="False">
 					<controls:DataGridTemplateColumn.CellTemplate>
 						<DataTemplate>
 							<Grid VerticalAlignment="Center" Margin="0, 10" HorizontalAlignment="Left">
@@ -115,26 +115,36 @@
 									<ColumnDefinition Width="10" />
 									<ColumnDefinition Width="Auto" />
 								</Grid.ColumnDefinitions>
-								<Button Content="Odemknout"
+								<Button ToolTipService.ToolTip="Odemknout"
 								        Tag="Unlock"
 								        Grid.Column="0" Grid.Row="0"
 								        Click="BtnZolikAction_OnClick"
-								        Visibility="{Binding IsLocked, Converter={StaticResource BooleanToVisibilityConverter}}" />
-								<Button Content="Uzamknout"
+								        Visibility="{Binding IsLocked, Converter={StaticResource BooleanToVisibilityConverter}}">
+									<iconPacks:PackIconMaterial Kind="LockOpenOutline" />
+								</Button>
+								<Button ToolTipService.ToolTip="Uzamknout"
 								        Tag="Lock"
 								        Grid.Column="0" Grid.Row="0"
 								        Click="BtnZolikAction_OnClick"
-								        Visibility="{Binding IsUnlocked, Converter={StaticResource BooleanToVisibilityConverter}}" />
-								<Button Content="Darovat"
+								        Visibility="{Binding IsUnlocked, Converter={StaticResource BooleanToVisibilityConverter}}">
+									<iconPacks:PackIconMaterial Kind="LockOutline" />
+								</Button>
+								<Button ToolTipService.ToolTip="Darovat"
 								        Tag="Give"
 								        Grid.Column="2" Grid.Row="0"
+								        Height="32"
 								        Click="BtnZolikAction_OnClick"
-								        Visibility="{Binding CanBeTransfered, Converter={StaticResource BooleanToVisibilityConverter}}" />
-								<Button Content="Rozdělit"
+								        Visibility="{Binding CanBeTransfered, Converter={StaticResource BooleanToVisibilityConverter}}">
+									<iconPacks:PackIconMaterial Kind="Send" />
+								</Button>
+								<Button ToolTipService.ToolTip="Rozdělit"
 								        Tag="Split"
 								        Grid.Column="4" Grid.Row="0"
+								        Height="32"
 								        Click="BtnZolikAction_OnClick"
-								        Visibility="{Binding IsSplittable, Converter={StaticResource BooleanToVisibilityConverter}}" />
+								        Visibility="{Binding IsSplittable, Converter={StaticResource BooleanToVisibilityConverter}}">
+									<iconPacks:PackIconMaterial Kind="CallSplit" />
+								</Button>
 							</Grid>
 						</DataTemplate>
 					</controls:DataGridTemplateColumn.CellTemplate>

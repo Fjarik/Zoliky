@@ -13,6 +13,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using MahApps.Metro.IconPacks;
 using Microsoft.Toolkit.Uwp.UI.Controls;
 using SharedApi.Connectors.New;
 using SharedApi.Models;
@@ -60,11 +61,7 @@ namespace ZolikyUWP.Pages
 			if (e.Parameter is User u) {
 				_me = u;
 			}
-			SetLoading(true);
-			var api = new ZolikConnector(_me.Token);
-			Zoliks = await api.GetUserZoliksAsync(_me.ID);
-			ZoliksGrid.ItemsSource = Zoliks;
-			SetLoading(false);
+			await UpdateAsync();
 			base.OnNavigatedTo(e);
 		}
 
@@ -150,6 +147,13 @@ namespace ZolikyUWP.Pages
 			return success;
 		}
 
-		public async Task UpdateAsync() { }
+		public async Task UpdateAsync()
+		{
+			SetLoading(true);
+			var api = new ZolikConnector(_me.Token);
+			Zoliks = await api.GetUserZoliksAsync(_me.ID);
+			ZoliksGrid.ItemsSource = Zoliks;
+			SetLoading(false);
+		}
 	}
 }

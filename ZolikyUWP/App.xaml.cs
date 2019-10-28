@@ -39,6 +39,7 @@ namespace ZolikyUWP
 		public App()
 		{
 			this.InitializeComponent();
+			this.FocusVisualKind = FocusVisualKind.Reveal;
 			this.Suspending += OnSuspending;
 			AppCenter.Start("1cd24c18-eccf-4047-838f-7715758684f9", typeof(Push));
 		}

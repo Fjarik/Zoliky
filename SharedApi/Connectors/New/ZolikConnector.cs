@@ -77,6 +77,22 @@ namespace SharedApi.Connectors.New
 			}
 		}
 
+		public async Task<int> GetUserZolikCountAsync(int userId,
+													  bool isTester = false,
+													  bool onlyEnabled = true)
+		{
+			if (userId < 1) {
+				return 0;
+			}
+			var url = $"zolik/getuserzolikcount?userId={userId}&isTester={isTester}&onlyEnabled={onlyEnabled}";
+			try {
+				var a = await Request(url).GetJsonAsync<int>();
+				return a;
+			} catch (Exception ex) {
+				return 0;
+			}
+		}
+
 		public async Task<List<int>> GetZolikOwnerIdsAsync()
 		{
 			var url = $"zolik/getzolikownerids";

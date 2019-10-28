@@ -209,8 +209,8 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="JetBrains.Annotations">
-      <Version>2019.1.3</Version>
+    <PackageReference Include="MahApps.Metro.IconPacks.Material">
+      <Version>3.0.0-alpha0257</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.AppCenter.Analytics">
       <Version>2.5.0</Version>
