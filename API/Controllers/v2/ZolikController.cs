@@ -176,7 +176,7 @@ namespace API.Controllers.v2
 			return Ok(res);
 		}
 
-		// POST /zolik/lock
+		// POST /zolik/unlock
 		[HttpPost]
 		[Route("unlock")]
 		[ResponseType(typeof(MActionResult<Zolik>))]

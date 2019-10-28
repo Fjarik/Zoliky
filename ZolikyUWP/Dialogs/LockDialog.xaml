@@ -1,0 +1,28 @@
+﻿<ContentDialog
+	x:Class="ZolikyUWP.Dialogs.LockDialog"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:local="using:ZolikyUWP.Dialogs"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	x:Name="ContentDialog"
+	mc:Ignorable="d"
+	Title="Zamknout žolíka"
+	PrimaryButtonText="Potvrdit"
+	SecondaryButtonText="Zrušit"
+	PrimaryButtonClick="ContentDialog_PrimaryButtonClick"
+	SecondaryButtonClick="ContentDialog_SecondaryButtonClick">
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition />
+			<RowDefinition Height="20" />
+			<RowDefinition />
+		</Grid.RowDefinitions>
+		<TextBlock Grid.Column="0" Grid.Row="0"
+		           Text="Níže zadejte na co si přejete daného žolíka použít." />
+		<TextBox Grid.Column="0" Grid.Row="2"
+		         Header="Použít na:"
+		         PlaceholderText="Např. Písemka M4, Úkol M9, ..."
+		         Text="{Binding ElementName=ContentDialog, Path=Text, Mode=TwoWay}" />
+	</Grid>
+</ContentDialog>

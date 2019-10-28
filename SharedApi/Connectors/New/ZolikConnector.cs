@@ -6,6 +6,7 @@ using Flurl.Http;
 using SharedApi.Models;
 using SharedLibrary;
 using SharedLibrary.Enums;
+using SharedLibrary.Shared.ApiModels;
 
 namespace SharedApi.Connectors.New
 {
@@ -101,6 +102,44 @@ namespace SharedApi.Connectors.New
 				return a;
 			} catch (Exception ex) {
 				return new List<int>();
+			}
+		}
+
+		public async Task<MActionResult<Zolik>> LockZolikAsync(int zolikId,
+															   string lockText)
+		{
+			var zLock = new ZolikLock {
+				ZolikId = zolikId,
+				Lock = lockText
+			};
+			if (!zLock.IsValid) {
+				return new MActionResult<Zolik>(StatusCode.NotValidID);
+			}
+
+			try {
+				var res = await Request("zolik/lock").PostJsonAsync(zLock)
+													 .ReceiveJson<MActionResult<Zolik>>();
+				return res;
+			} catch (Exception ex) {
+				return new MActionResult<Zolik>(StatusCode.SeeException, ex);
+			}
+		}
+
+		public async Task<MActionResult<Zolik>> UnlockZolikAsync(int zolikId)
+		{
+			if (zolikId < 1) {
+				return new MActionResult<Zolik>(StatusCode.NotValidID);
+			}
+			var zLock = new ZolikLock {
+				ZolikId = zolikId,
+			};
+
+			try {
+				var res = await Request("zolik/unlock").PostJsonAsync(zLock)
+													   .ReceiveJson<MActionResult<Zolik>>();
+				return res;
+			} catch (Exception ex) {
+				return new MActionResult<Zolik>(StatusCode.SeeException, ex);
 			}
 		}
 	}

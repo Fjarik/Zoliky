@@ -6,6 +6,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -18,6 +19,7 @@ using Microsoft.Toolkit.Uwp.UI.Controls;
 using SharedApi.Connectors.New;
 using SharedApi.Models;
 using ZolikyUWP.Account;
+using ZolikyUWP.Dialogs;
 using ZolikyUWP.Tools;
 
 namespace ZolikyUWP.Pages
@@ -100,11 +102,17 @@ namespace ZolikyUWP.Pages
 			var id = selected.ID;
 
 			var tag = b.Tag.ToString();
-			bool success = false;
+			bool success;
+			var showDialog = true;
+			SetLoading(true);
 			switch (tag) {
 				case "Lock":
+					success = await LockAsync(id);
+					showDialog = false;
 					break;
 				case "Unlock":
+					success = await UnlockAsync(id);
+					showDialog = false;
 					break;
 				case "Give":
 					success = await GiveAsync(id);
@@ -112,8 +120,11 @@ namespace ZolikyUWP.Pages
 				case "Split":
 					success = await SplitAsync(id);
 					break;
+				default:
+					SetLoading(false);
+					return;
 			}
-			if (success) {
+			if (showDialog && success) {
 				var dialog = new ContentDialog {
 					Title = "Otevřeno okno přohlížeče",
 					Content =
@@ -122,9 +133,41 @@ namespace ZolikyUWP.Pages
 						"Poznámka: Nejspíše se budete muset přihlásit a následně budete přesměrováni.",
 					CloseButtonText = "Hotovo"
 				};
-				var res = await dialog.ShowAsync();
-				await UpdateAsync();
+				await dialog.ShowAsync();
 			}
+			await UpdateAsync();
+		}
+
+		private async Task<bool> LockAsync(int zolikId)
+		{
+			var api = new ZolikConnector(_me.Token);
+
+			var dialog = new LockDialog();
+			var dialogRes = await dialog.ShowAsync();
+			if (dialogRes != ContentDialogResult.Primary || string.IsNullOrEmpty(dialog.Text)) {
+				return false;
+			}
+			var text = dialog.Text;
+			var res = await api.LockZolikAsync(zolikId, text);
+			if (res.IsSuccess) {
+				return true;
+			}
+			var err = res.GetStatusMessage();
+			var a = await this.ShowErrorDialogAsync(err);
+			return false;
+		}
+
+		private async Task<bool> UnlockAsync(int zolikId)
+		{
+			var api = new ZolikConnector(_me.Token);
+
+			var res = await api.UnlockZolikAsync(zolikId);
+			if (res.IsSuccess) {
+				return true;
+			}
+			var err = res.GetStatusMessage();
+			var a = await this.ShowErrorDialogAsync(err);
+			return false;
 		}
 
 		private async Task<bool> GiveAsync(int zolikId)
@@ -147,12 +190,28 @@ namespace ZolikyUWP.Pages
 			return success;
 		}
 
+		private async Task<ContentDialogResult> ShowErrorDialogAsync(string error)
+		{
+			var dialog = new ContentDialog {
+				Title = "Vyskytla se chyba",
+				Content = error,
+				CloseButtonText = "Ok"
+			};
+			var res = await dialog.ShowAsync();
+			return res;
+		}
+
 		public async Task UpdateAsync()
 		{
 			SetLoading(true);
 			var api = new ZolikConnector(_me.Token);
 			Zoliks = await api.GetUserZoliksAsync(_me.ID);
 			ZoliksGrid.ItemsSource = Zoliks;
+
+			var localSettings = ApplicationData.Current.LocalSettings;
+			localSettings.Values[StorageKeys.LastZolikCount] = Zoliks.Count;
+
+			await Task.Delay(500);
 			SetLoading(false);
 		}
 	}
