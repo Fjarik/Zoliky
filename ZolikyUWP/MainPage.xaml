@@ -54,6 +54,7 @@
 							              Label="Aktualizovat" Icon="Refresh"
 							              ClickMode="Release" Click="UpdateButton_OnClick" />
 							<AppBarButton x:Name="PinButton"
+							              Margin="0,0,10,0"
 							              Label="Připnout" Icon="Pin"
 							              ClickMode="Release" Click="BtnPin_OnClick" />
 						</CommandBar>

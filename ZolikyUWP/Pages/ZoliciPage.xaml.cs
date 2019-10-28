@@ -126,6 +126,7 @@ namespace ZolikyUWP.Pages
 					CloseButtonText = "Hotovo"
 				};
 				var res = await dialog.ShowAsync();
+				await UpdateAsync();
 			}
 		}
 

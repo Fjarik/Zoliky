@@ -60,6 +60,25 @@ namespace API.Controllers.v2
 			}
 		}
 
+		// GET /zolik/getuserzolikcount?userId=10
+		[HttpGet]
+		[Route("getuserzolikcount")]
+		[ResponseType(typeof(int))]
+		public async Task<IHttpActionResult> GetUserZolikCount([FromUri] int userId,
+															   [FromUri] bool isTester = false,
+															   [FromUri] bool onlyEnabled = true)
+		{
+			if (userId < 1) {
+				return Ok(0);
+			}
+			try {
+				var count = await Mgr.GetUsersZolikCountAsync(userId, isTester, onlyEnabled);
+				return Ok(count);
+			} catch {
+				return Ok(0);
+			}
+		}
+
 		// GET /zolik/getuserzoliklist?userId=10
 		[HttpGet]
 		[Route("getuserzoliklist")]

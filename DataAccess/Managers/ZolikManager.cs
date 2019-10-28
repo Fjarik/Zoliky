@@ -58,6 +58,20 @@ namespace DataAccess.Managers
 
 #region Own Methods
 
+		public async Task<int> GetUsersZolikCountAsync(int userId,
+													   bool isTester = false,
+													   bool onlyEnabled = true)
+		{
+			if (userId < 1) {
+				return 0;
+			}
+			var query = this.GetZoliksQuery(userId,
+											isTester,
+											onlyEnabled);
+
+			return await query.CountAsync();
+		}
+
 		public async Task<MActionResult<List<Zolik>>> GetUsersZoliksAsync(int userId,
 																		  bool isTester = false,
 																		  bool onlyEnabled = true)
@@ -78,6 +92,17 @@ namespace DataAccess.Managers
 			if (userId < 1) {
 				return new List<Zolik>();
 			}
+			var query = this.GetZoliksQuery(userId,
+											isTester,
+											onlyEnabled);
+			var z = await query.ToListAsync();
+			return z;
+		}
+
+		private IQueryable<Zolik> GetZoliksQuery(int userId,
+												 bool isTester = false,
+												 bool onlyEnabled = true)
+		{
 			var query = _ctx.Zoliky.Where(x => x.OwnerID == userId);
 			if (onlyEnabled) {
 				query = query.Where(x => x.Enabled);
@@ -86,10 +111,7 @@ namespace DataAccess.Managers
 				query = query.Where(x => x.Type != ZolikType.Debug && x.Type != ZolikType.DebugJoker);
 			}
 			query = query.OrderByDescending(x => x.OwnerSince);
-
-			var z = await query.ToListAsync();
-
-			return z;
+			return query;
 		}
 
 		public Task<List<Zolik>> GetSchoolZoliksAsync(int schoolId,
@@ -451,11 +473,12 @@ namespace DataAccess.Managers
 			var subjectId = joker.SubjectID;
 			var tMessage = $"Rozdělení \"{joker.Title}\"";
 			var originalOwnerId = joker.OriginalOwnerID;
-			return await this.SplitAsync(teacherId, toId, originalOwnerId, toType, subjectId, title, tMessage, count, deleteTran);
+			return await this.SplitAsync(teacherId, toId, originalOwnerId, toType, subjectId, title, tMessage, count,
+										 deleteTran);
 		}
 
 		private async Task<MActionResult<List<Transaction>>> SplitAsync(int teacherId,
-			int toId,
+																		int toId,
 																		int originalOwnerId,
 																		ZolikType toType,
 																		int subjectId,
