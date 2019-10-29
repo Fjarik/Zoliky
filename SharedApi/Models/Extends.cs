@@ -143,6 +143,9 @@ namespace SharedApi.Models
 
 	public partial class UserLogin : IDbEntity
 	{
+		public string StatusText => this.Status.GetDescription();
+		public string ProjectText => ((Projects) ProjectID).GetDescription();
+
 		public UserLogin() { }
 	}
 

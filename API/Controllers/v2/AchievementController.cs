@@ -29,12 +29,12 @@ namespace API.Controllers.v2
 		{
 			var userId = this.User.Identity.GetId();
 			if (userId < 1) {
-				return Ok(new MActionResult<List<Zolik>>(SharedLibrary.Enums.StatusCode.NotValidID));
+				return Ok(new List<Achievement>());
 			}
 			try {
 				return Ok(await Mgr.GetUserAchievementModels(userId));
 			} catch (Exception ex) {
-				return Ok(new MActionResult<List<Zolik>>(SharedLibrary.Enums.StatusCode.SeeException, ex));
+				return Ok(new List<Achievement>());
 			}
 		}
 	}

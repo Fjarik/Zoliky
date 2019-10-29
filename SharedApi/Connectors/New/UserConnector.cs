@@ -29,19 +29,19 @@ namespace SharedApi.Connectors.New
 			}
 		}
 
-		public async Task<List<UserLogin>> GetUserLogins(int take = 50)
+		public async Task<MActionResult<List<UserLogin>>> GetUserLogins(int take = 50)
 		{
 			if (take < 1) {
-				return new List<UserLogin>();
+				return new MActionResult<List<UserLogin>>(StatusCode.NotValidID);
 			}
 			try {
-				var res = await Request($"user/logins?take={take}").GetJsonAsync<List<UserLogin>>();
+				var res = await Request($"user/logins?take={take}").GetJsonAsync<MActionResult<List<UserLogin>>>();
 				return res;
 			} catch (Exception ex) {
 #if (DEBUG)
 				throw;
 #endif
-				return new List<UserLogin>();
+				return new MActionResult<List<UserLogin>>(StatusCode.SeeException, ex);
 			}
 		}
 	}

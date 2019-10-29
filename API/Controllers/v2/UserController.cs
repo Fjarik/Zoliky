@@ -198,12 +198,12 @@ namespace API.Controllers.v2
 		[HttpGet]
 		[OwnAuthorize]
 		[Route("logins")]
-		[ResponseType(typeof(List<UserLogin>))]
-		public async Task<IHttpActionResult> GetUsers([FromUri] int take = 100)
+		[ResponseType(typeof(MActionResult<List<UserLogin>>))]
+		public async Task<IHttpActionResult> GetUserLogins([FromUri] int take = 100)
 		{
 			var userId = this.User.Identity.GetId();
 			if (userId < 1) {
-				return Ok(new List<UserLogin>());
+				return Ok(new MActionResult<List<UserLogin>>(SharedLibrary.Enums.StatusCode.NotValidID));
 			}
 
 			var uMgr = this.GetManager<UserLoginManager>();
@@ -211,7 +211,7 @@ namespace API.Controllers.v2
 				var res = await uMgr.GetAllAsync(userId, take);
 				return Ok(res);
 			} catch (Exception ex) {
-				return Ok(new List<UserLogin>());
+				return Ok(new MActionResult<List<UserLogin>>(SharedLibrary.Enums.StatusCode.SeeException, ex));
 			}
 		}
 	}

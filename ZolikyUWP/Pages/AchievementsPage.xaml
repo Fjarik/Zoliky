@@ -26,6 +26,7 @@
 				<DataTemplate x:DataType="elm:AchievementModel">
 					<Button HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
 					        HorizontalContentAlignment="Stretch"
+							IsEnabled="{x:Bind IsUnlocked}"
 					        Padding="5" Background="{ThemeResource SystemControlBackgroundChromeMediumLowBrush}">
 						<Grid>
 							<Grid.RowDefinitions>

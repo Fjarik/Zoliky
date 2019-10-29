@@ -1,0 +1,47 @@
+﻿<Page
+	x:Class="ZolikyUWP.Pages.LoginHistoryPage"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:local="using:ZolikyUWP.Pages"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:converters="using:Microsoft.Toolkit.Uwp.UI.Converters"
+	xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+	mc:Ignorable="d"
+	Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+	<Page.Resources>
+		<converters:FormatStringConverter x:Key="StringFormatConverter" />
+		<converters:BoolToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+		<converters:BoolToObjectConverter x:Key="BooleanToTextConverter" TrueValue="Ano" FalseValue="Ne" />
+	</Page.Resources>
+	<Grid>
+		<controls:DataGrid x:Name="LoginsGrid"
+		                   SelectionMode="Single"
+		                   VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+		                   Margin="20"
+		                   HorizontalScrollBarVisibility="Visible"
+		                   VerticalScrollBarVisibility="Visible"
+		                   AlternatingRowBackground="Transparent"
+		                   AlternatingRowForeground="Gold"
+		                   CanUserReorderColumns="False"
+		                   CanUserSortColumns="True"
+		                   CanUserResizeColumns="False"
+		                   IsReadOnly="True"
+		                   RowDetailsVisibilityMode="Collapsed"
+		                   AutoGenerateColumns="False"
+		                   ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+			<controls:DataGrid.Columns>
+				<controls:DataGridTextColumn Header="ID" Binding="{Binding ID}" Tag="ID" Width="*" />
+				<controls:DataGridTextColumn Header="Platforma" Binding="{Binding ProjectText}" Tag="Zolik" Width="3*" />
+				<controls:DataGridTextColumn Header="Datum"
+				                             Binding="{Binding Date, 
+																Converter={StaticResource StringFormatConverter },
+																ConverterParameter='dd.MM.yyyy HH:mm'}"
+				                             Tag="Date" Width="*" />
+				<controls:DataGridTextColumn Header="IP adresa" Binding="{Binding IP}" Tag="Ip" Width="2*" />
+				<controls:DataGridTextColumn Header="Status" Binding="{Binding StatusText}" Tag="State" Width="2*" />
+			</controls:DataGrid.Columns>
+		</controls:DataGrid>
+
+	</Grid>
+</Page>

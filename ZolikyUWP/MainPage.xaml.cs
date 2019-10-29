@@ -6,6 +6,7 @@ using Windows.UI.Notifications;
 using Windows.UI.StartScreen;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Navigation;
 using SharedApi.Models;
 using ZolikyUWP.Account;
@@ -86,9 +87,17 @@ namespace ZolikyUWP
 				case "Achievements":
 					type = typeof(AchievementsPage);
 					break;
+				case "Statistics":
+					// type = typeof(StatisticsPage);
+					break;
 			}
 
 			NavigateTo(type);
+		}
+
+		private void LoginHistory_OnTapped(object sender, TappedRoutedEventArgs e)
+		{
+			NavigateTo(typeof(LoginHistoryPage));
 		}
 
 		private void UpdateButton_OnClick(object sender, RoutedEventArgs e)

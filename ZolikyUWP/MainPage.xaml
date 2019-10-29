@@ -27,7 +27,7 @@
 					</NavigationViewItem.Icon>
 				</NavigationViewItem>
 				<NavigationViewItem Icon="OutlineStar" Content="Achievementy" Tag="Achievements" />
-				<NavigationViewItem Content="Statistiky">
+				<NavigationViewItem Content="Statistiky" Tag="Statistics">
 					<NavigationViewItem.Icon>
 						<FontIcon FontFamily="Segoe MDL2 Assets"
 						          Glyph="&#xE9D2;" />
@@ -92,7 +92,7 @@
 			</Frame>
 			<NavigationView.PaneFooter>
 				<StackPanel Orientation="Vertical">
-					<NavigationViewItem Icon="ReportHacked" Content="Zabezpečení" />
+					<NavigationViewItem Icon="ReportHacked" Content="Zabezpečení" Tapped="LoginHistory_OnTapped"  />
 					<NavigationViewItem Icon="Setting" Content="Nastavení" />
 				</StackPanel>
 			</NavigationView.PaneFooter>

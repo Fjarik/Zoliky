@@ -126,6 +126,12 @@
     </Compile>
     <Compile Include="Models\DefaultTile.cs" />
     <Compile Include="Models\Generator.cs" />
+    <Compile Include="Pages\LoginHistoryPage.xaml.cs">
+      <DependentUpon>LoginHistoryPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\StatisticsPage.xaml.cs">
+      <DependentUpon>StatisticsPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\TransactionPage.xaml.cs">
       <DependentUpon>TransactionPage.xaml</DependentUpon>
     </Compile>
@@ -217,6 +223,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MainPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\LoginHistoryPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\StatisticsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
