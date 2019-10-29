@@ -83,6 +83,9 @@ namespace ZolikyUWP
 				case "Transactions":
 					type = typeof(TransactionPage);
 					break;
+				case "Achievements":
+					type = typeof(AchievementsPage);
+					break;
 			}
 
 			NavigateTo(type);

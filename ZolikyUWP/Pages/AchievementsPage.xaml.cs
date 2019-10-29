@@ -16,18 +16,19 @@ using Windows.UI.Xaml.Navigation;
 using Microsoft.Toolkit.Uwp.UI.Controls;
 using SharedApi.Connectors.New;
 using SharedApi.Models;
+using SharedLibrary.Shared.Objects;
 using ZolikyUWP.Account;
 using ZolikyUWP.Tools;
 
 namespace ZolikyUWP.Pages
 {
-	public sealed partial class TransactionPage : Page, IUpdatable
+	public sealed partial class AchievementsPage : Page, IUpdatable
 	{
 		private User _me;
 
 		public bool IsLoading { get; set; }
 		public DateTime LastUpdate { get; set; }
-		public List<Transaction> Transactions { get; set; }
+		public List<AchievementModel> Achievements { get; set; }
 
 		private Loading LoadingElement
 		{
@@ -46,7 +47,7 @@ namespace ZolikyUWP.Pages
 			}
 		}
 
-		public TransactionPage()
+		public AchievementsPage()
 		{
 			this.InitializeComponent();
 		}
@@ -72,34 +73,6 @@ namespace ZolikyUWP.Pages
 			}
 		}
 
-		private void TransactionsGrid_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
-		{
-			if (!(TransactionsGrid.SelectedItem is Transaction selected)) {
-				return;
-			}
-
-			foreach (var tran in Transactions.Where(tran => tran.ID != selected.ID)) {
-				if (TransactionsGrid.Columns[0].GetCellContent(tran) is FontIcon original) {
-					original.Glyph = "\uE76C";
-				}
-			}
-
-			if (TransactionsGrid.Columns[0].GetCellContent(selected) is FontIcon icon) {
-				icon.Glyph = "\uE70D";
-			}
-		}
-
-		private async Task<ContentDialogResult> ShowErrorDialogAsync(string error)
-		{
-			var dialog = new ContentDialog {
-				Title = "Vyskytla se chyba",
-				Content = error,
-				CloseButtonText = "Ok"
-			};
-			var res = await dialog.ShowAsync();
-			return res;
-		}
-
 		public async Task UpdateAsync()
 		{
 			if (IsLoading) {
@@ -108,16 +81,9 @@ namespace ZolikyUWP.Pages
 			this.IsLoading = true;
 			SetLoading(true);
 
-
-			var api = new TransactionConnector(_me.Token);
-			var tRes = await api.GetUserTransactions(_me.ID, 50);
-			if (!tRes.IsSuccess) {
-				await ShowErrorDialogAsync(tRes.GetStatusMessage());
-				this.IsLoading = false;
-				return;
-			}
-			Transactions = tRes.Content;
-			TransactionsGrid.ItemsSource = Transactions;
+			var api = new AchievementConnector(_me.Token);
+			Achievements = await api.GetUserAchivementsAsync();
+			RepeaterAchievements.ItemsSource = Achievements;
 
 			this.LastUpdate = DateTime.Now;
 			await Task.Delay(500);
