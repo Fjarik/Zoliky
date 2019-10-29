@@ -1,0 +1,100 @@
+﻿<Page
+	x:Class="ZolikyUWP.Pages.TransactionPage"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:local="using:ZolikyUWP.Pages"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:converters="using:Microsoft.Toolkit.Uwp.UI.Converters"
+	xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	mc:Ignorable="d"
+	Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+	<Page.Resources>
+		<converters:FormatStringConverter x:Key="StringFormatConverter" />
+		<converters:BoolToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+		<converters:BoolToObjectConverter x:Key="BooleanToTextConverter" TrueValue="Ano" FalseValue="Ne" />
+	</Page.Resources>
+	<Grid>
+		<Grid.Resources>
+			<DataTemplate x:Key="RowDetailsTemplate">
+				<StackPanel>
+					<TextBlock Margin="20, 10, 0, 10"
+					           Text="Detailní informace:" />
+					<Grid Margin="25, 0, 0, 20">
+						<Grid.RowDefinitions>
+							<RowDefinition Height="Auto" />
+							<RowDefinition Height="5" />
+							<RowDefinition Height="Auto" />
+							<RowDefinition Height="5" />
+							<RowDefinition Height="Auto" />
+						</Grid.RowDefinitions>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="Auto" />
+							<ColumnDefinition Width="10" />
+							<ColumnDefinition Width="Auto" />
+						</Grid.ColumnDefinitions>
+
+						<TextBlock Grid.Row="0" Grid.Column="0"
+						           Text="Typ transakce: "
+						           FontWeight="SemiBold" />
+						<TextBlock Grid.Row="0" Grid.Column="2"
+						           Text="{Binding TypeString}"
+						           HorizontalAlignment="Right" />
+
+						<TextBlock Grid.Row="2" Grid.Column="0"
+						           Text="Typ žolíka: "
+						           FontWeight="SemiBold" />
+						<TextBlock Grid.Row="2" Grid.Column="2"
+						           Text="{Binding ZolikTypeString}"
+						           HorizontalAlignment="Right" />
+
+						<TextBlock Grid.Row="4" Grid.Column="0"
+						           Text="Zpráva: "
+						           FontWeight="SemiBold" />
+						<TextBlock Grid.Row="4" Grid.Column="2"
+						           Text="{Binding Message}"
+						           HorizontalAlignment="Right" />
+					</Grid>
+				</StackPanel>
+			</DataTemplate>
+		</Grid.Resources>
+		<controls:DataGrid x:Name="TransactionsGrid"
+		                   SelectionMode="Single"
+		                   VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+		                   Margin="20"
+		                   HorizontalScrollBarVisibility="Visible"
+		                   VerticalScrollBarVisibility="Visible"
+		                   AlternatingRowBackground="Transparent"
+		                   AlternatingRowForeground="Gold"
+		                   CanUserReorderColumns="False"
+		                   CanUserSortColumns="True"
+		                   CanUserResizeColumns="False"
+		                   IsReadOnly="True"
+		                   RowDetailsTemplate="{StaticResource RowDetailsTemplate}"
+		                   RowDetailsVisibilityMode="VisibleWhenSelected"
+		                   SelectionChanged="TransactionsGrid_OnSelectionChanged"
+		                   AutoGenerateColumns="False"
+		                   ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+			<controls:DataGrid.Columns>
+				<controls:DataGridTemplateColumn>
+					<controls:DataGridTemplateColumn.CellTemplate>
+						<DataTemplate>
+							<FontIcon FontFamily="Segoe MDL2 Assets"
+							          Glyph="&#xE76C;" />
+						</DataTemplate>
+					</controls:DataGridTemplateColumn.CellTemplate>
+				</controls:DataGridTemplateColumn>
+				<controls:DataGridTextColumn Header="ID" Binding="{Binding ID}" Tag="ID" Width="*" />
+				<controls:DataGridTextColumn Header="Žolík" Binding="{Binding ZolikTitle}" Tag="Zolik" Width="3*" />
+				<controls:DataGridTextColumn Header="Datum"
+				                             Binding="{Binding Date, 
+																Converter={StaticResource StringFormatConverter },
+																ConverterParameter='dd.MM.yyyy'}"
+				                             Tag="Date" Width="*" />
+				<controls:DataGridTextColumn Header="Odesílatel" Binding="{Binding From}" Tag="Sender" Width="2*" />
+				<controls:DataGridTextColumn Header="Příjemce" Binding="{Binding To}" Tag="Recipient" Width="2*" />
+
+			</controls:DataGrid.Columns>
+		</controls:DataGrid>
+	</Grid>
+</Page>

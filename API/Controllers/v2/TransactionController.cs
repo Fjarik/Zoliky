@@ -40,14 +40,15 @@ namespace API.Controllers.v2
 		[ResponseType(typeof(MActionResult<List<Transaction>>))]
 		public async Task<IHttpActionResult> GetUserTransactions([FromUri] int userId,
 																 [FromUri] int? lastTransId = null,
-																 [FromUri] bool isTester = false)
+																 [FromUri] bool isTester = false,
+																 [FromUri] int take = 100)
 		{
 			if (userId < 1) {
 				return Ok(new MActionResult<List<Transaction>>(SharedLibrary.Enums.StatusCode.NotValidID));
 			}
 			MActionResult<List<Transaction>> mAz;
 			try {
-				mAz = await Mgr.UserTransactionsAsync(userId, isTester, lastTransId);
+				mAz = await Mgr.UserTransactionsAsync(userId, isTester, lastTransId, take);
 			} catch (Exception ex) {
 				mAz = new MActionResult<List<Transaction>>(SharedLibrary.Enums.StatusCode.SeeException, ex);
 			}

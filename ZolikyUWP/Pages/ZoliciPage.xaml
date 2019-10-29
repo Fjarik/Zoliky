@@ -87,7 +87,8 @@
 		                   RowDetailsTemplate="{StaticResource RowDetailsTemplate}"
 		                   RowDetailsVisibilityMode="VisibleWhenSelected"
 		                   SelectionChanged="ZoliksGrid_OnSelectionChanged"
-		                   AutoGenerateColumns="False">
+		                   AutoGenerateColumns="False"
+		                   ScrollViewer.HorizontalScrollBarVisibility="Disabled">
 			<controls:DataGrid.Columns>
 				<controls:DataGridTemplateColumn>
 					<controls:DataGridTemplateColumn.CellTemplate>

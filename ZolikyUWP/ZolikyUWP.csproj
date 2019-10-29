@@ -123,6 +123,9 @@
     </Compile>
     <Compile Include="Models\DefaultTile.cs" />
     <Compile Include="Models\Generator.cs" />
+    <Compile Include="Pages\TransactionPage.xaml.cs">
+      <DependentUpon>TransactionPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\ZoliciPage.xaml.cs">
       <DependentUpon>ZoliciPage.xaml</DependentUpon>
     </Compile>
@@ -207,6 +210,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MainPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\TransactionPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

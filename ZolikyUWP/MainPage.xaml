@@ -21,7 +21,7 @@
 						          Glyph="&#xF246;" />
 					</NavigationViewItem.Icon>
 				</NavigationViewItem>
-				<NavigationViewItem Content="Transakce">
+				<NavigationViewItem Content="Transakce" Tag="Transactions">
 					<NavigationViewItem.Icon>
 						<SymbolIcon Symbol="57660" />
 					</NavigationViewItem.Icon>

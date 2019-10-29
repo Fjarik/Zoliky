@@ -53,12 +53,12 @@ namespace DataAccess.Managers
 #region Own Methods
 
 		public async Task<MActionResult<List<Transaction>>> UserTransactionsAsync(
-			int userID, bool isTester = false, int? lastTranID = null) //ID uživatele - odesílatel/příjemce
+			int userID, bool isTester = false, int? lastTranID = null,
+			int take = 100) //ID uživatele - odesílatel/příjemce
 		{
 			if (userID < 1 || (lastTranID != null && lastTranID < 1)) {
 				return new MActionResult<List<Transaction>>(StatusCode.NotValidID);
 			}
-			List<Transaction> t = new List<Transaction>();
 
 			var query = _ctx.Transactions.Where(x => x.FromID == userID || x.ToID == userID);
 			if (!isTester) {
@@ -67,13 +67,12 @@ namespace DataAccess.Managers
 
 			query = query.OrderByDescending(x => x.Date);
 
-			if (lastTranID == null) {
-				t.AddRange(await query.ToListAsync());
-			} else {
-				t.AddRange(await query.Where(x => x.ID > lastTranID).ToListAsync());
+			if (lastTranID != null) {
+				query = query.Where(x => x.ID > lastTranID);
 			}
+			var res = await query.Take(take).ToListAsync();
 
-			return new MActionResult<List<Transaction>>(StatusCode.OK, t);
+			return new MActionResult<List<Transaction>>(StatusCode.OK, res);
 		}
 
 		public async Task<List<Transaction>> ZolikTransactionsAsync(int zolikid) //ID uživatele - odesílatel/příjemce

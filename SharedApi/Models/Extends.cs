@@ -66,13 +66,9 @@ namespace SharedApi.Models
 
 		public string DirectionFull { get; set; }
 
-		/*
-		public TransactionAssignment Typ
-		{
-			get => (TransactionAssignment)this.Assignment;
-			set => this.Assignment = (int)value;
-		}
-		*/
+		public string ZolikTypeString => this.ZolikType?.GetDescription();
+		public string TypeString => this.Typ.GetDescription();
+
 		public Transaction() { }
 	}
 

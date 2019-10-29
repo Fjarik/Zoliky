@@ -80,8 +80,8 @@ namespace ZolikyUWP
 				case "Zolici":
 					type = typeof(ZoliciPage);
 					break;
-				default:
-					// type = typeof(DefaultPage);
+				case "Transactions":
+					type = typeof(TransactionPage);
 					break;
 			}
 
