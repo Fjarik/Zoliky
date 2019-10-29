@@ -97,6 +97,7 @@ namespace ZolikyUWP
 
 		private void LoginHistory_OnTapped(object sender, TappedRoutedEventArgs e)
 		{
+			NavMain.Header = "Historie přihlášení";
 			NavigateTo(typeof(LoginHistoryPage));
 		}
 

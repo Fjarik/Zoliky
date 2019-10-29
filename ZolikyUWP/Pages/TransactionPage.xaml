@@ -11,8 +11,6 @@
 	Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 	<Page.Resources>
 		<converters:FormatStringConverter x:Key="StringFormatConverter" />
-		<converters:BoolToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-		<converters:BoolToObjectConverter x:Key="BooleanToTextConverter" TrueValue="Ano" FalseValue="Ne" />
 	</Page.Resources>
 	<Grid>
 		<Grid.Resources>
