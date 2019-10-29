@@ -11,6 +11,7 @@ using Microsoft.Owin;
 using SharedLibrary;
 using SharedLibrary.Enums;
 using SharedLibrary.Shared;
+using SharedLibrary.Shared.Objects;
 
 namespace DataAccess.Managers
 {
@@ -58,6 +59,31 @@ namespace DataAccess.Managers
 #endregion
 
 #region Own Methods
+
+		public async Task<List<AchievementModel>> GetUserAchievementModels(int userId)
+		{
+			if (userId < 1) {
+				return new List<AchievementModel>();
+			}
+
+			var achs = await this.GetAllAsync();
+			var unlocked = await this.GetUnlockedIdsAsync(userId);
+
+			var ids = unlocked.Select(x => x.AchievementId);
+
+			var model = achs.Where(x => ids.All(y => x.ID != y))
+							.Select(x => new AchievementModel(x));
+
+			var un = unlocked.Select(x => new AchievementModel(achs.FirstOrDefault(y => y.ID == x.AchievementId)) {
+										 IsUnlocked = true,
+										 When = x.When
+									 }
+									);
+
+			var res = un.Concat(model);
+
+			return res.ToList();
+		}
 
 		public async Task<IList<AchievementUnlock>> GetUnlockedIdsAsync(int userId)
 		{

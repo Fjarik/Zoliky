@@ -10,6 +10,5 @@ namespace SharedLibrary.Interfaces
 		string Description { get; set; }
 		int XP { get; set; }
 		bool Enabled { get; set; }
-		int? ValueToUnlock { get; set; }
 	}
 }

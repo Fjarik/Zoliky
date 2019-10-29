@@ -1,18 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+using System.Text;
 using SharedLibrary.Interfaces;
 
-namespace ZolikyWeb.Areas.App.Models.Achievement
+namespace SharedLibrary.Shared.Objects
 {
-	public class AchievementModel : DataAccess.Models.Achievement
+	public class AchievementModel : IAchievement
 	{
-		public bool IsUnlocked { get; set; } = false;
-		public DateTime? When { get; set; } = null;
+#region Entity
 
-		public string CardStyle => IsUnlocked ? "" : "background-color: #e6e6e6;";
-		public string ImageStyle => IsUnlocked ? "" : "filter: grayscale(100%);";
+		public int ID { get; set; }
+		public string Title { get; set; }
+		public string Description { get; set; }
+		public int XP { get; set; }
+		public bool Enabled { get; set; }
+
+#endregion
+
+		public bool IsUnlocked { get; set; } = false;
+		public bool IsNotUnlocked => !this.IsUnlocked;
+		public DateTime? When { get; set; } = null;
 
 		public AchievementModel() { }
 

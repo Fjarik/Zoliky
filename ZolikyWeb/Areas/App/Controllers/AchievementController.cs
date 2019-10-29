@@ -36,9 +36,9 @@ namespace ZolikyWeb.Areas.App.Controllers
 			var unlocked = await Mgr.GetUnlockedIdsAsync(id);
 			var ids = unlocked.Select(x => x.AchievementId);
 
-			var model = achs.Where(x => ids.All(y => x.ID != y)).Select(x => new AchievementModel(x));
+			var model = achs.Where(x => ids.All(y => x.ID != y)).Select(x => new AchievementMvcModel(x));
 
-			var un = unlocked.Select(x => new AchievementModel(achs.FirstOrDefault(y => y.ID == x.AchievementId)) {
+			var un = unlocked.Select(x => new AchievementMvcModel(achs.FirstOrDefault(y => y.ID == x.AchievementId)) {
 										 IsUnlocked = true,
 										 When = x.When
 									 }

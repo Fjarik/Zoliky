@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.Http;
 using Microsoft.AspNet.Identity.Owin;
 using DataAccess.Managers.New.Interfaces;
+using SharedLibrary;
 using SharedLibrary.Interfaces;
 
 namespace API.Tools
@@ -28,8 +29,18 @@ namespace API.Tools
 		[Route("get")]
 		public virtual async Task<IHttpActionResult> Get([FromUri] int id)
 		{
-			var res = await ((Mgr as IManager<TEntity>)?.GetByIdAsync(id));
-			return Ok(res);
+			if (id < 1) {
+				return Ok(new MActionResult<TEntity>(SharedLibrary.Enums.StatusCode.NotValidID));
+			}
+			try {
+				if (!(Mgr is IManager<TEntity> mgr)) {
+					return Ok(new MActionResult<TEntity>(SharedLibrary.Enums.StatusCode.InternalError));
+				}
+				var res = await mgr.GetByIdAsync(id);
+				return Ok(res);
+			} catch (Exception ex) {
+				return Ok(new MActionResult<TEntity>(SharedLibrary.Enums.StatusCode.SeeException, ex));
+			}
 		}
 	}
 }
