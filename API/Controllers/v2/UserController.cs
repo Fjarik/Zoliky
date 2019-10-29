@@ -193,5 +193,26 @@ namespace API.Controllers.v2
 			}
 			return Ok(true);
 		}
+
+		// GET /user/logins?take=1
+		[HttpGet]
+		[OwnAuthorize]
+		[Route("logins")]
+		[ResponseType(typeof(List<UserLogin>))]
+		public async Task<IHttpActionResult> GetUsers([FromUri] int take = 100)
+		{
+			var userId = this.User.Identity.GetId();
+			if (userId < 1) {
+				return Ok(new List<UserLogin>());
+			}
+
+			var uMgr = this.GetManager<UserLoginManager>();
+			try {
+				var res = await uMgr.GetAllAsync(userId, take);
+				return Ok(res);
+			} catch (Exception ex) {
+				return Ok(new List<UserLogin>());
+			}
+		}
 	}
 }

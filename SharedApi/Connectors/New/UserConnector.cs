@@ -28,5 +28,21 @@ namespace SharedApi.Connectors.New
 				return new MActionResult<User>(StatusCode.SeeException, ex);
 			}
 		}
+
+		public async Task<List<UserLogin>> GetUserLogins(int take = 50)
+		{
+			if (take < 1) {
+				return new List<UserLogin>();
+			}
+			try {
+				var res = await Request($"user/logins?take={take}").GetJsonAsync<List<UserLogin>>();
+				return res;
+			} catch (Exception ex) {
+#if (DEBUG)
+				throw;
+#endif
+				return new List<UserLogin>();
+			}
+		}
 	}
 }
