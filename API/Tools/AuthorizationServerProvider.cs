@@ -101,7 +101,15 @@ namespace API.Tools
 			}
 			if (u.Class != null && !string.IsNullOrWhiteSpace(u.ClassName)) {
 				identity.AddClaim(new Claim("className", u.ClassName));
+			} else {
+				identity.AddClaim(new Claim("className", "Veřejnost"));
 			}
+			if (u.School != null && !string.IsNullOrWhiteSpace(u.SchoolName)) {
+				identity.AddClaim(new Claim("schoolName", u.SchoolName));
+			} else {
+				identity.AddClaim(new Claim("schoolName", "Nespecifikovaná škola"));
+			}
+			identity.AddClaim(new Claim("schoolId", u.SchoolID.ToString()));
 			identity.AddClaim(new Claim(ClaimTypes.Gender, u.Sex.ToString()));
 			identity.AddClaim(new Claim("publicId", u.ID.ToString()));
 

@@ -42,7 +42,7 @@ namespace ZolikyWeb.Tools
 
 			return res.Content;
 		}
-
+		
 		public static int GetSchoolId(this System.Security.Principal.IPrincipal principal)
 		{
 			if (principal.IsInRolesOr(UserRoles.Administrator, UserRoles.Developer) &&

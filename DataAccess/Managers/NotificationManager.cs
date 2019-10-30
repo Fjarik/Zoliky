@@ -180,7 +180,7 @@ namespace DataAccess.Managers
 																DateTime? expiration = null)
 		{
 			var uMgr = Context.Get<UserManager>();
-			var ids = (uMgr.GetStudents()).Select(x => x.ID).OrderBy(x => x);
+			var ids = (uMgr.GetStudents(1)).Select(x => x.ID).OrderBy(x => x);
 			var success = true;
 
 			foreach (var id in ids) {

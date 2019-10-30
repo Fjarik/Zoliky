@@ -138,7 +138,7 @@ namespace DataAccess
 		public static Expression<Func<User, bool>> HasSetting(string key, string value, int? projectId = null)
 		{
 			return x => x.UserSettings.Any(s =>
-											   s.Key == key && 
+											   s.Key == key &&
 											   s.Value.ToLower() == value.ToLower() &&
 											   s.ProjectID == projectId);
 		}
@@ -192,7 +192,7 @@ namespace DataAccess
 		{
 			return GetValue<string>(identity, "schoolName");
 		}
-		
+
 		public static int GetId(this System.Security.Principal.IIdentity identity)
 		{
 			return GetValue<int>(identity, "publicId");
@@ -201,6 +201,11 @@ namespace DataAccess
 		public static bool IsTester(this System.Security.Principal.IIdentity identity)
 		{
 			return GetValue<bool>(identity, "isTester");
+		}
+
+		public static int GetSchoolId(this System.Security.Principal.IIdentity identity)
+		{
+			return GetValue<int>(identity, "schoolId");
 		}
 
 		public static T GetValue<T>(this System.Security.Principal.IIdentity identity, string key)

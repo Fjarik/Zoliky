@@ -31,16 +31,17 @@ namespace ZolikyWeb.Areas.App.Controllers
 			var rankMgr = this.GetManager<RankManager>();
 			var uMgr = this.GetManager<UserManager>();
 			var user = await this.GetLoggedUserAsync();
+			var schoolId = this.User.GetSchoolId();
 			var isTester = this.User.Identity.IsTester();
 			var zoliks = user.OriginalZoliks.Where(x => x.Enabled).OrderByDescending(x => x.OwnerSince).ToList();
 			var className = user.ClassName;
 			IList<GetTopStudents_Result> studentsClass = new List<GetTopStudents_Result>();
 			IList<GetTopStudents_Result> students = new List<GetTopStudents_Result>();
 			if (user.ClassID != null) {
-				studentsClass = uMgr.GetStudentsWithMostZoliks(5, user.ClassID, 1);
+				studentsClass = uMgr.GetStudentsWithMostZoliks(schoolId, 5, user.ClassID, 1);
 			}
 			if (!user.IsInRole(UserRoles.Public)) {
-				students = uMgr.GetStudentsWithMostZoliks(5, null, 1);
+				students = uMgr.GetStudentsWithMostZoliks(schoolId, 5, null, 1);
 			}
 
 			var count = zoliks.CountZoliks(isTester);

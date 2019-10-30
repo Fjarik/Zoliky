@@ -762,6 +762,7 @@
         <Function Name="GetStudents" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="imageMaxSize" Type="int" Mode="In" />
           <Parameter Name="classId" Type="int" Mode="In" />
+          <Parameter Name="schoolId" Type="int" Mode="In" />
           <Parameter Name="defaultPhotoId" Type="int" Mode="In" />
           <Parameter Name="onlyActive" Type="bit" Mode="In" />
         </Function>
@@ -769,6 +770,7 @@
           <Parameter Name="top" Type="int" Mode="In" />
           <Parameter Name="imageMaxSize" Type="int" Mode="In" />
           <Parameter Name="classId" Type="int" Mode="In" />
+          <Parameter Name="schoolId" Type="int" Mode="In" />
           <Parameter Name="settingsKey" Type="nvarchar(max)" Mode="In" />
           <Parameter Name="defaultPhotoId" Type="int" Mode="In" />
         </Function>
@@ -776,6 +778,7 @@
           <Parameter Name="top" Type="int" Mode="In" />
           <Parameter Name="imageMaxSize" Type="int" Mode="In" />
           <Parameter Name="classId" Type="int" Mode="In" />
+          <Parameter Name="schoolId" Type="int" Mode="In" />
           <Parameter Name="settingsKey" Type="nvarchar(max)" Mode="In" />
           <Parameter Name="defaultPhotoId" Type="int" Mode="In" />
         </Function>
@@ -1118,6 +1121,7 @@
             <Parameter Name="top" Mode="In" Type="Int32" />
             <Parameter Name="imageMaxSize" Mode="In" Type="Int32" />
             <Parameter Name="classId" Mode="In" Type="Int32" />
+            <Parameter Name="schoolId" Mode="In" Type="Int32" />
             <Parameter Name="settingsKey" Mode="In" Type="String" />
             <Parameter Name="defaultPhotoId" Mode="In" Type="Int32" />
           </FunctionImport>
@@ -1125,12 +1129,14 @@
             <Parameter Name="top" Mode="In" Type="Int32" />
             <Parameter Name="imageMaxSize" Mode="In" Type="Int32" />
             <Parameter Name="classId" Mode="In" Type="Int32" />
+            <Parameter Name="schoolId" Mode="In" Type="Int32" />
             <Parameter Name="settingsKey" Mode="In" Type="String" />
             <Parameter Name="defaultPhotoId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="GetStudents" ReturnType="Collection(ZoliksModel.GetTopStudents_Result)" a:MethodAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration">
             <Parameter Name="imageMaxSize" Mode="In" Type="Int32" />
             <Parameter Name="classId" Mode="In" Type="Int32" />
+            <Parameter Name="schoolId" Mode="In" Type="Int32" />
             <Parameter Name="defaultPhotoId" Mode="In" Type="Int32" />
             <Parameter Name="onlyActive" Mode="In" Type="Boolean" />
           </FunctionImport>

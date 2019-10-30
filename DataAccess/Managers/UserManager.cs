@@ -804,17 +804,18 @@ namespace DataAccess.Managers
 			return new MActionResult<List<User>>(StatusCode.OK, users);
 		}
 
-		public IList<IStudent> GetStudents(params int[] excludeIds)
+		public IList<IStudent> GetStudents(int schoolId, params int[] excludeIds)
 		{
-			return this.GetStudents(null, imageMaxSize: 1, true, excludeIds).ToList<IStudent>();
+			return this.GetStudents(schoolId, null, imageMaxSize: 1, true, excludeIds).ToList<IStudent>();
 		}
 
-		public IList<GetTopStudents_Result> GetStudents(int? classId = null,
+		public IList<GetTopStudents_Result> GetStudents(int schoolId,
+														int? classId = null,
 														int? imageMaxSize = null,
 														bool onlyActive = true,
 														params int[] excludeIds)
 		{
-			return _ctx.GetStudents(onlyActive, imageMaxSize, classId, excludeIds);
+			return _ctx.GetStudents(onlyActive, schoolId, imageMaxSize, classId, excludeIds);
 		}
 
 		public IList<IStudent> GetFakeStudents(params int[] excludeIds)
@@ -854,17 +855,21 @@ namespace DataAccess.Managers
 
 #region Social methods (Most zoliks,...)
 
-		public IList<GetTopStudents_Result> GetStudentsWithMostZoliks(int top = 5, int? classId = null,
+		public IList<GetTopStudents_Result> GetStudentsWithMostZoliks(int schoolId,
+																	  int top = 5,
+																	  int? classId = null,
 																	  int? imageMaxSize = null)
 		{
-			var res = _ctx.GetTopStudents(top: top, classId: classId, imageMaxSize: imageMaxSize);
+			var res = _ctx.GetTopStudents(top: top, classId: classId, schoolId: schoolId, imageMaxSize: imageMaxSize);
 			return res;
 		}
 
-		public IList<GetTopStudents_Result> GetStudentsWithMostXp(int top = 5, int? classId = null,
+		public IList<GetTopStudents_Result> GetStudentsWithMostXp(int schoolId,
+																  int top = 5,
+																  int? classId = null,
 																  int? imageMaxSize = null)
 		{
-			var res = _ctx.GetTopStudentsXp(top: top, classId: classId, imageMaxSize: imageMaxSize);
+			var res = _ctx.GetTopStudentsXp(top: top, classId: classId, schoolId: schoolId, imageMaxSize: imageMaxSize);
 			return res;
 		}
 

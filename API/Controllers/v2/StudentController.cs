@@ -9,6 +9,7 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using API.Tools;
 using API.Tools.Annotations;
+using DataAccess;
 using DataAccess.Managers;
 using DataAccess.Managers.New;
 using DataAccess.Models;
@@ -31,7 +32,9 @@ namespace API.Controllers.v2
 											 [FromUri] int? imageMaxSize = null,
 											 [FromUri] bool onlyActive = true)
 		{
-			var res = Mgr.GetStudents(classId: classId, imageMaxSize: imageMaxSize, onlyActive: onlyActive);
+			var schoolId = this.User.Identity.GetSchoolId();
+
+			var res = Mgr.GetStudents(schoolId, classId: classId, imageMaxSize: imageMaxSize, onlyActive: onlyActive);
 			return Ok(res);
 		}
 
@@ -43,7 +46,9 @@ namespace API.Controllers.v2
 														   [FromUri] int top = 5,
 														   [FromUri] int? imageMaxSize = null)
 		{
-			var res = Mgr.GetStudentsWithMostZoliks(top, classId, imageMaxSize);
+			var schoolId = this.User.Identity.GetSchoolId();
+
+			var res = Mgr.GetStudentsWithMostZoliks(schoolId, top, classId, imageMaxSize);
 			return Ok(res);
 		}
 
@@ -55,7 +60,9 @@ namespace API.Controllers.v2
 													   [FromUri] int top = 5,
 													   [FromUri] int? imageMaxSize = null)
 		{
-			var res = Mgr.GetStudentsWithMostXp(top, classId, imageMaxSize);
+			var schoolId = this.User.Identity.GetSchoolId();
+
+			var res = Mgr.GetStudentsWithMostXp(schoolId, top, classId, imageMaxSize);
 			return Ok(res);
 		}
 

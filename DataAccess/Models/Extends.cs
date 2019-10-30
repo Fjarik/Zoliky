@@ -59,11 +59,13 @@ namespace DataAccess.Models
 		}
 
 		public IList<GetTopStudents_Result> GetStudents(bool onlyActive,
+														int schoolId,
 														int? imageMaxSize = null,
 														int? classId = null,
 														params int[] excludeIds)
 		{
 			return this.GetStudents(onlyActive: onlyActive,
+									schoolId: schoolId,
 									imageMaxSize: imageMaxSize,
 									classId: classId)
 					   .Where(x => excludeIds.All(y => x.ID != y))
@@ -71,6 +73,7 @@ namespace DataAccess.Models
 		}
 
 		private IEnumerable<GetTopStudents_Result> GetStudents(bool onlyActive,
+															   int schoolId,
 															   int? imageMaxSize = null,
 															   int? classId = null)
 		{
@@ -79,21 +82,25 @@ namespace DataAccess.Models
 			}
 			return GetStudents(imageMaxSize: imageMaxSize,
 							   classId: classId,
+							   schoolId: schoolId,
 							   defaultPhotoId: Ext.DefaultProfilePhotoId,
 							   onlyActive: onlyActive);
 		}
 
-		public IList<GetTopStudents_Result> GetTopStudents(int top = 5,
+		public IList<GetTopStudents_Result> GetTopStudents(int schoolId,
+														   int top = 5,
 														   int? classId = null,
 														   int? imageMaxSize = null)
 		{
 			return GetTopStudents(key: SettingKeys.LeaderboardZolik,
+								  schoolId: schoolId,
 								  top: top,
 								  imageMaxSize: imageMaxSize,
 								  classId: classId).ToList();
 		}
 
 		private IEnumerable<GetTopStudents_Result> GetTopStudents(string key,
+																  int schoolId,
 																  int top = 5,
 																  int? imageMaxSize = null,
 																  int? classId = null)
@@ -104,21 +111,25 @@ namespace DataAccess.Models
 			return GetTopStudents(top: top,
 								  imageMaxSize: imageMaxSize,
 								  classId: classId,
+								  schoolId: schoolId,
 								  settingsKey: key,
 								  defaultPhotoId: Ext.DefaultProfilePhotoId);
 		}
 
-		public IList<GetTopStudents_Result> GetTopStudentsXp(int top = 5,
+		public IList<GetTopStudents_Result> GetTopStudentsXp(int schoolId,
+															 int top = 5,
 															 int? classId = null,
 															 int? imageMaxSize = null)
 		{
 			return GetTopStudentsXp(key: SettingKeys.LeaderboardXp,
+									schoolId: schoolId,
 									top: top,
 									imageMaxSize: imageMaxSize,
 									classId: classId).ToList();
 		}
 
 		private IEnumerable<GetTopStudents_Result> GetTopStudentsXp(string key,
+																	int schoolId,
 																	int top = 5,
 																	int? imageMaxSize = null,
 																	int? classId = null)
@@ -129,6 +140,7 @@ namespace DataAccess.Models
 			return GetTopStudentsXp(top: top,
 									imageMaxSize: imageMaxSize,
 									classId: classId,
+									schoolId: schoolId,
 									settingsKey: key,
 									defaultPhotoId: Ext.DefaultProfilePhotoId);
 		}

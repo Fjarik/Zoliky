@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using DataAccess;
 using DataAccess.Managers;
 using SharedLibrary.Shared;
 using ZolikyWeb.Models.Base;
@@ -12,7 +13,7 @@ using ZolikyWeb.Tools;
 namespace ZolikyWeb.Areas.Admin.Controllers
 {
 	[Authorize(Roles = UserRoles.AdminOrDeveloperOrTeacher)]
-    public class TeacherController : OwnController<SchoolManager>
+	public class TeacherController : OwnController<SchoolManager>
 	{
 		public async Task<ActionResult> Dashboard()
 		{
@@ -30,5 +31,5 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 		{
 			return View();
 		}
-    }
+	}
 }
