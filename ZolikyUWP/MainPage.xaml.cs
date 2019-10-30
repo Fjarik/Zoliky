@@ -88,7 +88,7 @@ namespace ZolikyUWP
 					type = typeof(AchievementsPage);
 					break;
 				case "Statistics":
-					// type = typeof(StatisticsPage);
+					type = typeof(StatisticsPage);
 					break;
 			}
 

@@ -20,6 +20,7 @@ using Windows.Networking.PushNotifications;
 using Windows.UI.Popups;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;
+using Microsoft.AppCenter.Crashes;
 using Microsoft.AppCenter.Push;
 using Microsoft.WindowsAzure.Messaging;
 using Plugin.Connectivity;
@@ -41,7 +42,7 @@ namespace ZolikyUWP
 			this.InitializeComponent();
 			this.FocusVisualKind = FocusVisualKind.Reveal;
 			this.Suspending += OnSuspending;
-			AppCenter.Start("1cd24c18-eccf-4047-838f-7715758684f9", typeof(Push));
+			AppCenter.Start("1cd24c18-eccf-4047-838f-7715758684f9", typeof(Analytics), typeof(Crashes), typeof(Push));
 		}
 
 		/// <summary>

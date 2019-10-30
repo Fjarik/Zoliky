@@ -50,5 +50,22 @@ namespace SharedApi.Connectors.New
 				return new List<Student>();
 			}
 		}
+
+		public async Task<List<Student<Image>>> GetStudentsWithMostZoliks(int? classId = null)
+		{
+			try {
+				var url = "student/gettop";
+				if (classId != null) {
+					url += $"?classId={classId}";
+				}
+				var res = await Request(url).GetJsonAsync<List<Student<Image>>>();
+				return res;
+			} catch {
+#if (DEBUG)
+				throw;
+#endif
+				return new List<Student<Image>>();
+			}
+		}
 	}
 }

@@ -1,13 +1,91 @@
 ﻿<Page
-    x:Class="ZolikyUWP.Pages.StatisticsPage"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:ZolikyUWP.Pages"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
-    <Grid>
-    </Grid>
+	x:Class="ZolikyUWP.Pages.StatisticsPage"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:local="using:ZolikyUWP.Pages"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	mc:Ignorable="d"
+	Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+	<Grid Margin="10,0">
+		<Grid.RowDefinitions>
+			<RowDefinition />
+			<RowDefinition />
+		</Grid.RowDefinitions>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition />
+			<ColumnDefinition />
+			<ColumnDefinition />
+		</Grid.ColumnDefinitions>
+		<ListView x:Name="StudentsList"
+		          Padding="10"
+		          SelectionMode="Single" AllowDrop="False"
+				  Grid.Column="0"
+				  Grid.Row="0"
+		          CanDrag="False" CanDragItems="False" CanReorderItems="False">
+			<ListView.HeaderTemplate>
+				<DataTemplate>
+					<TextBlock Text="Žebříček - Počet žolíků ve třídě"
+					           VerticalAlignment="Center"
+					           Margin="5,15"
+					           FontSize="20" FontWeight="Bold" />
+				</DataTemplate>
+			</ListView.HeaderTemplate>
+			<ListView.ItemTemplate>
+				<DataTemplate x:DataType="local:TopStudentsModel">
+					<Grid Margin="0,10">
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="100" />
+							<ColumnDefinition Width="Auto" MinWidth="150" />
+							<ColumnDefinition Width="20" />
+							<ColumnDefinition Width="*" />
+						</Grid.ColumnDefinitions>
+						<PersonPicture ProfilePicture="{x:Bind SelectedImage, Mode=OneWay}"
+						               DisplayName="{x:Bind FullName}"
+						               Width="50" Height="50"
+						               HorizontalAlignment="Left" VerticalAlignment="Center" />
+						<TextBlock Text="{x:Bind FullName}"
+						           Grid.Column="1" VerticalAlignment="Center" />
+						<TextBlock Text="{x:Bind ZolikCount}"
+						           Grid.Column="3" VerticalAlignment="Center" />
+					</Grid>
+				</DataTemplate>
+			</ListView.ItemTemplate>
+		</ListView>
+		<ListView x:Name="StudentsSchoolList"
+		          Padding="10"
+		          SelectionMode="Single" AllowDrop="False"
+				  Grid.Column="1"
+				  Grid.Row="0"
+		          CanDrag="False" CanDragItems="False" CanReorderItems="False">
+			<ListView.HeaderTemplate>
+				<DataTemplate>
+					<TextBlock Text="Žebříček - Počet žolíků na škole"
+					           VerticalAlignment="Center"
+					           Margin="5,15"
+					           FontSize="20" FontWeight="Bold" />
+				</DataTemplate>
+			</ListView.HeaderTemplate>
+			<ListView.ItemTemplate>
+				<DataTemplate x:DataType="local:TopStudentsModel">
+					<Grid Margin="0,10">
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="100" />
+							<ColumnDefinition Width="Auto" MinWidth="150" />
+							<ColumnDefinition Width="20" />
+							<ColumnDefinition Width="*" />
+						</Grid.ColumnDefinitions>
+						<PersonPicture ProfilePicture="{x:Bind SelectedImage, Mode=OneWay}"
+						               DisplayName="{x:Bind FullName}"
+						               Width="50" Height="50"
+						               HorizontalAlignment="Left" VerticalAlignment="Center" />
+						<TextBlock Text="{x:Bind FullName}"
+						           Grid.Column="1" VerticalAlignment="Center" />
+						<TextBlock Text="{x:Bind ZolikCount}"
+						           Grid.Column="3" VerticalAlignment="Center" />
+					</Grid>
+				</DataTemplate>
+			</ListView.ItemTemplate>
+		</ListView>
+	</Grid>
 </Page>
