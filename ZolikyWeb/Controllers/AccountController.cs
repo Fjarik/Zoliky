@@ -655,8 +655,9 @@ namespace ZolikyWeb.Controllers
 			if (model == null || this.User.Identity.GetUserId() != model.Uqid) {
 				return AccessDenied();
 			}
+			var schoolId = this.User.Identity.GetSchoolId();
 			var loggedId = this.User.Identity.GetId();
-			var students = Mgr.GetStudents(loggedId);
+			var students = Mgr.GetStudents(schoolId, loggedId);
 			if (students == null || students.Count < 1) {
 				return AccessDenied();
 			}

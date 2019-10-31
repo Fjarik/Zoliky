@@ -69,6 +69,12 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 				return RedirectToAction("Edit");
 			}
 			var logged = await this.GetLoggedUserAsync();
+			var toId = model.OwnerID;
+			if (logged.ID == toId) {
+				this.AddErrorToastMessage("Nemůžete poslat žolíka sám sobě");
+				return RedirectToAction("Edit");
+			}
+
 
 			var res = await Mgr.CreateAndTransferAsync(logged.ID,
 													   model.OwnerID,
