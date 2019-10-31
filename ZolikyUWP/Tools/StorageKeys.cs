@@ -8,6 +8,8 @@ namespace ZolikyUWP.Tools
 {
 	public class StorageKeys
 	{
+		public const string LastTheme = "CurrentTheme";
+
 		public const string LastZolikCount = "LastZolikCount";
 		public const string LastUsername = "LastUsername";
 		public const string LastToken = "LastToken";

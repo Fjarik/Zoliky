@@ -9,19 +9,33 @@
 	Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 	<Grid Margin="10,0">
 		<Grid.RowDefinitions>
-			<RowDefinition />
+			<RowDefinition MinHeight="427" Height="Auto" />
 			<RowDefinition />
 		</Grid.RowDefinitions>
 		<Grid.ColumnDefinitions>
-			<ColumnDefinition />
-			<ColumnDefinition />
-			<ColumnDefinition />
+			<ColumnDefinition MinWidth="360" Width="Auto" />
+			<ColumnDefinition MinWidth="360" Width="Auto" />
+			<ColumnDefinition Width="*" />
 		</Grid.ColumnDefinitions>
+		<StackPanel x:Name="LoadingStudentsList"
+		            Orientation="Vertical"
+		            VerticalAlignment="Center"
+		            HorizontalAlignment="Center"
+		            Grid.Row="0"
+		            Grid.Column="0">
+			<ProgressRing IsActive="True"
+			              Foreground="DeepSkyBlue"
+			              Width="50" Height="50" />
+			<TextBlock Text="Probíhá načítání..."
+			           VerticalAlignment="Center"
+			           Foreground="White" FontSize="20" />
+		</StackPanel>
 		<ListView x:Name="StudentsList"
 		          Padding="10"
 		          SelectionMode="Single" AllowDrop="False"
-				  Grid.Column="0"
-				  Grid.Row="0"
+		          Grid.Column="0"
+		          Grid.Row="0"
+		          Visibility="Collapsed"
 		          CanDrag="False" CanDragItems="False" CanReorderItems="False">
 			<ListView.HeaderTemplate>
 				<DataTemplate>
@@ -52,11 +66,25 @@
 				</DataTemplate>
 			</ListView.ItemTemplate>
 		</ListView>
+		<StackPanel x:Name="LoadingSchoolStudentsList"
+		            Orientation="Vertical"
+		            VerticalAlignment="Center"
+		            HorizontalAlignment="Center"
+		            Grid.Row="0"
+		            Grid.Column="1">
+			<ProgressRing IsActive="True"
+			              Foreground="DeepSkyBlue"
+			              Width="50" Height="50" />
+			<TextBlock Text="Probíhá načítání..."
+			           VerticalAlignment="Center"
+			           Foreground="White" FontSize="20" />
+		</StackPanel>
 		<ListView x:Name="StudentsSchoolList"
 		          Padding="10"
 		          SelectionMode="Single" AllowDrop="False"
-				  Grid.Column="1"
-				  Grid.Row="0"
+		          Grid.Column="1"
+		          Grid.Row="0"
+		          Visibility="Collapsed"
 		          CanDrag="False" CanDragItems="False" CanReorderItems="False">
 			<ListView.HeaderTemplate>
 				<DataTemplate>
@@ -80,8 +108,10 @@
 						               Width="50" Height="50"
 						               HorizontalAlignment="Left" VerticalAlignment="Center" />
 						<TextBlock Text="{x:Bind FullName}"
+						           FontSize="17"
 						           Grid.Column="1" VerticalAlignment="Center" />
 						<TextBlock Text="{x:Bind ZolikCount}"
+						           FontSize="17"
 						           Grid.Column="3" VerticalAlignment="Center" />
 					</Grid>
 				</DataTemplate>

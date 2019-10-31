@@ -31,34 +31,16 @@ using Image = SharedApi.Models.Image;
 
 namespace ZolikyUWP.Pages
 {
-	/// <summary>
-	/// An empty page that can be used on its own or navigated to within a Frame.
-	/// </summary>
 	public sealed partial class StatisticsPage : Page, IUpdatable
 	{
 		private User _me;
 		public bool IsLoading { get; set; }
+		public bool IsTopStudentsUpdating { get; set; }
+		public bool IsSchoolStudentUpdating { get; set; }
 		public DateTime LastUpdate { get; set; }
 
 		public List<TopStudentsModel> TopStudents { get; set; }
 		public List<TopStudentsModel> TopSchoolStudents { get; set; }
-
-		private Loading LoadingElement
-		{
-			get
-			{
-				if (!(this.Frame.Parent is NavigationView nav)) {
-					return null;
-				}
-				if (!(nav.Parent is Grid grid)) {
-					return null;
-				}
-				if (!(grid.FindName("LoadingControl") is Loading l)) {
-					return null;
-				}
-				return l;
-			}
-		}
 
 		public StatisticsPage()
 		{
@@ -79,42 +61,68 @@ namespace ZolikyUWP.Pages
 			base.OnNavigatedTo(e);
 		}
 
-		private void SetLoading(bool loading)
-		{
-			if (LoadingElement != null) {
-				this.LoadingElement.IsLoading = loading;
-			}
-		}
-
 		public async Task UpdateAsync()
 		{
 			if (IsLoading) {
 				return;
 			}
 			this.IsLoading = true;
-			SetLoading(true);
 
-
-			var api = new StudentConnector(_me.Token);
-			var top = await api.GetStudentsWithMostZoliks(_me.ClassID);
-			var topSchool = await api.GetStudentsWithMostZoliks();
-
-			var json = JsonConvert.SerializeObject(top);
-			TopStudents = JsonConvert.DeserializeObject<List<TopStudentsModel>>(json);
-			StudentsList.ItemsSource = TopStudents;
-			TopStudents.ForEach(x => x.EncodedImage = x.Profile.Base64);
-
-			json = JsonConvert.SerializeObject(topSchool);
-			TopSchoolStudents = JsonConvert.DeserializeObject<List<TopStudentsModel>>(json);
-			StudentsSchoolList.ItemsSource = TopSchoolStudents;
-			TopSchoolStudents.ForEach(x => x.EncodedImage = x.Profile.Base64);
-
+			await Task.WhenAll(UpdateStudentsList(), UpdateSchoolStudentsList());
 
 			this.LastUpdate = DateTime.Now;
 			await Task.Delay(500);
 
 			this.IsLoading = false;
-			SetLoading(false);
+		}
+
+
+		private async Task UpdateStudentsList()
+		{
+			if (IsTopStudentsUpdating) {
+				return;
+			}
+			StudentsList.Visibility = Visibility.Collapsed;
+			LoadingStudentsList.Visibility = Visibility.Visible;
+
+			var api = new StudentConnector(_me.Token);
+			var top = await api.GetStudentsWithMostZoliks(_me.ClassID);
+
+			TopStudents = GetStudents(top);
+			StudentsList.ItemsSource = TopStudents;
+			TopStudents.ForEach(x => x.EncodedImage = x.Profile.Base64);
+
+			LoadingStudentsList.Visibility = Visibility.Collapsed;
+			StudentsList.Visibility = Visibility.Visible;
+			this.IsTopStudentsUpdating = false;
+		}
+
+		private async Task UpdateSchoolStudentsList()
+		{
+			if (IsSchoolStudentUpdating) {
+				return;
+			}
+			StudentsSchoolList.Visibility = Visibility.Collapsed;
+			LoadingSchoolStudentsList.Visibility = Visibility.Visible;
+
+			var api = new StudentConnector(_me.Token);
+			var topSchool = await api.GetStudentsWithMostZoliks();
+
+			TopSchoolStudents = GetStudents(topSchool);
+			StudentsSchoolList.ItemsSource = TopSchoolStudents;
+			TopSchoolStudents.ForEach(x => x.EncodedImage = x.Profile.Base64);
+
+			LoadingSchoolStudentsList.Visibility = Visibility.Collapsed;
+			StudentsSchoolList.Visibility = Visibility.Visible;
+			this.IsSchoolStudentUpdating = false;
+		}
+
+		private List<TopStudentsModel> GetStudents(List<Student<Image>> students)
+		{
+			var json = JsonConvert.SerializeObject(students);
+			var res = JsonConvert.DeserializeObject<List<TopStudentsModel>>(json);
+			res.ForEach(x => x.EncodedImage = x.Profile.Base64);
+			return res;
 		}
 	}
 

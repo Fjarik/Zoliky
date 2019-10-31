@@ -25,22 +25,17 @@ using Microsoft.AppCenter.Push;
 using Microsoft.WindowsAzure.Messaging;
 using Plugin.Connectivity;
 using ZolikyUWP.Account;
+using ZolikyUWP.Tools;
 
 namespace ZolikyUWP
 {
-	/// <summary>
-	/// Provides application-specific behavior to supplement the default Application class.
-	/// </summary>
 	sealed partial class App : Application
 	{
-		/// <summary>
-		/// Initializes the singleton application object.  This is the first line of authored code
-		/// executed, and as such is the logical equivalent of main() or WinMain().
-		/// </summary>
 		public App()
 		{
 			this.InitializeComponent();
-			this.FocusVisualKind = FocusVisualKind.Reveal;
+			// this.FocusVisualKind = FocusVisualKind.Reveal;
+			this.RequestedTheme = AppSettings.AppTheme;
 			this.Suspending += OnSuspending;
 			AppCenter.Start("1cd24c18-eccf-4047-838f-7715758684f9", typeof(Analytics), typeof(Crashes), typeof(Push));
 		}

@@ -1,0 +1,45 @@
+﻿<Page
+	x:Class="ZolikyUWP.Pages.SettingsPage"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:local="using:ZolikyUWP.Pages"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	mc:Ignorable="d"
+	Loaded="SettingsPage_OnLoaded"
+	Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+	<Grid>
+		<Pivot>
+			<PivotItem Header="Obecné">
+				<StackPanel>
+					<TextBlock Text="Motiv:" />
+					<RadioButton Checked="ToggleTheme_OnChecked"
+					             GroupName="ThemeBtns" x:Name="RadiBtnLight"
+					             Tag="Light" Content="Světlý" />
+					<RadioButton Checked="ToggleTheme_OnChecked"
+					             GroupName="ThemeBtns" x:Name="RadiBtnDark"
+					             Tag="Dark" Content="Tmavý" />
+					<RadioButton Checked="ToggleTheme_OnChecked"
+					             GroupName="ThemeBtns" x:Name="RadiBtnSystem"
+					             Tag="System" Content="Podle systému" />
+				</StackPanel>
+			</PivotItem>
+			<PivotItem Header="Účet">
+				<Grid>
+					<TextBlock Text="Přihlášený uživatel:" />
+				</Grid>
+			</PivotItem>
+			<PivotItem Header="O aplikaci">
+				<Grid>
+					<TextBlock Text="Vývojář: Jiří Falta" />
+				</Grid>
+			</PivotItem>
+			<PivotItem Header="O systému">
+				<Grid>
+					<TextBlock Text="Systém je vyvíjen v rámci maturitního projektu." />
+				</Grid>
+			</PivotItem>
+		</Pivot>
+	</Grid>
+</Page>

@@ -71,6 +71,11 @@ namespace ZolikyUWP
 				NavMain.Header = item.Content;
 			}
 
+			if (args.IsSettingsSelected) {
+				NavigateTo(typeof(SettingsPage));
+				return;
+			}
+
 			if (item.Tag == null) {
 				NavigateTo(typeof(DefaultPage));
 				return;
@@ -90,15 +95,13 @@ namespace ZolikyUWP
 				case "Statistics":
 					type = typeof(StatisticsPage);
 					break;
+				case "LoginHistory":
+					NavMain.Header = "Historie přihlášení";
+					type = typeof(LoginHistoryPage);
+					break;
 			}
 
 			NavigateTo(type);
-		}
-
-		private void LoginHistory_OnTapped(object sender, TappedRoutedEventArgs e)
-		{
-			NavMain.Header = "Historie přihlášení";
-			NavigateTo(typeof(LoginHistoryPage));
 		}
 
 		private void UpdateButton_OnClick(object sender, RoutedEventArgs e)
@@ -123,7 +126,9 @@ namespace ZolikyUWP
 										 : Visibility.Collapsed;
 				}
 			}
-
+			if (pageType == typeof(DefaultPage)) {
+				NavMain.Header = "Hlavní strana";
+			}
 			ContentFrame.Navigate(pageType, _me);
 		}
 

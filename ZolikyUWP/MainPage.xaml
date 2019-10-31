@@ -8,13 +8,40 @@
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	mc:Ignorable="d"
 	Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+	<Page.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.ThemeDictionaries>
+				<ResourceDictionary x:Key="Light">
+					<Style x:Key="ShowImage" TargetType="Image">
+						<Setter Property="Source" Value="ms-appx:///Assets/ZolikyHeaderBlack_1024.png" />
+					</Style>
+				</ResourceDictionary>
+				<ResourceDictionary x:Key="Dark">
+					<Style x:Key="ShowImage" TargetType="Image">
+						<Setter Property="Source" Value="ms-appx:///Assets/ZolikyHeaderWhite_1024.png" />
+					</Style>
+				</ResourceDictionary>
+			</ResourceDictionary.ThemeDictionaries>
+		</ResourceDictionary>
+	</Page.Resources>
 	<Grid>
 		<NavigationView Loaded="NvSample_OnLoaded" Margin="0,12,0,0" SelectionChanged="NvSample_OnSelectionChanged"
-		                x:Name="NavMain" IsSettingsVisible="False" IsBackButtonVisible="Collapsed"
+		                x:Name="NavMain"
+		                IsSettingsVisible="True"
+		                IsBackButtonVisible="Collapsed"
+		                IsBackEnabled="False"
 		                AlwaysShowHeader="True"
+		                PaneDisplayMode="Left"
+		                SelectionFollowsFocus="Enabled"
 		                IsTabStop="False"
 		                Header="Žolíky">
+			<NavigationView.PaneHeader>
+				<Image VerticalAlignment="Center" HorizontalAlignment="Left"
+				       Margin="0,2"
+				       Style="{ThemeResource ShowImage}" />
+			</NavigationView.PaneHeader>
 			<NavigationView.MenuItems>
+				<NavigationViewItem Icon="Home" Content="Domů" IsSelected="True" />
 				<NavigationViewItem Content="Moji žolíci" Tag="Zolici">
 					<NavigationViewItem.Icon>
 						<FontIcon FontFamily="Segoe MDL2 Assets"
@@ -33,6 +60,7 @@
 						          Glyph="&#xE9D2;" />
 					</NavigationViewItem.Icon>
 				</NavigationViewItem>
+				<NavigationViewItem Icon="ReportHacked" Content="Zabezpečení" Tag="LoginHistory" />
 			</NavigationView.MenuItems>
 			<NavigationView.HeaderTemplate>
 				<DataTemplate>
@@ -90,12 +118,6 @@
 				</Frame.ContentTransitions>
 
 			</Frame>
-			<NavigationView.PaneFooter>
-				<StackPanel Orientation="Vertical">
-					<NavigationViewItem Icon="ReportHacked" Content="Zabezpečení" Tapped="LoginHistory_OnTapped"  />
-					<NavigationViewItem Icon="Setting" Content="Nastavení" />
-				</StackPanel>
-			</NavigationView.PaneFooter>
 		</NavigationView>
 		<controls:Loading x:Name="LoadingControl"
 		                  HorizontalAlignment="Stretch" VerticalAlignment="Stretch">

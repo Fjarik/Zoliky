@@ -129,6 +129,9 @@
     <Compile Include="Pages\LoginHistoryPage.xaml.cs">
       <DependentUpon>LoginHistoryPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\SettingsPage.xaml.cs">
+      <DependentUpon>SettingsPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\StatisticsPage.xaml.cs">
       <DependentUpon>StatisticsPage.xaml</DependentUpon>
     </Compile>
@@ -139,6 +142,7 @@
       <DependentUpon>ZoliciPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tools\AppSettings.cs" />
     <Compile Include="Tools\Extensions.cs" />
     <Compile Include="Tools\IUpdatable.cs" />
     <Compile Include="Tools\StorageKeys.cs" />
@@ -193,6 +197,9 @@
     <Content Include="Assets\Wide310x150Logo.scale-150.png" />
     <Content Include="Assets\Wide310x150Logo.scale-400.png" />
     <None Include="Package.StoreAssociation.xml" />
+    <Content Include="Assets\ZolikyHeaderBlack_1024.png" />
+    <Content Include="Assets\ZolikyHeaderColor_1024.png" />
+    <Content Include="Assets\ZolikyHeaderWhite_1024.png" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -227,6 +234,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\LoginHistoryPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\SettingsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
