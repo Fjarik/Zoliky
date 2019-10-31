@@ -41,7 +41,8 @@
 				       Style="{ThemeResource ShowImage}" />
 			</NavigationView.PaneHeader>
 			<NavigationView.MenuItems>
-				<NavigationViewItem Icon="Home" Content="Domů" IsSelected="True" />
+				<NavigationViewItem Icon="Home" Content="Domů" />
+				<NavigationViewItemSeparator />
 				<NavigationViewItem Content="Moji žolíci" Tag="Zolici">
 					<NavigationViewItem.Icon>
 						<FontIcon FontFamily="Segoe MDL2 Assets"

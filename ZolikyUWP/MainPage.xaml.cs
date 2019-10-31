@@ -58,7 +58,9 @@ namespace ZolikyUWP
 
 		private void NvSample_OnLoaded(object sender, RoutedEventArgs e)
 		{
-			NavigateTo(typeof(DefaultPage));
+			if (NavMain.MenuItems.Any() && NavMain.MenuItems[0] is NavigationViewItem item) {
+				item.IsSelected = true;
+			}
 		}
 
 		private void NvSample_OnSelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)

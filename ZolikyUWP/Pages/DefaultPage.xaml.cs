@@ -17,7 +17,6 @@ namespace ZolikyUWP.Pages
 	public sealed partial class DefaultPage : Page
 	{
 		private User _me;
-		public List<DefaultTile> TilesItems { get; set; }
 
 		public DefaultPage()
 		{
@@ -34,37 +33,19 @@ namespace ZolikyUWP.Pages
 				_me = u;
 			}
 
-			Lbl_Name.Text = _me.FullName;
-			var localSettings = ApplicationData.Current.LocalSettings;
-			if (localSettings.Values[StorageKeys.LastZolikCount] is int count) {
-				Lbl_Count.Text = count.ToString();
+			var name = _me.FullName;
+			if (!string.IsNullOrEmpty(_me.ClassName)) {
+				name += $", {_me.ClassName}";
+			}
+			LblName.Text = name;
+
+			if (!string.IsNullOrEmpty(_me.SchoolName)) {
+				LblSchool.Text = _me.SchoolName;
 			}
 
-			/*
-			TilesItems = new List<DefaultTile>()
-			{
-				new DefaultTile()
-				{
-					Title = "Test"
-				},
-				new DefaultTile()
-				{
-					Title = "Ahoj"
-				},
-				new DefaultTile()
-				{
-					Title = "Zdravím"
-				},
-				new DefaultTile()
-				{
-					Title = "Jak"
-				},
-			};*/
+			LblLastLogin.Text = _me.LastLoginDate?.ToString("dd.MM.yyyy HH:mm") ?? "První přihlášení";
 
-			this.DataContext = this;
 			base.OnNavigatedTo(e);
 		}
-
-		private void Tiles_OnItemClick(object sender, ItemClickEventArgs e) { }
 	}
 }

@@ -20,7 +20,7 @@
 		                   HorizontalScrollBarVisibility="Visible"
 		                   VerticalScrollBarVisibility="Visible"
 		                   AlternatingRowBackground="Transparent"
-		                   AlternatingRowForeground="Gold"
+		                   AlternatingRowForeground="#0992FF"
 		                   CanUserReorderColumns="False"
 		                   CanUserSortColumns="True"
 		                   CanUserResizeColumns="False"

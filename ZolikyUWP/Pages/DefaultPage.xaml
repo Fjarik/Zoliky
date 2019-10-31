@@ -8,47 +8,38 @@
 	xmlns:models="using:ZolikyUWP.Models"
 	mc:Ignorable="d"
 	Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-	<Grid>
+	<Grid Margin="10">
 		<Grid.RowDefinitions>
-			<RowDefinition Height="10*" />
-			<RowDefinition Height="1*" MinHeight="25" />
-			<RowDefinition Height="1*" MinHeight="25" />
-			<RowDefinition Height="10*" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="15" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="15" />
+			<RowDefinition />
 		</Grid.RowDefinitions>
 		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="5*" />
-			<ColumnDefinition Width="1*" MinWidth="90" />
-			<ColumnDefinition Width="1*" MinWidth="100" />
-			<ColumnDefinition Width="5*" />
+			<ColumnDefinition Width="Auto" />
+			<ColumnDefinition />
 		</Grid.ColumnDefinitions>
-		<TextBlock Text="Uživatel:" TextWrapping="Wrap"
-		           HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,0,0,0" Grid.Column="1" Grid.Row="1" />
-		<TextBlock x:Name="Lbl_Name" Text="Test" TextWrapping="Wrap"
-		           HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,0,0,0" Grid.Column="2" Grid.Row="1" />
+		<TextBlock x:Name="LblName" Text="Uživatel Uživatel, Třída"
+		           Style="{ThemeResource HeaderTextBlockStyle}"
+		           Grid.ColumnSpan="2"
+		           Grid.Column="0" Grid.Row="0" />
 
-		<TextBlock Text="Počet žolíků:" TextWrapping="Wrap"
-		           HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,0,0,0" Grid.Column="1" Grid.Row="2" />
-		<TextBlock x:Name="Lbl_Count" Text="0" TextWrapping="Wrap"
-		           HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,0,0,0" Grid.Column="2" Grid.Row="2" />
+		<TextBlock Text="Škola:"
+		           FontSize="20" FontWeight="Bold"
+		           Grid.Column="0" Grid.Row="2" />
+		<TextBlock x:Name="LblSchool" Text="Testovací škola"
+		           FontSize="20" Margin="10,0,0,0"
+		           Grid.Column="1" Grid.Row="2" />
 
-		<GridView x:Name="Tiles"
-		          ItemsSource="{Binding TilesItems}"
-		          Grid.Row="0" Grid.Column="0"
-		          IsItemClickEnabled="True" IsSwipeEnabled="False" CanDragItems="False" CanDrag="False" SelectionMode="None"
-		          ItemClick="Tiles_OnItemClick" Grid.ColumnSpan="4" Margin="0,0,0,0" Grid.RowSpan="4">
-			<GridView.ItemTemplate>
-				<DataTemplate x:DataType="models:DefaultTile">
-					<StackPanel Margin="20">
-						<TextBlock FontWeight="Bold" Style="{StaticResource BaseTextBlockStyle}" Text="{Binding Title}" />
-					</StackPanel>
-				</DataTemplate>
-			</GridView.ItemTemplate>
-			<GridView.ItemsPanel>
-				<ItemsPanelTemplate>
-					<ItemsWrapGrid MaximumRowsOrColumns="3" Orientation="Horizontal" />
-				</ItemsPanelTemplate>
-			</GridView.ItemsPanel>
-		</GridView>
+		<StackPanel Orientation="Horizontal"
+		            Grid.ColumnSpan="2"
+		            Grid.Column="0" Grid.Row="4">
+			<TextBlock Text="Poslední přihlášení:"
+			           FontSize="20" FontWeight="Bold" />
+			<TextBlock x:Name="LblLastLogin" Text="31.12.2999"
+			           FontSize="20" Margin="10,0,0,0" />
+		</StackPanel>
 
 	</Grid>
 </Page>
