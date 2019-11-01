@@ -56,19 +56,19 @@
 				</StackPanel>
 			</DataTemplate>
 		</Grid.Resources>
+		<!--AlternatingRowForeground="#0992FF"-->
 		<controls:DataGrid x:Name="TransactionsGrid"
 		                   SelectionMode="Single"
 		                   VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
 		                   Margin="20"
 		                   HorizontalScrollBarVisibility="Visible"
 		                   VerticalScrollBarVisibility="Visible"
-		                   AlternatingRowBackground="Transparent"
-		                   AlternatingRowForeground="#0992FF"
+		                   AlternatingRowBackground="#28007ADF"
 		                   CanUserReorderColumns="False"
 		                   CanUserSortColumns="True"
 		                   CanUserResizeColumns="False"
 		                   IsReadOnly="True"
-		                   RowDetailsTemplate="{StaticResource RowDetailsTemplate}"
+		                   RowDetailsTemplate="{ThemeResource RowDetailsTemplate}"
 		                   RowDetailsVisibilityMode="VisibleWhenSelected"
 		                   SelectionChanged="TransactionsGrid_OnSelectionChanged"
 		                   AutoGenerateColumns="False"

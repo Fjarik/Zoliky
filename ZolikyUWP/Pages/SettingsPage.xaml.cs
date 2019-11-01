@@ -113,20 +113,25 @@ namespace ZolikyUWP.Pages
 			if (string.IsNullOrEmpty(theme)) {
 				return;
 			}
-			var set = ElementTheme.Default;
+			// Default
+			var set = ElementTheme.Dark;
 			switch (theme) {
 				case "Light":
 					set = ElementTheme.Light;
 					break;
 				case "Dark":
-					set = ElementTheme.Dark;
+					break;
+				default:
+					var defaultTheme = new Windows.UI.ViewManagement.UISettings();
+					var uiTheme = defaultTheme.GetColorValue(Windows.UI.ViewManagement.UIColorType.Background)
+											  .ToString();
+					if (uiTheme == "#FFFFFFFF") {
+						set = ElementTheme.Light;
+					}
 					break;
 			}
-			RequestedTheme = set;
+			this.RequestedTheme = set;
 			AppSettings.Theme = set;
-			if (Window.Current.Content is FrameworkElement root) {
-				root.RequestedTheme = set;
-			}
 		}
 
 		private void LoadTheme(ElementTheme theme)

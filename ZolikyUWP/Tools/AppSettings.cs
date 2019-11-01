@@ -23,7 +23,13 @@ namespace ZolikyUWP.Tools
 				}
 				return ElementTheme.Default;
 			}
-			set => Settings.Values[StorageKeys.LastTheme] = (int) value;
+			set
+			{
+				Settings.Values[StorageKeys.LastTheme] = (int) value;
+				if (Window.Current.Content is FrameworkElement root) {
+					root.RequestedTheme = value;
+				}
+			}
 		}
 
 		public static ApplicationTheme AppTheme

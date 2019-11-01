@@ -48,7 +48,11 @@ namespace ZolikyUWP
 		protected override async void OnLaunched(LaunchActivatedEventArgs e)
 		{
 			if (CrossConnectivity.Current.IsConnected) {
-				await InitNotificationsAsync();
+				try {
+					await InitNotificationsAsync();
+				} catch {
+					// ignored
+				}
 			}
 			var rootFrame = Window.Current.Content as Frame;
 
