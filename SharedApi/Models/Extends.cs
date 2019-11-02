@@ -86,6 +86,14 @@ namespace SharedApi.Models
 
 		public Rank Rank { get; set; }
 
+		public string FullName => $"{this.Name} {this.Lastname}";
+
+		public string ClassName => this.Class?.Name;
+
+		public string SchoolName { get; set; }
+
+#region Hidden
+
 		[JsonIgnore]
 		private string _token;
 
@@ -102,11 +110,11 @@ namespace SharedApi.Models
 			set => _token = value;
 		}
 
-		public string FullName => $"{this.Name} {this.Lastname}";
-
-		public string ClassName => this.Class?.Name;
+#endregion
 
 		public User() { }
+
+#region Methods
 
 		public Version GetVersion() => Version.Parse(this.VersionS);
 
@@ -138,7 +146,7 @@ namespace SharedApi.Models
 			return true;
 		}
 
-		public string SchoolName { get; set; }
+#endregion
 	}
 
 	public partial class UserLogin : IDbEntity

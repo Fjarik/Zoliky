@@ -8,12 +8,13 @@ namespace SharedApi.Models
 		public int ID { get; set; }
 		public Nullable<int> ProfilePhotoID { get; set; }
 		public Nullable<int> ClassID { get; set; }
+		public int SchoolID { get; set; }
 		public System.Guid UQID { get; set; }
 		public string Username { get; set; }
 		public string Email { get; set; }
 		public string Name { get; set; }
 		public string Lastname { get; set; }
-		public SharedLibrary.Enums.UserPermission Type { get; set; }
+		public SharedLibrary.Enums.Sex Sex { get; set; }
 		public bool IsEnabled { get; set; }
 		public Nullable<System.DateTime> MemberSince { get; set; }
 		public string VersionS { get; set; }

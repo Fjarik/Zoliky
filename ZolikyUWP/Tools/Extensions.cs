@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.ApplicationModel;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Media;
 
@@ -28,6 +29,15 @@ namespace ZolikyUWP.Tools
 				}
 			}
 			return result;
+		}
+
+		public static string GetAppVersion()
+		{
+			Package package = Package.Current;
+			PackageId packageId = package.Id;
+			PackageVersion version = packageId.Version;
+
+			return $"{version.Major}.{version.Minor}.{version.Build}.{version.Revision}";
 		}
 	}
 }

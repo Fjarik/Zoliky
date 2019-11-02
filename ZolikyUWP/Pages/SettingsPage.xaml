@@ -26,18 +26,160 @@
 				</StackPanel>
 			</PivotItem>
 			<PivotItem Header="Účet">
-				<Grid>
-					<TextBlock Text="Přihlášený uživatel:" />
+				<Grid x:Name="GridAccount" Margin="10">
+					<Grid.RowDefinitions>
+						<RowDefinition Height="Auto" />
+						<RowDefinition Height="20" />
+						<RowDefinition Height="Auto" />
+						<RowDefinition Height="20" />
+						<RowDefinition Height="Auto" />
+						<RowDefinition Height="20" />
+						<RowDefinition Height="Auto" />
+						<RowDefinition Height="20" />
+						<RowDefinition Height="Auto" />
+						<RowDefinition />
+					</Grid.RowDefinitions>
+
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="Auto" />
+						<ColumnDefinition Width="30" />
+						<ColumnDefinition Width="Auto" />
+					</Grid.ColumnDefinitions>
+
+					<TextBlock Style="{ThemeResource TitleTextBlockStyle}"
+					           Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3"
+					           HorizontalAlignment="Left" VerticalAlignment="Center"
+					           Text="Přihlášený uživatel:" />
+
+					<PersonPicture ProfilePicture="{Binding SelectedImage, Mode=OneWay}"
+					               DisplayName="{Binding FullName}"
+					               Width="150" Height="150"
+					               Grid.Row="2" Grid.Column="0" Grid.RowSpan="7"
+					               HorizontalAlignment="Center" VerticalAlignment="Center" />
+
+					<TextBlock Grid.Row="2" Grid.Column="2"
+					           Style="{ThemeResource SubtitleTextBlockStyle}"
+					           Text="{Binding FullName}" />
+
+					<TextBlock Grid.Row="4" Grid.Column="2"
+					           Style="{ThemeResource SubtitleTextBlockStyle}"
+					           Text="{Binding ClassName}" />
+
+					<TextBlock Grid.Row="6" Grid.Column="2"
+					           Style="{ThemeResource SubtitleTextBlockStyle}"
+					           Text="{Binding SchoolName}" />
+
+					<TextBlock Grid.Row="8" Grid.Column="2"
+					           Style="{ThemeResource SubtitleTextBlockStyle}"
+					           Text="{Binding GenderString}" />
 				</Grid>
 			</PivotItem>
 			<PivotItem Header="O aplikaci">
 				<Grid>
-					<TextBlock Text="Vývojář: Jiří Falta" />
+					<Grid.RowDefinitions>
+						<RowDefinition Height="Auto" />
+						<RowDefinition Height="20" />
+						<RowDefinition Height="Auto" />
+						<RowDefinition Height="20" />
+						<RowDefinition Height="Auto" />
+						<RowDefinition Height="20" />
+						<RowDefinition Height="Auto" />
+						<RowDefinition Height="50" />
+						<RowDefinition Height="Auto" />
+						<RowDefinition />
+					</Grid.RowDefinitions>
+
+					<StackPanel Orientation="Vertical"
+					            Grid.Row="0" Grid.Column="0">
+						<TextBlock Style="{ThemeResource TitleTextBlockStyle}"
+						           Text="Vývojář" />
+						<TextBlock Text="Jiří Falta" />
+					</StackPanel>
+
+					<StackPanel Orientation="Vertical"
+					            Grid.Row="2" Grid.Column="0">
+						<TextBlock Style="{ThemeResource TitleTextBlockStyle}"
+						           Text="Aktuální verze" />
+						<TextBlock Text="{Binding CurrentVersion}" />
+					</StackPanel>
+
+					<StackPanel Orientation="Vertical"
+					            Grid.Row="4" Grid.Column="0">
+						<TextBlock Style="{ThemeResource TitleTextBlockStyle}"
+						           Text="Kontakt" />
+						<TextBlock Text="podpora@zoliky.eu" />
+					</StackPanel>
+
+					<StackPanel Orientation="Vertical"
+					            Grid.Row="6" Grid.Column="0">
+						<TextBlock Style="{ThemeResource TitleTextBlockStyle}"
+						           Text="Závěrečné ustanovení" />
+						<TextBlock
+							Text="Projekt byl vytvořen v době studia na Střední škole informatiky a ekonomie - DELTA, Pardubice. Vzhledem k povaze projektu je přísně zakázano jeho používání za účelem vydělávání peněz." />
+					</StackPanel>
+
+					<StackPanel Orientation="Horizontal"
+					            Grid.Row="8" Grid.Column="0">
+						<TextBlock Style="{ThemeResource SubtitleTextBlockStyle}"
+						           Text="© Žolíky 2018-" />
+						<TextBlock Style="{ThemeResource SubtitleTextBlockStyle}"
+						           Text="{Binding CurrentYear}" />
+					</StackPanel>
 				</Grid>
 			</PivotItem>
-			<PivotItem Header="O systému">
+			<PivotItem Header="O projektu">
 				<Grid>
-					<TextBlock Text="Systém je vyvíjen v rámci maturitního projektu." />
+					<Grid.RowDefinitions>
+						<RowDefinition Height="Auto" />
+						<RowDefinition Height="20" />
+						<RowDefinition Height="Auto" />
+						<RowDefinition Height="20" />
+						<RowDefinition Height="Auto" />
+						<RowDefinition Height="20" />
+						<RowDefinition Height="Auto" />
+						<RowDefinition Height="50" />
+						<RowDefinition Height="Auto" />
+						<RowDefinition />
+					</Grid.RowDefinitions>
+
+					<StackPanel Orientation="Vertical"
+					            Grid.Row="0" Grid.Column="0">
+						<TextBlock Style="{ThemeResource TitleTextBlockStyle}"
+						           Text="Vývojáři:" />
+						<TextBlock Text="Jiří Falta" />
+						<TextBlock Text="Karel Koudelka" />
+					</StackPanel>
+
+					<StackPanel Orientation="Vertical"
+					            Grid.Row="2" Grid.Column="0">
+						<TextBlock Style="{ThemeResource TitleTextBlockStyle}"
+						           Text="Poděkování:" />
+						<TextBlock Text="Michalovi Špitálskému a Adamovi Zachovalovi za Design" />
+						<TextBlock Text="Všem testerům" />
+						<TextBlock Text="Petrovi Zerzánovi" />
+					</StackPanel>
+					<StackPanel Orientation="Vertical"
+					            Grid.Row="4" Grid.Column="0">
+						<TextBlock Style="{ThemeResource TitleTextBlockStyle}"
+						           Text="Kontakt" />
+						<TextBlock Text="podpora@zoliky.eu" />
+					</StackPanel>
+
+					<StackPanel Orientation="Vertical"
+					            Grid.Row="6" Grid.Column="0">
+						<TextBlock Style="{ThemeResource TitleTextBlockStyle}"
+						           Text="Závěrečné ustanovení" />
+						<TextBlock
+							Text="Projekt byl vytvořen v době studia na Střední škole informatiky a ekonomie - DELTA, Pardubice. Vzhledem k povaze projektu je přísně zakázano jeho používání za účelem vydělávání peněz." />
+					</StackPanel>
+
+					<StackPanel Orientation="Horizontal"
+					            Grid.Row="8" Grid.Column="0">
+						<TextBlock Style="{ThemeResource SubtitleTextBlockStyle}"
+						           Text="© Žolíky 2018-" />
+						<TextBlock Style="{ThemeResource SubtitleTextBlockStyle}"
+						           Text="{Binding CurrentYear}" />
+					</StackPanel>
 				</Grid>
 			</PivotItem>
 		</Pivot>

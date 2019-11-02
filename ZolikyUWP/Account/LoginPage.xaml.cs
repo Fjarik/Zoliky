@@ -45,6 +45,7 @@ namespace ZolikyUWP.Account
 				EnableElements(true);
 			}
 
+			localSettings = ApplicationData.Current.RoamingSettings;
 			if (localSettings.Values.ContainsKey(StorageKeys.LastUsername)) {
 				if (localSettings.Values[StorageKeys.LastUsername] is string username) {
 					TxtLogin.Text = username;
@@ -199,20 +200,34 @@ namespace ZolikyUWP.Account
 			}
 
 			if (!res.IsSuccess) {
-				LblResult.Text = msg;
 				TxtPwd.Password = "";
-				TxtLogin.Focus(FocusState.Programmatic);
+				await ShowErrorDialogAsync(msg);
 				EnableElements(true);
+				TxtLogin.Focus(FocusState.Programmatic);
 				return;
 			}
 
 			var localSettings = ApplicationData.Current.LocalSettings;
-			localSettings.Values[StorageKeys.LastUsername] = TxtLogin.Text;
-
 			var u = res.Content;
 			localSettings.Values[StorageKeys.LastToken] = u.Token;
-			LblResult.Text = $"{u.FullName}";
+
+			// Nastavení přenést mezi zařízeními
+			localSettings = ApplicationData.Current.RoamingSettings;
+			localSettings.Values[StorageKeys.LastUsername] = TxtLogin.Text;
+
+			// LblResult.Text = $"{u.FullName}";
 			this.Frame.Navigate(typeof(MainPage), u);
+		}
+
+		private async Task<ContentDialogResult> ShowErrorDialogAsync(string error)
+		{
+			var dialog = new ContentDialog {
+				Title = "Neúspěšné přihlášení",
+				Content = error,
+				CloseButtonText = "Ok"
+			};
+			var res = await dialog.ShowAsync();
+			return res;
 		}
 
 		private void EnableElements(bool isEnabled)
