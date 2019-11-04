@@ -14,6 +14,7 @@ namespace ZolikyUWP.Tools
 		{
 			var tileContent = new TileContent() {
 				Visual = new TileVisual() {
+					Branding = TileBranding.Auto,
 					TileMedium = new TileBinding() {
 						Content = new TileBindingContentAdaptive() {
 							Children = {
@@ -28,14 +29,7 @@ namespace ZolikyUWP.Tools
 									HintStyle = AdaptiveTextStyle.Subheader,
 									HintAlign = AdaptiveTextAlign.Center,
 									HintMaxLines = 1
-								},
-								/*new AdaptiveText()
-								{
-									Text = name,
-									HintStyle = AdaptiveTextStyle.CaptionSubtle,
-									HintAlign = AdaptiveTextAlign.Left,
-									HintMaxLines = 1
-								}*/
+								}
 							}
 						},
 						DisplayName = "Žolíky",
