@@ -31,7 +31,7 @@ class ZolikAppState extends State<ZolikApp> {
   @override
   void initState() {
     AppCenter.start(appSecret, [AppCenterAnalytics.id, AppCenterCrashes.id]);
-    _default = LoginPage(_model);
+    _default = LoginPage();
     super.initState();
   }
 
@@ -44,7 +44,7 @@ class ZolikAppState extends State<ZolikApp> {
         theme: _mainTheme,
         home: _default,
         routes: <String, WidgetBuilder>{
-          'login': (context) => LoginPage(_model)
+          'login': (context) => LoginPage(),
         },
         debugShowCheckedModeBanner: false,
       ),
