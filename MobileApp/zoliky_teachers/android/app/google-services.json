@@ -8,9 +8,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:888691872943:android:16f1038190cc7929aef05a",
+        "mobilesdk_app_id": "1:888691872943:android:1134e1ade37f4603aef05a",
         "android_client_info": {
-          "package_name": "com.example.zoliky_teachers"
+          "package_name": "com.zoliky.teachers"
         }
       },
       "oauth_client": [

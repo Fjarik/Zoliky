@@ -1,5 +1,7 @@
 import 'dart:developer';
 
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:zoliky_teachers/pages/Account/LoginPage.dart';
@@ -7,6 +9,11 @@ import 'package:zoliky_teachers/utils/MenuPainter.dart';
 
 class LoginPageState extends State<LoginPage>
     with SingleTickerProviderStateMixin {
+  LoginPageState(this.analytics, this.observer);
+
+  final FirebaseAnalytics analytics;
+  final FirebaseAnalyticsObserver observer;
+
   final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
 
   TextEditingController _txtUsername = TextEditingController();
@@ -27,6 +34,12 @@ class LoginPageState extends State<LoginPage>
   void initState() {
     super.initState();
     _focusPassword.addListener(_txtPasswordFocusChanges);
+    analytics.logEvent(
+      name: "Test",
+      parameters: <String, dynamic>{
+        "Test": "Test",
+      },
+    );
   }
 
   @override
@@ -135,6 +148,7 @@ class LoginPageState extends State<LoginPage>
                           right = Colors.black;
                         });
                       }
+                      // TODO: Close keyboard
                     },
                     children: <Widget>[
                       ConstrainedBox(
@@ -246,6 +260,7 @@ class LoginPageState extends State<LoginPage>
                           focusNode: this._focusUsername,
                           autocorrect: false,
                           autofocus: false,
+                          maxLines: 1,
                           keyboardType: TextInputType.emailAddress,
                           textInputAction: TextInputAction.next,
                           style: TextStyle(
@@ -258,13 +273,7 @@ class LoginPageState extends State<LoginPage>
                           ),
                         ),
                       ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 20),
-                        child: Container(
-                          height: 1,
-                          color: Colors.grey[400],
-                        ),
-                      ),
+                      _line(),
                       Padding(
                         padding:
                             EdgeInsets.symmetric(vertical: 20, horizontal: 25),
@@ -279,6 +288,7 @@ class LoginPageState extends State<LoginPage>
                                 autocorrect: false,
                                 autofocus: false,
                                 obscureText: !_pwdVisible,
+                                maxLines: 1,
                                 textInputAction: TextInputAction.done,
                                 style: TextStyle(
                                   fontSize: 16,
@@ -435,26 +445,103 @@ class LoginPageState extends State<LoginPage>
             overflow: Overflow.visible,
             children: <Widget>[
               Card(
+                elevation: 2,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
                 child: Container(
                   width: MediaQuery.of(context).size.width * 0.8,
+                  // height: 190,
                   child: Column(
                     children: <Widget>[
-                      TextField(
-                        autocorrect: false,
-                        autofocus: false,
-                        keyboardType: TextInputType.emailAddress,
-                        textInputAction: TextInputAction.next,
-                        decoration: InputDecoration(
-                          labelText: "Test",
-                          filled: false,
+                      Padding(
+                        padding:
+                            EdgeInsets.symmetric(vertical: 20, horizontal: 25),
+                        child: TextField(
+                          // controller: this._txtUsername,
+                          // focusNode: this._focusUsername,
+                          autocorrect: false,
+                          autofocus: false,
+                          maxLines: 1,
+                          keyboardType: TextInputType.emailAddress,
+                          textInputAction: TextInputAction.next,
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.black,
+                          ),
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            hintText: "Email",
+                          ),
                         ),
                       ),
-                      RaisedButton(
-                        child: Text("Registrovat se"),
-                        onPressed: () => {},
+                      _line(),
+                      Padding(
+                        padding:
+                            EdgeInsets.symmetric(vertical: 20, horizontal: 25),
+                        child: TextField(
+                          // controller: this._txtUsername,
+                          // focusNode: this._focusUsername,
+                          autocorrect: false,
+                          autofocus: false,
+                          maxLines: 1,
+                          textInputAction: TextInputAction.next,
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.black,
+                          ),
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            hintText: "Jméno",
+                          ),
+                        ),
+                      ),
+                      _line(),
+                      Padding(
+                        padding: EdgeInsets.only(
+                            top: 25, bottom: 35, left: 20, right: 20),
+                        child: TextField(
+                          // controller: this._txtUsername,
+                          // focusNode: this._focusUsername,
+                          autocorrect: false,
+                          autofocus: false,
+                          maxLines: 1,
+                          textInputAction: TextInputAction.done,
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.black,
+                          ),
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            hintText: "Příjmení",
+                          ),
+                        ),
                       ),
                     ],
                   ),
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(top: 255),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(5)),
+                  boxShadow: <BoxShadow>[
+                    BoxShadow(),
+                  ],
+                  color: Color(0xFF007adf),
+                ),
+                child: MaterialButton(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 42),
+                    child: Text(
+                      "Registrovat se",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 25,
+                      ),
+                    ),
+                  ),
+                  onPressed: () => {},
                 ),
               )
             ],
@@ -463,4 +550,14 @@ class LoginPageState extends State<LoginPage>
       ),
     );
   }
+}
+
+Widget _line() {
+  return Padding(
+    padding: EdgeInsets.symmetric(horizontal: 20),
+    child: Container(
+      height: 1,
+      color: Colors.grey[400],
+    ),
+  );
 }

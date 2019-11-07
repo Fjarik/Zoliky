@@ -33,8 +33,11 @@ class ZolikAppState extends State<ZolikApp> {
   @override
   void initState() {
     AppCenter.start(appSecret, [AppCenterAnalytics.id, AppCenterCrashes.id]);
-    _default = LoginPage();
-    
+    _default = LoginPage(
+      analytics: analytics,
+      observer: observer,
+    );
+
     if (Global.isInDebugMode) {
       Screen.keepOn(true);
     }
@@ -50,6 +53,7 @@ class ZolikAppState extends State<ZolikApp> {
         title: 'Žolíky',
         theme: _mainTheme,
         home: _default,
+        navigatorObservers: <NavigatorObserver>[observer],
         routes: <String, WidgetBuilder>{
           'login': (context) => LoginPage(),
         },
