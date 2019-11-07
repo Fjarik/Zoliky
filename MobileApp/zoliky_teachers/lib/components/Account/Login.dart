@@ -1,40 +1,66 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:zoliky_teachers/pages/Account/LoginPage.dart';
 import 'package:zoliky_teachers/utils/MenuPainter.dart';
 
-abstract class ILogin {
-  TextEditingController txtUsername;
-  TextEditingController txtPassword;
-  bool isLoading;
-
-  void login();
-}
-
 class LoginPageState extends State<LoginPage>
-    with SingleTickerProviderStateMixin
-    implements ILogin {
-  TextEditingController txtUsername = TextEditingController();
-  TextEditingController txtPassword = TextEditingController();
-  final PageController _pageController = PageController();
+    with SingleTickerProviderStateMixin {
+  final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
 
-  bool isLoading = false;
+  TextEditingController _txtUsername = TextEditingController();
+  TextEditingController _txtPassword = TextEditingController();
+
+  FocusNode _focusUsername = FocusNode();
+  FocusNode _focusPassword = FocusNode();
+
+  PageController _pageController = PageController();
+
+  Color left = Colors.black;
+  Color right = Colors.white;
+
+  bool _pwdVisible = false;
+  bool _isLoading = false;
 
   @override
   void initState() {
     super.initState();
+    _focusPassword.addListener(_txtPasswordFocusChanges);
   }
 
   @override
   void dispose() {
+    _txtUsername?.dispose();
+    _txtPassword?.dispose();
+    _focusUsername?.dispose();
+    _focusPassword.dispose();
     _pageController?.dispose();
     super.dispose();
   }
 
-  @override
-  void login() {
+  void _login() {
+    setState(() {
+      _isLoading = true;
+    });
+
     log("Test");
+
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
+  void _txtPasswordFocusChanges() {
+    this.setState(() {
+      _pwdVisible = _pwdVisible && _focusPassword.hasFocus;
+    });
+  }
+
+  void _tooglePassword() {
+    setState(() {
+      _pwdVisible = !_pwdVisible;
+    });
   }
 
   void _onSignInButtonPress() {
@@ -50,7 +76,7 @@ class LoginPageState extends State<LoginPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: GlobalKey<ScaffoldState>(),
+      key: _key,
       body: NotificationListener<OverscrollIndicatorNotification>(
         onNotification: (overscroll) {
           overscroll.disallowGlow();
@@ -65,9 +91,11 @@ class LoginPageState extends State<LoginPage>
             decoration: BoxDecoration(
                 gradient: LinearGradient(
               colors: [
-                Color(0xFFfbab66),
-                Color(0xFFf7418c),
+                Color(0xFF2196f3),
+                Color(0xFF40c4ff),
               ],
+              begin: const FractionalOffset(0.2, 0.2),
+              end: const FractionalOffset(1, 1),
               stops: [0, 1],
               tileMode: TileMode.clamp,
             )),
@@ -75,8 +103,17 @@ class LoginPageState extends State<LoginPage>
               mainAxisSize: MainAxisSize.max,
               children: <Widget>[
                 Padding(
-                  child: Text("Test"),
-                  padding: EdgeInsets.only(top: 75),
+                  padding: EdgeInsets.only(
+                    top: 100,
+                    bottom: 80,
+                  ),
+                  child: Text(
+                    "Žolíky",
+                    style: TextStyle(
+                      fontSize: 40,
+                      color: Colors.white,
+                    ),
+                  ),
                 ),
                 Padding(
                   child: _loginOrCreate(context),
@@ -87,8 +124,17 @@ class LoginPageState extends State<LoginPage>
                   child: PageView(
                     controller: _pageController,
                     onPageChanged: (i) {
-                      setState(() {});
-                      log(i.toString());
+                      if (i == 0) {
+                        setState(() {
+                          left = Colors.black;
+                          right = Colors.white;
+                        });
+                      } else {
+                        setState(() {
+                          left = Colors.white;
+                          right = Colors.black;
+                        });
+                      }
                     },
                     children: <Widget>[
                       ConstrainedBox(
@@ -98,6 +144,22 @@ class LoginPageState extends State<LoginPage>
                       ConstrainedBox(
                         constraints: const BoxConstraints.expand(),
                         child: _signUp(context),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.symmetric(vertical: 15),
+                        child: Text(
+                          DateTime.now().year.toString() + " \u00a9 Žolíky",
+                          style: TextStyle(
+                            color: Colors.grey[200],
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -116,7 +178,7 @@ class LoginPageState extends State<LoginPage>
       height: 50,
       decoration: BoxDecoration(
           color: Color(0x552B2B2B),
-          borderRadius: BorderRadius.all(Radius.circular(0.25))),
+          borderRadius: BorderRadius.all(Radius.circular(25))),
       child: CustomPaint(
         painter: TabIndicationPainter(pageController: _pageController),
         child: Row(
@@ -129,7 +191,7 @@ class LoginPageState extends State<LoginPage>
                 child: Text(
                   "Přihlášení",
                   style: TextStyle(
-                    color: Colors.black,
+                    color: left,
                     fontSize: 16,
                   ),
                 ),
@@ -141,9 +203,9 @@ class LoginPageState extends State<LoginPage>
                 splashColor: Colors.transparent,
                 highlightColor: Colors.transparent,
                 child: Text(
-                  "Nový účet",
+                  "Registrace",
                   style: TextStyle(
-                    color: Colors.white,
+                    color: right,
                     fontSize: 16,
                   ),
                 ),
@@ -158,40 +220,206 @@ class LoginPageState extends State<LoginPage>
 
   Widget _signIn(BuildContext context) {
     return Container(
+      padding: EdgeInsets.only(top: 25),
       child: Column(
         children: <Widget>[
           Stack(
+            alignment: Alignment.topCenter,
+            overflow: Overflow.visible,
             children: <Widget>[
               Card(
                 elevation: 2,
                 color: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
                 child: Container(
+                  width: MediaQuery.of(context).size.width * 0.8,
+                  height: 190,
                   child: Column(
                     children: <Widget>[
-                      TextField(
-                        controller: this.txtUsername,
-                        autocorrect: false,
-                        autofocus: false,
-                        keyboardType: TextInputType.emailAddress,
-                        textInputAction: TextInputAction.next,
+                      Padding(
+                        padding:
+                            EdgeInsets.symmetric(vertical: 20, horizontal: 25),
+                        child: TextField(
+                          controller: this._txtUsername,
+                          focusNode: this._focusUsername,
+                          autocorrect: false,
+                          autofocus: false,
+                          keyboardType: TextInputType.emailAddress,
+                          textInputAction: TextInputAction.next,
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.black,
+                          ),
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            hintText: "Přihlašovací jméno",
+                          ),
+                        ),
                       ),
-                      TextField(
-                        controller: this.txtPassword,
-                        autocorrect: false,
-                        autofocus: false,
-                        obscureText: true,
-                        textInputAction: TextInputAction.done,
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        child: Container(
+                          height: 1,
+                          color: Colors.grey[400],
+                        ),
                       ),
-                      RaisedButton(
-                        child: Text("Přihlásit se"),
-                        onPressed: () => {this.login()},
+                      Padding(
+                        padding:
+                            EdgeInsets.symmetric(vertical: 20, horizontal: 25),
+                        child: Stack(
+                          alignment: Alignment.centerRight,
+                          children: <Widget>[
+                            Padding(
+                              padding: EdgeInsets.only(right: 47),
+                              child: TextField(
+                                controller: this._txtPassword,
+                                focusNode: this._focusPassword,
+                                autocorrect: false,
+                                autofocus: false,
+                                obscureText: !_pwdVisible,
+                                textInputAction: TextInputAction.done,
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.black,
+                                ),
+                                decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  hintText: "Heslo",
+                                ),
+                              ),
+                            ),
+                            IconButton(
+                              icon: Icon(
+                                _pwdVisible
+                                    ? FontAwesomeIcons.eyeSlash
+                                    : FontAwesomeIcons.eye,
+                                size: 18,
+                                color: Colors.black,
+                              ),
+                              onPressed: _tooglePassword,
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),
                 ),
+              ),
+              Container(
+                margin: EdgeInsets.only(top: 170),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(5)),
+                  boxShadow: <BoxShadow>[
+                    BoxShadow(),
+                  ],
+                  color: Color(0xFF007adf),
+                ),
+                child: MaterialButton(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 42),
+                    child: Text(
+                      "Přihlásit se",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 25,
+                      ),
+                    ),
+                  ),
+                  onPressed: () => {this._login()},
+                ),
               )
             ],
-          )
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: 10),
+            child: FlatButton(
+              child: Text(
+                "Zapomenuté heslo?",
+                style: TextStyle(
+                    decoration: TextDecoration.underline,
+                    color: Colors.white,
+                    fontSize: 16),
+              ),
+              onPressed: () => {},
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Container(
+                  width: 100,
+                  height: 1,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 15),
+                  child: Text(
+                    "Nebo",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+                Container(
+                  width: 100,
+                  height: 1,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.only(top: 10, right: 40),
+                child: GestureDetector(
+                  child: Container(
+                    padding: const EdgeInsets.all(15.0),
+                    decoration: new BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.white,
+                    ),
+                    child: new Icon(
+                      FontAwesomeIcons.facebookF,
+                      color: Color(0xFF0084ff),
+                    ),
+                  ),
+                  onTap: () {
+                    log("Facebook");
+                  },
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: 10),
+                child: GestureDetector(
+                  child: Container(
+                    padding: const EdgeInsets.all(15.0),
+                    decoration: new BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.white,
+                    ),
+                    child: new Icon(
+                      FontAwesomeIcons.google,
+                      color: Color(0xFF0084ff),
+                    ),
+                  ),
+                  onTap: () {
+                    log("Google");
+                  },
+                ),
+              ),
+            ],
+          ),
         ],
       ),
     );
@@ -199,12 +427,16 @@ class LoginPageState extends State<LoginPage>
 
   Widget _signUp(BuildContext context) {
     return Container(
+      padding: EdgeInsets.only(top: 25),
       child: Column(
         children: <Widget>[
           Stack(
+            alignment: Alignment.topCenter,
+            overflow: Overflow.visible,
             children: <Widget>[
               Card(
                 child: Container(
+                  width: MediaQuery.of(context).size.width * 0.8,
                   child: Column(
                     children: <Widget>[
                       TextField(
@@ -217,18 +449,9 @@ class LoginPageState extends State<LoginPage>
                           filled: false,
                         ),
                       ),
-                      TextField(
-                        autocorrect: false,
-                        autofocus: false,
-                        obscureText: true,
-                        textInputAction: TextInputAction.done,
-                        decoration: InputDecoration(
-                          labelText: "Test",
-                        ),
-                      ),
                       RaisedButton(
-                        child: Text("Přihlásit se"),
-                        onPressed: () => {this.login()},
+                        child: Text("Registrovat se"),
+                        onPressed: () => {},
                       ),
                     ],
                   ),

@@ -5,7 +5,9 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
+import 'package:screen/screen.dart';
 import 'package:zoliky_teachers/pages/Account/LoginPage.dart';
+import 'package:zoliky_teachers/utils/Global.dart';
 
 import 'models/MainModel.dart';
 
@@ -32,6 +34,11 @@ class ZolikAppState extends State<ZolikApp> {
   void initState() {
     AppCenter.start(appSecret, [AppCenterAnalytics.id, AppCenterCrashes.id]);
     _default = LoginPage();
+    
+    if (Global.isInDebugMode) {
+      Screen.keepOn(true);
+    }
+
     super.initState();
   }
 

@@ -27,6 +27,8 @@ dependencies:
   firebase_analytics: ^5.0.2
   firebase_auth: ^0.14.0+5
   scoped_model: ^1.0.1
+  font_awesome_flutter: ^8.5.0
+  screen: ^0.0.5
 
 dev_dependencies:
   flutter_test:

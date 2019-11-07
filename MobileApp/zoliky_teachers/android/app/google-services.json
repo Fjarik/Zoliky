@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "888691872943",
+    "firebase_url": "https://zolikyteacher.firebaseio.com",
+    "project_id": "zolikyteacher",
+    "storage_bucket": "zolikyteacher.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:888691872943:android:16f1038190cc7929aef05a",
+        "android_client_info": {
+          "package_name": "com.example.zoliky_teachers"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "888691872943-gnq24sl1d5l7ffjri5eidth1rr7k3d6i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAkpfUs6kFYy3CXBYKbvWzD5hitsIlhHag"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "888691872943-gnq24sl1d5l7ffjri5eidth1rr7k3d6i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
