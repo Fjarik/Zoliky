@@ -15,16 +15,25 @@ class LoginPageState extends State<LoginPage>
   final FirebaseAnalytics analytics;
   final FirebaseAnalyticsObserver observer;
 
-  static String _registerUrl = "https://www.zoliky.eu/Account/Register";
-  static String _forgotPwdUrl = "https://www.zoliky.eu/Account/ForgotPassword";
+  static String _mainUrl = "https://www.zoliky.eu";
+  static String _registerUrl = '$_mainUrl/Account/Register';
+  static String _forgotPwdUrl = '$_mainUrl/Account/ForgotPassword';
 
   final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
 
   TextEditingController _txtUsername = TextEditingController();
   TextEditingController _txtPassword = TextEditingController();
 
+  TextEditingController _txtRegEmail = TextEditingController();
+  TextEditingController _txtRegFirstname = TextEditingController();
+  TextEditingController _txtRegLastname = TextEditingController();
+
   FocusNode _focusUsername = FocusNode();
   FocusNode _focusPassword = FocusNode();
+
+  FocusNode _focusRegEmail = FocusNode();
+  FocusNode _focusRegFirstname = FocusNode();
+  FocusNode _focusRegLastname = FocusNode();
 
   PageController _pageController = PageController();
 
@@ -50,21 +59,88 @@ class LoginPageState extends State<LoginPage>
   void dispose() {
     _txtUsername?.dispose();
     _txtPassword?.dispose();
+    _txtRegEmail?.dispose();
+    _txtRegFirstname?.dispose();
+    _txtRegLastname?.dispose();
+
     _focusUsername?.dispose();
-    _focusPassword.dispose();
+    _focusPassword?.dispose();
+    _focusRegEmail?.dispose();
+    _focusRegFirstname?.dispose();
+    _focusRegLastname?.dispose();
+
     _pageController?.dispose();
     super.dispose();
   }
 
-  void _login() {
-    setState(() {
-      _isLoading = true;
-    });
+  Future _loginAsync() async {
+    var username = _txtUsername.text;
+    var password = _txtPassword.text;
 
-    log("Test");
+    if (username.isEmpty) {
+      _showError("Musíte vyplnit přihlašovací jméno");
+      return;
+    }
 
+    if (password.isEmpty) {
+      _showError("Musíte vyplnit heslo");
+      return;
+    }
+
+    _setLoading(true);
+
+    var res = await _login(username, password);
+    if (!res) {
+      _showSnackbar("Neplatné jméno nebo heslo");
+    }
+
+    _setLoading(false);
+  }
+
+  Future<bool> _login(String username, String password) {
+    // TODO: Login
+    return Future.value(false);
+  }
+
+  Future _registerAsync() async {
+    _setLoading(true);
+
+    var email = _txtRegEmail.text;
+    var firstname = _txtRegFirstname.text;
+    var lastname = _txtRegLastname.text;
+
+    if (email.isEmpty) {
+      _showError("Musíte vyplnit email");
+      return;
+    }
+
+    var query = "?";
+    if (email.isNotEmpty) {
+      query += 'Email=$email&';
+    }
+    if (firstname.isNotEmpty) {
+      query += 'Name=$firstname&';
+    }
+    if (lastname.isNotEmpty) {
+      query += 'Lastname=$lastname&';
+    }
+
+    var uri = Uri.tryParse(_registerUrl + query);
+    if (uri == null) {
+      _showError("Neplatné vstupní parametry");
+      return;
+    }
+
+    await _launchURL(uri.toString());
+
+    // TODO: Register
+
+    _setLoading(false);
+  }
+
+  void _setLoading(bool loading) {
     setState(() {
-      _isLoading = false;
+      _isLoading = loading;
     });
   }
 
@@ -88,6 +164,53 @@ class LoginPageState extends State<LoginPage>
   void _onSignUpButtonPress() {
     _pageController?.animateToPage(1,
         duration: Duration(milliseconds: 500), curve: Curves.decelerate);
+  }
+
+  void _onPageChange(int page) {
+    FocusScope.of(context).unfocus();
+    if (page == 0) {
+      setState(() {
+        left = Colors.black;
+        right = Colors.white;
+      });
+      return;
+    }
+    setState(() {
+      left = Colors.white;
+      right = Colors.black;
+    });
+  }
+
+  void _showError(String content) {
+    _showDialog("Chyba", content);
+  }
+
+  void _showDialog(String title, String content) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(title),
+            content: Text(content),
+            actions: <Widget>[
+              FlatButton(
+                child: Text("OK"),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              )
+            ],
+          );
+        });
+  }
+
+  void _showSnackbar(String content) {
+    var snack = SnackBar(
+      content: Text(content),
+      backgroundColor: Colors.red[700],
+      duration: Duration(seconds: 2),
+    );
+    _key.currentState.showSnackBar(snack);
   }
 
   Future _launchURL(String url) async {
@@ -130,14 +253,13 @@ class LoginPageState extends State<LoginPage>
                 Padding(
                   padding: EdgeInsets.only(
                     top: 100,
-                    bottom: 80,
+                    bottom: 50,
+                    left: 50,
+                    right: 50,
                   ),
-                  child: Text(
-                    "Žolíky",
-                    style: TextStyle(
-                      fontSize: 40,
-                      color: Colors.white,
-                    ),
+                  child: Image(
+                    fit: BoxFit.fill,
+                    image: AssetImage("assets/ZolikyHeaderWhite_1024.png"),
                   ),
                 ),
                 Padding(
@@ -148,20 +270,7 @@ class LoginPageState extends State<LoginPage>
                   flex: 2,
                   child: PageView(
                     controller: _pageController,
-                    onPageChanged: (i) {
-                      if (i == 0) {
-                        setState(() {
-                          left = Colors.black;
-                          right = Colors.white;
-                        });
-                      } else {
-                        setState(() {
-                          left = Colors.white;
-                          right = Colors.black;
-                        });
-                      }
-                      FocusScope.of(context).unfocus();
-                    },
+                    onPageChanged: _onPageChange,
                     children: <Widget>[
                       ConstrainedBox(
                         constraints: const BoxConstraints.expand(),
@@ -346,7 +455,7 @@ class LoginPageState extends State<LoginPage>
                       ),
                     ),
                   ),
-                  onPressed: () => {this._login()},
+                  onPressed: this._loginAsync,
                 ),
               )
             ],
@@ -440,8 +549,8 @@ class LoginPageState extends State<LoginPage>
                         padding:
                             EdgeInsets.symmetric(vertical: 20, horizontal: 25),
                         child: TextField(
-                          // controller: this._txtUsername,
-                          // focusNode: this._focusUsername,
+                          controller: this._txtRegEmail,
+                          focusNode: this._focusRegEmail,
                           autocorrect: false,
                           autofocus: false,
                           maxLines: 1,
@@ -462,8 +571,9 @@ class LoginPageState extends State<LoginPage>
                         padding:
                             EdgeInsets.symmetric(vertical: 20, horizontal: 25),
                         child: TextField(
-                          // controller: this._txtUsername,
-                          // focusNode: this._focusUsername,
+                          controller: this._txtRegFirstname,
+                          focusNode: this._focusRegFirstname,
+                          textCapitalization: TextCapitalization.words,
                           autocorrect: false,
                           autofocus: false,
                           maxLines: 1,
@@ -483,8 +593,9 @@ class LoginPageState extends State<LoginPage>
                         padding: EdgeInsets.only(
                             top: 25, bottom: 35, left: 20, right: 20),
                         child: TextField(
-                          // controller: this._txtUsername,
-                          // focusNode: this._focusUsername,
+                          controller: this._txtRegLastname,
+                          focusNode: this._focusRegLastname,
+                          textCapitalization: TextCapitalization.words,
                           autocorrect: false,
                           autofocus: false,
                           maxLines: 1,
@@ -523,9 +634,7 @@ class LoginPageState extends State<LoginPage>
                       ),
                     ),
                   ),
-                  onPressed: () => {
-                    // TODO: Register
-                  },
+                  onPressed: this._registerAsync,
                 ),
               )
             ],
