@@ -4,6 +4,7 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:zoliky_teachers/pages/Account/LoginPage.dart';
 import 'package:zoliky_teachers/utils/MenuPainter.dart';
 
@@ -13,6 +14,9 @@ class LoginPageState extends State<LoginPage>
 
   final FirebaseAnalytics analytics;
   final FirebaseAnalyticsObserver observer;
+
+  static String _registerUrl = "https://www.zoliky.eu/Account/Register";
+  static String _forgotPwdUrl = "https://www.zoliky.eu/Account/ForgotPassword";
 
   final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
 
@@ -86,6 +90,14 @@ class LoginPageState extends State<LoginPage>
         duration: Duration(milliseconds: 500), curve: Curves.decelerate);
   }
 
+  Future _launchURL(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+      return;
+    }
+    // TODO: Info
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -148,7 +160,7 @@ class LoginPageState extends State<LoginPage>
                           right = Colors.black;
                         });
                       }
-                      // TODO: Close keyboard
+                      FocusScope.of(context).unfocus();
                     },
                     children: <Widget>[
                       ConstrainedBox(
@@ -321,9 +333,6 @@ class LoginPageState extends State<LoginPage>
                 margin: EdgeInsets.only(top: 170),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(5)),
-                  boxShadow: <BoxShadow>[
-                    BoxShadow(),
-                  ],
                   color: Color(0xFF007adf),
                 ),
                 child: MaterialButton(
@@ -352,41 +361,12 @@ class LoginPageState extends State<LoginPage>
                     color: Colors.white,
                     fontSize: 16),
               ),
-              onPressed: () => {},
+              onPressed: () async {
+                await _launchURL(_forgotPwdUrl);
+              },
             ),
           ),
-          Padding(
-            padding: EdgeInsets.only(top: 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Container(
-                  width: 100,
-                  height: 1,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 15),
-                  child: Text(
-                    "Nebo",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                    ),
-                  ),
-                ),
-                Container(
-                  width: 100,
-                  height: 1,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                  ),
-                ),
-              ],
-            ),
-          ),
+          _splitLine("Nebo"),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -405,6 +385,7 @@ class LoginPageState extends State<LoginPage>
                     ),
                   ),
                   onTap: () {
+                    // TODO: Facebook login
                     log("Facebook");
                   },
                 ),
@@ -424,6 +405,7 @@ class LoginPageState extends State<LoginPage>
                     ),
                   ),
                   onTap: () {
+                    // TODO: Google login
                     log("Google");
                   },
                 ),
@@ -541,23 +523,79 @@ class LoginPageState extends State<LoginPage>
                       ),
                     ),
                   ),
-                  onPressed: () => {},
+                  onPressed: () => {
+                    // TODO: Register
+                  },
                 ),
               )
             ],
-          )
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: 30),
+          ),
+          _splitLine("Nebo"),
+          Padding(
+            padding: EdgeInsets.only(top: 10),
+            child: FlatButton(
+              child: Text(
+                "Přímá registrace",
+                style: TextStyle(
+                    decoration: TextDecoration.underline,
+                    color: Colors.white,
+                    fontSize: 16),
+              ),
+              onPressed: () async {
+                await _launchURL(_registerUrl);
+              },
+            ),
+          ),
         ],
       ),
     );
   }
-}
 
-Widget _line() {
-  return Padding(
-    padding: EdgeInsets.symmetric(horizontal: 20),
-    child: Container(
-      height: 1,
-      color: Colors.grey[400],
-    ),
-  );
+  Widget _line() {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 20),
+      child: Container(
+        height: 1,
+        color: Colors.grey[400],
+      ),
+    );
+  }
+
+  Widget _splitLine(String text) {
+    return Padding(
+      padding: EdgeInsets.only(top: 10),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Container(
+            width: 100,
+            height: 1,
+            decoration: BoxDecoration(
+              color: Colors.white,
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 15),
+            child: Text(
+              text,
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+              ),
+            ),
+          ),
+          Container(
+            width: 100,
+            height: 1,
+            decoration: BoxDecoration(
+              color: Colors.white,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }
