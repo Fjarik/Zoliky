@@ -103,8 +103,6 @@ class LoginPageState extends State<LoginPage>
   }
 
   Future _registerAsync() async {
-    _setLoading(true);
-
     var email = _txtRegEmail.text;
     var firstname = _txtRegFirstname.text;
     var lastname = _txtRegLastname.text;
@@ -113,6 +111,8 @@ class LoginPageState extends State<LoginPage>
       _showError("Musíte vyplnit email");
       return;
     }
+
+    _setLoading(true);
 
     var query = "?";
     if (email.isNotEmpty) {
@@ -128,12 +128,11 @@ class LoginPageState extends State<LoginPage>
     var uri = Uri.tryParse(_registerUrl + query);
     if (uri == null) {
       _showError("Neplatné vstupní parametry");
+      _setLoading(false);
       return;
     }
 
     await _launchURL(uri.toString());
-
-    // TODO: Register
 
     _setLoading(false);
   }
@@ -216,9 +215,7 @@ class LoginPageState extends State<LoginPage>
   Future _launchURL(String url) async {
     if (await canLaunch(url)) {
       await launch(url);
-      return;
     }
-    // TODO: Info
   }
 
   @override
