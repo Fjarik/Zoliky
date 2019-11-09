@@ -8,6 +8,7 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using API.Tools;
 using API.Tools.Annotations;
+using DataAccess;
 using DataAccess.Managers;
 using DataAccess.Managers.New;
 using DataAccess.Models;
@@ -38,9 +39,23 @@ namespace API.Controllers.v2
 		[HttpGet]
 		[Route("getall")]
 		[ResponseType(typeof(List<Class>))]
-		public async Task<IHttpActionResult> GetAll()
+		public Task<IHttpActionResult> GetAll()
 		{
-			var res = await Mgr.GetAllAsync();
+			var schoolId = this.User.Identity.GetSchoolId();
+			return GetSchoolClasses(schoolId);
+		}
+
+		// GET: class/getByClasses
+		[HttpGet]
+		[Route("getbyclasses")]
+		[ResponseType(typeof(List<Class>))]
+		public async Task<IHttpActionResult> GetSchoolClasses([FromUri] int schoolId)
+		{
+			if (schoolId < 1) {
+				return Ok(new List<Class>());
+			}
+
+			var res = await Mgr.GetAllAsync(schoolId);
 			return Ok(res);
 		}
 	}

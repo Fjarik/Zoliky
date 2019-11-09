@@ -1,12 +1,23 @@
 import 'dart:developer';
 
+import 'package:appcenter_analytics/appcenter_analytics.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:zoliky_teachers/pages/Account/LoginPage.dart';
+import 'package:zoliky_teachers/pages/Administration/DashboardPage.dart';
+import 'package:zoliky_teachers/utils/Global.dart';
 import 'package:zoliky_teachers/utils/MenuPainter.dart';
+import 'package:zoliky_teachers/utils/Singleton.dart';
+import 'package:zoliky_teachers/utils/api/connectors/PublicConnector.dart';
+import 'package:zoliky_teachers/utils/api/connectors/UserConnector.dart';
+import 'package:zoliky_teachers/utils/api/enums/PageStatus.dart';
+import 'package:zoliky_teachers/utils/api/enums/StatusCode.dart';
+import 'package:zoliky_teachers/utils/api/enums/UserRoles.dart';
+import 'package:zoliky_teachers/utils/api/models/Unavailability.dart';
+import 'package:zoliky_teachers/utils/api/models/WebStatus.dart';
 
 class LoginPageState extends State<LoginPage>
     with SingleTickerProviderStateMixin {
@@ -76,13 +87,14 @@ class LoginPageState extends State<LoginPage>
   Future _loginAsync() async {
     var username = _txtUsername.text;
     var password = _txtPassword.text;
+    FocusScope.of(context).unfocus();
 
-    if (username.isEmpty) {
+    if (username.isEmpty || username.length < 4) {
       _showError("Musíte vyplnit přihlašovací jméno");
       return;
     }
 
-    if (password.isEmpty) {
+    if (password.isEmpty || password.length < 5) {
       _showError("Musíte vyplnit heslo");
       return;
     }
@@ -90,16 +102,112 @@ class LoginPageState extends State<LoginPage>
     _setLoading(true);
 
     var res = await _login(username, password);
-    if (!res) {
-      _showSnackbar("Neplatné jméno nebo heslo");
+    if (res) {
+      Route r = MaterialPageRoute(builder: (context) => DashboardPage());
+      Navigator.pushReplacement(context, r);
+      return;
     }
+    _showSnackbar("Neplatné jméno nebo heslo");
 
     _setLoading(false);
   }
 
-  Future<bool> _login(String username, String password) {
-    // TODO: Login
-    return Future.value(false);
+  Future<bool> _login(String username, String password) async {
+    var connection = await _checkConnection();
+    if (!connection) {
+      return false;
+    }
+
+    var uc = UserConnector();
+    var res = await uc.login(username, password);
+    if (res == null) {
+      _showError("Vyskytla se nespecifikovaná chyba");
+    }
+
+    String msg = res.getStatusMessage();
+
+    if (res.status == StatusCode.NotFound ||
+        res.status == StatusCode.WrongPassword) {
+      msg = "Neplatné jméno nebo heslo";
+    }
+
+    if (!res.isSuccess) {
+      _showError(msg);
+      _txtPassword.clear();
+      return false;
+    }
+
+    var user = res.content;
+
+    if (!user.isInRolesOr([
+      UserRole.Teacher,
+      UserRole.SchoolManager,
+      UserRole.Administrator,
+      UserRole.Developer
+    ])) {
+      _showError("Tato aplikace je určena pouze pro vyučující");
+      _txtPassword.clear();
+      return false;
+    }
+
+    await Global.loadApp(user.token);
+    Singleton().user = user;
+    /*
+    if (user != null && user.token.isNotEmpty) {
+      uc.usedToken = user.token;
+    }
+    */
+    AppCenterAnalytics.trackEvent(
+        "Login", {'user': '${user.fullName}', 'userID': '${user.id}'});
+
+    return true;
+  }
+
+  Future<bool> _checkConnection() async {
+    PublicConnector pc = new PublicConnector();
+    var status = pc.checkStatusAsync();
+    var res = await status.timeout(Duration(seconds: 7), onTimeout: () {
+      var back = new WebStatus();
+      back.status = PageStatus.Unfunctional;
+      back.message = "Vypršel časový limit pro přihlášení";
+      back.content = "AAA";
+      return back;
+    });
+
+    var title = "Server je nepřístupný";
+    if (res == null) {
+      _showSnackbar("Nepodařilo se zjistit stav serverů.");
+      return false;
+    }
+
+    if (!res.canAccess) {
+      if (res.status == PageStatus.Limited) {
+        title = "Omezený přístup";
+      } else if (res.status == PageStatus.Unfunctional) {
+        if (res.content != null &&
+            res.content == "AAA" &&
+            res.message != null &&
+            res.message.isNotEmpty) {
+          _showError(res.message);
+          return false;
+        }
+      } else if (res.status == PageStatus.NotAvailable) {
+        title = "Probíhá údržba";
+        if (res.content != null && res.content is Unavailability) {
+          if (Global.isInDebugMode) return true;
+          Unavailability unv = res.content;
+          _showSnackbar("Důvod: ${unv.reason} \nPřepokládaný konec: ${unv.to}");
+          return false;
+        }
+      }
+      if (res.message == null) {
+        _showSnackbar("Zkuste to prosím později.");
+        return false;
+      }
+      _showDialog(title, res.message);
+      return false;
+    }
+    return true;
   }
 
   Future _registerAsync() async {

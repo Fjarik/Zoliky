@@ -22,8 +22,6 @@ class User implements IDbObject {
   int sex;
   bool _enabled;
   DateTime memberSince;
-  String versionS;
-  int xp;
 
   String className;
   String schoolName;
@@ -33,7 +31,6 @@ class User implements IDbObject {
   bool emailConfirmed;
 
   Image profilePhoto;
-  Rank rank;
   List<Zolik> zoliky;
   List<Role> roles;
 
@@ -98,8 +95,6 @@ class User implements IDbObject {
     sex = 0;
     _enabled = false;
     memberSince = DateTime.now();
-    versionS = "1.0.0";
-    xp = 0;
     roles = new List();
     zoliky = new List();
   }
@@ -117,8 +112,6 @@ class User implements IDbObject {
     u.sex = json["Sex"];
     u._enabled = json["IsEnabled"];
     u.memberSince = DateTime.parse(json["MemberSince"]);
-    u.versionS = json["VersionS"];
-    u.xp = json["XP"];
 
     u.className = json["ClassName"];
     u.schoolName = json["SchoolName"];
@@ -133,11 +126,6 @@ class User implements IDbObject {
     /* if (json.containsKey("Class") && json["Class"] != null) {
       u.trida = Class.fromJson(json["Class"]);
     }*/
-    if (json.containsKey("Rank") && json["Rank"] != null) {
-      u.rank = Rank.fromJson(json["Rank"]);
-    } else {
-      u.rank = Global.getRankByXp(u.xp);
-    }
 
     u.roles = new List<Role>();
     if (json.containsKey("Roles") && json["Roles"] != null) {

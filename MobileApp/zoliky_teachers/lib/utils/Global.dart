@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:zoliky_teachers/utils/api/connectors/ClassConnector.dart';
 import 'package:zoliky_teachers/utils/api/models/Class.dart';
 import 'package:zoliky_teachers/utils/api/models/Rank.dart';
 
@@ -35,6 +36,19 @@ class Global {
           ranks.first;
     }
     return null;
+  }
+
+  static Future loadApp(String token) async {
+    _classes = await loadClasses(token);
+  }
+
+  static Future<List<Class>> loadClasses(String token) async {
+    if (token == null || token.isEmpty) {
+      return new List<Class>();
+    }
+    var mgr = new ClassConnector(token);
+    var cRes = await mgr.getClassesAsync();
+    return cRes ?? new List<Class>();
   }
 
   static bool get isInDebugMode {
