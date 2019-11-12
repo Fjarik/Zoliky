@@ -1,4 +1,4 @@
-package com.example.zoliky_teachers
+package com.zoliky.teachers
 
 import android.os.Bundle
 

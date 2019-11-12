@@ -4,6 +4,7 @@ import 'package:appcenter_analytics/appcenter_analytics.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:zoliky_teachers/pages/Account/LoginPage.dart';
@@ -31,6 +32,8 @@ class LoginPageState extends State<LoginPage>
   static String _forgotPwdUrl = "$_mainUrl/Account/ForgotPassword";
 
   final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
+
+  final facebookLogin = FacebookLogin();
 
   TextEditingController _txtUsername = TextEditingController();
   TextEditingController _txtPassword = TextEditingController();
@@ -168,6 +171,27 @@ class LoginPageState extends State<LoginPage>
         "Login", {'user': '${user.fullName}', 'userID': '${user.id}'});
 
     return true;
+  }
+
+  Future _fbLoginAsync() async {
+    final result = await facebookLogin.logIn(["email"]);
+    var userId = "";
+    switch (result.status) {
+      case FacebookLoginStatus.loggedIn:
+        userId = result.accessToken.userId;
+        if (userId.isEmpty){
+          return;
+        }
+        break;
+      case FacebookLoginStatus.cancelledByUser:
+        _showSnackbar("Akce zrušena uživatelem");
+        return;
+      case FacebookLoginStatus.error:
+        _showSnackbar("Vyskytla se chyba při přihlašování");
+        return;
+    }
+
+
   }
 
   Future<bool> _checkConnection() async {
@@ -613,10 +637,7 @@ class LoginPageState extends State<LoginPage>
                       color: Color(0xFF0084ff),
                     ),
                   ),
-                  onTap: () {
-                    // TODO: Facebook login
-                    log("Facebook");
-                  },
+                  onTap: _fbLoginAsync,
                 ),
               ),
               Padding(
