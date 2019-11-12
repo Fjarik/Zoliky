@@ -27,8 +27,8 @@ class LoginPageState extends State<LoginPage>
   final FirebaseAnalyticsObserver observer;
 
   static String _mainUrl = "https://www.zoliky.eu";
-  static String _registerUrl = '$_mainUrl/Account/Register';
-  static String _forgotPwdUrl = '$_mainUrl/Account/ForgotPassword';
+  static String _registerUrl = "$_mainUrl/Account/Register";
+  static String _forgotPwdUrl = "$_mainUrl/Account/ForgotPassword";
 
   final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
 
@@ -85,6 +85,10 @@ class LoginPageState extends State<LoginPage>
   }
 
   Future _loginAsync() async {
+    if (_isLoading) {
+      return;
+    }
+
     var username = _txtUsername.text;
     var password = _txtPassword.text;
     FocusScope.of(context).unfocus();
@@ -103,11 +107,14 @@ class LoginPageState extends State<LoginPage>
 
     var res = await _login(username, password);
     if (res) {
-      Route r = MaterialPageRoute(builder: (context) => DashboardPage());
+      Route r = MaterialPageRoute(
+          builder: (context) => DashboardPage(
+                analytics: this.analytics,
+                observer: this.observer,
+              ));
       Navigator.pushReplacement(context, r);
       return;
     }
-    _showSnackbar("Neplatné jméno nebo heslo");
 
     _setLoading(false);
   }
@@ -132,7 +139,7 @@ class LoginPageState extends State<LoginPage>
     }
 
     if (!res.isSuccess) {
-      _showError(msg);
+      _showSnackbar(msg);
       _txtPassword.clear();
       return false;
     }
@@ -145,7 +152,7 @@ class LoginPageState extends State<LoginPage>
       UserRole.Administrator,
       UserRole.Developer
     ])) {
-      _showError("Tato aplikace je určena pouze pro vyučující");
+      _showSnackbar("Tato aplikace je určena pouze pro vyučující");
       _txtPassword.clear();
       return false;
     }
@@ -352,60 +359,64 @@ class LoginPageState extends State<LoginPage>
               stops: [0, 1],
               tileMode: TileMode.clamp,
             )),
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.only(
-                    top: 100,
-                    bottom: 50,
-                    left: 50,
-                    right: 50,
-                  ),
-                  child: Image(
-                    fit: BoxFit.fill,
-                    image: AssetImage("assets/ZolikyHeaderWhite_1024.png"),
-                  ),
-                ),
-                Padding(
-                  child: _loginOrCreate(context),
-                  padding: EdgeInsets.only(top: 20),
-                ),
-                Expanded(
-                  flex: 2,
-                  child: PageView(
-                    controller: _pageController,
-                    onPageChanged: _onPageChange,
-                    children: <Widget>[
-                      ConstrainedBox(
-                        constraints: const BoxConstraints.expand(),
-                        child: _signIn(context),
-                      ),
-                      ConstrainedBox(
-                        constraints: const BoxConstraints.expand(),
-                        child: _signUp(context),
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+            child: _isLoading
+                ? _loading(context)
+                : Column(
+                    mainAxisSize: MainAxisSize.max,
                     children: <Widget>[
                       Padding(
-                        padding: EdgeInsets.symmetric(vertical: 15),
-                        child: Text(
-                          DateTime.now().year.toString() + " \u00a9 Žolíky",
-                          style: TextStyle(
-                            color: Colors.grey[200],
-                          ),
+                        padding: EdgeInsets.only(
+                          top: 100,
+                          bottom: 50,
+                          left: 50,
+                          right: 50,
+                        ),
+                        child: Image(
+                          fit: BoxFit.fill,
+                          image:
+                              AssetImage("assets/ZolikyHeaderWhite_1024.png"),
+                        ),
+                      ),
+                      Padding(
+                        child: _loginOrCreate(context),
+                        padding: EdgeInsets.only(top: 20),
+                      ),
+                      Expanded(
+                        flex: 2,
+                        child: PageView(
+                          controller: _pageController,
+                          onPageChanged: _onPageChange,
+                          children: <Widget>[
+                            ConstrainedBox(
+                              constraints: const BoxConstraints.expand(),
+                              child: _signIn(context),
+                            ),
+                            ConstrainedBox(
+                              constraints: const BoxConstraints.expand(),
+                              child: _signUp(context),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Padding(
+                              padding: EdgeInsets.symmetric(vertical: 15),
+                              child: Text(
+                                DateTime.now().year.toString() +
+                                    " \u00a9 Žolíky",
+                                style: TextStyle(
+                                  color: Colors.grey[200],
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ],
                   ),
-                ),
-              ],
-            ),
           ),
         ),
       ),
@@ -489,6 +500,9 @@ class LoginPageState extends State<LoginPage>
                           maxLines: 1,
                           keyboardType: TextInputType.emailAddress,
                           textInputAction: TextInputAction.next,
+                          onEditingComplete: () {
+                            _focusPassword.requestFocus();
+                          },
                           style: TextStyle(
                             fontSize: 16,
                             color: Colors.black,
@@ -516,6 +530,7 @@ class LoginPageState extends State<LoginPage>
                                 obscureText: !_pwdVisible,
                                 maxLines: 1,
                                 textInputAction: TextInputAction.done,
+                                onEditingComplete: this._loginAsync,
                                 style: TextStyle(
                                   fontSize: 16,
                                   color: Colors.black,
@@ -661,6 +676,9 @@ class LoginPageState extends State<LoginPage>
                           maxLines: 1,
                           keyboardType: TextInputType.emailAddress,
                           textInputAction: TextInputAction.next,
+                          onEditingComplete: () {
+                            _focusRegFirstname.requestFocus();
+                          },
                           style: TextStyle(
                             fontSize: 16,
                             color: Colors.black,
@@ -683,6 +701,9 @@ class LoginPageState extends State<LoginPage>
                           autofocus: false,
                           maxLines: 1,
                           textInputAction: TextInputAction.next,
+                          onEditingComplete: () {
+                            _focusRegLastname.requestFocus();
+                          },
                           style: TextStyle(
                             fontSize: 16,
                             color: Colors.black,
@@ -705,6 +726,7 @@ class LoginPageState extends State<LoginPage>
                           autofocus: false,
                           maxLines: 1,
                           textInputAction: TextInputAction.done,
+                          onEditingComplete: this._registerAsync,
                           style: TextStyle(
                             fontSize: 16,
                             color: Colors.black,
@@ -810,6 +832,27 @@ class LoginPageState extends State<LoginPage>
           ),
         ],
       ),
+    );
+  }
+
+  Widget _loading(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: <Widget>[
+        CircularProgressIndicator(
+          valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+        ),
+        Padding(
+          padding: EdgeInsets.only(top: 30),
+          child: Text(
+            "Probíhá přihlašování...",
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
+        )
+      ],
     );
   }
 }

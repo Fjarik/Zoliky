@@ -5,7 +5,6 @@ import 'package:zoliky_teachers/utils/Global.dart';
 import 'package:zoliky_teachers/utils/api/enums/UserRoles.dart';
 import 'package:zoliky_teachers/utils/api/models/Class.dart';
 import 'package:zoliky_teachers/utils/api/models/Image.dart';
-import 'package:zoliky_teachers/utils/api/models/Rank.dart';
 import 'package:zoliky_teachers/utils/api/models/Role.dart';
 import 'package:zoliky_teachers/utils/api/models/Zolik.dart';
 import 'package:zoliky_teachers/utils/interfaces/IDbObject.dart';

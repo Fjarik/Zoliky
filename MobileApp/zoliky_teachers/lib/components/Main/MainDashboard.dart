@@ -1,6 +1,7 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
+import 'package:zoliky_teachers/pages/Account/LoginPage.dart';
 import 'package:zoliky_teachers/pages/Administration/DashboardPage.dart';
 
 class DashboardPageState extends State<DashboardPage> {
@@ -10,6 +11,15 @@ class DashboardPageState extends State<DashboardPage> {
   final FirebaseAnalyticsObserver observer;
 
   final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
+
+  _logOut() {
+    Route r = MaterialPageRoute(
+        builder: (context) => LoginPage(
+              analytics: this.analytics,
+              observer: this.observer,
+            ));
+    Navigator.pushReplacement(context, r);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,8 +33,13 @@ class DashboardPageState extends State<DashboardPage> {
               : 775.0,
           child: Column(
             mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              
+              RaisedButton(
+                child: Text("Odhlásit se"),
+                onPressed: _logOut,
+              ),
             ],
           ),
         ),
