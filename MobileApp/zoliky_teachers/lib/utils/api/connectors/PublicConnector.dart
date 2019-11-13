@@ -39,14 +39,14 @@ class PublicConnector {
     return await _getToken(map);
   }
 
-  Future<MActionResult<String>> getFbToken(String token) async {
+  Future<MActionResult<String>> getFbToken(String token, String provider) async {
     if (token.isEmpty) {
       return MActionResult<String>().ctorOnlyStatus(StatusCode.InvalidInput);
     }
 
     var map = {
-      "grant_type": "Facebook",
-      "fbKey": token,
+      "grant_type": provider,
+      "key": token,
     };
     return await _getToken(map);
   }

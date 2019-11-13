@@ -23,9 +23,9 @@ class UserConnector extends PublicConnector {
     }
   }
 
-  Future<MActionResult<User>> loginExternal(String token) async {
+  Future<MActionResult<User>> loginExternal(String token, String provider) async {
     try {
-      var res = await getFbToken(token);
+      var res = await getFbToken(token, provider);
       if (!res.isSuccess) {
         return new MActionResult<User>().ctorOnlyStatus(res.status);
       }

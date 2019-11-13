@@ -30,12 +30,12 @@ namespace API.Tools
 				return;
 			}
 			var identity = new ClaimsIdentity(context.Options.AuthenticationType);
-			if (context.GrantType != "Facebook") {
+			if (context.GrantType != "Facebook" && context.GrantType != "Google") {
 				context.SetError("invalid_grant", "Přihlášení se nezdařilo");
 				return;
 			}
-			if (context.Parameters.All(x => x.Key != "fbKey")) {
-				context.SetError("invalid_grant", "Musíte poskytou autorizační klíč pro Facebook");
+			if (context.Parameters.All(x => x.Key != "key")) {
+				context.SetError("invalid_grant", "Musíte poskytou autorizační klíč pro externí síť");
 				return;
 			}
 			// Get project
@@ -46,11 +46,19 @@ namespace API.Tools
 				}
 			}
 			var ip = context.Request.RemoteIpAddress;
-			var fbKey = context.Parameters.Get("fbKey");
+			var key = context.Parameters.Get("key");
 			var mgr = context.OwinContext.Get<UserManager>();
 			try {
 				// Normal login
-				var res = await mgr.FbLoginAsync(fbKey, ip, project);
+				var res = new MActionResult<User>(StatusCode.InternalError);
+				switch (context.GrantType) {
+					case "Facebook":
+						res = await mgr.FbLoginAsync(key, ip, project);
+						break;
+					case "Google":
+						res = await mgr.GoogleLoginAsync(key, ip, project);
+						break;
+				}
 				if (!res.IsSuccess) {
 					context.SetError(((int) res.Status).ToString(), res.GetStatusMessage());
 					return;

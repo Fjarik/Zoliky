@@ -314,6 +314,24 @@ namespace DataAccess.Managers
 			return await LoginAsync(lInfo, ip, project);
 		}
 
+		public async Task<MActionResult<User>> GoogleLoginAsync(string token,
+																string ip,
+																Projects project)
+		{
+			if (string.IsNullOrEmpty(token)) {
+				return new MActionResult<User>(StatusCode.InvalidInput);
+			}
+
+			var res = await $"https://www.googleapis.com/oauth2/v2/userinfo".WithOAuthBearerToken(token).GetJsonAsync();
+			if (!(res.name is string name) || !(res.id is string id)) {
+				return new MActionResult<User>(StatusCode.InvalidInput);
+			}
+
+			var lInfo = new UserLoginInfo("Google", id);
+
+			return await LoginAsync(lInfo, ip, project);
+		}
+
 #endregion
 
 		public async Task<MActionResult<User>> LoginAsync(ExternalLoginInfo info,

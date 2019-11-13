@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import 'package:appcenter_analytics/appcenter_analytics.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -201,7 +202,32 @@ class LoginPageState extends State<LoginPage>
       _setLoading(false);
       return;
     }
-    var res = await UserConnector().loginExternal(token);
+    var res = await UserConnector().loginExternal(token, "Facebook");
+    await _login(res);
+  }
+
+  Future _googleLoginAsync() async {
+    if (_isLoading) {
+      return;
+    }
+    _setLoading(true);
+    var signIn = GoogleSignIn(scopes: ["email"]);
+    String token = "";
+    try {
+      var account = await signIn.signIn();
+      var auth = await account.authentication;
+      token = auth.accessToken;
+    } catch (error) {
+      _showError(error.toString());
+      _setLoading(false);
+      return;
+    }
+    var connection = await _checkConnection();
+    if (!connection) {
+      _setLoading(false);
+      return;
+    }
+    var res = await UserConnector().loginExternal(token, "Google");
     await _login(res);
   }
 
@@ -665,10 +691,7 @@ class LoginPageState extends State<LoginPage>
                       color: Color(0xFF0084ff),
                     ),
                   ),
-                  onTap: () {
-                    // TODO: Google login
-                    log("Google");
-                  },
+                  onTap: _googleLoginAsync,
                 ),
               ),
             ],

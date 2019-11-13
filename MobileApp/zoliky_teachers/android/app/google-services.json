@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "888691872943-jdq286id0ql0iag1rvm6vj48guqsb9sb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.zoliky.teachers",
+            "certificate_hash": "09875ee52fcf789f82f736c695fd1f476f4acbb5"
+          }
+        },
+        {
           "client_id": "888691872943-gnq24sl1d5l7ffjri5eidth1rr7k3d6i.apps.googleusercontent.com",
           "client_type": 3
         }
