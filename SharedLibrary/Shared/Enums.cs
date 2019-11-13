@@ -55,6 +55,9 @@ namespace SharedLibrary.Enums
 
 		[Description("Webová aplikace (MVC)")]
 		WebNew = 10,
+
+		[Description("Mobilní aplikace pro vyučující")]
+		TeacherApp = 11,
 	}
 
 	public enum Subjects : int

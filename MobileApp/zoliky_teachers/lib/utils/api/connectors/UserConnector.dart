@@ -4,27 +4,44 @@ import 'package:http/http.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:zoliky_teachers/utils/api/connectors/PublicConnector.dart';
 import 'package:zoliky_teachers/utils/api/enums/StatusCode.dart';
-import 'package:zoliky_teachers/utils/api/models/Logins.dart';
 import 'package:zoliky_teachers/utils/api/models/Student.dart';
 import 'package:zoliky_teachers/utils/api/models/User.dart';
 import 'package:zoliky_teachers/utils/api/models/universal/MActionResult.dart';
 
 class UserConnector extends PublicConnector {
   Future<MActionResult<User>> login(String username, String password) async {
-    Logins lg = Logins.fromLogins(username, password);
-
     try {
-      String _token = await this.loginToken;
-      var res = await cli.post(
-        "$urlApi/user/login",
-        headers: {"Authorization": "Bearer $_token"},
-        body: lg.toJson(),
-      );
-
-      if (res.statusCode == 403) {
-        return new MActionResult<User>()
-            .ctorOnlyStatus(StatusCode.InsufficientPermissions);
+      var res = await getToken(username, password);
+      if (!res.isSuccess) {
+        return new MActionResult<User>().ctorOnlyStatus(res.status);
       }
+      this.usedToken = res.content;
+
+      return await this.getMeAsync();
+    } catch (ex) {
+      return new MActionResult<User>().ctorWithexception(ex);
+    }
+  }
+
+  Future<MActionResult<User>> loginExternal(String token) async {
+    try {
+      var res = await getFbToken(token);
+      if (!res.isSuccess) {
+        return new MActionResult<User>().ctorOnlyStatus(res.status);
+      }
+      this.usedToken = res.content;
+
+      return await this.getMeAsync();
+    } catch (ex) {
+      return new MActionResult<User>().ctorWithexception(ex);
+    }
+  }
+
+  Future<MActionResult<User>> getMeAsync([bool includeImage = true]) async {
+    try {
+      var url = "$urlApi/user/me?includeImage=$includeImage";
+      var res =
+          await cli.get(url, headers: {"Authorization": "Bearer $usedToken"});
 
       if (res.statusCode != 200) {
         return new MActionResult<User>()
@@ -44,12 +61,6 @@ class UserConnector extends PublicConnector {
       }
 
       MActionResult<User> ws = MActionResult.fromJson(_json);
-      if (ws != null && ws.isSuccess) {
-        ws.content.token = await getToken(username, password);
-      }
-
-      // ws.content = User.fromJson(json.decode(ws.content.toString()));
-
       return Future<MActionResult<User>>.value(ws);
     } catch (ex) {
       return new MActionResult<User>().ctorWithexception(ex);

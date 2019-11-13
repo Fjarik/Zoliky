@@ -13,6 +13,7 @@ class Projects extends Enum<int> {
   static const Projects Api = const Projects(8);
   static const Projects Unknown = const Projects(9);
   static const Projects WebNew = const Projects(10);
+  static const Projects FlutterTeacher = const Projects(11);
 
   operator ==(Object other) => (other is Projects && other.value == this.value);
 

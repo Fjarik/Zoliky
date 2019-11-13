@@ -301,6 +301,7 @@ namespace DataAccess.Managers
 																	 TransactionAssignment type,
 																	 string message)
 		{
+			//using (var transaction = _ctx.Database.BeginTransaction()) {
 			var uMgr = Context.Get<UserManager>();
 			if (!(await uMgr.IdExistsAsync(fromId)) || !(await uMgr.IdExistsAsync(toId))) {
 				return new MActionResult<Transaction>(StatusCode.NotValidID);
@@ -349,7 +350,7 @@ namespace DataAccess.Managers
 					var nMgr = Context.Get<NotificationManager>();
 					await nMgr.NewZolikAsync(toId, z.Title);
 				}
-
+				// transaction.Commit();
 				return new MActionResult<Transaction>(StatusCode.OK, tran);
 			} catch (Exception ex) {
 #if DEBUG
@@ -358,6 +359,7 @@ namespace DataAccess.Managers
 				return new MActionResult<Transaction>(SharedLibrary.Enums.StatusCode.SeeException, ex);
 #endif
 			}
+			//}
 		}
 
 		private async Task UpdateStatisticsAsync(int fromId, int toId, ZolikType type, TransactionAssignment tranType)

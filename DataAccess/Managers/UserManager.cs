@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using DataAccess.Managers.New;
 using DataAccess.Models;
+using Flurl.Http;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
@@ -293,6 +294,28 @@ namespace DataAccess.Managers
 
 #region Login
 
+#region FbLogin
+
+		public async Task<MActionResult<User>> FbLoginAsync(string token,
+															string ip,
+															Projects project)
+		{
+			if (string.IsNullOrEmpty(token)) {
+				return new MActionResult<User>(StatusCode.InvalidInput);
+			}
+
+			var res = await $"https://graph.facebook.com/v5.0/me?fields=email&access_token={token}".GetJsonAsync();
+			if (!(res.email is string email) || !(res.id is string id)) {
+				return new MActionResult<User>(StatusCode.InvalidInput);
+			}
+
+			var lInfo = new UserLoginInfo("Facebook", id);
+
+			return await LoginAsync(lInfo, ip, project);
+		}
+
+#endregion
+
 		public async Task<MActionResult<User>> LoginAsync(ExternalLoginInfo info,
 														  string ip,
 														  Projects project,
@@ -342,11 +365,11 @@ namespace DataAccess.Managers
 			return LoginAsync(username, password, ip, Projects.Unknown, false);
 		}
 
-		private async Task<MActionResult<User>> LoginAsync(string username,
-														   string password,
-														   string ip,
-														   Projects project,
-														   bool recordLogin = true)
+		public async Task<MActionResult<User>> LoginAsync(string username,
+														  string password,
+														  string ip,
+														  Projects project,
+														  bool recordLogin = true)
 		{
 			if (string.IsNullOrWhiteSpace(username)) {
 				return new MActionResult<User>(StatusCode.InvalidInput);

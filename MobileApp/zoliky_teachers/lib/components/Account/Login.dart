@@ -1,5 +1,7 @@
+import 'dart:convert';
 import 'dart:developer';
 
+import 'package:http/http.dart' as http;
 import 'package:appcenter_analytics/appcenter_analytics.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
@@ -18,7 +20,9 @@ import 'package:zoliky_teachers/utils/api/enums/PageStatus.dart';
 import 'package:zoliky_teachers/utils/api/enums/StatusCode.dart';
 import 'package:zoliky_teachers/utils/api/enums/UserRoles.dart';
 import 'package:zoliky_teachers/utils/api/models/Unavailability.dart';
+import 'package:zoliky_teachers/utils/api/models/User.dart';
 import 'package:zoliky_teachers/utils/api/models/WebStatus.dart';
+import 'package:zoliky_teachers/utils/api/models/universal/MActionResult.dart';
 
 class LoginPageState extends State<LoginPage>
     with SingleTickerProviderStateMixin {
@@ -107,9 +111,19 @@ class LoginPageState extends State<LoginPage>
     }
 
     _setLoading(true);
+    var connection = await _checkConnection();
+    if (!connection) {
+      _setLoading(false);
+      return;
+    }
+    var res = await UserConnector().login(username, password);
 
-    var res = await _login(username, password);
-    if (res) {
+    await _login(res);
+  }
+
+  Future _login(MActionResult<User> res) async {
+    var success = await _checkLogin(res);
+    if (success) {
       Route r = MaterialPageRoute(
           builder: (context) => DashboardPage(
                 analytics: this.analytics,
@@ -118,18 +132,10 @@ class LoginPageState extends State<LoginPage>
       Navigator.pushReplacement(context, r);
       return;
     }
-
     _setLoading(false);
   }
 
-  Future<bool> _login(String username, String password) async {
-    var connection = await _checkConnection();
-    if (!connection) {
-      return false;
-    }
-
-    var uc = UserConnector();
-    var res = await uc.login(username, password);
+  Future<bool> _checkLogin(MActionResult<User> res) async {
     if (res == null) {
       _showError("Vyskytla se nespecifikovaná chyba");
     }
@@ -162,11 +168,6 @@ class LoginPageState extends State<LoginPage>
 
     await Global.loadApp(user.token);
     Singleton().user = user;
-    /*
-    if (user != null && user.token.isNotEmpty) {
-      uc.usedToken = user.token;
-    }
-    */
     AppCenterAnalytics.trackEvent(
         "Login", {'user': '${user.fullName}', 'userID': '${user.id}'});
 
@@ -174,12 +175,16 @@ class LoginPageState extends State<LoginPage>
   }
 
   Future _fbLoginAsync() async {
+    if (_isLoading) {
+      return;
+    }
+    _setLoading(true);
     final result = await facebookLogin.logIn(["email"]);
-    var userId = "";
+    var token = "";
     switch (result.status) {
       case FacebookLoginStatus.loggedIn:
-        userId = result.accessToken.userId;
-        if (userId.isEmpty){
+        token = result.accessToken.token;
+        if (token.isEmpty) {
           return;
         }
         break;
@@ -191,7 +196,13 @@ class LoginPageState extends State<LoginPage>
         return;
     }
 
-
+    var connection = await _checkConnection();
+    if (!connection) {
+      _setLoading(false);
+      return;
+    }
+    var res = await UserConnector().loginExternal(token);
+    await _login(res);
   }
 
   Future<bool> _checkConnection() async {

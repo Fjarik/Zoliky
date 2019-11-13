@@ -24,24 +24,53 @@ namespace API.Tools
 			context.Validated();
 		}
 
+		public override async Task GrantCustomExtension(OAuthGrantCustomExtensionContext context)
+		{
+			if (context == null) {
+				return;
+			}
+			var identity = new ClaimsIdentity(context.Options.AuthenticationType);
+			if (context.GrantType != "Facebook") {
+				context.SetError("invalid_grant", "Přihlášení se nezdařilo");
+				return;
+			}
+			if (context.Parameters.All(x => x.Key != "fbKey")) {
+				context.SetError("invalid_grant", "Musíte poskytou autorizační klíč pro Facebook");
+				return;
+			}
+			// Get project
+			var project = Projects.Unknown;
+			if (context.Request.Headers.TryGetValue("projectId", out string[] inputs) && inputs.Length > 0) {
+				if (int.TryParse(inputs[0], out int projectId) && Enum.IsDefined(typeof(Projects), projectId)) {
+					project = (Projects) projectId;
+				}
+			}
+			var ip = context.Request.RemoteIpAddress;
+			var fbKey = context.Parameters.Get("fbKey");
+			var mgr = context.OwinContext.Get<UserManager>();
+			try {
+				// Normal login
+				var res = await mgr.FbLoginAsync(fbKey, ip, project);
+				if (!res.IsSuccess) {
+					context.SetError(((int) res.Status).ToString(), res.GetStatusMessage());
+					return;
+				}
+				AddClaims(identity, res.Content);
+			} catch {
+				context.SetError("invalid_grant", "Přihlášení se nezdařilo");
+				return;
+			}
+			context.Validated(identity);
+		}
+
 		public override async Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
 		{
 			if (context == null) {
 				return;
 			}
 			var identity = new ClaimsIdentity(context.Options.AuthenticationType);
-			if (context.UserName.ToLower() == "admin" && context.Password == "ygaFIo91KJSG") {
-				AddClaims(identity, new User() {
-					Username = "admin",
-					Name = "Backup",
-					Lastname = "Admin",
-					Roles = new List<Role>() {
-						new Role() {
-							Name = UserRoles.Administrator
-						}
-					}
-				});
-			} else if (context.UserName.ToLower() == "user" && context.Password == "It9ac8kw") {
+			// Login only - Token
+			if (context.UserName.ToLower() == "user" && context.Password == "It9ac8kw") {
 				AddClaims(identity, new User() {
 					Username = "user",
 					Name = "Login",
@@ -52,32 +81,30 @@ namespace API.Tools
 						}
 					}
 				});
-			} else if (context.UserName.ToLower() == "dev" && context.Password == "Ncsb0mssATDpUZRXo837") {
-				AddClaims(identity, new User() {
-					Username = "dev",
-					Name = "Backup",
-					Lastname = "Developer",
-					Roles = new List<Role>() {
-						new Role() {
-							Name = UserRoles.Developer
-						}
-					}
-				});
-			} else {
-				try {
-					var mgr = context.OwinContext.Get<UserManager>();
-					var res = await mgr.LoginAsync(context.UserName, context.Password, context.Request.RemoteIpAddress);
-					if (!res.IsSuccess) {
-						context.SetError("invalid_grant", res.GetStatusMessage());
-						return;
-					}
-					User u = res.Content;
+				context.Validated(identity);
+				return;
+			}
+			// Get project
+			var project = Projects.Unknown;
+			if (context.Request.Headers.TryGetValue("projectId", out string[] inputs) && inputs.Length > 0) {
+				if (int.TryParse(inputs[0], out int projectId) && Enum.IsDefined(typeof(Projects), projectId)) {
+					project = (Projects) projectId;
+				}
+			}
 
-					AddClaims(identity, u);
-				} catch {
-					context.SetError("invalid_grant", "Přihlášení se nezdařilo");
+			var ip = context.Request.RemoteIpAddress;
+			var mgr = context.OwinContext.Get<UserManager>();
+			try {
+				// Normal login
+				var res = await mgr.LoginAsync(context.UserName, context.Password, ip, project);
+				if (!res.IsSuccess) {
+					context.SetError(((int) res.Status).ToString(), res.GetStatusMessage());
 					return;
 				}
+				AddClaims(identity, res.Content);
+			} catch {
+				context.SetError("invalid_grant", "Přihlášení se nezdařilo");
+				return;
 			}
 			context.Validated(identity);
 		}
