@@ -9,11 +9,13 @@ import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:zoliky_teachers/pages/Account/LoginPage.dart';
 import 'package:zoliky_teachers/pages/Administration/DashboardPage.dart';
 import 'package:zoliky_teachers/utils/Global.dart';
 import 'package:zoliky_teachers/utils/MenuPainter.dart';
+import 'package:zoliky_teachers/utils/SettingKeys.dart';
 import 'package:zoliky_teachers/utils/Singleton.dart';
 import 'package:zoliky_teachers/utils/api/connectors/PublicConnector.dart';
 import 'package:zoliky_teachers/utils/api/connectors/UserConnector.dart';
@@ -27,10 +29,11 @@ import 'package:zoliky_teachers/utils/api/models/universal/MActionResult.dart';
 
 class LoginPageState extends State<LoginPage>
     with SingleTickerProviderStateMixin {
-  LoginPageState(this.analytics, this.observer);
+  LoginPageState(this.analytics, this.observer, this.autoLogin);
 
   final FirebaseAnalytics analytics;
   final FirebaseAnalyticsObserver observer;
+  final bool autoLogin;
 
   static String _mainUrl = "https://www.zoliky.eu";
   static String _registerUrl = "$_mainUrl/Account/Register";
@@ -66,6 +69,19 @@ class LoginPageState extends State<LoginPage>
   void initState() {
     super.initState();
     _focusPassword.addListener(_txtPasswordFocusChanges);
+
+    SharedPreferences.getInstance().then((prefs) {
+      var username = prefs.getString(SettingKeys.lastUsername);
+      if (username != null && username.isNotEmpty) {
+        _txtUsername.text = username;
+      }
+      if (autoLogin) {
+        _initByTokenAsync(prefs).then((res) {
+          _setLoading(false);
+        });
+      }
+    });
+
     analytics.logEvent(
       name: "Test",
       parameters: <String, dynamic>{
@@ -90,6 +106,29 @@ class LoginPageState extends State<LoginPage>
 
     _pageController?.dispose();
     super.dispose();
+  }
+
+  Future<bool> _initByTokenAsync(SharedPreferences settings) async {
+    if (settings != null && settings.containsKey(SettingKeys.lastToken)) {
+      var token = settings.getString(SettingKeys.lastToken);
+      if (token != null && token.isNotEmpty) {
+        _setLoading(true);
+        return await _tryTokenAsync(token);
+      }
+    }
+    return false;
+  }
+
+  Future<bool> _tryTokenAsync(String token) async {
+    if (token.isEmpty) {
+      return false;
+    }
+    var uc = UserConnector();
+    uc.usedToken = token;
+
+    var res = await uc.getMeAsync();
+    await _login(res);
+    return true;
   }
 
   Future _loginAsync() async {
@@ -118,6 +157,8 @@ class LoginPageState extends State<LoginPage>
       return;
     }
     var res = await UserConnector().login(username, password);
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString(SettingKeys.lastUsername, username);
 
     await _login(res);
   }
@@ -126,10 +167,11 @@ class LoginPageState extends State<LoginPage>
     var success = await _checkLogin(res);
     if (success) {
       Route r = MaterialPageRoute(
-          builder: (context) => DashboardPage(
-                analytics: this.analytics,
-                observer: this.observer,
-              ));
+        builder: (context) => DashboardPage(
+          analytics: this.analytics,
+          observer: this.observer,
+        ),
+      );
       Navigator.pushReplacement(context, r);
       return;
     }
@@ -167,8 +209,10 @@ class LoginPageState extends State<LoginPage>
       return false;
     }
 
-    await Global.loadApp(user.token);
+    await Global.loadApp(Singleton().token);
     Singleton().user = user;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString(SettingKeys.lastToken, Singleton().token);
     AppCenterAnalytics.trackEvent(
         "Login", {'user': '${user.fullName}', 'userID': '${user.id}'});
 

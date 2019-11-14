@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:zoliky_teachers/utils/Singleton.dart';
 import 'package:zoliky_teachers/utils/api/connectors/MainClient.dart';
 import 'package:zoliky_teachers/utils/api/enums/Projects.dart';
 import 'package:zoliky_teachers/utils/api/enums/StatusCode.dart';
@@ -39,7 +40,8 @@ class PublicConnector {
     return await _getToken(map);
   }
 
-  Future<MActionResult<String>> getFbToken(String token, String provider) async {
+  Future<MActionResult<String>> getFbToken(
+      String token, String provider) async {
     if (token.isEmpty) {
       return MActionResult<String>().ctorOnlyStatus(StatusCode.InvalidInput);
     }
@@ -82,8 +84,9 @@ class PublicConnector {
       if (stuff["access_token"] == null) {
         return MActionResult<String>().ctorOnlyStatus(StatusCode.WrongPassword);
       }
-      return MActionResult<String>()
-          .ctorWithContent(StatusCode.OK, stuff["access_token"]);
+      var token = stuff["access_token"];
+      Singleton().token = token;
+      return MActionResult<String>().ctorWithContent(StatusCode.OK, token);
     } catch (ex) {
       return MActionResult<String>().ctorWithexception(ex);
     }

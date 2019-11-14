@@ -33,7 +33,7 @@ class User implements IDbObject {
   List<Zolik> zoliky;
   List<Role> roles;
 
-  String token;
+  // String token;
 
   Class get trida => Global.getClassById(this.classId);
   String get fullName => this.name + " " + this.lastname;

@@ -17,6 +17,7 @@ class DashboardPageState extends State<DashboardPage> {
         builder: (context) => LoginPage(
               analytics: this.analytics,
               observer: this.observer,
+              autoLogin: false,
             ));
     Navigator.pushReplacement(context, r);
   }

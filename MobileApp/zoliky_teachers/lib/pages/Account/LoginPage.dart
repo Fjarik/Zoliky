@@ -4,11 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:zoliky_teachers/components/Account/Login.dart';
 
 class LoginPage extends StatefulWidget {
-  LoginPage({Key key, this.analytics, this.observer}) : super(key: key);
+  LoginPage({Key key, this.analytics, this.observer, this.autoLogin = true})
+      : super(key: key);
 
   final FirebaseAnalytics analytics;
   final FirebaseAnalyticsObserver observer;
+  final bool autoLogin;
 
   @override
-  LoginPageState createState() => LoginPageState(analytics, observer);
+  LoginPageState createState() =>
+      LoginPageState(analytics, observer, autoLogin);
 }

@@ -75,6 +75,7 @@ class MActionResult<T> {
     } else if (this.status == StatusCode.JustALittleError) {
       return "Vyskytla se chyba, ale pouze malá :)";
     }
+    return "Neznámá chyba";
   }
 
   MActionResult.fromJson(Map<String, dynamic> _json)
