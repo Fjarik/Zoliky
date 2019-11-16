@@ -1,8 +1,4 @@
-import 'dart:convert';
-import 'dart:developer';
-
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:http/http.dart' as http;
 import 'package:appcenter_analytics/appcenter_analytics.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
@@ -81,13 +77,6 @@ class LoginPageState extends State<LoginPage>
         });
       }
     });
-
-    analytics.logEvent(
-      name: "Test",
-      parameters: <String, dynamic>{
-        "Test": "Test",
-      },
-    );
   }
 
   @override
@@ -113,6 +102,7 @@ class LoginPageState extends State<LoginPage>
       var token = settings.getString(SettingKeys.lastToken);
       if (token != null && token.isNotEmpty) {
         _setLoading(true);
+        Singleton().token = token;
         return await _tryTokenAsync(token);
       }
     }
@@ -166,13 +156,14 @@ class LoginPageState extends State<LoginPage>
   Future _login(MActionResult<User> res) async {
     var success = await _checkLogin(res);
     if (success) {
+      analytics.logLogin();
       Route r = MaterialPageRoute(
         builder: (context) => DashboardPage(
           analytics: this.analytics,
           observer: this.observer,
         ),
       );
-      Navigator.pushReplacement(context, r);
+      await Navigator.pushReplacement(context, r);
       return;
     }
     _setLoading(false);

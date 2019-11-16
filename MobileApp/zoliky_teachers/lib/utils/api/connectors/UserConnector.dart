@@ -23,7 +23,8 @@ class UserConnector extends PublicConnector {
     }
   }
 
-  Future<MActionResult<User>> loginExternal(String token, String provider) async {
+  Future<MActionResult<User>> loginExternal(
+      String token, String provider) async {
     try {
       var res = await getFbToken(token, provider);
       if (!res.isSuccess) {
@@ -60,8 +61,8 @@ class UserConnector extends PublicConnector {
         _json['Content'] = User.fromJson(content);
       }
 
-      MActionResult<User> ws = MActionResult.fromJson(_json);
-      return Future<MActionResult<User>>.value(ws);
+      var ws = MActionResult<User>.fromJson(_json);
+      return ws;
     } catch (ex) {
       return new MActionResult<User>().ctorWithexception(ex);
     }
@@ -94,8 +95,8 @@ class UserConnector extends PublicConnector {
         _json['Content'] = User.fromJson(content);
       }
 
-      MActionResult<User> ws = MActionResult.fromJson(_json);
-      return Future<MActionResult<User>>.value(ws);
+      var ws = MActionResult<User>.fromJson(_json);
+      return ws;
     } catch (ex) {
       return new MActionResult<User>().ctorWithexception(ex);
     }
@@ -191,12 +192,12 @@ class UserConnector extends PublicConnector {
         return new List<Student>();
       }
       var _json = json.decode(body);
-      List<Student> students = new List<Student>();
+      var students = new List<Student>();
       if (_json != null && _json.length > 0) {
         _json.forEach((map) => students.add(Student.fromJson(map)));
       }
 
-      return Future<List<Student>>.value(students);
+      return students;
     } catch (ex) {
       return new List<Student>();
     }
@@ -223,11 +224,11 @@ class UserConnector extends PublicConnector {
         return new List<Student>();
       }
       var content = json.decode(body);
-      List<Student> students = new List<Student>();
+      var students = new List<Student>();
       if (content != null && content.length > 0) {
         content.forEach((map) => students.add(Student.fromJson(map)));
       }
-      return Future<List<Student>>.value(students);
+      return students;
     } catch (ex) {
       return new List<Student>();
     }

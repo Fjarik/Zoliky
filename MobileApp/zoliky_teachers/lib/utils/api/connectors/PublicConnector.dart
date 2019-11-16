@@ -82,7 +82,7 @@ class PublicConnector {
       }
 
       if (stuff["access_token"] == null) {
-        return MActionResult<String>().ctorOnlyStatus(StatusCode.WrongPassword);
+        return MActionResult<String>().ctorOnlyStatus(StatusCode.NotFound);
       }
       var token = stuff["access_token"];
       Singleton().token = token;
@@ -116,6 +116,6 @@ class PublicConnector {
     } catch (ex) {
       ws.content = ex;
     }
-    return Future<WebStatus>.value(ws);
+    return ws;
   }
 }

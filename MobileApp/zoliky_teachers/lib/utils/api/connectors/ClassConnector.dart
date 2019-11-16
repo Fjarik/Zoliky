@@ -34,8 +34,8 @@ class ClassConnector extends PublicConnector {
 
       _json["Content"] = Class.fromJson(_json["Content"]);
 
-      MActionResult<Class> ws = MActionResult.fromJson(_json);
-      return Future<MActionResult<Class>>.value(ws);
+      var ws = MActionResult<Class>.fromJson(_json);
+      return ws;
     } catch (ex) {
       return new MActionResult<Class>().ctorWithexception(ex);
     }
@@ -58,11 +58,11 @@ class ClassConnector extends PublicConnector {
       }
 
       var content = json.decode(body);
-      List<Class> classes = new List<Class>();
+      var classes = new List<Class>();
       if (content != null && content.length > 0) {
         content.forEach((map) => classes.add(Class.fromJson(map)));
       }
-      return Future<List<Class>>.value(classes);
+      return classes;
     } catch (ex) {
       return new List<Class>();
     }
