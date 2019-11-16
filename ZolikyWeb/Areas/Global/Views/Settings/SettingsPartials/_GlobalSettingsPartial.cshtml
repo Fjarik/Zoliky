@@ -5,9 +5,10 @@
 <div class="card">
 	<div class="card-body">
 		<h4 class="card-title">Globalní</h4>
-		@using (Html.BeginForm("EditGlobalProjects", "Settings", new { Area = "Global" }, FormMethod.Post)) {
+		@using (Html.BeginForm("EditGlobalProjects", "Settings", new { Area = "Global" }, FormMethod.Post))
+		{
 			@Html.AntiForgeryToken()
-			<br/>
+			<br />
 			<ul class="list-unstyled">
 				<li class="media mb-0">
 					<div class="media-body row align-items-center">
@@ -16,22 +17,33 @@
 							<small>Povolit/Zakázat nové registrace.</small>
 						</div>
 						<div class="col align-self-center">
-							@Html.CheckBoxSimple(x => x.RegistrationEnabled, new {@class = "js-switch"})
+							@Html.CheckBoxSimple(x => x.RegistrationEnabled, new { @class = "js-switch" })
 						</div>
 					</div>
 				</li>
 				@*<li class="media mb-0">
-					<div class="media-body row align-items-center">
-						<div class="col col-md-9">
-							<h5 class="mt-0 mb-1">Budoucí nabídky</h5>
-							<small>Přeji si automaticky odebírat budoucí nabídky a novinky.</small>
+						<div class="media-body row align-items-center">
+							<div class="col col-md-9">
+								<h5 class="mt-0 mb-1">Budoucí nabídky</h5>
+								<small>Přeji si automaticky odebírat budoucí nabídky a novinky.</small>
+							</div>
+							<div class="col align-self-center">
+								@Html.CheckBoxSimple(x => x.FutureNews, new {@class = "js-switch"})
+							</div>
 						</div>
-						<div class="col align-self-center">
-							@Html.CheckBoxSimple(x => x.FutureNews, new {@class = "js-switch"})
-						</div>
-					</div>
-				</li>*@
+					</li>*@
 			</ul>
+			<div class="form-group">
+				@Html.LabelFor(x => x.SpecialText)
+				@Html.MaterialTextBoxFor(x => x.SpecialText, 2)
+				@Html.ValidationMessageFor(x => x.SpecialText)
+			</div>
+			<div class="form-group">
+				@Html.LabelFor(x=> x.SpecialDate)
+				@Html.TextBoxFor(x => x.SpecialDate, "{0:dd.MM.yyyy}", new {data_type = "date", placeholder = "Vyberte datum speciálného dne", @class = "form-control"})
+				@Html.ValidationMessageFor(x => x.SpecialDate)
+			</div>
+
 			<div class="text-right">
 				<button type="submit" class="btn btn-primary">Uložit</button>
 			</div>

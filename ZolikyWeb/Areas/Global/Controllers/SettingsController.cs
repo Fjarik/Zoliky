@@ -25,7 +25,7 @@ namespace ZolikyWeb.Areas.Global.Controllers
 			return View(model);
 		}
 
-		private async Task<ActionResult> SaveSettings(IDictionary<string, bool> dictionary)
+		private async Task<ActionResult> SaveSettings(IDictionary<string, object> dictionary)
 		{
 			if (!this.IsAuthenticated()) {
 				return RedirectToLogin();

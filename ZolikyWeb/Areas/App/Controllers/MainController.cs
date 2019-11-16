@@ -49,13 +49,18 @@ namespace ZolikyWeb.Areas.App.Controllers
 			var top = zoliks.SelectZoliks(isTester).Take(3);
 			var rank = await rankMgr.GetTitleAsync(user.XP);
 
-			var model = new DashboardModel() {
+			var pMgr = this.GetManager<ProjectSettingManager>();
+			var specDate = await pMgr.GetStringValueAsync(null, ProjectSettingKeys.SpecialDate) ??
+						   DateTime.Now.ToString();
+			var specTitle = await pMgr.GetStringValueAsync(null, ProjectSettingKeys.SpecialText) ?? "";
+
+			var model = new DashboardModel {
 				ZolikCount = count,
 				JokerCount = jokerCount,
 				Rank = rank,
 				Zoliky = top,
-				SpecialDate = new DateTime(2020, 01, 31),
-				SpecialDateDesc = "Konec prvního pololetí",
+				SpecialDate = DateTime.Parse(specDate),
+				SpecialDateDesc = specTitle,
 				ClassName = className,
 				LeaderboardClass = studentsClass,
 				Leaderboard = students,

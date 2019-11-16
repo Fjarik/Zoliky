@@ -33,12 +33,17 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 			var classes = await Mgr.GetClassLeaderboardAsync(schoolId);
 			var subjects = await Mgr.GetSubjectsAsync(schoolId);
 
+			var pMgr = this.GetManager<ProjectSettingManager>();
+			var specDate = await pMgr.GetStringValueAsync(null, ProjectSettingKeys.SpecialDate) ??
+						   DateTime.Now.ToString();
+			var specTitle = await pMgr.GetStringValueAsync(null, ProjectSettingKeys.SpecialText) ?? "";
+
 			var model = new DashboardModel(subjects) {
 				SchoolStudentsCount = students,
 				SchoolTeachersCount = teachers,
 				SchoolZoliksCount = zoliks,
-				SpecialDate = new DateTime(2020, 01, 31),
-				SpecialDateDesc = "Konec prvního pololetí",
+				SpecialDate = DateTime.Parse(specDate),
+				SpecialDateDesc = specTitle,
 				ClassesLeaderboard = classes.Take(10)
 			};
 

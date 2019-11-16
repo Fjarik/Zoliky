@@ -15,9 +15,10 @@ namespace ZolikyWeb.Areas.Global.Models.Admin
 		public SettingsModel(ICollection<ProjectSetting> settings)
 		{
 			this.ProjectSettings = new ProjectSettingsModel {
-				RegistrationEnabled = settings.GetValue<bool>(ProjectSettingKeys.RegistrationEnabled)
+				RegistrationEnabled = settings.GetValue<bool>(ProjectSettingKeys.RegistrationEnabled),
+				SpecialText = settings.GetStringValue(ProjectSettingKeys.SpecialText),
+				SpecialDate = settings.GetValue<DateTime>(ProjectSettingKeys.SpecialDate)
 			};
 		}
-
 	}
 }
