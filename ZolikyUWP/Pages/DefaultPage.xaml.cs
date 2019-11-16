@@ -34,12 +34,12 @@ namespace ZolikyUWP.Pages
 			}
 
 			var name = _me.FullName;
-			if (!string.IsNullOrEmpty(_me.ClassName)) {
+			if (!string.IsNullOrWhiteSpace(_me.ClassName)) {
 				name += $", {_me.ClassName}";
 			}
 			LblName.Text = name;
 
-			if (!string.IsNullOrEmpty(_me.SchoolName)) {
+			if (!string.IsNullOrWhiteSpace(_me.SchoolName)) {
 				LblSchool.Text = _me.SchoolName;
 			}
 

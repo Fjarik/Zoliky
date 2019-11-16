@@ -186,6 +186,7 @@
     <Compile Include="Controllers\v2\PublicController.cs" />
     <Compile Include="Controllers\v2\RankController.cs" />
     <Compile Include="Controllers\v2\StudentController.cs" />
+    <Compile Include="Controllers\v2\ProjectSettingsController.cs" />
     <Compile Include="Controllers\v2\SubjectController.cs" />
     <Compile Include="Controllers\v2\TransactionController.cs" />
     <Compile Include="Controllers\v2\UserController.cs" />

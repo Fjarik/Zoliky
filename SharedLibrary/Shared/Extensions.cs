@@ -131,7 +131,7 @@ namespace SharedLibrary.Shared
 		public static string GetStringValue(this IEnumerable<ISettings> enumerable, string key,
 											Projects? project = null)
 		{
-			if (string.IsNullOrEmpty(key)) {
+			if (string.IsNullOrWhiteSpace(key)) {
 				return null;
 			}
 			var res = enumerable.Where(x => x.Key == key &&
@@ -146,7 +146,7 @@ namespace SharedLibrary.Shared
 									Projects? project = null) where T : struct
 		{
 			var res = enumerable.GetStringValue(key, project);
-			if (string.IsNullOrEmpty(res)) {
+			if (string.IsNullOrWhiteSpace(res)) {
 				return default;
 			}
 			return res.Convert<T>();

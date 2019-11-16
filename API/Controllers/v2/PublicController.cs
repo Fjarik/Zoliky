@@ -97,7 +97,7 @@ namespace API.Controllers.v2
 		private string GetXml(int count)
 		{
 			var path = System.Web.Hosting.HostingEnvironment.MapPath("~/Content/Tiles.xml");
-			if (string.IsNullOrEmpty(path) || !System.IO.File.Exists(path)) {
+			if (string.IsNullOrWhiteSpace(path) || !System.IO.File.Exists(path)) {
 				return string.Empty;
 			}
 

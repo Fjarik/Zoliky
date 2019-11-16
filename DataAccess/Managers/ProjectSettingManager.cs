@@ -4,6 +4,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DataAccess.Managers.New.Interfaces;
 using DataAccess.Models;
 using JetBrains.Annotations;
 using Microsoft.AspNet.Identity.Owin;
@@ -15,7 +16,7 @@ using SharedLibrary.Shared;
 
 namespace DataAccess.Managers
 {
-	public class ProjectSettingManager : BaseManager<ProjectSetting>, IDisposable
+	public class ProjectSettingManager : BaseManager<ProjectSetting>, IManager, IDisposable
 	{
 		/// 
 		/// Fields

@@ -300,7 +300,7 @@ namespace DataAccess.Managers
 															string ip,
 															Projects project)
 		{
-			if (string.IsNullOrEmpty(token)) {
+			if (string.IsNullOrWhiteSpace(token)) {
 				return new MActionResult<User>(StatusCode.InvalidInput);
 			}
 
@@ -318,7 +318,7 @@ namespace DataAccess.Managers
 																string ip,
 																Projects project)
 		{
-			if (string.IsNullOrEmpty(token)) {
+			if (string.IsNullOrWhiteSpace(token)) {
 				return new MActionResult<User>(StatusCode.InvalidInput);
 			}
 
@@ -631,7 +631,7 @@ namespace DataAccess.Managers
 				return new MActionResult<User>(StatusCode.InvalidInput);
 			}
 			if (!regExternal) {
-				if (string.IsNullOrEmpty(password)) {
+				if (string.IsNullOrWhiteSpace(password)) {
 					return new MActionResult<User>(StatusCode.InvalidInput);
 				}
 				var validResult = await PasswordValidator.ValidateAsync(password);
@@ -719,7 +719,7 @@ namespace DataAccess.Managers
 				var res = await settingsMgr.CreateAsync(u.ID, key, true);
 			}
 
-			if (regEmail && !string.IsNullOrEmpty(url)) {
+			if (regEmail && !string.IsNullOrWhiteSpace(url)) {
 				return await SendRegisterEmailAsync(u, url);
 			}
 

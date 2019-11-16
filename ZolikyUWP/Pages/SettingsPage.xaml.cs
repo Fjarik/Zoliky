@@ -118,14 +118,14 @@ namespace ZolikyUWP.Pages
 
 		private void ToggleTheme_OnChecked(object sender, RoutedEventArgs e)
 		{
-			if (sender is RadioButton b && !string.IsNullOrEmpty(b.Tag?.ToString())) {
+			if (sender is RadioButton b && !string.IsNullOrWhiteSpace(b.Tag?.ToString())) {
 				ChangeTheme(b.Tag.ToString());
 			}
 		}
 
 		private void ChangeTheme(string theme)
 		{
-			if (string.IsNullOrEmpty(theme)) {
+			if (string.IsNullOrWhiteSpace(theme)) {
 				return;
 			}
 			// Default

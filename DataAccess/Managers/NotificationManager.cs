@@ -199,7 +199,7 @@ namespace DataAccess.Managers
 		{
 			var title = "Máte nového žolíka!";
 			var sub = $"Právě Vám přistál na účtě nový žolík '{zolikTitle}'";
-			if (!string.IsNullOrEmpty(from)) {
+			if (!string.IsNullOrWhiteSpace(from)) {
 				sub = $"Uživatel {from} Vám právě poslal žolíka '{zolikTitle}'";
 			}
 			var exp = Ext.SchoolYearEnd;

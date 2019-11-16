@@ -106,7 +106,7 @@ namespace ZolikyWeb.Tools
 		{
 			var fullName = htmlHelper.ViewContext.ViewData.TemplateInfo.GetFullHtmlFieldName(name);
 
-			if (string.IsNullOrEmpty(fullName)) {
+			if (string.IsNullOrWhiteSpace(fullName)) {
 				throw new ArgumentException("name");
 			}
 
@@ -124,7 +124,7 @@ namespace ZolikyWeb.Tools
 
 			var identity = htmlHelper.ViewContext.HttpContext.User.Identity;
 
-			if (!string.IsNullOrEmpty(identity.Name)) {
+			if (!string.IsNullOrWhiteSpace(identity.Name)) {
 				value = string.Format("{0}_{1}", identity.Name, value);
 			}
 
@@ -187,7 +187,7 @@ namespace ZolikyWeb.Tools
 
 			var identity = filterContext.HttpContext.User.Identity;
 
-			if (!string.IsNullOrEmpty(identity.Name)) {
+			if (!string.IsNullOrWhiteSpace(identity.Name)) {
 				originalValue = string.Format("{0}_{1}", identity.Name, originalValue);
 			}
 

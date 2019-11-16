@@ -144,7 +144,7 @@ namespace ZolikyUWP.Pages
 
 			var dialog = new LockDialog();
 			var dialogRes = await dialog.ShowAsync();
-			if (dialogRes != ContentDialogResult.Primary || string.IsNullOrEmpty(dialog.Text)) {
+			if (dialogRes != ContentDialogResult.Primary || string.IsNullOrWhiteSpace(dialog.Text)) {
 				return false;
 			}
 			var text = dialog.Text;

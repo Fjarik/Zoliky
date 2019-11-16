@@ -43,7 +43,7 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 			var students = await sMgr.GetStudentsAsync(schoolId, logged.ID);
 
 			var model = ZolikModel.CreateModel(logged, subjects, students.ToList<IUser>());
-			if (!string.IsNullOrEmpty(title)) {
+			if (!string.IsNullOrWhiteSpace(title)) {
 				model.Title = title;
 			}
 			if (type != null) {

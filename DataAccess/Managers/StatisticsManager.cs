@@ -57,7 +57,7 @@ namespace DataAccess.Managers
 			if (userId < 1) {
 				return new MActionResult<UserSetting>(StatusCode.NotValidID);
 			}
-			if (step == 0 || string.IsNullOrEmpty(key)) {
+			if (step == 0 || string.IsNullOrWhiteSpace(key)) {
 				return new MActionResult<UserSetting>(StatusCode.InvalidInput);
 			}
 			int newVal = step;

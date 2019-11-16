@@ -237,7 +237,7 @@ namespace ZolikyWeb.Controllers
 			var lastname = "";
 			if (info.ExternalIdentity.HasClaim(x => x.Type == ClaimTypes.Name)) {
 				var fullName = info.ExternalIdentity.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;
-				if (!string.IsNullOrEmpty(fullName)) {
+				if (!string.IsNullOrWhiteSpace(fullName)) {
 					var names = fullName.Split(' ');
 					name = names.First();
 					lastname = names.Last();
@@ -290,13 +290,13 @@ namespace ZolikyWeb.Controllers
 			var model = new RegisterModel {
 				Schools = schools
 			};
-			if (!string.IsNullOrEmpty(email)) {
+			if (!string.IsNullOrWhiteSpace(email)) {
 				model.Email = email;
 			}
-			if (!string.IsNullOrEmpty(name)) {
+			if (!string.IsNullOrWhiteSpace(name)) {
 				model.Firstname = name;
 			}
-			if (!string.IsNullOrEmpty(lastname)) {
+			if (!string.IsNullOrWhiteSpace(lastname)) {
 				model.Lastname = lastname;
 			}
 			if (!Methods.AreNullOrWhiteSpace(providerKey, provider)) {

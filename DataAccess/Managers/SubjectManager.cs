@@ -59,7 +59,7 @@ namespace DataAccess.Managers
 
 		public async Task<bool> ExistsAsync(string nameOrShortcut)
 		{
-			if (string.IsNullOrEmpty(nameOrShortcut)) {
+			if (string.IsNullOrWhiteSpace(nameOrShortcut)) {
 				return false;
 			}
 			nameOrShortcut = nameOrShortcut.Trim().ToLower();

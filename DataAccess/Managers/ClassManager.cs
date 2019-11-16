@@ -146,7 +146,7 @@ namespace DataAccess.Managers
 			if (string.IsNullOrWhiteSpace(name)) {
 				return new MActionResult<Class>(StatusCode.InvalidInput);
 			}
-			if (string.IsNullOrEmpty(colour)) {
+			if (string.IsNullOrWhiteSpace(colour)) {
 				colour = "#e6e6e6";
 			}
 			if (!colour.StartsWith("#")) {

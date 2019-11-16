@@ -28,7 +28,7 @@ namespace ZolikyWeb.Areas.App.Controllers
 
 			var sMgr = this.GetManager<UserSettingManager>();
 			var set = await sMgr.GetStringValueAsync(id, SettingKeys.LastAchievementsCheck);
-			if (!string.IsNullOrEmpty(set) && DateTime.TryParse(set, out DateTime lastCheck)) {
+			if (!string.IsNullOrWhiteSpace(set) && DateTime.TryParse(set, out DateTime lastCheck)) {
 				ViewBag.LastCheck = lastCheck;
 			}
 
@@ -58,7 +58,7 @@ namespace ZolikyWeb.Areas.App.Controllers
 			var sMgr = this.GetManager<UserSettingManager>();
 			var set = await sMgr.GetStringValueAsync(id, SettingKeys.LastAchievementsCheck);
 			var now = DateTime.Now;
-			if (!string.IsNullOrEmpty(set) &&
+			if (!string.IsNullOrWhiteSpace(set) &&
 				DateTime.TryParse(set, out DateTime lastCheck) &&
 				(now - lastCheck).Days < 1) {
 				this.AddErrorToastMessage("Tuto akci lze spustit pouze 1x za den!");
