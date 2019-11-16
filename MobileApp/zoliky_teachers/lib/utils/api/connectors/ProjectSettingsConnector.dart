@@ -1,12 +1,9 @@
 import 'dart:convert';
 
-import 'package:http/http.dart';
-import 'package:http_parser/http_parser.dart';
 import 'package:zoliky_teachers/utils/api/connectors/PublicConnector.dart';
 import 'package:zoliky_teachers/utils/api/enums/Projects.dart';
 import 'package:zoliky_teachers/utils/api/enums/StatusCode.dart';
 import 'package:zoliky_teachers/utils/api/models/ProjectSettings.dart';
-import 'package:zoliky_teachers/utils/api/models/User.dart';
 import 'package:zoliky_teachers/utils/api/models/universal/MActionResult.dart';
 
 class ProjectSettingsConnector extends PublicConnector {

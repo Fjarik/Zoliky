@@ -10,6 +10,7 @@ import 'package:zoliky_teachers/utils/ProjectSettingKeys.dart';
 import 'package:zoliky_teachers/utils/SettingKeys.dart';
 import 'package:zoliky_teachers/utils/Singleton.dart';
 import 'package:zoliky_teachers/utils/api/connectors/ProjectSettingsConnector.dart';
+import 'package:zoliky_teachers/utils/api/connectors/StatisticsConnector.dart';
 import 'package:zoliky_teachers/utils/api/models/ProjectSettings.dart';
 import 'package:zoliky_teachers/utils/api/models/User.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
@@ -41,19 +42,10 @@ class DashboardPageState extends State<DashboardPage> {
     super.initState();
   }
 
-  Future<List<ProjectSettings>> get _settingsFuture =>
-      ProjectSettingsConnector(Singleton().token).getAllAsync();
+  ProjectSettingsConnector get _pConnector =>
+      ProjectSettingsConnector(Singleton().token);
 
-  void _showSnackbar(String content) {
-    var snack = SnackBar(
-      content: Text(content),
-      backgroundColor: Colors.red[700],
-      duration: Duration(seconds: 2),
-    );
-    if (_key.currentState.mounted) {
-      _key.currentState.showSnackBar(snack);
-    }
-  }
+  StatisticsConnector get _sConnector => StatisticsConnector(Singleton().token);
 
   @override
   Widget build(BuildContext context) {
@@ -79,27 +71,58 @@ class DashboardPageState extends State<DashboardPage> {
                   StaggeredTile.extent(3, 180),
                 ],
                 children: <Widget>[
-                  _getIconTile(
-                    content: "1",
-                    title: "Počet žolíků",
-                    subtitle: "Vč. žolíků, jokérů...",
-                    color: Colors.blue,
-                    icon: FontAwesomeIcons.wallet,
-                    iconColor: Colors.white,
-                    onTap: null,
-                  ),
-                  _getIconTile(
-                    content: "93",
-                    title: "Počet studentů",
-                    subtitle: "Na celé škole",
-                    color: Colors.amber,
-                    icon: FontAwesomeIcons.solidUser,
-                    iconColor: Colors.white,
-                    onTap: null,
+                  FutureBuilder(
+                    future: _sConnector.getZolikCountAsync(),
+                    builder: (context, AsyncSnapshot<int> snapshot) {
+                      if (snapshot.connectionState != ConnectionState.done) {
+                        return _getLoadingTile();
+                      }
+                      var count = "0";
+                      if (snapshot.data != null) {
+                        count = snapshot.data.toString();
+                      }
+                      if (snapshot.hasError) {
+                        count = "-1";
+                      }
+                      return _getIconTile(
+                        content: count,
+                        title: "Počet žolíků",
+                        subtitle: "Vč. žolíků, jokérů...",
+                        color: Colors.blue,
+                        icon: FontAwesomeIcons.wallet,
+                        iconColor: Colors.white,
+                        onTap: null,
+                      );
+                    },
                   ),
                   FutureBuilder(
-                    future: _settingsFuture,
-                    builder: (context, snapshot) {
+                    future: _sConnector.getStudentCountAsync(),
+                    builder: (context, AsyncSnapshot<int> snapshot) {
+                      if (snapshot.connectionState != ConnectionState.done) {
+                        return _getLoadingTile();
+                      }
+                      var count = "0";
+                      if (snapshot.data != null) {
+                        count = snapshot.data.toString();
+                      }
+                      if (snapshot.hasError) {
+                        count = "-1";
+                      }
+                      return _getIconTile(
+                        content: count,
+                        title: "Počet studentů",
+                        subtitle: "Na celé škole",
+                        color: Colors.amber,
+                        icon: FontAwesomeIcons.solidUser,
+                        iconColor: Colors.white,
+                        onTap: null,
+                      );
+                    },
+                  ),
+                  FutureBuilder(
+                    future: _pConnector.getAllAsync(),
+                    builder: (context,
+                        AsyncSnapshot<List<ProjectSettings>> snapshot) {
                       if (snapshot.connectionState != ConnectionState.done) {
                         return _getLoadingTile();
                       }
@@ -141,14 +164,29 @@ class DashboardPageState extends State<DashboardPage> {
                       );
                     },
                   ),
-                  _getIconTile(
-                    content: "3",
-                    title: "Počet vyučujících",
-                    subtitle: "Na škole",
-                    color: Colors.teal,
-                    icon: Icons.school,
-                    iconColor: Colors.white,
-                    onTap: null,
+                  FutureBuilder(
+                    future: _sConnector.getTeacherCountAsync(),
+                    builder: (context, AsyncSnapshot<int> snapshot) {
+                      if (snapshot.connectionState != ConnectionState.done) {
+                        return _getLoadingTile();
+                      }
+                      var count = "0";
+                      if (snapshot.data != null) {
+                        count = snapshot.data.toString();
+                      }
+                      if (snapshot.hasError) {
+                        count = "-1";
+                      }
+                      return _getIconTile(
+                        content: count,
+                        title: "Počet vyučujících",
+                        subtitle: "Na škole",
+                        color: Colors.teal,
+                        icon: Icons.school,
+                        iconColor: Colors.white,
+                        onTap: null,
+                      );
+                    },
                   ),
                   Padding(
                     padding: EdgeInsets.all(24),
