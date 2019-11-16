@@ -74,6 +74,7 @@ namespace ZolikyUWP.Account
 			if (!res.IsSuccess) {
 				return false;
 			}
+
 			var user = res.Content;
 			user.Token = token;
 
@@ -100,6 +101,8 @@ namespace ZolikyUWP.Account
 
 		private async void Btn_Login_Click(object sender, RoutedEventArgs e)
 		{
+#region Connection check
+
 			MessageDialog dialog = new MessageDialog("", "Chyba připojení");
 			dialog.Commands.Add(new UICommand("Ok") {Id = 0});
 			dialog.DefaultCommandIndex = 0;
@@ -162,6 +165,8 @@ namespace ZolikyUWP.Account
 			}
 #endif
 
+#endregion
+
 			var login = TxtLogin.Text;
 
 			if (string.IsNullOrWhiteSpace(login) || string.IsNullOrWhiteSpace(TxtPwd.Password)) {
@@ -177,8 +182,9 @@ namespace ZolikyUWP.Account
 			BtnLogin.Content = "Přihlašování";
 			EnableElements(false);
 			MActionResult<User> res;
+			var uc = new UserConnector("");
 			try {
-				res = await api.LoginAsync(lg);
+				res = await uc.LoginAsync(lg);
 			} catch (Exception ex) {
 				res = new MActionResult<User>(StatusCode.SeeException, ex);
 			}
@@ -207,16 +213,20 @@ namespace ZolikyUWP.Account
 				return;
 			}
 
+			var user = res.Content;
+
+			// Nastavení tokenu
+			user.Token = uc.UsedToken;
+
 			var localSettings = ApplicationData.Current.LocalSettings;
-			var u = res.Content;
-			localSettings.Values[StorageKeys.LastToken] = u.Token;
+			localSettings.Values[StorageKeys.LastToken] = uc.UsedToken;
 
 			// Nastavení přenést mezi zařízeními
 			localSettings = ApplicationData.Current.RoamingSettings;
 			localSettings.Values[StorageKeys.LastUsername] = TxtLogin.Text;
 
 			// LblResult.Text = $"{u.FullName}";
-			this.Frame.Navigate(typeof(MainPage), u);
+			this.Frame.Navigate(typeof(MainPage), user);
 		}
 
 		private async Task<ContentDialogResult> ShowErrorDialogAsync(string error)

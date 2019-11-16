@@ -60,30 +60,5 @@ namespace SharedApi.Connectors.New
 				return null;
 			}
 		}
-
-		public async Task<MActionResult<User>> LoginAsync(Logins lg)
-		{
-			if (lg == null || string.IsNullOrWhiteSpace(lg.UName) || string.IsNullOrWhiteSpace(lg.Password)) {
-				return new MActionResult<User>(StatusCode.InvalidInput);
-			}
-
-			try {
-				var ltoken = await LoginTokenAsync;
-				var response = await Request($"user/login", ltoken).PostJsonAsync(lg);
-				string s = await response.Content.ReadAsStringAsync();
-				if (response.StatusCode != HttpStatusCode.OK) {
-					return new MActionResult<User>(StatusCode.SeeException, new Exception(s));
-				}
-				var mAu = JsonConvert.DeserializeObject<MActionResult<User>>(s);
-				if (mAu.IsSuccess) {
-					User u = mAu.Content;
-					string tkn = await GetTokenAsync(lg.UName, lg.Password);
-					u.Token = tkn;
-				}
-				return mAu;
-			} catch (Exception ex) {
-				return new MActionResult<User>(StatusCode.SeeException, ex);
-			}
-		}
 	}
 }

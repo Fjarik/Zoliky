@@ -16,6 +16,27 @@ namespace SharedApi.Connectors.New
 	{
 		public UserConnector(string token, ApiUrl url = ApiUrl.Zoliky) : base(token, url) { }
 
+		public async Task<MActionResult<User>> LoginAsync(Logins lg)
+		{
+			if (lg == null || string.IsNullOrWhiteSpace(lg.UName) || string.IsNullOrWhiteSpace(lg.Password)) {
+				return new MActionResult<User>(StatusCode.InvalidInput);
+			}
+
+			try {
+				var tkn = await GetTokenAsync(lg.UName, lg.Password);
+				if (!tkn.IsSuccess) {
+					return new MActionResult<User>(tkn.Status);
+				}
+				var token = tkn.Content;
+
+				this.UsedToken = token;
+
+				return await GetMe();
+			} catch (Exception ex) {
+				return new MActionResult<User>(StatusCode.SeeException, ex);
+			}
+		}
+
 		public async Task<MActionResult<User>> GetMe()
 		{
 			try {

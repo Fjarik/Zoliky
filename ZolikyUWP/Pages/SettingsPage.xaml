@@ -11,20 +11,6 @@
 
 	<Grid>
 		<Pivot>
-			<PivotItem Header="Obecné">
-				<StackPanel>
-					<TextBlock Text="Motiv:" />
-					<RadioButton Checked="ToggleTheme_OnChecked"
-					             GroupName="ThemeBtns" x:Name="RadiBtnLight"
-					             Tag="Light" Content="Světlý" />
-					<RadioButton Checked="ToggleTheme_OnChecked"
-					             GroupName="ThemeBtns" x:Name="RadiBtnDark"
-					             Tag="Dark" Content="Tmavý" />
-					<RadioButton Checked="ToggleTheme_OnChecked"
-					             GroupName="ThemeBtns" x:Name="RadiBtnSystem"
-					             Tag="System" Content="Podle systému" />
-				</StackPanel>
-			</PivotItem>
 			<PivotItem Header="Účet">
 				<Grid x:Name="GridAccount" Margin="10">
 					<Grid.RowDefinitions>
@@ -84,6 +70,8 @@
 						<RowDefinition Height="Auto" />
 						<RowDefinition Height="20" />
 						<RowDefinition Height="Auto" />
+						<RowDefinition Height="20" />
+						<RowDefinition Height="Auto" />
 						<RowDefinition Height="50" />
 						<RowDefinition Height="Auto" />
 						<RowDefinition />
@@ -118,8 +106,23 @@
 							Text="Projekt byl vytvořen v době studia na Střední škole informatiky a ekonomie - DELTA, Pardubice. Vzhledem k povaze projektu je přísně zakázano jeho používání za účelem vydělávání peněz." />
 					</StackPanel>
 
-					<StackPanel Orientation="Horizontal"
+					<StackPanel Orientation="Vertical"
 					            Grid.Row="8" Grid.Column="0">
+						<TextBlock Style="{ThemeResource TitleTextBlockStyle}"
+						           Text="Motiv:" />
+						<RadioButton Checked="ToggleTheme_OnChecked"
+						             GroupName="ThemeBtns" x:Name="RadiBtnLight"
+						             Tag="Light" Content="Světlý" />
+						<RadioButton Checked="ToggleTheme_OnChecked"
+						             GroupName="ThemeBtns" x:Name="RadiBtnDark"
+						             Tag="Dark" Content="Tmavý" />
+						<RadioButton Checked="ToggleTheme_OnChecked"
+						             GroupName="ThemeBtns" x:Name="RadiBtnSystem"
+						             Tag="System" Content="Podle systému" />
+					</StackPanel>
+
+					<StackPanel Orientation="Horizontal"
+					            Grid.Row="10" Grid.Column="0">
 						<TextBlock Style="{ThemeResource SubtitleTextBlockStyle}"
 						           Text="© Žolíky 2018-" />
 						<TextBlock Style="{ThemeResource SubtitleTextBlockStyle}"

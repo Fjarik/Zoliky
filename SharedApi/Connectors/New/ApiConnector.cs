@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,6 +8,7 @@ using Flurl.Http;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
+using SharedLibrary;
 using SharedLibrary.Enums;
 using SharedLibrary.Errors;
 using SharedLibrary.Interfaces;
@@ -32,13 +34,15 @@ namespace SharedApi.Connectors.New
 		private string DefaultPassword => "It9ac8kw";
 		private TimeSpan DefaultTimeout => TimeSpan.FromSeconds(30);
 
-		protected Task<string> LoginTokenAsync => GetTokenAsync(DefaultName, DefaultPassword);
+		private string CurrentProject => ((int) Projects.UWP).ToString();
+
+		// protected Task<string> LoginTokenAsync => GetTokenAsync(DefaultName, DefaultPassword);
 
 #endregion
 
 #region Get, set
 
-		protected string UsedToken { get; set; }
+		public string UsedToken { get; protected set; }
 
 #endregion
 
@@ -53,14 +57,16 @@ namespace SharedApi.Connectors.New
 			_cli = new FlurlClient(_url).EnableCookies().AllowAnyHttpStatus().WithTimeout(DefaultTimeout);
 			_cli.Headers.Add("User-Agent", $"ZolikApiConnector/{Version} (https://www.zoliky.eu; Autor: Jiří Falta)");
 			_cli.Headers.Add("api-version", Version.ToString());
+			if (!_cli.Headers.ContainsKey("projectId")) {
+				_cli.Headers.Add("projectId", CurrentProject);
+			}
 		}
 
 		protected ApiConnector(string token, ApiUrl url = ApiUrl.Zoliky) : this(url)
 		{
-			if (string.IsNullOrWhiteSpace(token)) {
-				throw new ArgumentNullException(nameof(token));
+			if (!string.IsNullOrWhiteSpace(token)) {
+				this.UsedToken = token;
 			}
-			this.UsedToken = token;
 		}
 
 #endregion
@@ -102,7 +108,7 @@ namespace SharedApi.Connectors.New
 
 #endregion
 
-		public async Task<string> GetTokenAsync(string username, string pwd)
+		public async Task<MActionResult<string>> GetTokenAsync(string username, string pwd)
 		{
 			if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(pwd)) {
 				username = DefaultName;
@@ -115,28 +121,43 @@ namespace SharedApi.Connectors.New
 				new KeyValuePair<string, string>("grant_type", "password"),
 			};
 			try {
-				HttpResponseMessage resMsg = await $"{_url}/token"
-												   .AllowAnyHttpStatus()
-												   .WithTimeout(DefaultTimeout)
-												   .PostAsync(new FormUrlEncodedContent(kvp));
-				if (resMsg?.IsSuccessStatusCode != true) {
-					return "";
+				var resMsg = await $"{_url}/token".AllowAnyHttpStatus()
+												  .WithTimeout(DefaultTimeout)
+												  .WithHeader("projectId", CurrentProject)
+												  .PostAsync(new FormUrlEncodedContent(kvp));
+
+				if (resMsg?.StatusCode != HttpStatusCode.BadRequest && resMsg?.IsSuccessStatusCode != true) {
+					return new MActionResult<string>(StatusCode.InternalError);
 				}
 
-				string res = await resMsg.Content.ReadAsStringAsync();
+				string res = await resMsg?.Content.ReadAsStringAsync();
 				if (string.IsNullOrWhiteSpace(res)) {
-					return "";
+					return new MActionResult<string>(StatusCode.NotFound);
 				}
-				JObject stuff = JObject.Parse(res);
+
+				var stuff = JObject.Parse(res);
+				if (resMsg.StatusCode == HttpStatusCode.BadRequest &&
+					stuff.ContainsKey("error") &&
+					stuff["error"].ToString() is string error) {
+					if (error == "invalid_grant") {
+						return new MActionResult<string>(StatusCode.InternalError, error);
+					}
+					if (int.TryParse(error, out int code)) {
+						return new MActionResult<string>((StatusCode) code);
+					}
+					return new MActionResult<string>(StatusCode.InternalError);
+				}
+
 				if (!stuff.ContainsKey("access_token")) {
-					return "";
+					return new MActionResult<string>(StatusCode.NotFound);
 				}
-				return stuff["access_token"].ToString();
-			} catch {
+				var token = stuff["access_token"].ToString();
+				return new MActionResult<string>(StatusCode.OK, token);
+			} catch (Exception ex) {
 #if DEBUG
 				throw;
 #endif
-				return "";
+				return new MActionResult<string>(StatusCode.SeeException, ex);
 			}
 		}
 

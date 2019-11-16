@@ -43,25 +43,34 @@ namespace SharedLibrary
 			if (result == null) {
 				this.Content = default(T);
 			} else {
-				Type currentType = typeof(T);
-
-				bool isCollection = currentType.IsGenericType &&
-									currentType.GetGenericTypeDefinition() == typeof(List<>) &&
-									result.GetType().GetGenericArguments().Single().GetInterfaces()
-										  .Contains(typeof(IDbObject));
-
-				if (!(currentType.GetInterfaces().Contains(typeof(IDbObject)) || isCollection)) {
-					throw new ArgumentException("content",
-												"Type must Implement IDbObject be List<>, but was " +
-												currentType.FullName);
+				if (IsValidType(result)) {
+					this.Content = result;
 				}
-
-				this.Content = result;
 			}
 
 			this.Status = status;
 			this.Exception = exception;
 			this.Date = DateTime.Now;
+		}
+
+		private bool IsValidType(T result)
+		{
+			Type currentType = typeof(T);
+			if (currentType == typeof(string)) {
+				return true;
+			}
+
+			bool isCollection = currentType.IsGenericType &&
+								currentType.GetGenericTypeDefinition() == typeof(List<>) &&
+								result.GetType().GetGenericArguments().Single().GetInterfaces()
+									  .Contains(typeof(IDbObject));
+
+			if (!(currentType.GetInterfaces().Contains(typeof(IDbObject)) || isCollection)) {
+				throw new ArgumentException("content",
+											"Type must Implement IDbObject be List<>, but was " +
+											currentType.FullName);
+			}
+			return true;
 		}
 
 		public string GetStatusMessage()
