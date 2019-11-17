@@ -14,6 +14,7 @@ import 'package:zoliky_teachers/utils/api/connectors/StatisticsConnector.dart';
 import 'package:zoliky_teachers/utils/api/models/ProjectSettings.dart';
 import 'package:zoliky_teachers/utils/api/models/User.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:zoliky_teachers/utils/api/models/universal/ZolikTypesData.dart';
 
 class DashboardPageState extends State<DashboardPage> {
   DashboardPageState(this.analytics, this.observer);
@@ -68,7 +69,8 @@ class DashboardPageState extends State<DashboardPage> {
                   StaggeredTile.extent(2, 180),
                   StaggeredTile.extent(2, 180),
                   StaggeredTile.extent(4, 180),
-                  StaggeredTile.extent(3, 180),
+                  StaggeredTile.extent(4, 150),
+                  StaggeredTile.extent(4, 360),
                 ],
                 children: <Widget>[
                   FutureBuilder(
@@ -179,8 +181,7 @@ class DashboardPageState extends State<DashboardPage> {
                       }
                       return _getIconTile(
                         content: count,
-                        title: "Počet vyučujících",
-                        subtitle: "Na škole",
+                        title: "Počet zapojených vyučujících",
                         color: Colors.teal,
                         icon: Icons.school,
                         iconColor: Colors.white,
@@ -188,23 +189,51 @@ class DashboardPageState extends State<DashboardPage> {
                       );
                     },
                   ),
-                  Padding(
-                    padding: EdgeInsets.all(24),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        // charts.PieChart([
-                        //   new charts.Series(
-                        //     id: "Žolíky",
-                        //     data: [
-                        //       10,
-                        //       5,
-                        //     ],
-                        //   ),
-                        // ]),
-                      ],
-                    ),
+                  FutureBuilder(
+                    future: _sConnector.getZolikTypesDataAsync(),
+                    builder: (context,
+                        AsyncSnapshot<List<ZolikTypesData>> snapshot) {
+                      if (snapshot.connectionState != ConnectionState.done) {
+                        return _getLoadingTile();
+                      }
+                      var list = new List<ZolikTypesData>();
+                      if (snapshot.data != null) {
+                        list = snapshot.data;
+                      }
+
+                      var series = [
+                        new charts.Series<ZolikTypesData, String>(
+                          domainFn: (ZolikTypesData data, _) => data.label,
+                          measureFn: (ZolikTypesData data, _) => data.count,
+                          data: list,
+                          labelAccessorFn: (ZolikTypesData data, _) =>
+                              "${data.label}: ${data.count}",
+                        ),
+                      ];
+
+                      return _getTile(Padding(
+                        padding: EdgeInsets.all(24),
+                        child: charts.PieChart(
+                          series,
+                          behaviors: [
+                            charts.ChartTitle(
+                              "Poměr žolíků",
+                              subTitle: "Počet jednotlivých druhů žolíků",
+                              behaviorPosition: charts.BehaviorPosition.top,
+                              titleOutsideJustification:
+                                  charts.OutsideJustification.start,
+                              innerPadding: 18,
+                              titleStyleSpec: charts.TextStyleSpec(
+                                color: charts.Color.black,
+                              ),
+                            ),
+                            charts.DatumLegend(
+                              position: charts.BehaviorPosition.bottom
+                            ),
+                          ],
+                        ),
+                      ));
+                    },
                   ),
                 ],
               ),

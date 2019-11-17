@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:zoliky_teachers/utils/api/connectors/PublicConnector.dart';
+import 'package:zoliky_teachers/utils/api/models/universal/ZolikTypesData.dart';
 
 class StatisticsConnector extends PublicConnector {
   StatisticsConnector(String token) : super() {
@@ -80,6 +83,34 @@ class StatisticsConnector extends PublicConnector {
       return count;
     } catch (ex) {
       return 0;
+    }
+  }
+
+  Future<List<ZolikTypesData>> getZolikTypesDataAsync() async {
+    try {
+      var url = "$urlApi/statistics/getzoliktypesdata";
+      var res =
+          await cli.get(url, headers: {"Authorization": "Bearer $usedToken"});
+
+      if (res.statusCode != 200) {
+        return new List();
+      }
+
+      var body = res.body;
+
+      if (body.isEmpty) {
+        return new List();
+      }
+
+      var content = json.decode(body);
+      var list = new List<ZolikTypesData>();
+      if (content != null && content.length > 0) {
+        content.forEach((map) => list.add(ZolikTypesData.fromJson(map)));
+      }
+
+      return list;
+    } catch (ex) {
+      return new List();
     }
   }
 }

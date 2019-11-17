@@ -12,6 +12,7 @@ using SharedLibrary;
 using SharedLibrary.Enums;
 using SharedLibrary.Interfaces;
 using SharedLibrary.Shared;
+using SharedLibrary.Shared.ApiModels;
 
 namespace DataAccess.Managers
 {
@@ -133,6 +134,22 @@ namespace DataAccess.Managers
 		public Task<List<Zolik>> GetZoliksAsync(int schoolId)
 		{
 			return GetZoliksQuery(schoolId).ToListAsync();
+		}
+
+		public async Task<List<ZolikTypesData>> GetZoliksGraphDataAsync(int schoolId)
+		{
+			var res = await GetZoliksQuery(schoolId)
+							.Select(x => new {
+								x.Type
+							})
+							.GroupBy(x => x.Type)
+							.ToListAsync();
+
+			return res.Select(x => new ZolikTypesData {
+						  Label = x.Key.GetDescription(),
+						  Count = x.Count()
+					  })
+					  .ToList();
 		}
 
 		private IQueryable<Zolik> GetZoliksQuery()

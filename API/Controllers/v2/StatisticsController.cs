@@ -14,6 +14,7 @@ using DataAccess.Models;
 using Microsoft.Web.Http;
 using SharedLibrary;
 using SharedLibrary.Shared;
+using SharedLibrary.Shared.ApiModels;
 
 namespace API.Controllers.v2
 {
@@ -58,6 +59,18 @@ namespace API.Controllers.v2
 			var schoolId = this.User.Identity.GetSchoolId();
 			var count = await Mgr.GetTeacherCountAsync(schoolId);
 			return Ok(count);
+		}
+
+		// GET: statistics/getZolikTypesData
+		[HttpGet]
+		[Route("getzoliktypesdata")]
+		[ResponseType(typeof(List<ZolikTypesData>))]
+		[OwnAuthorize(Roles = UserRoles.AdminOrDeveloperOrTeacher)]
+		public async Task<IHttpActionResult> GetZolikTypesData()
+		{
+			var schoolId = this.User.Identity.GetSchoolId();
+			var res = await Mgr.GetZoliksGraphDataAsync(schoolId);
+			return Ok(res);
 		}
 
 #endregion

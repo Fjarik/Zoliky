@@ -81,16 +81,9 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 		{
 			var schoolId = this.User.GetSchoolId();
 
-			var zoliks = await Mgr.GetZoliksAsync(schoolId);
+			var zoliks = await Mgr.GetZoliksGraphDataAsync(schoolId);
 
-			var a = zoliks.GroupBy(x => x.Type);
-
-			var res = a.Select(x => new {
-				label = x.Key.GetDescription(),
-				count = x.Count()
-			});
-
-			return Json(res, JsonRequestBehavior.AllowGet);
+			return Json(zoliks, JsonRequestBehavior.AllowGet);
 		}
 	}
 }
