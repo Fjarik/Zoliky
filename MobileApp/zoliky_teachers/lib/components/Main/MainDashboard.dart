@@ -27,6 +27,8 @@ class DashboardPageState extends State<DashboardPage> {
   final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
   final RefreshController _refreshController = RefreshController();
 
+  bool showMenuItems = true;
+
   User get _logged => Singleton().user;
 
   _logOut() async {
@@ -312,23 +314,119 @@ class DashboardPageState extends State<DashboardPage> {
           ),
         ],
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        items: [
-          BottomNavigationBarItem(
-            title: Text("Přehled"),
-            icon: Icon(
-              Icons.dashboard,
+      drawerScrimColor: Colors.black,
+      drawer: Drawer(
+        child: Column(
+          children: <Widget>[
+            UserAccountsDrawerHeader(
+              accountName: Text(
+                _logged.fullName,
+              ),
+              accountEmail: Text(
+                _logged.email,
+                style: TextStyle(
+                  color: Colors.white60,
+                ),
+              ),
+              arrowColor: Colors.white,
+              currentAccountPicture: CircleAvatar(
+                backgroundColor: Colors.white,
+                child: ClipOval(
+                  child: Image.memory(
+                    _logged.getProfileImage(),
+                    fit: BoxFit.fill,
+                  ),
+                ),
+              ),
+              onDetailsPressed: () => {
+                this.setState(() {
+                  showMenuItems = !showMenuItems;
+                })
+              },
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Color(0xFF2196f3),
+                    Color(0xFF40c4ff),
+                  ],
+                ),
+              ),
             ),
-          ),
-          BottomNavigationBarItem(
-            title: Text("Nastavení"),
-            icon: Icon(
-              Icons.settings,
+            Expanded(
+              child: (showMenuItems ? _drawerMenuList() : _drawerAccountList()),
             ),
-          ),
-        ],
+            Container(
+              child: Align(
+                alignment: FractionalOffset.bottomCenter,
+                child: Container(
+                  child: Column(
+                    children: <Widget>[
+                      ListTile(
+                        title: Text(
+                          "Nastavení",
+                        ),
+                        leading: Icon(Icons.settings),
+                        onTap: null,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
+    );
+  }
+
+  Widget _drawerMenuList() {
+    return ListView(
+      padding: EdgeInsets.zero,
+      children: <Widget>[
+        ListTile(
+          title: Text(
+            "Přehled",
+          ),
+          leading: Icon(Icons.dashboard),
+          onTap: null,
+        ),
+        ListTile(
+          title: Text(
+            "Studenti",
+          ),
+          leading: Icon(FontAwesomeIcons.users),
+          onTap: null,
+        ),
+        ListTile(
+          title: Text(
+            "Žolíci",
+          ),
+          leading: Icon(Icons.apps),
+          onTap: null,
+        ),
+        ListTile(
+          title: Text(
+            "Třídy",
+          ),
+          leading: Icon(FontAwesomeIcons.school),
+          onTap: null,
+        ),
+      ],
+    );
+  }
+
+  Widget _drawerAccountList() {
+    return ListView(
+      padding: EdgeInsets.zero,
+      children: <Widget>[
+        ListTile(
+          title: Text(
+            "Odhlásit se",
+          ),
+          leading: Icon(Icons.exit_to_app),
+          onTap: null,
+        ),
+      ],
     );
   }
 
@@ -443,6 +541,13 @@ class DashboardPageState extends State<DashboardPage> {
           fontWeight: FontWeight.w700,
           fontSize: 30.0,
         ),
+      ),
+      leading: new IconButton(
+        icon: new Icon(
+          Icons.menu,
+          color: Colors.black,
+        ),
+        onPressed: () => _key.currentState.openDrawer(),
       ),
       actions: <Widget>[
         Tooltip(
