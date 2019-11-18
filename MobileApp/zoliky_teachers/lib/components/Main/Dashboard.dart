@@ -189,18 +189,18 @@ class DashboardPageState extends State<DashboardPage> {
                       if (snapshot.connectionState != ConnectionState.done) {
                         return _getLoadingTile();
                       }
-                      var list = new List<ZolikTypesData>();
+                      var list = List<ZolikTypesData>();
                       if (snapshot.data != null) {
                         list = snapshot.data;
                       }
 
                       var series = [
-                        new charts.Series<ZolikTypesData, String>(
+                        charts.Series<ZolikTypesData, String>(
                           domainFn: (ZolikTypesData data, _) => data.label,
                           measureFn: (ZolikTypesData data, _) => data.count,
                           data: list,
                           labelAccessorFn: (ZolikTypesData data, _) =>
-                              "${data.label}: ${data.count}",
+                              data.count.toString(),
                         ),
                       ];
 
@@ -208,6 +208,13 @@ class DashboardPageState extends State<DashboardPage> {
                         padding: EdgeInsets.all(24),
                         child: charts.PieChart(
                           series,
+                          defaultRenderer: charts.ArcRendererConfig(
+                            arcRendererDecorators: [
+                              charts.ArcLabelDecorator(
+                                labelPosition: charts.ArcLabelPosition.auto,
+                              ),
+                            ],
+                          ),
                           behaviors: [
                             charts.ChartTitle(
                               "Poměr žolíků",
@@ -234,13 +241,13 @@ class DashboardPageState extends State<DashboardPage> {
                       if (snapshot.connectionState != ConnectionState.done) {
                         return _getLoadingTile();
                       }
-                      var list = new List<ClassLeaderboardData>();
+                      var list = List<ClassLeaderboardData>();
                       if (snapshot.data != null) {
                         list = snapshot.data;
                       }
 
                       var series = [
-                        new charts.Series<ClassLeaderboardData, String>(
+                        charts.Series<ClassLeaderboardData, String>(
                           domainFn: (ClassLeaderboardData data, _) =>
                               data.label,
                           measureFn: (ClassLeaderboardData data, _) =>

@@ -272,10 +272,10 @@ class LoginPageState extends State<LoginPage>
   }
 
   Future<bool> _checkConnection() async {
-    PublicConnector pc = new PublicConnector();
+    PublicConnector pc = PublicConnector();
     var status = pc.checkStatusAsync();
     var res = await status.timeout(Duration(seconds: 7), onTimeout: () {
-      var back = new WebStatus();
+      var back = WebStatus();
       back.status = PageStatus.Unfunctional;
       back.message = "Vypršel časový limit pro přihlášení";
       back.content = "AAA";
@@ -705,11 +705,11 @@ class LoginPageState extends State<LoginPage>
                 child: GestureDetector(
                   child: Container(
                     padding: const EdgeInsets.all(15.0),
-                    decoration: new BoxDecoration(
+                    decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: Colors.white,
                     ),
-                    child: new Icon(
+                    child: Icon(
                       FontAwesomeIcons.facebookF,
                       color: Color(0xFF0084ff),
                     ),
@@ -722,11 +722,11 @@ class LoginPageState extends State<LoginPage>
                 child: GestureDetector(
                   child: Container(
                     padding: const EdgeInsets.all(15.0),
-                    decoration: new BoxDecoration(
+                    decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: Colors.white,
                     ),
-                    child: new Icon(
+                    child: Icon(
                       FontAwesomeIcons.google,
                       color: Color(0xFF0084ff),
                     ),
