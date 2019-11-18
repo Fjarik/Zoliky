@@ -8,7 +8,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:zoliky_teachers/pages/Account/LoginPage.dart';
-import 'package:zoliky_teachers/pages/Administration/DashboardPage.dart';
+import 'package:zoliky_teachers/pages/shared/MenuLayoutPage.dart';
 import 'package:zoliky_teachers/utils/Global.dart';
 import 'package:zoliky_teachers/utils/MenuPainter.dart';
 import 'package:zoliky_teachers/utils/SettingKeys.dart';
@@ -55,6 +55,8 @@ class LoginPageState extends State<LoginPage>
 
   PageController _pageController = PageController();
 
+  Widget _defaultPage;
+
   Color left = Colors.black;
   Color right = Colors.white;
 
@@ -64,6 +66,12 @@ class LoginPageState extends State<LoginPage>
   @override
   void initState() {
     super.initState();
+
+    _defaultPage = MenuLayoutPage(
+      analytics: this.analytics,
+      observer: this.observer,
+    );
+
     _focusPassword.addListener(_txtPasswordFocusChanges);
 
     SharedPreferences.getInstance().then((prefs) {
@@ -158,10 +166,7 @@ class LoginPageState extends State<LoginPage>
     if (success) {
       analytics.logLogin();
       Route r = MaterialPageRoute(
-        builder: (context) => DashboardPage(
-          analytics: this.analytics,
-          observer: this.observer,
-        ),
+        builder: (context) => _defaultPage,
       );
       await Navigator.pushReplacement(context, r);
       return;

@@ -1,4 +1,3 @@
-import 'package:zoliky_teachers/components/Main/MainDashboard.dart';
 import 'package:zoliky_teachers/utils/api/models/User.dart';
 
 class Singleton {
@@ -9,7 +8,6 @@ class Singleton {
   bool shakeForSupport = true;
   String token = "";
   User user;
-  DashboardPageState dashboardPageState;
 
   factory Singleton() {
     return _singleton;
