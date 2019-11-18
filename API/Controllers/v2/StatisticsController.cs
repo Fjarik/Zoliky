@@ -73,6 +73,25 @@ namespace API.Controllers.v2
 			return Ok(res);
 		}
 
+		// GET: statistics/getClassLeaderboard
+		[HttpGet]
+		[Route("getclassleaderboard")]
+		[OwnAuthorize(Roles = UserRoles.AdminOrDeveloperOrTeacher)]
+		public async Task<IHttpActionResult> GetClassLeaderboard()
+		{
+			var schoolId = this.User.Identity.GetSchoolId();
+
+			var classes = await Mgr.GetClassLeaderboardAsync(schoolId);
+
+			var res = classes.OrderBy(x => x.Name).Select(x => new ClassLeaderboardData {
+				Label = x.Name,
+				Data = x.ZolikCount, // > 0 ? x.ZolikCount : 0.1,
+				Colour = x.Colour
+			}).ToList();
+
+			return Ok(res);
+		}
+
 #endregion
 	}
 }
