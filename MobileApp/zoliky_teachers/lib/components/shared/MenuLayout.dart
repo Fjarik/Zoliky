@@ -120,7 +120,10 @@ class MenuLayoutState extends State<MenuLayoutPage> {
     return Scaffold(
       key: _key,
       appBar: _getAppBar(),
-      body: _currentPage,
+      body: AnimatedSwitcher(
+        duration: const Duration(milliseconds: 500),
+        child: _currentPage,
+      ),
       drawer: Drawer(
         child: Column(
           children: <Widget>[
@@ -265,77 +268,6 @@ class MenuLayoutState extends State<MenuLayoutPage> {
           ),
         ),
       ],
-    );
-  }
-
-  Widget _oldAppBar() {
-    return Positioned(
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(16),
-            bottomRight: Radius.circular(16),
-          ),
-          gradient: LinearGradient(
-            colors: [
-              Colors.blueAccent,
-              Colors.lightBlueAccent,
-            ],
-          ),
-        ),
-        height: 85,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.all(10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          _logged.fullName,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontWeight: FontWeight.w700,
-                            fontSize: 20,
-                            color: Colors.white,
-                          ),
-                        ),
-                        Text(
-                          _logged.schoolName,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 17,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Tooltip(
-                    message: "Odhlásit se",
-                    child: IconButton(
-                      onPressed: _logOut,
-                      icon: Icon(
-                        Icons.exit_to_app,
-                        color: Colors.white,
-                      ),
-                      color: Colors.white,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
     );
   }
 }
