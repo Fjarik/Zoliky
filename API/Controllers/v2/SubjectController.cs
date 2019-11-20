@@ -8,6 +8,7 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using API.Tools;
 using API.Tools.Annotations;
+using DataAccess;
 using DataAccess.Managers;
 using DataAccess.Managers.New;
 using DataAccess.Models;
@@ -43,7 +44,11 @@ namespace API.Controllers.v2
 		[ResponseType(typeof(MActionResult<Subject>))]
 		public async Task<IHttpActionResult> GetAll()
 		{
-			var res = await Mgr.GetAllAsync();
+			var schoolId = this.User.Identity.GetSchoolId();
+
+			var sMgr = this.GetManager<SchoolManager>();
+			var res = await sMgr.GetSubjectsAsync(schoolId);
+
 			return Ok(res);
 		}
 	}

@@ -37,7 +37,7 @@ class LoginPageState extends State<LoginPage>
 
   final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
 
-  final facebookLogin = FacebookLogin();
+  final FacebookLogin facebookLogin = FacebookLogin();
 
   TextEditingController _txtUsername = TextEditingController();
   TextEditingController _txtPassword = TextEditingController();

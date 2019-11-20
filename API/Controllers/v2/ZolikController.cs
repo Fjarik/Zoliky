@@ -213,6 +213,19 @@ namespace API.Controllers.v2
 			}
 		}
 
+		// GET: zolik/getSchoolZoliks
+		[HttpGet]
+		[Route("getschoolzoliks")]
+		[ResponseType(typeof(List<Zolik>))]
+		[OwnAuthorize(Roles = UserRoles.AdminOrDeveloperOrTeacher)]
+		public async Task<IHttpActionResult> GetSchoolZoliks([FromUri] bool onlyEnabled = true)
+		{
+			var schoolId = this.User.Identity.GetSchoolId();
+
+			var res = await Mgr.GetSchoolZoliksAsync(schoolId, onlyEnabled);
+			return Ok(res);
+		}
+
 #endregion
 	}
 }

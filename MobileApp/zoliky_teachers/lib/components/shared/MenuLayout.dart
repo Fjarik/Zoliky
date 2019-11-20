@@ -5,6 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zoliky_teachers/pages/Account/LoginPage.dart';
 import 'package:zoliky_teachers/pages/Administration/DashboardPage.dart';
+import 'package:zoliky_teachers/pages/Administration/ZoliksPage.dart';
 import 'package:zoliky_teachers/pages/App/SettingsPage.dart';
 import 'package:zoliky_teachers/pages/shared/MenuLayoutPage.dart';
 import 'package:zoliky_teachers/utils/SettingKeys.dart';
@@ -33,7 +34,7 @@ class MenuLayoutState extends State<MenuLayoutPage> {
     ),
     DrawerMenuItem(
       icon: Icons.apps,
-      page: Pages.other,
+      page: Pages.zoliks,
       title: "Žolíci",
     ),
     DrawerMenuItem(
@@ -87,6 +88,9 @@ class MenuLayoutState extends State<MenuLayoutPage> {
         break;
       case Pages.settings:
         p = SettingsPage(analytics: analytics, observer: observer);
+        break;
+      case Pages.zoliks:
+        p = ZoliksPage(analytics: analytics, observer: observer);
         break;
       case Pages.other:
         _showSnackbar("Ještě neimplementováno");

@@ -523,7 +523,13 @@ namespace DataAccess.Models
 
 		public string SubjectName => this.Subject.Name;
 
-		public string TeacherName => this.Teacher.FullName;
+		public string TeacherName => this.Teacher?.FullName;
+
+		public string OwnerName => this.Owner?.FullName;
+
+		public int? OwnerClassId => this.Owner?.ClassID;
+
+		public string OriginalOwnerName => this.OriginalOwner?.FullName;
 
 		public bool IsLocked => !string.IsNullOrWhiteSpace(this.Lock);
 
