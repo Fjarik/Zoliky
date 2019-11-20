@@ -55,7 +55,7 @@ namespace API.Controllers.v2
 				return Ok(new List<Class>());
 			}
 
-			var res = await Mgr.GetAllAsync(schoolId);
+			var res = await Mgr.GetAllAsync(schoolId, true);
 			return Ok(res);
 		}
 	}

@@ -56,6 +56,8 @@ namespace ZolikyWeb.Areas.Admin.Models.Zoliky
 		public DateTime OwnerSince { get; set; }
 		public DateTime Created { get; set; }
 
+		public string Lock { get; set; }
+
 		[Display(Name = "Ano/Ne")]
 		public bool AllowSplit { get; set; }
 
@@ -158,6 +160,7 @@ namespace ZolikyWeb.Areas.Admin.Models.Zoliky
 			this.Enabled = ent.Enabled;
 			this.OwnerSince = ent.OwnerSince;
 			this.Created = ent.Created;
+			this.Lock = ent.Lock;
 			this.AllowSplit = ent.AllowSplit;
 			this.Subject = ent.Subject;
 			this.OriginalOwner = ent.OriginalOwner;
@@ -173,7 +176,8 @@ namespace ZolikyWeb.Areas.Admin.Models.Zoliky
 				ID = this.ID,
 				OwnerID = this.OwnerID,
 				Title = this.Title,
-				OwnerName = this.Owner.FullName
+				OwnerName = this.Owner.FullName,
+				Reason = ent.Lock
 			};
 		}
 	}

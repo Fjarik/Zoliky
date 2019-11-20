@@ -89,17 +89,20 @@
 								</div>
 							</div>
 							<!-- /item -->
-							<!-- item -->
-							<div class="col-md-6">
-								<div class="form-group row">
-									<label class="control-label text-right col-md-3"></label>
-									<div class="col-md-8">
-										<p class="form-control-static">
-										</p>
+							@if (!string.IsNullOrWhiteSpace(Model.Lock)) {
+								<!-- item -->
+								<div class="col-md-6">
+									<div class="form-group row">
+										<label class="control-label text-right col-md-3">Použít na</label>
+										<div class="col-md-8">
+											<p class="form-control-static">
+												@(Model.Lock)
+											</p>
+										</div>
 									</div>
 								</div>
-							</div>
-							<!-- /item -->
+								<!-- /item -->
+							}
 						</div>
 						<!-- /row -->
 						<!-- row -->
