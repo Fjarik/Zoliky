@@ -3,7 +3,7 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:zoliky_teachers/components/Admin/ZolikDetails.dart';
+import 'package:zoliky_teachers/pages/Administration/Zolik/ZolikDetailPage.dart';
 import 'package:zoliky_teachers/pages/Administration/ZoliksPage.dart';
 import 'package:zoliky_teachers/utils/Global.dart';
 import 'package:zoliky_teachers/utils/Singleton.dart';
@@ -14,7 +14,7 @@ import 'package:zoliky_teachers/utils/enums/ZolikSort.dart';
 
 class ZoliksPageState extends State<ZoliksPage> {
   ZoliksPageState(this.analytics, this.observer) {
-    _classes = Global.classes;
+    _classes.addAll(Global.classes);
     _classes.add(Class()
       ..id = null
       ..name = "Všechny");
@@ -48,12 +48,18 @@ class ZoliksPageState extends State<ZoliksPage> {
     super.initState();
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+    _rController?.dispose();
+  }
+
   Future<void> _orderBy() async {
     var res = await showDialog<ZolikSort>(
       context: context,
       builder: (BuildContext ctx) {
         var dictionary = {
-          "ID": ZolikSort.id,
+          "Výchozí": ZolikSort.id,
           "Data vytvoření": ZolikSort.created,
           "Třídy": ZolikSort.className,
           "Poslední transakce": ZolikSort.lastTransfer
@@ -153,11 +159,26 @@ class ZoliksPageState extends State<ZoliksPage> {
     });
   }
 
+  Future<void> _detailClick(Zolik selected) async {
+    var r = MaterialPageRoute(
+      builder: (BuildContext ctx) => ZolikDetailPage(
+        analytics: analytics,
+        observer: observer,
+        zolik: selected,
+      ),
+    );
+    await Navigator.push(context, r);
+  }
+
+  Future<void> _removeClick(Zolik z) async {}
+
+  void _newClick() {}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white70,
+        backgroundColor: Colors.blue[100],
         title: Text(
           "Řazení/Filtrování",
           style: TextStyle(
@@ -189,38 +210,34 @@ class ZoliksPageState extends State<ZoliksPage> {
             if (snapshot.connectionState != ConnectionState.done) {
               return _loading();
             }
-            var _zoliks = List<CustomZolik>();
+            var _zoliks = List<Zolik>();
 
-            Iterable<CustomZolik> _z;
+            Iterable<Zolik> _z;
             if (snapshot.data != null) {
               Singleton().zoliks = snapshot.data;
-              _z = snapshot.data.map((Zolik z) {
-                return CustomZolik(z);
-              });
+              _z = snapshot.data;
             }
             if (classIdOnly != null) {
-              _z = _z.where((x) => x.original.ownerClassId == classIdOnly);
+              _z = _z.where((x) => x.ownerClassId == classIdOnly);
             }
             _zoliks = _z.toList();
 
             switch (sortBy) {
               case ZolikSort.id:
-                _zoliks.sort((CustomZolik one, CustomZolik two) =>
-                    (one.original.id.compareTo(two.original.id)));
+                _zoliks
+                    .sort((Zolik one, Zolik two) => (one.id.compareTo(two.id)));
                 break;
               case ZolikSort.created:
-                _zoliks.sort((CustomZolik one, CustomZolik two) =>
-                    (one.original.created.compareTo(two.original.created)));
+                _zoliks.sort((Zolik one, Zolik two) =>
+                    (one.created.compareTo(two.created)));
                 break;
               case ZolikSort.className:
-                _zoliks.sort((CustomZolik one, CustomZolik two) => (one
-                    .original.ownerClass.name
-                    .compareTo(two.original.ownerClass.name)));
+                _zoliks.sort((Zolik one, Zolik two) =>
+                    (one.ownerClass.name.compareTo(two.ownerClass.name)));
                 break;
               case ZolikSort.lastTransfer:
-                _zoliks.sort((CustomZolik one, CustomZolik two) => (one
-                    .original.ownerSince
-                    .compareTo(two.original.ownerSince)));
+                _zoliks.sort((Zolik one, Zolik two) =>
+                    (one.ownerSince.compareTo(two.ownerSince)));
                 break;
             }
 
@@ -246,10 +263,15 @@ class ZoliksPageState extends State<ZoliksPage> {
           },
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        backgroundColor: Colors.blue,
+        onPressed: _newClick,
+      ),
     );
   }
 
-  Widget _zolikWidget(CustomZolik z) {
+  Widget _zolikWidget(Zolik z) {
     return Card(
       child: Padding(
         padding: EdgeInsets.all(10),
@@ -257,48 +279,34 @@ class ZoliksPageState extends State<ZoliksPage> {
           header: Row(
             children: <Widget>[
               Text(
-                z.original.title,
+                z.title,
                 softWrap: true,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                   fontSize: 20,
+                  color: Colors.blueAccent,
                   fontWeight: FontWeight.w500,
                 ),
               ),
               Padding(
                 padding: EdgeInsets.only(left: 6),
                 child: Text(
-                  "(" + z.original.ownerClass.name + ")",
+                  "(" + z.ownerClass.name + ")",
                   softWrap: true,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     fontSize: 20,
+                    color: Colors.blueAccent,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
               ),
             ],
           ),
-          collapsed: _collapsedZolik(z.original),
-          expanded: Container(
-            child: Row(
-              children: <Widget>[
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    _zolikInfoLine("Typ žolíka:", z.original.zolikType),
-                    _zolikInfoLine("Udělen za:", z.original.title),
-                    _zolikInfoLine("Předmět:", z.original.subjectName),
-                    _zolikInfoLine("Vyučující:", z.original.teacherName),
-                    _zolikInfoLine(
-                        "Původní vlastník:", z.original.originalOwnerName),
-                  ],
-                ),
-              ],
-            ),
-          ),
+          collapsed: _collapsedZolik(z),
+          expanded: _expandedZolik(z),
           tapHeaderToExpand: true,
           hasIcon: true,
         ),
@@ -378,6 +386,46 @@ class ZoliksPageState extends State<ZoliksPage> {
                 ],
               ),
             ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _expandedZolik(Zolik z) {
+    return Container(
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.max,
+              children: <Widget>[
+                _zolikInfoLine("Typ žolíka:", z.zolikType),
+                _zolikInfoLine("Udělen za:", z.title),
+                _zolikInfoLine("Předmět:", z.subjectName),
+                _zolikInfoLine("Vyučující:", z.teacherName),
+                Divider(
+                  color: Colors.blueAccent,
+                  thickness: 1,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    FlatButton.icon(
+                      icon: Icon(Icons.delete),
+                      onPressed: () async => await _removeClick(z),
+                      label: Text("Použít/Odstranit"),
+                    ),
+                    FlatButton.icon(
+                      icon: Icon(Icons.visibility),
+                      onPressed: () async => await _detailClick(z),
+                      label: Text("Detaily"),
+                    ),
+                  ],
+                )
+              ],
+            ),
           ),
         ],
       ),

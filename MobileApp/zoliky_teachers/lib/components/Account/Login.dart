@@ -165,7 +165,7 @@ class LoginPageState extends State<LoginPage>
     var success = await _checkLogin(res);
     if (success) {
       analytics.logLogin();
-      Route r = MaterialPageRoute(
+      var r = MaterialPageRoute(
         builder: (context) => _defaultPage,
       );
       await Navigator.pushReplacement(context, r);
