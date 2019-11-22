@@ -178,25 +178,25 @@ class ZoliksPageState extends State<ZoliksPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blue[100],
+        backgroundColor: Colors.blue,
         title: Text(
           "Řazení/Filtrování",
           style: TextStyle(
-            color: Colors.black87,
+            color: Colors.white,
           ),
         ),
         actions: <Widget>[
           IconButton(
             icon: Icon(
               Icons.sort_by_alpha,
-              color: Colors.black87,
+              color: Colors.white,
             ),
             onPressed: _orderBy,
           ),
           IconButton(
             icon: Icon(
               Icons.filter_list,
-              color: Colors.black87,
+              color: Colors.white,
             ),
             onPressed: _filterClick,
           )
@@ -208,7 +208,7 @@ class ZoliksPageState extends State<ZoliksPage> {
           future: _future,
           builder: (BuildContext ctx, AsyncSnapshot<List<Zolik>> snapshot) {
             if (snapshot.connectionState != ConnectionState.done) {
-              return _loading();
+              return Global.loading();
             }
             var _zoliks = List<Zolik>();
 
@@ -407,7 +407,7 @@ class ZoliksPageState extends State<ZoliksPage> {
                 _zolikInfoLine("Vyučující:", z.teacherName),
                 Divider(
                   color: Colors.blueAccent,
-                  thickness: 1,
+                  thickness: 2,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -426,22 +426,6 @@ class ZoliksPageState extends State<ZoliksPage> {
                 )
               ],
             ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _loading() {
-    return Container(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              CircularProgressIndicator(),
-            ],
           ),
         ],
       ),

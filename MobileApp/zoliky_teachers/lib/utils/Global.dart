@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:zoliky_teachers/utils/api/connectors/ClassConnector.dart';
 import 'package:zoliky_teachers/utils/api/models/Class.dart';
 import 'package:zoliky_teachers/utils/api/models/Rank.dart';
@@ -59,5 +61,29 @@ class Global {
 
   static Uint8List getImageFromBase64(String _base64) {
     return base64Decode(_base64);
+  }
+
+  static String getDateString(DateTime date) {
+    return getSpecificDateString(date, "dd.MM.yyyy");
+  }
+
+  static String getSpecificDateString(DateTime date, String format) {
+    return DateFormat(format).format(date);
+  }
+
+  static Widget loading() {
+    return Container(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              CircularProgressIndicator(),
+            ],
+          ),
+        ],
+      ),
+    );
   }
 }

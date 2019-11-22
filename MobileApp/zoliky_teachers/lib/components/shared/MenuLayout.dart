@@ -53,7 +53,7 @@ class MenuLayoutState extends State<MenuLayoutPage> {
 
   User get _logged => Singleton().user;
 
-  _logOut() async {
+  void _logOut() async {
     var prefs = await SharedPreferences.getInstance();
     await prefs.remove(SettingKeys.lastToken);
     Route r = MaterialPageRoute(
@@ -78,7 +78,9 @@ class MenuLayoutState extends State<MenuLayoutPage> {
 
   void _changePage(Pages page, String title) {
     Widget p;
-    Navigator.pop(context);
+    if (Navigator.of(context).canPop()) {
+      Navigator.pop(context);
+    }
     switch (page) {
       case Pages.loginPage:
         _logOut();
@@ -119,25 +121,58 @@ class MenuLayoutState extends State<MenuLayoutPage> {
     _key.currentState.showSnackBar(snack);
   }
 
+  Future<bool> _backButtonClick() {
+    if (this._currentPageEnum != Pages.dashboard) {
+      _changePage(Pages.dashboard, "Přehled");
+      return Future.value(false);
+    }
+    return showDialog<bool>(
+      context: context,
+      builder: (BuildContext ctx) => AlertDialog(
+        title: Text("Opravdu si přejete ukončit aplikaci?"),
+        actions: <Widget>[
+          FlatButton(
+            child: Text("Ano"),
+            onPressed: () => Navigator.of(ctx).pop(true),
+          ),
+          FlatButton(
+            child: Text("Odhlásit se"),
+            onPressed: () {
+              _logOut();
+              Navigator.of(ctx).pop(false);
+            },
+          ),
+          FlatButton(
+            child: Text("Ne"),
+            onPressed: () => Navigator.of(ctx).pop(false),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: _key,
-      appBar: _getAppBar(),
-      body: AnimatedSwitcher(
-        duration: const Duration(milliseconds: 500),
-        child: _currentPage,
-      ),
-      drawer: Drawer(
-        child: Column(
-          children: <Widget>[
-            _drawerUser(),
-            Expanded(
-              child:
-                  (_showMenuItems ? _drawerMenuList() : _drawerAccountList()),
-            ),
-            _drawerBottom(),
-          ],
+    return WillPopScope(
+      onWillPop: _backButtonClick,
+      child: Scaffold(
+        key: _key,
+        appBar: _getAppBar(),
+        body: AnimatedSwitcher(
+          duration: const Duration(milliseconds: 500),
+          child: _currentPage,
+        ),
+        drawer: Drawer(
+          child: Column(
+            children: <Widget>[
+              _drawerUser(),
+              Expanded(
+                child:
+                    (_showMenuItems ? _drawerMenuList() : _drawerAccountList()),
+              ),
+              _drawerBottom(),
+            ],
+          ),
         ),
       ),
     );
