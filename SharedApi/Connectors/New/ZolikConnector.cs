@@ -37,9 +37,9 @@ namespace SharedApi.Connectors.New
 																	   bool allowSplit)
 		{
 			var p = new ZolikCPackage() {
-				TeacherId = teacherId,
-				ToId = toId,
-				SubjectId = subjectId,
+				TeacherID = teacherId,
+				ToID = toId,
+				SubjectID = subjectId,
 				Type = type,
 				Title = title,
 				AllowSplit = allowSplit

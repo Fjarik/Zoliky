@@ -190,10 +190,10 @@ namespace DataAccess.Managers
 				return new MActionResult<Transaction>(StatusCode.InvalidInput);
 			}
 
-			return await CreateAndTransferAsync(p.TeacherId,
-												p.ToId,
+			return await CreateAndTransferAsync(p.TeacherID,
+												p.ToID,
 												p.Type,
-												p.SubjectId,
+												p.SubjectID,
 												p.Title,
 												logged,
 												p.AllowSplit);
@@ -207,6 +207,10 @@ namespace DataAccess.Managers
 																			 User logged,
 																			 bool allowSplit = true)
 		{
+			if (teacherId == toId) {
+				return new MActionResult<Transaction>(StatusCode.InvalidInput);
+			}
+
 			var res = await this.CreateAsync(teacherId, toId, type, subjectId, title, allowSplit);
 			if (!res.IsSuccess) {
 				return new MActionResult<Transaction>(res.Status);
