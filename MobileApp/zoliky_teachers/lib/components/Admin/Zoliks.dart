@@ -4,6 +4,7 @@ import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:zoliky_teachers/pages/Administration/Zolik/ZolikDetailPage.dart';
+import 'package:zoliky_teachers/pages/Administration/Zolik/ZolikRemovePage.dart';
 import 'package:zoliky_teachers/pages/Administration/ZoliksPage.dart';
 import 'package:zoliky_teachers/utils/Global.dart';
 import 'package:zoliky_teachers/utils/Singleton.dart';
@@ -170,7 +171,16 @@ class ZoliksPageState extends State<ZoliksPage> {
     await Navigator.push(context, r);
   }
 
-  Future<void> _removeClick(Zolik z) async {}
+  Future<void> _removeClick(Zolik selected) async {
+    var r = MaterialPageRoute(
+      builder: (BuildContext ctx) => ZolikRemovePage(
+        analytics: analytics,
+        observer: observer,
+        zolik: selected,
+      ),
+    );
+    await Navigator.push(context, r);
+  }
 
   void _newClick() {}
 

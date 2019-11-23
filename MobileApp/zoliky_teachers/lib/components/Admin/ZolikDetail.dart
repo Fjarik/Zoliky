@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:zoliky_teachers/pages/Administration/Zolik/ZolikDetailPage.dart';
+import 'package:zoliky_teachers/pages/Administration/Zolik/ZolikRemovePage.dart';
 import 'package:zoliky_teachers/utils/Global.dart';
 import 'package:zoliky_teachers/utils/Singleton.dart';
 import 'package:zoliky_teachers/utils/api/connectors/TransactionConnector.dart';
@@ -20,6 +21,15 @@ class ZolikDetailState extends State<ZolikDetailPage> {
   Zolik zolik;
 
   List<Transaction> _transactions;
+
+  Future<void> _removeZolikClick(Zolik selected) async {
+    var r = MaterialPageRoute(
+      builder: (BuildContext ctx) => ZolikRemovePage(
+        zolik: selected,
+      ),
+    );
+    await Navigator.push(context, r);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,89 +57,104 @@ class ZolikDetailState extends State<ZolikDetailPage> {
           },
         ),
       ),
-      body: Padding(
-        padding: EdgeInsets.all(10),
-        child: Container(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(
-                "Obecné informace:",
-                style: Theme.of(context).textTheme.headline,
-              ),
-              Divider(
-                color: Colors.blue,
-                thickness: 2,
-              ),
-              _detailLine("Udělen za:", zolik.title),
-              _detailLine("Druh:", zolik.zolikType),
-              _detailLine("Aktuální vlastník:",
-                  "${zolik.ownerName} (${zolik.ownerClass.name})"),
-              _detailLine("Předmět:", zolik.subjectName),
-              _detailLine("Vyučující:", zolik.teacherName),
-              _detailLine("Původní vlastník:", zolik.originalOwnerName),
-              _detailLine(
-                  "Datum vytvoření:", Global.getDateString(zolik.created)),
-              Padding(
-                padding: EdgeInsets.only(top: 20),
-                child: Text(
-                  "Pokročilé:",
+      body: SingleChildScrollView(
+        controller: ScrollController(),
+        padding: EdgeInsets.zero,
+        scrollDirection: Axis.vertical,
+        child: Padding(
+          padding: EdgeInsets.all(10),
+          child: Container(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  "Obecné informace:",
                   style: Theme.of(context).textTheme.headline,
                 ),
-              ),
-              Divider(
-                color: Colors.blue,
-                thickness: 2,
-              ),
-              Padding(
-                padding: EdgeInsets.only(
-                  top: 15,
-                  right: 10,
-                  bottom: 15,
-                  left: 8,
+                Divider(
+                  color: Colors.blue,
+                  thickness: 2,
                 ),
-                child: Text(
-                  "Transakce:",
-                  style: TextStyle(
-                    fontSize: 18,
+                _detailLine("Udělen za:", zolik.title),
+                _detailLine("Druh:", zolik.zolikType),
+                _detailLine("Aktuální vlastník:",
+                    "${zolik.ownerName} (${zolik.ownerClass.name})"),
+                _detailLine("Předmět:", zolik.subjectName),
+                _detailLine("Vyučující:", zolik.teacherName),
+                _detailLine("Původní vlastník:", zolik.originalOwnerName),
+                _detailLine(
+                    "Datum vytvoření:", Global.getDateString(zolik.created)),
+                Padding(
+                  padding: EdgeInsets.only(top: 20),
+                  child: Text(
+                    "Pokročilé:",
+                    style: Theme.of(context).textTheme.headline,
                   ),
                 ),
-              ),
-              FutureBuilder(
-                future: _future,
-                builder: (BuildContext ctx,
-                    AsyncSnapshot<List<Transaction>> snapshot) {
-                  if (snapshot.connectionState != ConnectionState.done) {
-                    return Global.loading();
-                  }
+                Divider(
+                  color: Colors.blue,
+                  thickness: 2,
+                ),
+                Padding(
+                  padding: EdgeInsets.only(
+                    top: 15,
+                    right: 10,
+                    bottom: 15,
+                    left: 8,
+                  ),
+                  child: Text(
+                    "Transakce:",
+                    style: TextStyle(
+                      fontSize: 18,
+                    ),
+                  ),
+                ),
+                FutureBuilder(
+                  future: _future,
+                  builder: (BuildContext ctx,
+                      AsyncSnapshot<List<Transaction>> snapshot) {
+                    if (snapshot.connectionState != ConnectionState.done) {
+                      return Global.loading();
+                    }
 
-                  if (snapshot.data != null) {
-                    this._transactions = snapshot.data;
-                  }
-                  var list = _getTableHeader();
-                  var i = 0;
-                  list.addAll(this._transactions.map((Transaction t) {
-                    i++;
-                    return _transactionWidget(t, isAlternate: i % 2 == 0);
-                  }).toList());
-                  return Table(
-                    columnWidths: {
-                      0: FractionColumnWidth(0.13),
-                      2: FractionColumnWidth(0.1),
-                      4: FractionColumnWidth(0.22),
-                      5: FractionColumnWidth(0),
-                    },
-                    defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-                    children: list,
-                  );
-                },
-              ),
-            ],
+                    if (snapshot.data != null) {
+                      this._transactions = snapshot.data;
+                    }
+
+                    /// Duplikování
+                    // var a = snapshot.data.asMap();
+                    // this._transactions.addAll(List.from(a.values));
+
+                    var list = _getTableHeader();
+                    var i = 0;
+                    list.addAll(this._transactions.map((Transaction t) {
+                      i++;
+                      return _transactionWidget(t, isAlternate: i % 2 == 0);
+                    }).toList());
+                    return Padding(
+                      padding: EdgeInsets.only(bottom: 70),
+                      child: Table(
+                        columnWidths: {
+                          0: FlexColumnWidth(3),
+                          1: FlexColumnWidth(1),
+                          2: FlexColumnWidth(3),
+                          3: FlexColumnWidth(2),
+                          4: FlexColumnWidth(0.001),
+                        },
+                        defaultVerticalAlignment:
+                            TableCellVerticalAlignment.middle,
+                        children: list,
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {},
+        onPressed: () => _removeZolikClick(zolik),
         label: Text("Odstranit"),
         icon: Icon(Icons.delete),
         backgroundColor: Colors.red,
@@ -145,9 +170,8 @@ class ZolikDetailState extends State<ZolikDetailPage> {
       children: <Widget>[
         Padding(
           padding: EdgeInsets.only(left: 5),
-          child: Text(t.id.toString()),
+          child: Text(t.from),
         ),
-        Text(t.from),
         Text(
           "→",
           textAlign: TextAlign.center,
@@ -171,16 +195,10 @@ class ZolikDetailState extends State<ZolikDetailPage> {
           Padding(
             padding: EdgeInsets.only(left: 5),
             child: Text(
-              "ID",
+              "Odesílatel",
               style: TextStyle(
                 fontWeight: FontWeight.bold,
               ),
-            ),
-          ),
-          Text(
-            "Odesílatel",
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
             ),
           ),
           Text(
@@ -207,9 +225,6 @@ class ZolikDetailState extends State<ZolikDetailPage> {
       ),
       TableRow(
         children: <Widget>[
-          Divider(
-            color: Colors.blue,
-          ),
           Divider(
             color: Colors.blue,
           ),

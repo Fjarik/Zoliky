@@ -167,6 +167,9 @@ class LoginPageState extends State<LoginPage>
       analytics.logLogin();
       var r = MaterialPageRoute(
         builder: (context) => _defaultPage,
+        settings: RouteSettings(
+          name: "/dashboard",
+        ),
       );
       await Navigator.pushReplacement(context, r);
       return;

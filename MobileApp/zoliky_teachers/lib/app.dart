@@ -1,15 +1,16 @@
-import 'package:appcenter/appcenter.dart';
-import 'package:appcenter_analytics/appcenter_analytics.dart';
-import 'package:appcenter_crashes/appcenter_crashes.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:firebase_analytics/observer.dart';
-import 'package:flutter/material.dart';
-import 'package:scoped_model/scoped_model.dart';
-import 'package:wakelock/wakelock.dart';
-import 'package:zoliky_teachers/pages/Account/LoginPage.dart';
-import 'package:zoliky_teachers/utils/Global.dart';
+import "package:appcenter/appcenter.dart";
+import "package:appcenter_analytics/appcenter_analytics.dart";
+import "package:appcenter_crashes/appcenter_crashes.dart";
+import "package:firebase_analytics/firebase_analytics.dart";
+import "package:firebase_analytics/observer.dart";
+import "package:flutter/material.dart";
+import "package:scoped_model/scoped_model.dart";
+import "package:wakelock/wakelock.dart";
+import "package:zoliky_teachers/pages/Account/LoginPage.dart";
+import "package:zoliky_teachers/pages/Administration/DashboardPage.dart";
+import "package:zoliky_teachers/utils/Global.dart";
 
-import 'models/MainModel.dart';
+import "models/MainModel.dart";
 
 final ThemeData _mainTheme = ThemeData(
   primarySwatch: Colors.blue,
@@ -50,12 +51,19 @@ class ZolikAppState extends State<ZolikApp> {
     return ScopedModel<MainModel>(
       model: _model,
       child: MaterialApp(
-        title: 'Žolíky',
+        title: "Žolíky",
         theme: _mainTheme,
         home: _default,
         navigatorObservers: <NavigatorObserver>[observer],
         routes: <String, WidgetBuilder>{
-          'login': (context) => LoginPage(),
+          "/login": (context) => LoginPage(
+                analytics: analytics,
+                observer: observer,
+              ),
+          "/dashboard": (context) => DashboardPage(
+                analytics: analytics,
+                observer: observer,
+              ),
         },
         debugShowCheckedModeBanner: false,
       ),

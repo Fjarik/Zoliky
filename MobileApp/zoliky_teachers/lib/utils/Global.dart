@@ -73,6 +73,9 @@ class Global {
 
   static Widget loading() {
     return Container(
+      constraints: BoxConstraints(
+        minHeight: 70,
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
