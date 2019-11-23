@@ -278,17 +278,17 @@
 							<!-- row -->
 							<div class="row">
 								<!-- item -->
-								<div class="col-md-6">
+								<div class="col-md-9">
 									<div class="form-group row">
-										<label class="control-label text-right col-md-3">Transakce</label>
-										<div class="col-md-9">
+										<label class="control-label text-right col-md-2">Transakce</label>
+										<div class="col-md-10">
 											@Html.Partial("_TransactionPartial", Model.Transactions.OrderByDescending(x => x.Date).Take(10))
 										</div>
 									</div>
 								</div>
 								<!-- /item -->
 								<!-- item -->
-								<div class="col-md-6">
+								<div class="col-md-3">
 									<div class="form-group row">
 										<label class="control-label text-right col-md-3"></label>
 										<div class="col-md-8">

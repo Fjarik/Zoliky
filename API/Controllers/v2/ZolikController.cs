@@ -11,7 +11,6 @@ using API.Tools;
 using API.Tools.Annotations;
 using DataAccess;
 using DataAccess.Managers;
-using DataAccess.Managers.New;
 using DataAccess.Models;
 using Microsoft.Web.Http;
 using SharedLibrary;
@@ -224,6 +223,27 @@ namespace API.Controllers.v2
 
 			var res = await Mgr.GetSchoolZoliksAsync(schoolId, onlyEnabled);
 			return Ok(res);
+		}
+
+		// POST: zolik/deletezolik
+		[HttpPost]
+		[Route("deletezolik")]
+		[ResponseType(typeof(MActionResult<Transaction>))]
+		[OwnAuthorize(Roles = UserRoles.AdminOrDeveloperOrTeacher)]
+		public async Task<IHttpActionResult> DeleteZolik(ZolikRemove package)
+		{
+			if (package == null || !package.IsValid) {
+				return Ok(
+						  new MActionResult<Transaction>(SharedLibrary.Enums.StatusCode.InvalidInput));
+			}
+			var loggedId = this.User.Identity.GetId();
+			try {
+				var res = await Mgr.RemoveAsync(package.ZolikID, package.Reason, loggedId);
+				return Ok(res);
+			} catch (Exception ex) {
+				return Ok(
+						  new MActionResult<Transaction>(SharedLibrary.Enums.StatusCode.SeeException, ex));
+			}
 		}
 
 #endregion
