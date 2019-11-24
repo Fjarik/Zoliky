@@ -7,7 +7,6 @@ class Singleton {
 
   bool darkmode = false;
   bool biometrics = false;
-  bool shakeForSupport = true;
   String token = "";
   User user;
   List<Zolik> zoliks;

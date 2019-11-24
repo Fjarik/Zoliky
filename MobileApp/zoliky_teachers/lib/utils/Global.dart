@@ -4,14 +4,22 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:zoliky_teachers/utils/api/connectors/ClassConnector.dart';
+import 'package:zoliky_teachers/utils/api/connectors/StudentConnector.dart';
+import 'package:zoliky_teachers/utils/api/connectors/SubjectConnector.dart';
 import 'package:zoliky_teachers/utils/api/models/Class.dart';
 import 'package:zoliky_teachers/utils/api/models/Rank.dart';
+import 'package:zoliky_teachers/utils/api/models/Student.dart';
+import 'package:zoliky_teachers/utils/api/models/Subject.dart';
 
 class Global {
   static List<Class> _classes = new List<Class>();
+  static List<Student> _students = new List<Student>();
+  static List<Subject> _subjects = new List<Subject>();
   static List<Rank> _ranks = new List<Rank>();
 
   static List<Class> get classes => _classes;
+  static List<Student> get students => _students;
+  static List<Subject> get subjects => _subjects;
   static List<Rank> get ranks => _ranks;
 
   static Class getClassById(int id) {
@@ -42,6 +50,8 @@ class Global {
 
   static Future loadApp(String token) async {
     _classes = await loadClasses(token);
+    _students = await _loadStudents(token);
+    _subjects = await _loadSubjects(token);
   }
 
   static Future<List<Class>> loadClasses(String token) async {
@@ -49,8 +59,26 @@ class Global {
       return new List<Class>();
     }
     var mgr = new ClassConnector(token);
-    var cRes = await mgr.getClassesAsync();
-    return cRes ?? new List<Class>();
+    var res = await mgr.getClassesAsync();
+    return res ?? new List<Class>();
+  }
+
+  static Future<List<Student>> _loadStudents(String token) async {
+    if (token == null || token.isEmpty) {
+      return new List<Student>();
+    }
+    var mgr = new StudentConnector(token);
+    var res = await mgr.getStudents(imageMaxSize: 1);
+    return res ?? new List<Student>();
+  }
+
+  static Future<List<Subject>> _loadSubjects(String token) async {
+    if (token == null || token.isEmpty) {
+      return new List<Subject>();
+    }
+    var mgr = new SubjectConnector(token);
+    var res = await mgr.getSubjectsAsync();
+    return res ?? new List<Subject>();
   }
 
   static bool get isInDebugMode {

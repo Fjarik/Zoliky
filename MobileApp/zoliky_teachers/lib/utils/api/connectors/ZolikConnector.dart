@@ -5,6 +5,7 @@ import 'package:zoliky_teachers/utils/api/enums/StatusCode.dart';
 import 'package:zoliky_teachers/utils/api/models/Transaction.dart';
 import 'package:zoliky_teachers/utils/api/models/Zolik.dart';
 import 'package:zoliky_teachers/utils/api/models/universal/MActionResult.dart';
+import 'package:zoliky_teachers/utils/api/models/universal/ZolikCreateModel.dart';
 import 'package:zoliky_teachers/utils/api/models/universal/ZolikRemoveModel.dart';
 
 class ZolikConnector extends PublicConnector {
@@ -51,7 +52,42 @@ class ZolikConnector extends PublicConnector {
     try {
       var packageMap = p.toJson();
 
-      var url = "$urlApi/zolik/deletezolik";
+      var url = "$urlApi/zolik/delete";
+      var res = await cli.post(url,
+          headers: {"Authorization": "Bearer $usedToken"}, body: packageMap);
+
+      if (res.statusCode != 200) {
+        return new MActionResult<Transaction>()
+            .ctorOnlyStatus(StatusCode.InternalError);
+      }
+
+      var body = res.body;
+
+      if (body.isEmpty) {
+        return new MActionResult<Transaction>()
+            .ctorOnlyStatus(StatusCode.NotFound);
+      }
+
+      Map<String, dynamic> _json = json.decode(body);
+
+      _json["Content"] = Transaction.fromJson(_json["Content"]);
+
+      var ws = MActionResult<Transaction>.fromJson(_json);
+      return ws;
+    } catch (ex) {
+      return new MActionResult<Transaction>().ctorWithexception(ex);
+    }
+  }
+
+    Future<MActionResult<Transaction>> createAsync(ZolikCreateModel p) async {
+    if (p == null || !p.isValid) {
+      return new MActionResult<Transaction>()
+          .ctorOnlyStatus(StatusCode.InvalidInput);
+    }
+    try {
+      var packageMap = p.toJson();
+
+      var url = "$urlApi/zolik/create";
       var res = await cli.post(url,
           headers: {"Authorization": "Bearer $usedToken"}, body: packageMap);
 

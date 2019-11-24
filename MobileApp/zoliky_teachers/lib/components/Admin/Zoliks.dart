@@ -3,6 +3,7 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:zoliky_teachers/pages/Administration/Zolik/ZolikCreatePage.dart';
 import 'package:zoliky_teachers/pages/Administration/Zolik/ZolikDetailPage.dart';
 import 'package:zoliky_teachers/pages/Administration/Zolik/ZolikRemovePage.dart';
 import 'package:zoliky_teachers/pages/Administration/ZoliksPage.dart';
@@ -43,6 +44,7 @@ class ZoliksPageState extends State<ZoliksPage> {
 
   int classIdOnly;
   ZolikSort sortBy = ZolikSort.id;
+  bool ascending = false;
 
   @override
   void initState() {
@@ -53,6 +55,13 @@ class ZoliksPageState extends State<ZoliksPage> {
   void dispose() {
     super.dispose();
     _rController?.dispose();
+  }
+
+  void _ascDesc() {
+    setState(() {
+      sortBy = sortBy;
+      ascending = !ascending;
+    });
   }
 
   Future<void> _orderBy() async {
@@ -103,7 +112,7 @@ class ZoliksPageState extends State<ZoliksPage> {
       },
     );
     setState(() {
-      sortBy = res;
+      sortBy = res ?? this.sortBy;
     });
   }
 
@@ -182,7 +191,15 @@ class ZoliksPageState extends State<ZoliksPage> {
     await Navigator.push(context, r);
   }
 
-  void _newClick() {}
+  Future<void> _newClick() async {
+    var r = MaterialPageRoute(
+      builder: (BuildContext ctx) => ZolikCreatePage(
+        analytics: analytics,
+        observer: observer,
+      ),
+    );
+    await Navigator.push(context, r);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -196,6 +213,13 @@ class ZoliksPageState extends State<ZoliksPage> {
           ),
         ),
         actions: <Widget>[
+          IconButton(
+            icon: Icon(
+              ascending ? Icons.arrow_drop_down : Icons.arrow_drop_up,
+              color: Colors.white,
+            ),
+            onPressed: _ascDesc,
+          ),
           IconButton(
             icon: Icon(
               Icons.sort_by_alpha,
@@ -249,6 +273,10 @@ class ZoliksPageState extends State<ZoliksPage> {
                 _zoliks.sort((Zolik one, Zolik two) =>
                     (one.ownerSince.compareTo(two.ownerSince)));
                 break;
+            }
+
+            if (!ascending) {
+              _zoliks = _zoliks.reversed.toList();
             }
 
             return SmartRefresher(

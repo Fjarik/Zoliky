@@ -441,19 +441,14 @@ class LoginPageState extends State<LoginPage>
   Widget build(BuildContext context) {
     return Scaffold(
       key: _key,
-      body: NotificationListener<OverscrollIndicatorNotification>(
-        onNotification: (overscroll) {
-          overscroll.disallowGlow();
-          return true;
-        },
-        child: SingleChildScrollView(
-          child: Container(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height >= 775.0
-                ? MediaQuery.of(context).size.height
-                : 775.0,
-            decoration: BoxDecoration(
-                gradient: LinearGradient(
+      body: SingleChildScrollView(
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height >= 775.0
+              ? MediaQuery.of(context).size.height
+              : 775.0,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
               colors: [
                 Color(0xFF2196f3),
                 Color(0xFF40c4ff),
@@ -462,66 +457,64 @@ class LoginPageState extends State<LoginPage>
               end: const FractionalOffset(1, 1),
               stops: [0, 1],
               tileMode: TileMode.clamp,
-            )),
-            child: _isLoading
-                ? _loading(context)
-                : Column(
-                    mainAxisSize: MainAxisSize.max,
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.only(
-                          top: 100,
-                          bottom: 50,
-                          left: 50,
-                          right: 50,
-                        ),
-                        child: Image(
-                          fit: BoxFit.fill,
-                          image:
-                              AssetImage("assets/ZolikyHeaderWhite_1024.png"),
-                        ),
+            ),
+          ),
+          child: _isLoading
+              ? _loading()
+              : Column(
+                  mainAxisSize: MainAxisSize.max,
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.only(
+                        top: 100,
+                        bottom: 50,
+                        left: 50,
+                        right: 50,
                       ),
-                      Padding(
-                        child: _loginOrCreate(context),
-                        padding: EdgeInsets.only(top: 20),
+                      child: Image(
+                        fit: BoxFit.fill,
+                        image: AssetImage("assets/ZolikyHeaderWhite_1024.png"),
                       ),
-                      Expanded(
-                        flex: 2,
-                        child: PageView(
-                          controller: _pageController,
-                          onPageChanged: _onPageChange,
-                          children: <Widget>[
-                            ConstrainedBox(
-                              constraints: const BoxConstraints.expand(),
-                              child: _signIn(context),
-                            ),
-                            ConstrainedBox(
-                              constraints: const BoxConstraints.expand(),
-                              child: _signUp(context),
-                            ),
-                          ],
-                        ),
+                    ),
+                    Padding(
+                      child: _loginOrCreate(context),
+                      padding: EdgeInsets.only(top: 20),
+                    ),
+                    Expanded(
+                      flex: 2,
+                      child: PageView(
+                        controller: _pageController,
+                        onPageChanged: _onPageChange,
+                        children: <Widget>[
+                          ConstrainedBox(
+                            constraints: const BoxConstraints.expand(),
+                            child: _signIn(context),
+                          ),
+                          ConstrainedBox(
+                            constraints: const BoxConstraints.expand(),
+                            child: _signUp(context),
+                          ),
+                        ],
                       ),
-                      Container(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Padding(
-                              padding: EdgeInsets.symmetric(vertical: 15),
-                              child: Text(
-                                DateTime.now().year.toString() +
-                                    " \u00a9 Žolíky",
-                                style: TextStyle(
-                                  color: Colors.grey[200],
-                                ),
+                    ),
+                    Container(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Padding(
+                            padding: EdgeInsets.symmetric(vertical: 15),
+                            child: Text(
+                              DateTime.now().year.toString() + " \u00a9 Žolíky",
+                              style: TextStyle(
+                                color: Colors.grey[200],
                               ),
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-          ),
+                    ),
+                  ],
+                ),
         ),
       ),
     );
@@ -532,8 +525,11 @@ class LoginPageState extends State<LoginPage>
       width: 300,
       height: 50,
       decoration: BoxDecoration(
-          color: Color(0x552B2B2B),
-          borderRadius: BorderRadius.all(Radius.circular(25))),
+        color: Color(0x552B2B2B),
+        borderRadius: BorderRadius.all(
+          Radius.circular(25),
+        ),
+      ),
       child: CustomPaint(
         painter: TabIndicationPainter(pageController: _pageController),
         child: Row(
@@ -665,7 +661,9 @@ class LoginPageState extends State<LoginPage>
               Container(
                 margin: EdgeInsets.only(top: 170),
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(5)),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(5),
+                  ),
                   color: Color(0xFF007adf),
                 ),
                 child: MaterialButton(
@@ -842,7 +840,9 @@ class LoginPageState extends State<LoginPage>
               Container(
                 margin: EdgeInsets.only(top: 255),
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(5)),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(5),
+                  ),
                   boxShadow: <BoxShadow>[
                     BoxShadow(),
                   ],
@@ -933,7 +933,7 @@ class LoginPageState extends State<LoginPage>
     );
   }
 
-  Widget _loading(BuildContext context) {
+  Widget _loading() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
