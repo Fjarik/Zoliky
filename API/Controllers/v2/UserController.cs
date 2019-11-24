@@ -164,6 +164,10 @@ namespace API.Controllers.v2
 				throw new HttpResponseException(HttpStatusCode.NoContent);
 			}
 
+			if (file.ContentLength < 100) {
+				throw new HttpResponseException(HttpStatusCode.RequestedRangeNotSatisfiable);
+			}
+
 			if (file.ContentLength > 4096 * 1024) {
 				throw new HttpResponseException(HttpStatusCode.RequestEntityTooLarge);
 			}

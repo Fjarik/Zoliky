@@ -41,7 +41,7 @@ namespace API.Controllers.v2
 		// GET: subject/getAll
 		[HttpGet]
 		[Route("getall")]
-		[ResponseType(typeof(MActionResult<Subject>))]
+		[ResponseType(typeof(List<Subject>))]
 		public async Task<IHttpActionResult> GetAll()
 		{
 			var schoolId = this.User.Identity.GetSchoolId();

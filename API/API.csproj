@@ -179,7 +179,6 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MVC\HomeController.cs" />
-    <Compile Include="Controllers\v1\UserController.cs" />
     <Compile Include="Controllers\v2\AchievementController.cs" />
     <Compile Include="Controllers\v2\ClassController.cs" />
     <Compile Include="Controllers\v2\ImageController.cs" />

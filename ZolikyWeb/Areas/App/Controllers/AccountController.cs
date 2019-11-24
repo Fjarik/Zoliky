@@ -111,6 +111,11 @@ namespace ZolikyWeb.Areas.App.Controllers
 				return RedirectToAction("Settings");
 			}
 
+			if (file.ContentLength < 100) {
+				this.AddErrorToastMessage("Soubor musí mít minimálně 100B");
+				return RedirectToAction("Settings");
+			}
+
 			if (file.ContentLength > 4096 * 1024) {
 				this.AddErrorToastMessage("Soubor může mít maximálně 4MB");
 				return RedirectToAction("Settings");
