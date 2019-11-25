@@ -13,14 +13,17 @@ import 'package:zoliky_teachers/utils/api/models/ProjectSettings.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:zoliky_teachers/utils/api/models/universal/ClassLeaderboardData.dart';
 import 'package:zoliky_teachers/utils/api/models/universal/ZolikTypesData.dart';
+import 'package:zoliky_teachers/utils/enums/Pages.dart';
 
 class DashboardPageState extends State<DashboardPage> {
-  DashboardPageState(this.analytics, this.observer);
+  DashboardPageState(this.analytics, this.observer, this.changePage);
 
   final FirebaseAnalytics analytics;
   final FirebaseAnalyticsObserver observer;
 
   final RefreshController _refreshController = RefreshController();
+
+  final void Function(Pages page, {String title}) changePage;
 
   bool showMenuItems = true;
 
@@ -83,7 +86,9 @@ class DashboardPageState extends State<DashboardPage> {
                       color: Colors.blue,
                       icon: FontAwesomeIcons.wallet,
                       iconColor: Colors.white,
-                      onTap: null,
+                      onTap: () {
+                        changePage(Pages.zoliks);
+                      },
                     );
                   },
                 ),
@@ -107,7 +112,7 @@ class DashboardPageState extends State<DashboardPage> {
                       color: Colors.amber,
                       icon: FontAwesomeIcons.solidUser,
                       iconColor: Colors.white,
-                      onTap: null,
+                      onTap: () => changePage(Pages.other),
                     );
                   },
                 ),
@@ -192,12 +197,12 @@ class DashboardPageState extends State<DashboardPage> {
 
                     var series = [
                       charts.Series<ZolikTypesData, String>(
-                        domainFn: (ZolikTypesData data, _) => data.label,
-                        measureFn: (ZolikTypesData data, _) => data.count,
-                        data: list,
-                        labelAccessorFn: (ZolikTypesData data, _) =>
-                            data.count.toString(),
-                      ),
+                          domainFn: (ZolikTypesData data, _) => data.label,
+                          measureFn: (ZolikTypesData data, _) => data.count,
+                          data: list,
+                          labelAccessorFn: (ZolikTypesData data, _) =>
+                              data.count.toString(),
+                          id: "ZolikLeaderboard"),
                     ];
 
                     return _getTile(Padding(
@@ -231,7 +236,9 @@ class DashboardPageState extends State<DashboardPage> {
                   },
                 ),
                 FutureBuilder(
-                  future: _sConnector.getClassLeaderboardAsync(),
+                  future: Singleton().classLeaderboard.isEmpty
+                      ? _sConnector.getClassLeaderboardAsync()
+                      : Future.value(Singleton().classLeaderboard),
                   builder: (context,
                       AsyncSnapshot<List<ClassLeaderboardData>> snapshot) {
                     if (snapshot.connectionState != ConnectionState.done) {
@@ -241,15 +248,18 @@ class DashboardPageState extends State<DashboardPage> {
                     if (snapshot.data != null) {
                       list = snapshot.data;
                     }
+                    Singleton().classLeaderboard = list;
 
                     var series = [
                       charts.Series<ClassLeaderboardData, String>(
-                        domainFn: (ClassLeaderboardData data, _) => data.label,
-                        measureFn: (ClassLeaderboardData data, _) => data.data,
-                        colorFn: (ClassLeaderboardData data, _) =>
-                            charts.Color.fromHex(code: data.colour),
-                        data: list,
-                      ),
+                          domainFn: (ClassLeaderboardData data, _) =>
+                              data.label,
+                          measureFn: (ClassLeaderboardData data, _) =>
+                              data.data,
+                          colorFn: (ClassLeaderboardData data, _) =>
+                              charts.Color.fromHex(code: data.colour),
+                          data: list,
+                          id: "ClassLeaderboard"),
                     ];
 
                     return _getTile(
@@ -327,7 +337,7 @@ class DashboardPageState extends State<DashboardPage> {
       Color iconColor,
       double iconSize = 30,
       IconData icon,
-      Function() onTap}) {
+      void Function() onTap}) {
     return _getTile(
       Padding(
         padding: EdgeInsets.all(24),
@@ -389,7 +399,7 @@ class DashboardPageState extends State<DashboardPage> {
           ],
         ),
       ),
-      onTap: null,
+      onTap: onTap,
     );
   }
 }

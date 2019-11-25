@@ -49,18 +49,23 @@ class Global {
   }
 
   static Future loadApp(String token) async {
-    _classes = await loadClasses(token);
+    _classes = await _loadClasses(token);
     _students = await _loadStudents(token);
     _subjects = await _loadSubjects(token);
   }
 
-  static Future<List<Class>> loadClasses(String token) async {
+  static Future<List<Class>> _loadClasses(String token) async {
     if (token == null || token.isEmpty) {
       return new List<Class>();
     }
     var mgr = new ClassConnector(token);
     var res = await mgr.getClassesAsync();
     return res ?? new List<Class>();
+  }
+
+  static Future<List<Class>> loadAndSetClasses(String token) async {
+    _classes = await _loadClasses(token);
+    return _classes;
   }
 
   static Future<List<Student>> _loadStudents(String token) async {

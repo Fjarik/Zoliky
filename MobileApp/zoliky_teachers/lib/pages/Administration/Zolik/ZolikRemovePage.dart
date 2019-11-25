@@ -1,7 +1,7 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
-import 'package:zoliky_teachers/components/Admin/ZolikRemove.dart';
+import 'package:zoliky_teachers/components/Zolik/ZolikRemove.dart';
 import 'package:zoliky_teachers/utils/api/models/Zolik.dart';
 
 class ZolikRemovePage extends StatefulWidget {

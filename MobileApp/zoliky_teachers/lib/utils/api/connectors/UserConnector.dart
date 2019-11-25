@@ -4,7 +4,6 @@ import 'package:http/http.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:zoliky_teachers/utils/api/connectors/PublicConnector.dart';
 import 'package:zoliky_teachers/utils/api/enums/StatusCode.dart';
-import 'package:zoliky_teachers/utils/api/models/Student.dart';
 import 'package:zoliky_teachers/utils/api/models/User.dart';
 import 'package:zoliky_teachers/utils/api/models/universal/MActionResult.dart';
 

@@ -59,7 +59,6 @@ class ZoliksPageState extends State<ZoliksPage> {
 
   void _ascDesc() {
     setState(() {
-      sortBy = sortBy;
       ascending = !ascending;
     });
   }

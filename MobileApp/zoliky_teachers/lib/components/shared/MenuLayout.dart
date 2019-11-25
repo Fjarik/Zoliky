@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zoliky_teachers/pages/Account/LoginPage.dart';
+import 'package:zoliky_teachers/pages/Administration/ClassesPages.dart';
 import 'package:zoliky_teachers/pages/Administration/DashboardPage.dart';
 import 'package:zoliky_teachers/pages/Administration/ZoliksPage.dart';
 import 'package:zoliky_teachers/pages/App/SettingsPage.dart';
@@ -39,7 +40,7 @@ class MenuLayoutState extends State<MenuLayoutPage> {
     ),
     DrawerMenuItem(
       icon: FontAwesomeIcons.school,
-      page: Pages.other,
+      page: Pages.classes,
       title: "Třídy",
     ),
   ];
@@ -76,30 +77,46 @@ class MenuLayoutState extends State<MenuLayoutPage> {
     this._currentPageEnum = Pages.dashboard;
   }
 
-  void _changePage(Pages page, String title) {
+  void changePage(Pages page, {String title}) {
     Widget p;
     if (Navigator.of(context).canPop()) {
       Navigator.pop(context);
     }
+    String t;
     switch (page) {
       case Pages.loginPage:
         _logOut();
         return;
       case Pages.dashboard:
-        p = DashboardPage(analytics: analytics, observer: observer);
+        t = "Přehled";
+        p = DashboardPage(
+          analytics: analytics,
+          observer: observer,
+          changePage: this.changePage,
+        );
+        break;
+      case Pages.classes:
+        t = "Třídy";
+        p = ClassesPage(analytics: analytics, observer: observer);
         break;
       case Pages.settings:
+        t = "Nastavení";
         p = SettingsPage(analytics: analytics, observer: observer);
         break;
       case Pages.zoliks:
+        t = "Žolíci";
         p = ZoliksPage(analytics: analytics, observer: observer);
         break;
       case Pages.other:
+        t = "Jiné";
         _showSnackbar("Ještě neimplementováno");
         return;
     }
     _currentPageEnum = page;
-    _routePage(p, title);
+    if (title != null && title.isNotEmpty) {
+      t = title;
+    }
+    _routePage(p, t);
   }
 
   void _routePage(Widget page, String title) {
@@ -123,7 +140,7 @@ class MenuLayoutState extends State<MenuLayoutPage> {
 
   Future<bool> _backButtonClick() {
     if (this._currentPageEnum != Pages.dashboard) {
-      _changePage(Pages.dashboard, "Přehled");
+      changePage(Pages.dashboard);
       return Future.value(false);
     }
     return showDialog<bool>(
@@ -234,7 +251,7 @@ class MenuLayoutState extends State<MenuLayoutPage> {
       leading: Icon(item.icon),
       selected: item.page == _currentPageEnum,
       onTap: () {
-        _changePage(item.page, item.title);
+        changePage(item.page);
       },
     );
   }

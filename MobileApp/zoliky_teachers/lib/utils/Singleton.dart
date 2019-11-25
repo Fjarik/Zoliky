@@ -1,4 +1,5 @@
 import 'package:zoliky_teachers/utils/api/models/User.dart';
+import 'package:zoliky_teachers/utils/api/models/universal/ClassLeaderboardData.dart';
 
 import 'api/models/Zolik.dart';
 
@@ -10,6 +11,7 @@ class Singleton {
   String token = "";
   User user;
   List<Zolik> zoliks;
+  List<ClassLeaderboardData> classLeaderboard;
 
   factory Singleton() {
     return _singleton;
@@ -17,5 +19,6 @@ class Singleton {
 
   Singleton._internal() {
     zoliks = List<Zolik>();
+    classLeaderboard = List<ClassLeaderboardData>();
   }
 }
