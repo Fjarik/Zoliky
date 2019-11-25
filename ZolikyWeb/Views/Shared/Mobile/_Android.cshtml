@@ -1,4 +1,6 @@
-﻿<div class="col">
+﻿@using DataAccess
+@using SharedLibrary.Shared
+<div class="col">
 	<div class="card">
 		<div class="card-body wizard-content">
 			<h4 class="card-title">Tutoriál</h4>
@@ -43,6 +45,13 @@
 									Aaale, já mám Ajfoun
 								</a>
 							</div>
+							@if (User.Identity.IsAuthenticated && User.IsInRolesOr(UserRoles.Teacher, UserRoles.SchoolManager, UserRoles.Administrator, UserRoles.Developer)) {
+								<div class="mt-4 text-center">
+									<a target="_blank" title="Odkaz na Google play" href="https://play.google.com/store/apps/details?id=com.zoliky.teachers">
+										Aplikace pro vyučující
+									</a>
+								</div>
+							}
 						</div>
 						<div class="col-md-5 text-center">
 							<img src="@Url.Content("~/Content/Images/Screens/GPlay.jpg")" alt="Google play" class="pb-5" style="width: 70%; height: auto" />
