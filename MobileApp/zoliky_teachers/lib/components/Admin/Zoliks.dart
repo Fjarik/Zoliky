@@ -18,7 +18,7 @@ class ZoliksPageState extends State<ZoliksPage> {
   ZoliksPageState(this.analytics, this.observer) {
     _classes.addAll(Global.classes);
     _classes.add(Class()
-      ..id = null
+      ..id = -1
       ..name = "Všechny");
   }
 
@@ -42,7 +42,7 @@ class ZoliksPageState extends State<ZoliksPage> {
       ? _zConnector.getSchoolZoliks()
       : Future.value(Singleton().zoliks);
 
-  int classIdOnly;
+  int classIdOnly = -1;
   ZolikSort sortBy = ZolikSort.id;
   bool ascending = false;
 
@@ -110,6 +110,9 @@ class ZoliksPageState extends State<ZoliksPage> {
         );
       },
     );
+    if (res == null) {
+      return;
+    }
     setState(() {
       sortBy = res ?? this.sortBy;
     });
@@ -150,7 +153,7 @@ class ZoliksPageState extends State<ZoliksPage> {
             FlatButton(
               child: Text("Zrušit"),
               onPressed: () {
-                Navigator.of(ctx).pop<int>(classIdOnly);
+                Navigator.of(ctx).pop<int>(null);
               },
             ),
             FlatButton(
@@ -163,6 +166,9 @@ class ZoliksPageState extends State<ZoliksPage> {
         );
       },
     );
+    if (res == null) {
+      return;
+    }
     setState(() {
       classIdOnly = res;
     });
@@ -250,7 +256,7 @@ class ZoliksPageState extends State<ZoliksPage> {
               Singleton().zoliks = snapshot.data;
               _z = snapshot.data;
             }
-            if (classIdOnly != null) {
+            if (classIdOnly != null && classIdOnly != -1) {
               _z = _z.where((x) => x.ownerClassId == classIdOnly);
             }
             _zoliks = _z.toList();

@@ -122,4 +122,29 @@ class Global {
       ),
     );
   }
+
+  static Widget title(String title,
+      {double topPadding = 0, double bottomPadding = 10}) {
+    return Padding(
+      padding: EdgeInsets.only(bottom: bottomPadding, top: topPadding),
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+        color: Colors.blue,
+        child: Row(
+          children: <Widget>[
+            Expanded(
+              child: Text(
+                title ?? "",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 25,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }

@@ -688,9 +688,10 @@ class LoginPageState extends State<LoginPage>
               child: Text(
                 "Zapomenuté heslo?",
                 style: TextStyle(
-                    decoration: TextDecoration.underline,
-                    color: Colors.white,
-                    fontSize: 16),
+                  decoration: TextDecoration.underline,
+                  color: Colors.white,
+                  fontSize: 16,
+                ),
               ),
               onPressed: () async {
                 await _launchURL(_forgotPwdUrl);

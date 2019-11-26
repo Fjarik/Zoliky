@@ -91,6 +91,9 @@ class ClassPageState extends State<ClassesPage> {
         );
       },
     );
+    if (res == null) {
+      return;
+    }
     setState(() {
       sortBy = res ?? this.sortBy;
     });
@@ -214,103 +217,52 @@ class ClassPageState extends State<ClassesPage> {
   }
 
   Widget _collapsedClass(Class c) {
-    var count = Global.students.where((x) => x.classId == c.id).length;
-    var zoliks = Singleton()
-            .classLeaderboard
-            ?.firstWhere((x) => x.label == c.name)
-            ?.data ??
-        0.0;
-    // TODO: Předělat
     return Container(
       child: Column(
-        children: <Widget>[
-          Row(
-            children: <Widget>[
-              Column(
-                children: <Widget>[
-                  Text("Počet studentů: "),
-                ],
-              ),
-              Column(
-                children: <Widget>[
-                  Text(
-                    count.toString(),
-                    softWrap: true,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ],
-              ),
-            ],
-          ),
-          Row(
-            children: <Widget>[
-              Column(
-                children: <Widget>[
-                  Text("Počet žolíků: "),
-                ],
-              ),
-              Column(
-                children: <Widget>[
-                  Text(
-                    zoliks.toStringAsFixed(0),
-                    softWrap: true,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ],
+        children: _collapsedLines(c),
       ),
     );
+  }
+
+  List<Widget> _collapsedLines(Class c) {
+    return <Widget>[
+      _line("Počet studentů: ", c.studentsCount.toString()),
+      _line("Počet žolíků: ", c.zolikCount.toStringAsFixed(0)),
+    ];
   }
 
   Widget _expandedClass(Class c) {
     return Container(
       child: Column(
         children: <Widget>[
-          Row(
-            children: <Widget>[
-              Column(
-                children: <Widget>[
-                  Text("Nástup: "),
-                ],
-              ),
-              Column(
-                children: <Widget>[
-                  Text(
-                    Global.getDateString(c.since),
-                    softWrap: true,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ],
-              ),
-            ],
-          ),
-          Row(
-            children: <Widget>[
-              Column(
-                children: <Widget>[
-                  Text("Ukončení studia: "),
-                ],
-              ),
-              Column(
-                children: <Widget>[
-                  Text(
-                    Global.getDateString(c.graduation),
-                    softWrap: true,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ],
-              ),
-            ],
-          ),
+          ..._collapsedLines(c),
+          _line("Nástup: ", Global.getDateString(c.since)),
+          _line("Ukončení studia: ", Global.getDateString(c.graduation)),
         ],
       ),
+    );
+  }
+
+  Widget _line(String title, String content) {
+    return Row(
+      children: <Widget>[
+        Column(
+          children: <Widget>[
+            Text(title),
+          ],
+        ),
+        Column(
+          children: <Widget>[
+            Text(
+              content,
+              softWrap: true,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }
