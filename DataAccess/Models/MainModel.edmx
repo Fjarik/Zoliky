@@ -1678,6 +1678,7 @@
           <Property Type="String" Name="MIME" Nullable="true" MaxLength="20" a:GetterAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" a:SetterAccess="Private" />
           <Property Type="Int32" Name="Size" Nullable="true" a:GetterAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" a:SetterAccess="Private" />
           <Property Type="Int32" Name="ImageID" Nullable="true" a:SetterAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" a:GetterAccess="Private" />
+          <Property Type="Int32" Name="SchoolID" Nullable="false" />
         </ComplexType>
         <EnumType Name="TicketStatus" a:ExternalTypeName="SharedLibrary.Enums.TicketStatus" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
         <EntityType Name="UserLog">

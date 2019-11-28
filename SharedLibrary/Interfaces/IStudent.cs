@@ -9,6 +9,7 @@ namespace SharedLibrary.Interfaces
 	{
 		int? ProfilePhotoID { get; set; }
 		int? ClassID { get; set; }
+		int SchoolID { get; set; }
 		string ClassName { get; }
 	}
 

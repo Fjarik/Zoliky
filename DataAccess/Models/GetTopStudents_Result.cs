@@ -26,5 +26,6 @@ namespace DataAccess.Models
         private string MIME { get; set; }
         private Nullable<int> Size { get; set; }
         private Nullable<int> ImageID { get; set; }
+        public int SchoolID { get; set; }
     }
 }

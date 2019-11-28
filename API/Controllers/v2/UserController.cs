@@ -18,6 +18,7 @@ using DataAccess.Models;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Web.Http;
 using SharedLibrary;
+using SharedLibrary.Shared;
 using SharedLibrary.Shared.ApiModels;
 
 namespace API.Controllers.v2
@@ -30,6 +31,7 @@ namespace API.Controllers.v2
 		[HttpGet]
 		[OwnAuthorize]
 		[Route("get")]
+		[OwnAuthorize(Roles = UserRoles.AdminOrDeveloperOrTeacher)]
 		[ResponseType(typeof(MActionResult<User>))]
 		public async Task<IHttpActionResult> Get([FromUri] int id,
 												 [FromUri] bool includeImage = false)
@@ -94,18 +96,6 @@ namespace API.Controllers.v2
 		public async Task<IHttpActionResult> GetName([FromUri] int id)
 		{
 			return Ok(await Mgr.GetUserFullnameAsync(id));
-		}
-
-		// GET /user/getusers?classId=1
-		[HttpGet]
-		[OwnAuthorize]
-		[Route("getusers")]
-		[ResponseType(typeof(MActionResult<List<User>>))]
-		public async Task<IHttpActionResult> GetUsers([FromUri] int? classId = null,
-													  [FromUri] bool includeImage = false)
-		{
-			var res = await Mgr.GetStudentUsersAsync(classId, includeImage);
-			return Ok(res);
 		}
 
 		// POST /user/mobiletoken

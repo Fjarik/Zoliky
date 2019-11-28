@@ -11,6 +11,7 @@ namespace SharedLibrary.Shared.ApiModels
 		public int ID { get; set; }
 		public int? ProfilePhotoID { get; set; }
 		public int? ClassID { get; set; }
+		public int SchoolID { get; set; }
 		public string Name { get; set; }
 		public string Lastname { get; set; }
 		public string ClassName { get; set; }
@@ -27,6 +28,7 @@ namespace SharedLibrary.Shared.ApiModels
 			this.ID = from.ID;
 			this.ProfilePhotoID = from.ProfilePhotoID;
 			this.ClassID = from.ClassID;
+			this.SchoolID = from.SchoolID;
 			this.Name = from.Name;
 			this.Lastname = from.Lastname;
 			this.ClassName = from.ClassName;
