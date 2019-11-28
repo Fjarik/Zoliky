@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zoliky_teachers/pages/Account/LoginPage.dart';
 import 'package:zoliky_teachers/pages/Administration/ClassesPages.dart';
 import 'package:zoliky_teachers/pages/Administration/DashboardPage.dart';
+import 'package:zoliky_teachers/pages/Administration/StudentsPage.dart';
 import 'package:zoliky_teachers/pages/Administration/ZoliksPage.dart';
 import 'package:zoliky_teachers/pages/App/SettingsPage.dart';
 import 'package:zoliky_teachers/pages/shared/MenuLayoutPage.dart';
@@ -30,7 +31,7 @@ class MenuLayoutState extends State<MenuLayoutPage> {
     ),
     DrawerMenuItem(
       icon: FontAwesomeIcons.users,
-      page: Pages.other,
+      page: Pages.students,
       title: "Studenti",
     ),
     DrawerMenuItem(
@@ -102,6 +103,10 @@ class MenuLayoutState extends State<MenuLayoutPage> {
       case Pages.settings:
         t = "Nastavení";
         p = SettingsPage(analytics: analytics, observer: observer);
+        break;
+      case Pages.students:
+        t = "Studenti";
+        p = StudentsPage(analytics: analytics, observer: observer);
         break;
       case Pages.zoliks:
         t = "Žolíci";

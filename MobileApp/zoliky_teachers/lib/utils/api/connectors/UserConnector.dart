@@ -8,6 +8,12 @@ import 'package:zoliky_teachers/utils/api/models/User.dart';
 import 'package:zoliky_teachers/utils/api/models/universal/MActionResult.dart';
 
 class UserConnector extends PublicConnector {
+  UserConnector();
+
+  UserConnector.withToken(String token) {
+    usedToken = token;
+  }
+
   Future<MActionResult<User>> login(String username, String password) async {
     try {
       var res = await getToken(username, password);
@@ -166,4 +172,5 @@ class UserConnector extends PublicConnector {
       return false;
     }
   }
+
 }

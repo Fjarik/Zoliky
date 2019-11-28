@@ -8,7 +8,7 @@ class StudentConnector extends PublicConnector {
     this.usedToken = token;
   }
 
-  Future<List<Student>> getStudents({int classId, int imageMaxSize}) async {
+  Future<List<Student>> getStudents({int classId, int imageMaxSize = 1}) async {
     try {
       var url = "$urlApi/student/getstudents";
       if (classId != null && classId > 0) {
@@ -38,37 +38,6 @@ class StudentConnector extends PublicConnector {
         _json.forEach((map) => students.add(Student.fromJson(map)));
       }
 
-      return students;
-    } catch (ex) {
-      return new List<Student>();
-    }
-  }
-
-  Future<List<Student>> getTopStudents({int classId, int top}) async {
-    try {
-      var imageMaxSize = 1;
-      var url = "$urlApi/student/gettop?imageMaxSize=$imageMaxSize";
-      if (classId != null && classId > 0) {
-        url += "&classId=$classId";
-      }
-      if (top != null && top > 0) {
-        url += "&top=$top";
-      }
-      var res =
-          await cli.get(url, headers: {"Authorization": "Bearer $usedToken"});
-
-      if (res.statusCode != 200) {
-        return new List<Student>();
-      }
-      String body = res.body;
-      if (body.isEmpty) {
-        return new List<Student>();
-      }
-      var content = json.decode(body);
-      var students = new List<Student>();
-      if (content != null && content.length > 0) {
-        content.forEach((map) => students.add(Student.fromJson(map)));
-      }
       return students;
     } catch (ex) {
       return new List<Student>();
