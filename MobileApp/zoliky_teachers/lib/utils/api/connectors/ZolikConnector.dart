@@ -79,7 +79,7 @@ class ZolikConnector extends PublicConnector {
     }
   }
 
-    Future<MActionResult<Transaction>> createAsync(ZolikCreateModel p) async {
+  Future<MActionResult<Transaction>> createAsync(ZolikCreateModel p) async {
     if (p == null || !p.isValid) {
       return new MActionResult<Transaction>()
           .ctorOnlyStatus(StatusCode.InvalidInput);
@@ -115,7 +115,7 @@ class ZolikConnector extends PublicConnector {
   }
 
   Future<MActionResult<List<Zolik>>> getUserZoliksAsync(int userId,
-      [bool isTester = false]) async {
+      {bool isTester = false}) async {
     if (userId < 1) {
       return new MActionResult<List<Zolik>>()
           .ctorOnlyStatus(StatusCode.NotValidID);
@@ -141,13 +141,13 @@ class ZolikConnector extends PublicConnector {
       }
 
       var _json = json.decode(body);
-      List<Map<String, dynamic>> content =
-          List<Map<String, dynamic>>.from(_json['Content']);
-      List<Zolik> zoliks = new List<Zolik>();
+      var content = List<Map<String, dynamic>>.from(_json['Content']);
+
+      var zoliks = new List<Zolik>();
       if (content != null && content.length > 0) {
         content.forEach((map) => zoliks.add(Zolik.fromJson(map)));
       }
-      MActionResult<List<Zolik>> ws = MActionResult.fromJsonWthContent(_json);
+      var ws = MActionResult<List<Zolik>>.fromJsonWthContent(_json);
       ws.content = zoliks;
       return ws;
     } catch (ex) {

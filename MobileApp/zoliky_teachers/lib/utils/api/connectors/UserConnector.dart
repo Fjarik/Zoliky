@@ -74,12 +74,12 @@ class UserConnector extends PublicConnector {
   }
 
   Future<MActionResult<User>> getAsync(int userId,
-      [bool includeImage = true]) async {
+      {bool includeImage = true}) async {
     if (userId < 1) {
       return new MActionResult<User>().ctorOnlyStatus(StatusCode.NotValidID);
     }
     try {
-      var url = "$urlApi/user/get/$userId&includeImage=$includeImage";
+      var url = "$urlApi/user/get?id=$userId&includeImage=$includeImage";
       var res =
           await cli.get(url, headers: {"Authorization": "Bearer $usedToken"});
 
@@ -88,7 +88,7 @@ class UserConnector extends PublicConnector {
             .ctorOnlyStatus(StatusCode.InternalError);
       }
 
-      String body = res.body;
+      var body = res.body;
 
       if (body.isEmpty) {
         return new MActionResult<User>().ctorOnlyStatus(StatusCode.NotFound);

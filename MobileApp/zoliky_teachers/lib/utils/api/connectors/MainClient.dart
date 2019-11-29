@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:http/http.dart' as http;
 import 'package:zoliky_teachers/utils/api/enums/Projects.dart';
 
@@ -17,6 +19,8 @@ class MainClient extends http.BaseClient {
     request.headers.putIfAbsent("User-Agent", () => _userAgent);
     request.headers.putIfAbsent("api-version", () => _version);
     request.headers.putIfAbsent("projectId", () => _currentProject);
-    return _inner.send(request).timeout(defaultTimeout);
+    return _inner.send(request).timeout(defaultTimeout).catchError((error) {
+      log(error);
+    });
   }
 }

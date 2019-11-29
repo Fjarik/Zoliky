@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:intl/intl.dart';
 import 'package:zoliky_teachers/utils/Global.dart';
+import 'package:zoliky_teachers/utils/api/enums/Genders.dart';
 import 'package:zoliky_teachers/utils/api/enums/UserRoles.dart';
 import 'package:zoliky_teachers/utils/api/models/Class.dart';
 import 'package:zoliky_teachers/utils/api/models/Image.dart';
@@ -18,7 +19,7 @@ class User implements IDbObject {
   String email;
   String name;
   String lastname;
-  int sex;
+  int _sex;
   bool _enabled;
   DateTime memberSince;
 
@@ -36,6 +37,7 @@ class User implements IDbObject {
   Class get trida => Global.getClassById(this.classId);
   String get fullName => this.name + " " + this.lastname;
   bool get isEnabled => this._enabled;
+  Genders get sex => Genders.fromId(this._sex);
 
   bool get hasTesterRights {
     return this.isInRole(UserRole.Tester);
@@ -89,7 +91,7 @@ class User implements IDbObject {
     email = "test@test.cz";
     name = "Test";
     lastname = "Test";
-    sex = 0;
+    _sex = 0;
     _enabled = false;
     memberSince = DateTime.now();
     roles = new List();
@@ -106,13 +108,15 @@ class User implements IDbObject {
     u.email = json["Email"];
     u.name = json["Name"];
     u.lastname = json["Lastname"];
-    u.sex = json["Sex"];
+    u._sex = json["Sex"];
     u._enabled = json["IsEnabled"];
     u.memberSince = DateTime.parse(json["MemberSince"]);
 
     u.className = json["ClassName"];
     u.schoolName = json["SchoolName"];
-    u.lastLogin = DateTime.parse(json["LastLoginDate"]);
+    if (json.containsKey("LastLoginDate") && json["LastLoginDate"] != null) {
+      u.lastLogin = DateTime.parse(json["LastLoginDate"]);
+    }
     u.isBanned = json["IsBanned"];
     u.isPublicVisible = json["IsVisiblePublic"];
     u.emailConfirmed = json["EmailConfirmed"];

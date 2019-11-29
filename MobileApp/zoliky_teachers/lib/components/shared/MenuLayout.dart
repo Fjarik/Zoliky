@@ -71,7 +71,11 @@ class MenuLayoutState extends State<MenuLayoutPage> {
   void initState() {
     super.initState();
 
-    this._homePage = DashboardPage(analytics: analytics, observer: observer);
+    this._homePage = DashboardPage(
+      analytics: analytics,
+      observer: observer,
+      changePage: changePage,
+    );
 
     this._pageTitle = "Přehled";
     this._currentPage = _homePage;

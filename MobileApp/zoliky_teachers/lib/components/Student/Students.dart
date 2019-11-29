@@ -3,6 +3,7 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:zoliky_teachers/pages/Administration/Student/StudentDetailPage.dart';
 import 'package:zoliky_teachers/pages/Administration/StudentsPage.dart';
 import 'package:zoliky_teachers/utils/Global.dart';
 import 'package:zoliky_teachers/utils/Singleton.dart';
@@ -10,6 +11,15 @@ import 'package:zoliky_teachers/utils/api/connectors/StudentConnector.dart';
 import 'package:zoliky_teachers/utils/api/models/Class.dart';
 import 'package:zoliky_teachers/utils/api/models/Student.dart';
 import 'package:zoliky_teachers/utils/enums/StudentSort.dart';
+
+class _StudentFilter {
+  _StudentFilter();
+
+  _StudentFilter.content({this.classId, this.onlyWithZoliks});
+
+  int classId;
+  bool onlyWithZoliks;
+}
 
 class StudentsPageState extends State<StudentsPage> {
   StudentsPageState(this.analytics, this.observer) {
@@ -42,6 +52,7 @@ class StudentsPageState extends State<StudentsPage> {
   int classIdOnly = -1;
   StudentSort sortBy = StudentSort.id;
   bool ascending = false;
+  bool onlyWithZoliks = false;
 
   @override
   void dispose() {
@@ -64,6 +75,7 @@ class StudentsPageState extends State<StudentsPage> {
           "Jména": StudentSort.name,
           "Příjmení": StudentSort.lastname,
           "Třídy": StudentSort.className,
+          "Počtu žolíků": StudentSort.zolikCount,
         };
         return AlertDialog(
           title: Text("Řazení studentů"),
@@ -111,10 +123,11 @@ class StudentsPageState extends State<StudentsPage> {
   }
 
   Future<void> _filterClick() async {
-    var res = await showDialog<int>(
+    var res = await showDialog<_StudentFilter>(
       context: context,
       builder: (BuildContext ctx) {
         int selectedId = classIdOnly;
+        bool onlyWith = onlyWithZoliks;
         return AlertDialog(
           title: Text("Filtrování studentů"),
           content: StatefulBuilder(
@@ -125,17 +138,35 @@ class StudentsPageState extends State<StudentsPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    Text("Podle třídy:"),
-                    DropdownButton<int>(
-                      items: _dropClasses,
-                      hint: Text("Filtrování studentů podle třídy"),
-                      value: selectedId,
-                      onChanged: (int id) {
+                    Padding(
+                      padding: EdgeInsets.only(left: 16),
+                      child: Text("Podle třídy:"),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(left: 16),
+                      child: DropdownButton<int>(
+                        items: _dropClasses,
+                        hint: Text("Filtrování studentů podle třídy"),
+                        value: selectedId,
+                        onChanged: (int id) {
+                          sState(() {
+                            selectedId = id;
+                          });
+                        },
+                      ),
+                    ),
+                    CheckboxListTile(
+                      title: Text("Pouze s žolíky"),
+                      subtitle: Text(
+                        "Zobrazovat pouze studenty, které mají nějakého žolíka",
+                      ),
+                      value: onlyWith,
+                      onChanged: (bool val) {
                         sState(() {
-                          selectedId = id;
+                          onlyWith = val;
                         });
                       },
-                    ),
+                    )
                   ],
                 ),
               );
@@ -143,15 +174,24 @@ class StudentsPageState extends State<StudentsPage> {
           ),
           actions: <Widget>[
             FlatButton(
+              child: Text("Vymazat filtry"),
+              onPressed: () {
+                Navigator.of(ctx).pop<_StudentFilter>(_StudentFilter());
+              },
+            ),
+            FlatButton(
               child: Text("Zrušit"),
               onPressed: () {
-                Navigator.of(ctx).pop<int>(null);
+                Navigator.of(ctx).pop<_StudentFilter>(null);
               },
             ),
             FlatButton(
               child: Text("OK"),
               onPressed: () {
-                Navigator.of(ctx).pop<int>(selectedId);
+                Navigator.of(ctx).pop<_StudentFilter>(_StudentFilter.content(
+                  classId: selectedId,
+                  onlyWithZoliks: onlyWith,
+                ));
               },
             ),
           ],
@@ -162,19 +202,20 @@ class StudentsPageState extends State<StudentsPage> {
       return;
     }
     setState(() {
-      classIdOnly = res;
+      classIdOnly = res.classId;
+      onlyWithZoliks = res.onlyWithZoliks ?? false;
     });
   }
 
   Future<void> _detailClick(Student selected) async {
-    /* var r = MaterialPageRoute(
-      builder: (BuildContext ctx) => ZolikDetailPage(
+    var r = MaterialPageRoute(
+      builder: (BuildContext ctx) => StudentDetailPage(
         analytics: analytics,
         observer: observer,
-        zolik: selected,
+        student: selected,
       ),
     );
-    await Navigator.push(context, r);*/
+    await Navigator.push(context, r);
   }
 
   @override
@@ -222,15 +263,19 @@ class StudentsPageState extends State<StudentsPage> {
             }
             var _students = List<Student>();
 
-            Iterable<Student> _z;
+            Iterable<Student> _s;
             if (snapshot.data != null) {
               Singleton().students = snapshot.data;
-              _z = snapshot.data;
+              _s = snapshot.data;
             }
             if (classIdOnly != null && classIdOnly != -1) {
-              _z = _z.where((x) => x.classId == classIdOnly);
+              _s = _s.where((x) => x.classId == classIdOnly);
             }
-            _students = _z.toList();
+            if (onlyWithZoliks) {
+              _s = _s.where((x) => x.zolikCount > 0);
+            }
+
+            _students = _s.toList();
 
             switch (sortBy) {
               case StudentSort.id:
@@ -248,6 +293,10 @@ class StudentsPageState extends State<StudentsPage> {
               case StudentSort.className:
                 _students.sort((Student one, Student two) =>
                     (one.className.compareTo(two.className)));
+                break;
+              case StudentSort.zolikCount:
+                _students.sort((Student one, Student two) =>
+                    (one.zolikCount.compareTo(two.zolikCount)));
                 break;
             }
 
@@ -410,9 +459,9 @@ class StudentsPageState extends State<StudentsPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.max,
               children: <Widget>[
-                _studentInfoLine("Třída:", s.className),
                 _studentInfoLine("Počet žolíků:", s.zolikCount.toString()),
                 _studentInfoLine("Jméno:", s.fullName),
+                _studentInfoLine("Třída:", s.className),
                 Divider(
                   color: Colors.blueAccent,
                   thickness: 2,

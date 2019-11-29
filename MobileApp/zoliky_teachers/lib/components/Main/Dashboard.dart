@@ -112,7 +112,9 @@ class DashboardPageState extends State<DashboardPage> {
                       color: Colors.amber,
                       icon: FontAwesomeIcons.solidUser,
                       iconColor: Colors.white,
-                      onTap: () => changePage(Pages.other),
+                      onTap: () {
+                        changePage(Pages.students);
+                      },
                     );
                   },
                 ),

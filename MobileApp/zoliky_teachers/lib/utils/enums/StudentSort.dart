@@ -3,4 +3,5 @@ enum StudentSort {
   name,
   lastname,
   className,
+  zolikCount,
 }
