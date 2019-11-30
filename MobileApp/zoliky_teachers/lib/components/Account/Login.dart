@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:appcenter_analytics/appcenter_analytics.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -5,6 +7,7 @@ import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:local_auth/local_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:zoliky_teachers/pages/Account/LoginPage.dart';
@@ -34,6 +37,8 @@ class LoginPageState extends State<LoginPage>
   static String _mainUrl = "https://www.zoliky.eu";
   static String _registerUrl = "$_mainUrl/Account/Register";
   static String _forgotPwdUrl = "$_mainUrl/Account/ForgotPassword";
+
+  LocalAuthentication _localAuth = LocalAuthentication();
 
   final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
 
@@ -79,7 +84,9 @@ class LoginPageState extends State<LoginPage>
       if (username != null && username.isNotEmpty) {
         _txtUsername.text = username;
       }
-      if (autoLogin) {
+      var signIn = prefs.containsKey(SettingKeys.autoLogin) &&
+          prefs.getBool(SettingKeys.autoLogin);
+      if (autoLogin && signIn) {
         _initByTokenAsync(prefs).then((res) {
           _setLoading(false);
         });
@@ -164,6 +171,16 @@ class LoginPageState extends State<LoginPage>
   Future _login(MActionResult<User> res) async {
     var success = await _checkLogin(res);
     if (success) {
+      var settings = await SharedPreferences.getInstance();
+      if (settings.containsKey(SettingKeys.biometics) &&
+          settings.getBool(SettingKeys.biometics)) {
+        var bio = await _checkBiometrics();
+        if (!bio) {
+          _setLoading(false);
+          return;
+        }
+      }
+
       analytics.logLogin();
       var r = MaterialPageRoute(
         builder: (context) => _defaultPage,
@@ -175,6 +192,24 @@ class LoginPageState extends State<LoginPage>
       return;
     }
     _setLoading(false);
+  }
+
+  Future<bool> _checkBiometrics() async {
+    var canCheck = await _localAuth.canCheckBiometrics;
+    if (!canCheck) {
+      return false;
+    }
+    try {
+      return await _localAuth.authenticateWithBiometrics(
+        localizedReason: "Ověřte svou identitu",
+        stickyAuth: false,
+        useErrorDialogs: true,
+        sensitiveTransaction: false,
+      );
+    } catch (ex) {
+      log(ex);
+    }
+    return false;
   }
 
   Future<bool> _checkLogin(MActionResult<User> res) async {
