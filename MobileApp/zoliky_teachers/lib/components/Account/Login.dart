@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:appcenter_analytics/appcenter_analytics.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -27,7 +28,7 @@ import 'package:zoliky_teachers/utils/api/models/WebStatus.dart';
 import 'package:zoliky_teachers/utils/api/models/universal/MActionResult.dart';
 
 class LoginPageState extends State<LoginPage>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin, WidgetsBindingObserver {
   LoginPageState(this.analytics, this.observer, this.autoLogin);
 
   final FirebaseAnalytics analytics;
@@ -67,6 +68,7 @@ class LoginPageState extends State<LoginPage>
 
   bool _pwdVisible = false;
   bool _isLoading = false;
+  bool shouldLogin = false;
 
   @override
   void initState() {
@@ -78,6 +80,7 @@ class LoginPageState extends State<LoginPage>
     );
 
     _focusPassword.addListener(_txtPasswordFocusChanges);
+    WidgetsBinding.instance.addObserver(this);
 
     SharedPreferences.getInstance().then((prefs) {
       var username = prefs.getString(SettingKeys.lastUsername);
@@ -89,6 +92,7 @@ class LoginPageState extends State<LoginPage>
       if (autoLogin && signIn) {
         _initByTokenAsync(prefs).then((res) {
           _setLoading(false);
+          shouldLogin = true;
         });
       }
     });
@@ -109,7 +113,23 @@ class LoginPageState extends State<LoginPage>
     _focusRegLastname?.dispose();
 
     _pageController?.dispose();
+
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) async {
+    log("state = $state");
+    if (state == AppLifecycleState.resumed) {
+      if (!shouldLogin) {
+        return;
+      }
+      var settings = await SharedPreferences.getInstance();
+      var res = await _initByTokenAsync(settings);
+      _setLoading(false);
+      shouldLogin = false;
+    }
   }
 
   Future<bool> _initByTokenAsync(SharedPreferences settings) async {
@@ -195,6 +215,7 @@ class LoginPageState extends State<LoginPage>
   }
 
   Future<bool> _checkBiometrics() async {
+    await _localAuth.stopAuthentication();
     var canCheck = await _localAuth.canCheckBiometrics;
     if (!canCheck) {
       return false;
@@ -206,8 +227,9 @@ class LoginPageState extends State<LoginPage>
         useErrorDialogs: true,
         sensitiveTransaction: false,
       );
-    } catch (ex) {
-      log(ex);
+    } on PlatformException catch (ex) {
+      // AndroidX má v sobě bug - Když se appka zavře/minimalizuje při biometrice, začne házet chyby a poté přestane fungovat 
+      log(ex.message);
     }
     return false;
   }

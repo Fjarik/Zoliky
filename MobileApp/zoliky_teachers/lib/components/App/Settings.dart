@@ -101,28 +101,31 @@ class SettingsPageState extends State<SettingsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        Container(
-          child: Column(
-            children: <Widget>[
-              _general(),
-              _about(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.symmetric(vertical: 30),
-                    child:
-                        Text(DateTime.now().year.toString() + " \u00a9 Žolíky"),
-                  ),
-                ],
-              )
-            ],
+    return SingleChildScrollView(
+      child: Stack(
+        children: <Widget>[
+          Container(
+            child: Column(
+              children: <Widget>[
+                _general(),
+                _about(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 30),
+                      child: Text(
+                        DateTime.now().year.toString() + " \u00a9 Žolíky",
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -172,9 +175,10 @@ class SettingsPageState extends State<SettingsPage> {
                       value: biometrics,
                       title: Text("Biometrika"),
                       subtitle: Text(
-                        "Zapnout/Vypnout ověřování přihlašování přes biomatriku",
+                        "Zapnout/Vypnout ověřování přihlašování přes biometriku (Otisk prstu, rozpoznání obličeje...)",
                       ),
                       onChanged: _bioLogin,
+                      isThreeLine: true,
                     );
                   },
                 ),
