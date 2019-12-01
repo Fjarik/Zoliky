@@ -4,12 +4,15 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info/package_info.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:zoliky_teachers/pages/App/SettingsPage.dart';
 import 'package:zoliky_teachers/utils/Global.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:zoliky_teachers/utils/SettingKeys.dart';
+import 'package:zoliky_teachers/utils/Singleton.dart';
+import 'package:zoliky_teachers/utils/ThemeChanger.dart';
 
 class SettingsPageState extends State<SettingsPage> {
   SettingsPageState(this.analytics, this.observer);
@@ -20,6 +23,8 @@ class SettingsPageState extends State<SettingsPage> {
   @override
   void initState() {
     super.initState();
+
+    darkMode = Singleton().darkmode;
   }
 
   LocalAuthentication localAuth = LocalAuthentication();
@@ -99,6 +104,23 @@ class SettingsPageState extends State<SettingsPage> {
     });
   }
 
+  Future<void> _changeTheme(bool val) async {
+    var _changer = Provider.of<ThemeChanger>(context);
+    if (val) {
+      _changer.setTheme(ThemeData.dark());
+    } else {
+      _changer.setTheme(ThemeData.light());
+    }
+    Singleton().darkmode = val;
+    
+    var settings = await SharedPreferences.getInstance();
+    settings.setBool(SettingKeys.darkmode, val);
+
+    setState(() {
+      darkMode = val;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -146,11 +168,7 @@ class SettingsPageState extends State<SettingsPage> {
                   subtitle: Text(
                     "Zapnout/Vypnout tmavý řežim aplikace",
                   ),
-                  onChanged: (bool val) {
-                    setState(() {
-                      darkMode = val;
-                    });
-                  },
+                  onChanged: _changeTheme,
                 ),
                 FutureBuilder(
                   future: _getFuture(),

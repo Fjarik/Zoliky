@@ -147,11 +147,11 @@ class ZolikCreatePageState extends State<ZolikCreatePage> {
             resizeToAvoidBottomPadding: false,
             appBar: AppBar(
               elevation: 2,
-              backgroundColor: Colors.white,
+              // backgroundColor: Colors.white,
               title: Text(
                 "Vytvoření žolíka",
                 style: TextStyle(
-                  color: Colors.black,
+                  // color: Colors.black,
                   fontWeight: FontWeight.w700,
                   fontSize: 30.0,
                 ),
@@ -159,7 +159,7 @@ class ZolikCreatePageState extends State<ZolikCreatePage> {
               leading: IconButton(
                 icon: Icon(
                   Icons.arrow_back,
-                  color: Colors.black,
+                  // color: Colors.black,
                 ),
                 onPressed: () {
                   if (Navigator.of(context).canPop()) {

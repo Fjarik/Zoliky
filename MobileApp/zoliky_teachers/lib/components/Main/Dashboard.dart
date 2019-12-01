@@ -227,7 +227,13 @@ class DashboardPageState extends State<DashboardPage> {
                                 charts.OutsideJustification.start,
                             innerPadding: 18,
                             titleStyleSpec: charts.TextStyleSpec(
-                              color: charts.Color.black,
+                              color: charts.ColorUtil.fromDartColor(
+                                  Theme.of(context).textTheme.body1.color),
+                            ),
+                            subTitleStyleSpec: charts.TextStyleSpec(
+                              fontSize: 14,
+                              color: charts.ColorUtil.fromDartColor(
+                                  Theme.of(context).textTheme.caption.color),
                             ),
                           ),
                           charts.DatumLegend(
@@ -278,7 +284,13 @@ class DashboardPageState extends State<DashboardPage> {
                                   charts.OutsideJustification.start,
                               innerPadding: 18,
                               titleStyleSpec: charts.TextStyleSpec(
-                                color: charts.Color.black,
+                                color: charts.ColorUtil.fromDartColor(
+                                    Theme.of(context).textTheme.body1.color),
+                              ),
+                              subTitleStyleSpec: charts.TextStyleSpec(
+                                fontSize: 14,
+                                color: charts.ColorUtil.fromDartColor(
+                                    Theme.of(context).textTheme.caption.color),
                               ),
                             ),
                             charts.DatumLegend(
@@ -384,7 +396,6 @@ class DashboardPageState extends State<DashboardPage> {
                 overflow: TextOverflow.ellipsis,
                 softWrap: false,
                 style: TextStyle(
-                  color: Colors.black,
                   fontWeight: FontWeight.w700,
                   fontSize: 17,
                 ),
@@ -395,7 +406,6 @@ class DashboardPageState extends State<DashboardPage> {
                 : Expanded(
                     child: Text(
                       subtitle ?? "",
-                      style: TextStyle(color: Colors.black45, fontSize: 12),
                     ),
                   ),
           ],

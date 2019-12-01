@@ -41,6 +41,7 @@ dependencies:
   autocomplete_textfield: ^1.7.3
   package_info: ^0.4.0+11
   local_auth: ^0.6.1
+  provider: ^3.2.0
 
 dev_dependencies:
   flutter_launcher_icons: ^0.7.4

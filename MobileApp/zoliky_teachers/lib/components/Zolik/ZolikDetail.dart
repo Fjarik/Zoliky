@@ -36,11 +36,11 @@ class ZolikDetailState extends State<ZolikDetailPage> {
     return Scaffold(
       appBar: AppBar(
         elevation: 2,
-        backgroundColor: Colors.white,
+        // backgroundColor: Colors.white,
         title: Text(
           "Detaily žolíka",
           style: TextStyle(
-            color: Colors.black,
+            // color: Colors.black,
             fontWeight: FontWeight.w700,
             fontSize: 30.0,
           ),
@@ -48,7 +48,7 @@ class ZolikDetailState extends State<ZolikDetailPage> {
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back,
-            color: Colors.black,
+            // color: Colors.black,
           ),
           onPressed: () {
             if (Navigator.of(context).canPop()) {
@@ -149,7 +149,9 @@ class ZolikDetailState extends State<ZolikDetailPage> {
   TableRow _transactionWidget(Transaction t, {bool isAlternate = false}) {
     return TableRow(
       decoration: BoxDecoration(
-        color: isAlternate ? Colors.blue[100] : Colors.transparent,
+        color: isAlternate
+            ? (Singleton().darkmode ? Colors.blue[900] : Colors.blue[100])
+            : Colors.transparent,
       ),
       children: <Widget>[
         Padding(

@@ -35,11 +35,11 @@ class StudentDetailPageState extends State<StudentDetailPage> {
     return Scaffold(
       appBar: AppBar(
         elevation: 2,
-        backgroundColor: Colors.white,
+        // backgroundColor: Colors.white,
         title: Text(
           "Detaily studenta",
           style: TextStyle(
-            color: Colors.black,
+            // color: Colors.black,
             fontWeight: FontWeight.w700,
             fontSize: 30.0,
           ),
@@ -47,7 +47,7 @@ class StudentDetailPageState extends State<StudentDetailPage> {
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back,
-            color: Colors.black,
+            // color: Colors.black,
           ),
           onPressed: () {
             if (Navigator.of(context).canPop()) {
@@ -154,7 +154,9 @@ class StudentDetailPageState extends State<StudentDetailPage> {
   TableRow _zolikWidget(Zolik z, {bool isAlternate = false}) {
     return TableRow(
       decoration: BoxDecoration(
-        color: isAlternate ? Colors.blue[100] : Colors.transparent,
+        color: isAlternate
+            ? (Singleton().darkmode ? Colors.blue[900] : Colors.blue[100])
+            : Colors.transparent,
       ),
       children: <Widget>[
         Padding(

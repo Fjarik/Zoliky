@@ -115,11 +115,11 @@ class ZolikRemovePageState extends State<ZolikRemovePage> {
             resizeToAvoidBottomPadding: false,
             appBar: AppBar(
               elevation: 2,
-              backgroundColor: Colors.white,
+              // backgroundColor: Colors.white,
               title: Text(
                 "Odstranění žolíka",
                 style: TextStyle(
-                  color: Colors.black,
+                  // color: Colors.black,
                   fontWeight: FontWeight.w700,
                   fontSize: 30.0,
                 ),
@@ -127,7 +127,7 @@ class ZolikRemovePageState extends State<ZolikRemovePage> {
               leading: IconButton(
                 icon: Icon(
                   Icons.arrow_back,
-                  color: Colors.black,
+                  // color: Colors.black,
                 ),
                 onPressed: () {
                   if (Navigator.of(context).canPop()) {
@@ -164,7 +164,7 @@ class ZolikRemovePageState extends State<ZolikRemovePage> {
                         child: Text(
                           "Žolík bude pouze deaktivován a předán do umělého účtu (Národní banka Žolíků).",
                           style: TextStyle(
-                            color: Colors.black54,
+                            color: Theme.of(context).textTheme.caption.color,
                             fontSize: 16,
                           ),
                         ),

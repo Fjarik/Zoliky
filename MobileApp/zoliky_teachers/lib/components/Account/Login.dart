@@ -39,6 +39,8 @@ class LoginPageState extends State<LoginPage>
   static String _registerUrl = "$_mainUrl/Account/Register";
   static String _forgotPwdUrl = "$_mainUrl/Account/ForgotPassword";
 
+  bool get _darkmode => Singleton().darkmode;
+
   LocalAuthentication _localAuth = LocalAuthentication();
 
   final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
@@ -197,6 +199,7 @@ class LoginPageState extends State<LoginPage>
         var bio = await _checkBiometrics();
         if (!bio) {
           _setLoading(false);
+          _showSnackbar("Špatná autorizace přes biometriku");
           return;
         }
       }
@@ -228,7 +231,7 @@ class LoginPageState extends State<LoginPage>
         sensitiveTransaction: false,
       );
     } on PlatformException catch (ex) {
-      // AndroidX má v sobě bug - Když se appka zavře/minimalizuje při biometrice, začne házet chyby a poté přestane fungovat 
+      // AndroidX má v sobě bug - Když se appka zavře/minimalizuje při biometrice, začne házet chyby a poté přestane fungovat
       log(ex.message);
     }
     return false;
@@ -506,10 +509,15 @@ class LoginPageState extends State<LoginPage>
               : 775.0,
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              colors: [
-                Color(0xFF2196f3),
-                Color(0xFF40c4ff),
-              ],
+              colors: _darkmode
+                  ? [
+                      Colors.black38,
+                      Colors.black26,
+                    ]
+                  : [
+                      Color(0xFF2196f3),
+                      Color(0xFF40c4ff),
+                    ],
               begin: const FractionalOffset(0.2, 0.2),
               end: const FractionalOffset(1, 1),
               stops: [0, 1],
@@ -582,7 +590,7 @@ class LoginPageState extends State<LoginPage>
       width: 300,
       height: 50,
       decoration: BoxDecoration(
-        color: Color(0x552B2B2B),
+        color: _darkmode ? Colors.grey[600] : Color(0x552B2B2B),
         borderRadius: BorderRadius.all(
           Radius.circular(25),
         ),
@@ -637,7 +645,6 @@ class LoginPageState extends State<LoginPage>
             children: <Widget>[
               Card(
                 elevation: 2,
-                color: Colors.white,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8.0),
                 ),
@@ -662,7 +669,6 @@ class LoginPageState extends State<LoginPage>
                           },
                           style: TextStyle(
                             fontSize: 16,
-                            color: Colors.black,
                           ),
                           decoration: InputDecoration(
                             border: InputBorder.none,
@@ -690,7 +696,6 @@ class LoginPageState extends State<LoginPage>
                                 onEditingComplete: this._loginAsync,
                                 style: TextStyle(
                                   fontSize: 16,
-                                  color: Colors.black,
                                 ),
                                 decoration: InputDecoration(
                                   border: InputBorder.none,
@@ -704,7 +709,6 @@ class LoginPageState extends State<LoginPage>
                                     ? FontAwesomeIcons.eyeSlash
                                     : FontAwesomeIcons.eye,
                                 size: 18,
-                                color: Colors.black,
                               ),
                               onPressed: _tooglePassword,
                             ),
@@ -835,7 +839,6 @@ class LoginPageState extends State<LoginPage>
                           },
                           style: TextStyle(
                             fontSize: 16,
-                            color: Colors.black,
                           ),
                           decoration: InputDecoration(
                             border: InputBorder.none,
@@ -860,7 +863,6 @@ class LoginPageState extends State<LoginPage>
                           },
                           style: TextStyle(
                             fontSize: 16,
-                            color: Colors.black,
                           ),
                           decoration: InputDecoration(
                             border: InputBorder.none,
@@ -883,7 +885,6 @@ class LoginPageState extends State<LoginPage>
                           onEditingComplete: this._registerAsync,
                           style: TextStyle(
                             fontSize: 16,
-                            color: Colors.black,
                           ),
                           decoration: InputDecoration(
                             border: InputBorder.none,

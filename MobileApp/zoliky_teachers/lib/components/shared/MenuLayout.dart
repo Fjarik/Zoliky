@@ -304,11 +304,12 @@ class MenuLayoutState extends State<MenuLayoutPage> {
   Widget _getAppBar() {
     return AppBar(
       elevation: 2,
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).appBarTheme.color,
+      // backgroundColor: Singleton().darkmode ? Colors.black : Colors.white,
       title: Text(
         _pageTitle,
         style: TextStyle(
-          color: Colors.black,
+          // color: Singleton().darkmode ? Colors.white : Colors.black,
           fontWeight: FontWeight.w700,
           fontSize: 30.0,
         ),
@@ -316,7 +317,7 @@ class MenuLayoutState extends State<MenuLayoutPage> {
       leading: IconButton(
         icon: Icon(
           Icons.menu,
-          color: Colors.black,
+          // color: Singleton().darkmode ? Colors.white : Colors.black,
         ),
         onPressed: () => _key.currentState.openDrawer(),
       ),
@@ -327,9 +328,8 @@ class MenuLayoutState extends State<MenuLayoutPage> {
             onPressed: _logOut,
             icon: Icon(
               Icons.exit_to_app,
-              color: Colors.black,
+              // color: Singleton().darkmode ? Colors.white : Colors.black,
             ),
-            color: Colors.black,
           ),
         ),
       ],
