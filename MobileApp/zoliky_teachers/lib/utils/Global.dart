@@ -1,8 +1,13 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:zoliky_teachers/pages/Account/LoginPage.dart';
+import 'package:zoliky_teachers/utils/SettingKeys.dart';
 import 'package:zoliky_teachers/utils/api/connectors/ClassConnector.dart';
 import 'package:zoliky_teachers/utils/api/connectors/StudentConnector.dart';
 import 'package:zoliky_teachers/utils/api/connectors/SubjectConnector.dart';
@@ -146,5 +151,20 @@ class Global {
         ),
       ),
     );
+  }
+
+  static Future<void> logOut(BuildContext context,
+      {FirebaseAnalytics analytics, FirebaseAnalyticsObserver observer}) async {
+    var prefs = await SharedPreferences.getInstance();
+    await prefs.remove(SettingKeys.lastToken);
+    await prefs.remove(SettingKeys.biometics);
+    Route r = MaterialPageRoute(
+      builder: (context) => LoginPage(
+        analytics: analytics,
+        observer: observer,
+        autoLogin: false,
+      ),
+    );
+    await Navigator.pushReplacement(context, r);
   }
 }

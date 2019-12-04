@@ -2,15 +2,13 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:zoliky_teachers/pages/Account/LoginPage.dart';
 import 'package:zoliky_teachers/pages/Administration/ClassesPages.dart';
 import 'package:zoliky_teachers/pages/Administration/DashboardPage.dart';
 import 'package:zoliky_teachers/pages/Administration/StudentsPage.dart';
 import 'package:zoliky_teachers/pages/Administration/ZoliksPage.dart';
 import 'package:zoliky_teachers/pages/App/SettingsPage.dart';
 import 'package:zoliky_teachers/pages/shared/MenuLayoutPage.dart';
-import 'package:zoliky_teachers/utils/SettingKeys.dart';
+import 'package:zoliky_teachers/utils/Global.dart';
 import 'package:zoliky_teachers/utils/Singleton.dart';
 import 'package:zoliky_teachers/utils/api/models/User.dart';
 import 'package:zoliky_teachers/utils/enums/Pages.dart';
@@ -55,16 +53,12 @@ class MenuLayoutState extends State<MenuLayoutPage> {
 
   User get _logged => Singleton().user;
 
-  void _logOut() async {
-    var prefs = await SharedPreferences.getInstance();
-    await prefs.remove(SettingKeys.lastToken);
-    Route r = MaterialPageRoute(
-        builder: (context) => LoginPage(
-              analytics: this.analytics,
-              observer: this.observer,
-              autoLogin: false,
-            ));
-    await Navigator.pushReplacement(context, r);
+  Future<void> _logOut() async {
+    await Global.logOut(
+      context,
+      analytics: this.analytics,
+      observer: this.observer,
+    );
   }
 
   @override
@@ -82,7 +76,7 @@ class MenuLayoutState extends State<MenuLayoutPage> {
     this._currentPageEnum = Pages.dashboard;
   }
 
-  void changePage(Pages page, {String title}) {
+  Future<void> changePage(Pages page, {String title}) async {
     Widget p;
     if (Navigator.of(context).canPop()) {
       Navigator.pop(context);
@@ -90,7 +84,7 @@ class MenuLayoutState extends State<MenuLayoutPage> {
     String t;
     switch (page) {
       case Pages.loginPage:
-        _logOut();
+        await _logOut();
         return;
       case Pages.dashboard:
         t = "Přehled";
@@ -147,9 +141,9 @@ class MenuLayoutState extends State<MenuLayoutPage> {
     _key.currentState.showSnackBar(snack);
   }
 
-  Future<bool> _backButtonClick() {
+  Future<bool> _backButtonClick() async {
     if (this._currentPageEnum != Pages.dashboard) {
-      changePage(Pages.dashboard);
+      await changePage(Pages.dashboard);
       return Future.value(false);
     }
     return showDialog<bool>(
@@ -163,9 +157,9 @@ class MenuLayoutState extends State<MenuLayoutPage> {
           ),
           FlatButton(
             child: Text("Odhlásit se"),
-            onPressed: () {
-              _logOut();
+            onPressed: () async {
               Navigator.of(ctx).pop(false);
+              await _logOut();
             },
           ),
           FlatButton(
@@ -259,8 +253,8 @@ class MenuLayoutState extends State<MenuLayoutPage> {
       ),
       leading: Icon(item.icon),
       selected: item.page == _currentPageEnum,
-      onTap: () {
-        changePage(item.page);
+      onTap: () async {
+        await changePage(item.page);
       },
     );
   }

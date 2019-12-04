@@ -10,7 +10,7 @@ class DashboardPage extends StatefulWidget {
 
   final FirebaseAnalytics analytics;
   final FirebaseAnalyticsObserver observer;
-  final void Function(Pages page, {String title}) changePage;
+  final Future<void> Function(Pages page, {String title}) changePage;
 
   @override
   DashboardPageState createState() =>

@@ -128,7 +128,7 @@ class LoginPageState extends State<LoginPage>
         return;
       }
       var settings = await SharedPreferences.getInstance();
-      var res = await _initByTokenAsync(settings);
+      await _initByTokenAsync(settings);
       _setLoading(false);
       shouldLogin = false;
     }

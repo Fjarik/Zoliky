@@ -23,7 +23,7 @@ class DashboardPageState extends State<DashboardPage> {
 
   final RefreshController _refreshController = RefreshController();
 
-  final void Function(Pages page, {String title}) changePage;
+  final Future<void> Function(Pages page, {String title}) changePage;
 
   bool showMenuItems = true;
 
@@ -86,8 +86,8 @@ class DashboardPageState extends State<DashboardPage> {
                       color: Colors.blue,
                       icon: FontAwesomeIcons.wallet,
                       iconColor: Colors.white,
-                      onTap: () {
-                        changePage(Pages.zoliks);
+                      onTap: () async {
+                        await changePage(Pages.zoliks);
                       },
                     );
                   },
@@ -112,8 +112,8 @@ class DashboardPageState extends State<DashboardPage> {
                       color: Colors.amber,
                       icon: FontAwesomeIcons.solidUser,
                       iconColor: Colors.white,
-                      onTap: () {
-                        changePage(Pages.students);
+                      onTap: () async {
+                        await changePage(Pages.students);
                       },
                     );
                   },
