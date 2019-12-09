@@ -247,6 +247,8 @@ class LoginPageState extends State<LoginPage>
     if (res.status == StatusCode.NotFound ||
         res.status == StatusCode.WrongPassword) {
       msg = "Neplatné jméno nebo heslo";
+    } else if (res.status == StatusCode.InternalError) {
+      msg = "Platnost přihlášení vypršela";
     }
 
     if (!res.isSuccess) {

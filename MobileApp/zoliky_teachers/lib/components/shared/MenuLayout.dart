@@ -204,7 +204,7 @@ class MenuLayoutState extends State<MenuLayoutPage> {
         _logged.fullName,
       ),
       accountEmail: Text(
-        _logged.email,
+        _logged.schoolName,
         style: TextStyle(
           color: Colors.white60,
         ),
