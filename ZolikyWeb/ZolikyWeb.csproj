@@ -792,6 +792,7 @@
     <Content Include="Content\Images\device-mockups\Surface\portrait_black.png" />
     <Content Include="Content\Images\Header\WebNavBKG.svg" />
     <Content Include="Content\Images\Header\ZolikyHeaderBlack_1024.png" />
+    <Content Include="Content\Images\Header\ZolikyHeaderChristmas_1024.png" />
     <Content Include="Content\Images\Header\ZolikyHeaderColor_1024.png" />
     <Content Include="Content\Images\Header\ZolikyHeaderWhitePride_1024.png" />
     <Content Include="Content\Images\Header\ZolikyHeaderWhite_1024.png" />
@@ -1126,6 +1127,10 @@
     <Content Include="Scripts\jquery-3.4.1.min.js" />
     <Content Include="Scripts\jquery-3.4.1.slim.js" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.js" />
+    <Content Include="Scripts\jquery.snowfall.js" />
+    <Content Include="Scripts\jquery.snowfall.min.js">
+      <DependentUpon>jquery.snowfall.js</DependentUpon>
+    </Content>
     <Content Include="Scripts\js-cookie\js.cookie-2.2.1.min.js" />
     <Content Include="Scripts\js-cookie\js.cookie.js" />
     <Content Include="Scripts\jscolor.min.js">

@@ -101,7 +101,14 @@
 }
 
 .pride {
+}
 
+.christmas {
+	height: 15rem;
+}
+
+#snowfall-wrapper {
+	pointer-events: none;
 }
 
 @media (max-width: 576px) {
@@ -136,6 +143,7 @@
 	#registerDiv {
 		min-width: 50rem;
 	}
+
 	#registerSuccessDiv {
 		min-width: 30rem;
 	}

@@ -5,7 +5,12 @@
 @{
 	Layout = "~/Views/Shared/_Layout.cshtml";
 
-	string GetPrideStyle(bool pride)
+	bool IsChristmas()
+	{
+		return DateTime.Today.IsChristmasTime();
+	}
+
+	string GetStyle(bool pride = false)
 	{
 		string style = "display:";
 		if (DateTime.Today.IsPrideTime() && pride) {
@@ -14,6 +19,22 @@
 			style += "none;";
 		}
 		return style;
+	}
+
+	string GetUrl()
+	{
+		if (IsChristmas()) {
+			return Url.Content("~/Content/Images/Header/ZolikyHeaderChristmas_1024.png");
+		}
+		return Url.Content("~/Content/Images/Header/ZolikyHeaderWhite_1024.png");
+	}
+
+	string GetClass()
+	{
+		if (IsChristmas()) {
+			return "christmas";
+		}
+		return "";
 	}
 
 }
@@ -27,8 +48,8 @@
 	<div class="minh-100v d-flex flex-column justify-content-evenly align-items-center">
 		<div class="text-center">
 			<a title="Zpět na hlavní stránku" href="@Url.Action("Index", "Home")">
-				<img class="zoliky-logo" alt="Logo Žolíků" style="@GetPrideStyle(false)" src="@Url.Content("~/Content/Images/Header/ZolikyHeaderWhite_1024.png")" />
-				<img class="zoliky-logo pride" alt="Hrdé logo Žolíků" style="@GetPrideStyle(true)" src="@Url.Content("~/Content/Images/Header/ZolikyHeaderPride_1024.png")" />
+				<img class="zoliky-logo @GetClass()" alt="Logo Žolíků" style="@GetStyle()" src="@GetUrl()" />
+				<img class="zoliky-logo pride" alt="Hrdé logo Žolíků" style="@GetStyle(true)" src="@Url.Content("~/Content/Images/Header/ZolikyHeaderPride_1024.png")" />
 			</a>
 		</div>
 		<div class="card">
@@ -110,5 +131,8 @@
 @section footer {
 	@ReCaptcha.GetCaptchaScript(ReCaptchaLanguage.Czech)
 	@Scripts.Render("~/bundles/js/account")
+	@if (IsChristmas()) {
+		<script type="text/javascript" language="javascript" src="@Url.Content("~/Scripts/jquery.snowfall.min.js")"></script>
+	}
 	@RenderSection("footer", false)
 }

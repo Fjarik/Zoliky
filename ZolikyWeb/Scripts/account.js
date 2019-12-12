@@ -39,7 +39,7 @@
 	$logoSwitch.prop("checked", pride === "true");
 	checkLogo($logoSwitch);
 
-	$logoSwitch.change(function () {
+	$logoSwitch.change(function() {
 		let $t = $(this);
 		checkLogo($t);
 	});
@@ -64,6 +64,12 @@
 		loading();
 	});
 	/* /Login (Social) */
+
+	/* Snowing */
+	$.snowfall.start({
+		content: '<i class="fas fa-snowflake"></i>',
+	});
+	/* /Snowing */
 
 });
 let currentLogin = false;

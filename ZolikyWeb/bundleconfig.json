@@ -82,5 +82,11 @@
     "inputFiles": [
       "Scripts/register.js"
     ]
+  },
+  {
+    "outputFileName": "Scripts/jquery.snowfall.min.js",
+    "inputFiles": [
+      "Scripts/jquery.snowfall.js"
+    ]
   }
 ]
