@@ -11,7 +11,7 @@ description: Aplikace na spravu Zoliku pro vyucujici.
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.4+6
+version: 1.0.4+8
 
 environment:
   sdk: ">=2.2.2 <3.0.0"
@@ -20,9 +20,6 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^0.1.2
-  appcenter: ^0.2.1
-  appcenter_crashes: ^0.2.1
-  appcenter_analytics: ^0.2.1
   firebase_core: ^0.4.0+9
   firebase_analytics: ^5.0.6
   scoped_model: ^1.0.1

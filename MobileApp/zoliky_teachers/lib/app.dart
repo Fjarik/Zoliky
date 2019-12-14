@@ -1,6 +1,3 @@
-import "package:appcenter/appcenter.dart";
-import "package:appcenter_analytics/appcenter_analytics.dart";
-import "package:appcenter_crashes/appcenter_crashes.dart";
 import "package:firebase_analytics/firebase_analytics.dart";
 import "package:firebase_analytics/observer.dart";
 import "package:flutter/material.dart";
@@ -56,7 +53,6 @@ class ZolikAppWithThemeState extends State<ZolikAppWithTheme> {
 
   @override
   void initState() {
-    AppCenter.start(appSecret, [AppCenterAnalytics.id, AppCenterCrashes.id]);
     _default = LoginPage(
       analytics: analytics,
       observer: observer,

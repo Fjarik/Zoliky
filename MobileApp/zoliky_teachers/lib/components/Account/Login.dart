@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:appcenter_analytics/appcenter_analytics.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
@@ -274,8 +273,13 @@ class LoginPageState extends State<LoginPage>
     Singleton().user = user;
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString(SettingKeys.lastToken, Singleton().token);
-    AppCenterAnalytics.trackEvent(
-        "Login", {'user': '${user.fullName}', 'userID': '${user.id}'});
+    this.analytics?.logEvent(
+      name: "CustomLogin",
+      parameters: {
+        'user': user.fullName,
+        'userID': user.id,
+      },
+    );
 
     return true;
   }
@@ -295,9 +299,11 @@ class LoginPageState extends State<LoginPage>
         }
         break;
       case FacebookLoginStatus.cancelledByUser:
+        _setLoading(false);
         _showSnackbar("Akce zrušena uživatelem");
         return;
       case FacebookLoginStatus.error:
+        _setLoading(false);
         _showSnackbar("Vyskytla se chyba při přihlašování");
         return;
     }
@@ -320,10 +326,18 @@ class LoginPageState extends State<LoginPage>
     String token = "";
     try {
       var account = await signIn.signIn();
+      if (account == null) {
+        _showSnackbar("Nezdařilo se přihlásit přes Google účet");
+        _setLoading(false);
+        return;
+      }
       var auth = await account.authentication;
       token = auth.accessToken;
     } catch (error) {
-      _showError(error.toString());
+      _showSnackbar("Nezdařilo se přihlásit přes Google účet");
+      if (Global.isInDebugMode) {
+        _showError(error.toString());
+      }
       _setLoading(false);
       return;
     }
