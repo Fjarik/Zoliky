@@ -18,14 +18,17 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 	[Authorize(Roles = UserRoles.AdminOrDeveloperOrTeacher)]
 	public class ZolikController : OwnController<ZolikManager>
 	{
-		public async Task<ActionResult> Dashboard(bool? onlyEnabled)
+		public async Task<ActionResult> Dashboard(bool? onlyEnabled, int? classId = null)
 		{
+			var sMgr = this.GetManager<SchoolManager>();
+
 			var schoolId = this.User.GetSchoolId();
 
 			bool active = onlyEnabled != null;
+			var classes = await sMgr.GetClassesAsync(schoolId);
 
 			var res = await Mgr.GetSchoolZoliksAsync(schoolId, active);
-			var model = new ZolikDashboardModel(res, active);
+			var model = new ZolikDashboardModel(res, classes, active, classId);
 			return View(model);
 		}
 

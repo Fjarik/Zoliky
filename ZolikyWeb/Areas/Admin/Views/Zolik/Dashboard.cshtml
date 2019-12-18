@@ -20,6 +20,10 @@
 								@Html.CheckBoxSimple(x => x.OnlyEnabled, new {id = "chBoxOnlyActive"})
 								<label for="chBoxOnlyActive">Zobrazit pouze aktivní</label>
 							</div>
+							<div class="col-md-3">
+								Třídy: 
+								@Html.DropDownListFor(x => x.ClassID, Model.ClassesDrop)
+							</div>
 							<div class="col">
 								<input type="submit" value="Potvrdit" class="btn btn-primary" />
 							</div>
