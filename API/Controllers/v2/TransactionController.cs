@@ -8,11 +8,13 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using API.Tools;
 using API.Tools.Annotations;
+using DataAccess;
 using DataAccess.Managers;
 using DataAccess.Managers.New;
 using DataAccess.Models;
 using Microsoft.Web.Http;
 using SharedLibrary;
+using SharedLibrary.Shared;
 
 namespace API.Controllers.v2
 {
@@ -34,15 +36,15 @@ namespace API.Controllers.v2
 			return Ok(res);
 		}
 
-		// GET: transaction/getbyuser?userId=10&lastTransId=50
+		// GET: transaction/getbyuser?lastTransId=50
 		[HttpGet]
 		[Route("getbyuser")]
 		[ResponseType(typeof(MActionResult<List<Transaction>>))]
-		public async Task<IHttpActionResult> GetUserTransactions([FromUri] int userId,
-																 [FromUri] int? lastTransId = null,
+		public async Task<IHttpActionResult> GetUserTransactions([FromUri] int? lastTransId = null,
 																 [FromUri] bool isTester = false,
 																 [FromUri] int take = 100)
 		{
+			var userId = this.User.Identity.GetId();
 			if (userId < 1) {
 				return Ok(new MActionResult<List<Transaction>>(SharedLibrary.Enums.StatusCode.NotValidID));
 			}
@@ -59,6 +61,7 @@ namespace API.Controllers.v2
 		// GET: transaction/getbyzolik?zolikId=10
 		[HttpGet]
 		[Route("getbyzolik")]
+		[Authorize(Roles = UserRoles.AdminOrDeveloperOrTeacher)]
 		[ResponseType(typeof(List<Transaction>))]
 		public async Task<IHttpActionResult> GetZolikTransactions([FromUri] int zolikId)
 		{

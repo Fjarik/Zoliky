@@ -14,6 +14,7 @@ using DataAccess.Managers.New;
 using DataAccess.Models;
 using Microsoft.Web.Http;
 using SharedLibrary;
+using SharedLibrary.Shared;
 
 namespace API.Controllers.v2
 {
@@ -39,18 +40,9 @@ namespace API.Controllers.v2
 		[HttpGet]
 		[Route("getall")]
 		[ResponseType(typeof(List<Class>))]
-		public Task<IHttpActionResult> GetAll()
+		public async Task<IHttpActionResult> GetAll()
 		{
 			var schoolId = this.User.Identity.GetSchoolId();
-			return GetSchoolClasses(schoolId);
-		}
-
-		// GET: class/getByClasses
-		[HttpGet]
-		[Route("getbyclasses")]
-		[ResponseType(typeof(List<Class>))]
-		public async Task<IHttpActionResult> GetSchoolClasses([FromUri] int schoolId)
-		{
 			if (schoolId < 1) {
 				return Ok(new List<Class>());
 			}

@@ -181,7 +181,7 @@ namespace API.Controllers.v2
 
 		// GET /zolik/getzolikownerids
 		[HttpGet]
-		[Authorize(Roles = UserRoles.AdminOrDeveloper + ", " + UserRoles.Teacher)]
+		[Authorize(Roles = UserRoles.AdminOrDeveloperOrTeacher)]
 		[Route("getzolikownerids")]
 		[ResponseType(typeof(List<int>))]
 		public async Task<IHttpActionResult> GetZolikOwnerIds()

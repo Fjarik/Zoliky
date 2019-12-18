@@ -26,16 +26,13 @@ namespace SharedApi.Connectors.New
 			}
 		}
 
-		public async Task<MActionResult<List<Transaction>>> GetUserTransactions(int userId, int take = 100)
+		public async Task<MActionResult<List<Transaction>>> GetUserTransactions(int take = 100)
 		{
-			if (userId < 1) {
-				return new MActionResult<List<Transaction>>(StatusCode.NotValidID);
-			}
 			if (take < 1) {
 				return new MActionResult<List<Transaction>>(StatusCode.InvalidInput);
 			}
 			try {
-				var a = await Request($"transaction/getbyuser?userId={userId}&take={take}")
+				var a = await Request($"transaction/getbyuser?take={take}")
 							.GetJsonAsync<MActionResult<List<Transaction>>>();
 				return a;
 			} catch (Exception ex) {

@@ -77,17 +77,6 @@ namespace API.Controllers.v2
 			}
 		}
 
-		// PUT /user/test?zolikId=1&fromId=1&toId=2
-		[HttpPut]
-		[OwnAuthorize]
-		[Route("test")]
-		[ResponseType(typeof(bool))]
-		public async Task<IHttpActionResult> Test([FromUri] int zolikId, [FromUri] int fromId, [FromUri] int toId)
-		{
-			var mgr = HttpContext.Current.GetOwinContext().Get<FirebaseManager>();
-			return Ok(await mgr.NewZolikAsync(zolikId, fromId, toId));
-		}
-
 		// GET /user/getname?id=1
 		[HttpGet]
 		[OwnAuthorize]

@@ -110,7 +110,7 @@ namespace ZolikyUWP.Pages
 
 
 			var api = new TransactionConnector(_me.Token);
-			var tRes = await api.GetUserTransactions(_me.ID, 50);
+			var tRes = await api.GetUserTransactions(50);
 			if (!tRes.IsSuccess) {
 				await ShowErrorDialogAsync(tRes.GetStatusMessage());
 				this.IsLoading = false;
