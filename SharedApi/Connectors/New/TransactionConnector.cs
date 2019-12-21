@@ -21,7 +21,7 @@ namespace SharedApi.Connectors.New
 			try {
 				var a = await Request($"transaction/getbyzolik?zolikId={zolikId}").GetJsonAsync<List<Transaction>>();
 				return a;
-			} catch (Exception ex) {
+			} catch {
 				return new List<Transaction>();
 			}
 		}
