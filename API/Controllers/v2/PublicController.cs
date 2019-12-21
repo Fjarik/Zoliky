@@ -17,7 +17,7 @@ namespace API.Controllers.v2
 	[ApiVersion("2.0")]
 	[AllowAnonymous]
 	[RoutePrefix("public")]
-	public class PublicController : OwnApiController<UnavailabilityManager>
+	public class PublicController : OwnApiController<ProjectManager>
 	{
 		// GET /public/wpfversion
 		[HttpGet]
@@ -25,9 +25,7 @@ namespace API.Controllers.v2
 		[Route("wpfversion")]
 		public async Task<IHttpActionResult> GetWpfVersion()
 		{
-			var mgr = this.GetManager<ProjectManager>();
-
-			var res = await mgr.SelectAsync(Projects.WPF);
+			var res = await Mgr.SelectAsync(Projects.WPF);
 			if (!res.IsSuccess) {
 				return BadRequest();
 			}
@@ -57,7 +55,7 @@ namespace API.Controllers.v2
 		public async Task<IHttpActionResult> DbConnection()
 		{
 			try {
-				using (ZoliksEntities ent = new ZoliksEntities()) {
+				using (var ent = new ZoliksEntities()) {
 					DbConnection conn = ent.Database.Connection;
 					await conn.OpenAsync();
 					conn.Close();
@@ -127,48 +125,18 @@ namespace API.Controllers.v2
 		[HttpGet]
 		[Route("webstatus")]
 		[ResponseType(typeof(WebStatus))]
-		public Task<IHttpActionResult> GetWebStatus()
+		public IHttpActionResult GetWebStatus()
 		{
-			return GetProjectStatusResultAsync((int) Projects.WebNew);
+			return Ok(new WebStatus(PageStatus.Functional));
 		}
 
 		// GET /public/status
 		[HttpGet]
 		[Route("status")]
 		[ResponseType(typeof(WebStatus))]
-		public Task<IHttpActionResult> GetStatus(int projectId)
+		public IHttpActionResult GetStatus(int projectId)
 		{
-			return GetProjectStatusResultAsync(projectId);
-		}
-
-		private async Task<IHttpActionResult> GetProjectStatusResultAsync(int projectId)
-		{
-			if (!Enum.IsDefined(typeof(Projects), projectId)) {
-				return Ok(new WebStatus(PageStatus.NotAvailable, "Neplatné ID projektu"));
-			}
-			var res = await GetProjectStatusAsync(Projects.Api);
-			if (!res.CanAccess) {
-				return Ok(res);
-			}
-			res = await GetProjectStatusAsync((Projects) projectId);
-			return Ok(res);
-		}
-
-		private async Task<WebStatus> GetProjectStatusAsync(Projects project)
-		{
-			var isUnavaible = await Mgr.IsUnavailableAsync(project);
-			if (!isUnavaible) {
-				return new WebStatus(PageStatus.Functional);
-			}
-			var res = Mgr.GetFirst(project);
-			if (!res.IsSuccess) {
-				return new WebStatus(PageStatus.Limited, "Vyskytla se chyba při zjištování dostupnosti");
-			}
-			var unvs = res.Content;
-			if (unvs == null) {
-				return new WebStatus(PageStatus.Limited, "Vyskytla se chyba při zjištování dostupnosti");
-			}
-			return new WebStatus(PageStatus.NotAvailable, null, unvs);
+			return Ok(new WebStatus(PageStatus.Functional));
 		}
 
 #endregion

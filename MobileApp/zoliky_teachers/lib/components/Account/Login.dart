@@ -18,12 +18,9 @@ import 'package:zoliky_teachers/utils/SettingKeys.dart';
 import 'package:zoliky_teachers/utils/Singleton.dart';
 import 'package:zoliky_teachers/utils/api/connectors/PublicConnector.dart';
 import 'package:zoliky_teachers/utils/api/connectors/UserConnector.dart';
-import 'package:zoliky_teachers/utils/api/enums/PageStatus.dart';
 import 'package:zoliky_teachers/utils/api/enums/StatusCode.dart';
 import 'package:zoliky_teachers/utils/api/enums/UserRoles.dart';
-import 'package:zoliky_teachers/utils/api/models/Unavailability.dart';
 import 'package:zoliky_teachers/utils/api/models/User.dart';
-import 'package:zoliky_teachers/utils/api/models/WebStatus.dart';
 import 'package:zoliky_teachers/utils/api/models/universal/MActionResult.dart';
 
 class LoginPageState extends State<LoginPage>
@@ -351,47 +348,14 @@ class LoginPageState extends State<LoginPage>
   }
 
   Future<bool> _checkConnection() async {
-    PublicConnector pc = PublicConnector();
-    var status = pc.checkStatusAsync();
+    var pc = PublicConnector();
+    var status = pc.checkConnectionsAsync();
     var res = await status.timeout(Duration(seconds: 7), onTimeout: () {
-      var back = WebStatus();
-      back.status = PageStatus.Unfunctional;
-      back.message = "Vypršel časový limit pro přihlášení";
-      back.content = "AAA";
-      return back;
+      return false;
     });
 
-    var title = "Server je nepřístupný";
-    if (res == null) {
-      _showSnackbar("Nepodařilo se zjistit stav serverů.");
-      return false;
-    }
-
-    if (!res.canAccess) {
-      if (res.status == PageStatus.Limited) {
-        title = "Omezený přístup";
-      } else if (res.status == PageStatus.Unfunctional) {
-        if (res.content != null &&
-            res.content == "AAA" &&
-            res.message != null &&
-            res.message.isNotEmpty) {
-          _showError(res.message);
-          return false;
-        }
-      } else if (res.status == PageStatus.NotAvailable) {
-        title = "Probíhá údržba";
-        if (res.content != null && res.content is Unavailability) {
-          if (Global.isInDebugMode) return true;
-          Unavailability unv = res.content;
-          _showSnackbar("Důvod: ${unv.reason} \nPřepokládaný konec: ${unv.to}");
-          return false;
-        }
-      }
-      if (res.message == null) {
-        _showSnackbar("Zkuste to prosím později.");
-        return false;
-      }
-      _showDialog(title, res.message);
+    if (!res) {
+      _showDialog("Špatné připojení", "Nezdařilo se připojit k serverům");
       return false;
     }
     return true;

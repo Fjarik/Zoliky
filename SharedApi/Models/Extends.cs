@@ -72,13 +72,6 @@ namespace SharedApi.Models
 		public Transaction() { }
 	}
 
-	public partial class Unavailability : IDbEntity
-	{
-		public Projects Project => (Projects) this.ProjectID;
-
-		public Unavailability() { }
-	}
-
 	public partial class User : ITokenable, IUser<Class, Image, Role>
 	{
 		[CanBeNull]

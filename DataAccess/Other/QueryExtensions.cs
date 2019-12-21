@@ -22,13 +22,7 @@ namespace DataAccess
 						.ThenBy(x => x.Name)
 						.ThenBy(x => x.Lastname);
 		}
-
-		public static IQueryable<Unavailability> IsActive(this IQueryable<Unavailability> query)
-		{
-			var now = DateTime.Now;
-			return query.Where(x => x.From <= now && now <= x.To);
-		}
-
+		
 		public static IQueryable<UserSetting> AsUserSettings(this IQueryable<UserSetting> query,
 															 int userId,
 															 string key,

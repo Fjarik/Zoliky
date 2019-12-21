@@ -209,17 +209,6 @@
           <Property Name="Message" Type="nvarchar" MaxLength="400" />
           <Property Name="Typ" Type="tinyint" Nullable="false" />
         </EntityType>
-        <EntityType Name="Unavailabilities">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="ProjectID" Type="int" />
-          <Property Name="Reason" Type="nvarchar" MaxLength="50" />
-          <Property Name="Description" Type="nvarchar(max)" />
-          <Property Name="From" Type="datetime" Nullable="false" />
-          <Property Name="To" Type="datetime" Nullable="false" />
-        </EntityType>
         <EntityType Name="UserLogins">
           <Key>
             <PropertyRef Name="ID" />
@@ -574,18 +563,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Unavailabilities_Projects">
-          <End Role="Projects" Type="Self.Projects" Multiplicity="0..1" />
-          <End Role="Unavailabilities" Type="Self.Unavailabilities" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Projects">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="Unavailabilities">
-              <PropertyRef Name="ProjectID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_UserLoginTokens_Users">
           <End Role="Users" Type="Self.Users" Multiplicity="1" />
           <End Role="UserLoginTokens" Type="Self.UserLoginTokens" Multiplicity="*" />
@@ -782,10 +759,6 @@
           <Parameter Name="settingsKey" Type="nvarchar(max)" Mode="In" />
           <Parameter Name="defaultPhotoId" Type="int" Mode="In" />
         </Function>
-        <Function Name="GetUnavailabilities" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="projectId" Type="int" Mode="In" />
-          <Parameter Name="date" Type="datetime" Mode="In" />
-        </Function>
         <EntityContainer Name="ZoliksModelStoreContainer">
           <EntitySet Name="Achievements" EntityType="Self.Achievements" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AchievementUnlocks" EntityType="Self.AchievementUnlocks" Schema="dbo" store:Type="Tables" />
@@ -805,7 +778,6 @@
           <EntitySet Name="TeacherSubjects" EntityType="Self.TeacherSubjects" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tokens" EntityType="Self.Tokens" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Transactions" EntityType="Self.Transactions" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Unavailabilities" EntityType="Self.Unavailabilities" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserLogins" EntityType="Self.UserLogins" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserLoginTokens" EntityType="Self.UserLoginTokens" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserLogs" EntityType="Self.UserLogs" Schema="dbo" store:Type="Tables" />
@@ -900,10 +872,6 @@
           <AssociationSet Name="FK_Transactions_Zoliky" Association="Self.FK_Transactions_Zoliky">
             <End Role="Zoliky" EntitySet="Zoliky" />
             <End Role="Transactions" EntitySet="Transactions" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Unavailabilities_Projects" Association="Self.FK_Unavailabilities_Projects">
-            <End Role="Projects" EntitySet="Projects" />
-            <End Role="Unavailabilities" EntitySet="Unavailabilities" />
           </AssociationSet>
           <AssociationSet Name="FK_UserLoginTokens_Users" Association="Self.FK_UserLoginTokens_Users">
             <End Role="Users" EntitySet="Users" />
@@ -1074,11 +1042,6 @@
             <End Role="User" EntitySet="Users" />
             <End Role="Notification" EntitySet="Notifications" />
           </AssociationSet>
-          <EntitySet Name="Unavailabilities" EntityType="ZoliksModel.Unavailability" />
-          <AssociationSet Name="FK_Unavailabilities_Projects" Association="ZoliksModel.FK_Unavailabilities_Projects">
-            <End Role="Project" EntitySet="Projects" />
-            <End Role="Unavailability" EntitySet="Unavailabilities" />
-          </AssociationSet>
           <EntitySet Name="Achievements" EntityType="ZoliksModel.Achievement" />
           <EntitySet Name="Ranks" EntityType="ZoliksModel.Rank" />
           <EntitySet Name="Subjects" EntityType="ZoliksModel.Subject" />
@@ -1145,7 +1108,7 @@
             <Parameter Name="defaultPhotoId" Mode="In" Type="Int32" />
             <Parameter Name="onlyActive" Mode="In" Type="Boolean" />
           </FunctionImport>
-          <FunctionImport Name="GetUnavailabilities" EntitySet="Unavailabilities" ReturnType="Collection(ZoliksModel.Unavailability)" a:MethodAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration">
+          <FunctionImport Name="GetUnavailabilities" a:MethodAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration">
             <Parameter Name="projectId" Mode="In" Type="Int32" />
             <Parameter Name="date" Mode="In" Type="DateTime" />
           </FunctionImport>
@@ -1483,29 +1446,6 @@
         </Association>
         <EnumType Name="UserPermission" a:ExternalTypeName="SharedLibrary.Enums.UserPermission" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" IsFlags="false" UnderlyingType="Byte" >
           </EnumType>
-        <EntityType Name="Unavailability">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ProjectID" Type="Int32" Nullable="true" />
-          <Property Name="Reason" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="From" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="To" Type="DateTime" Nullable="false" Precision="3" />
-        </EntityType>
-        <Association Name="FK_Unavailabilities_Projects">
-          <End Type="ZoliksModel.Project" Role="Project" Multiplicity="0..1" />
-          <End Type="ZoliksModel.Unavailability" Role="Unavailability" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Project">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="Unavailability">
-              <PropertyRef Name="ProjectID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EnumType Name="TransactionAssignment" a:ExternalTypeName="SharedLibrary.Enums.TransactionAssignment" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" UnderlyingType="Byte" />
         <EnumType Name="ZolikType" a:ExternalTypeName="SharedLibrary.Enums.ZolikType" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" UnderlyingType="Byte" />
         <EntityType Name="Achievement">
@@ -2112,18 +2052,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Unavailabilities">
-            <EntityTypeMapping TypeName="ZoliksModel.Unavailability">
-              <MappingFragment StoreEntitySet="Unavailabilities">
-                <ScalarProperty Name="To" ColumnName="To" />
-                <ScalarProperty Name="From" ColumnName="From" />
-                <ScalarProperty Name="Reason" ColumnName="Reason" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Achievements">
             <EntityTypeMapping TypeName="ZoliksModel.Achievement">
               <MappingFragment StoreEntitySet="Achievements">
@@ -2271,8 +2199,6 @@
                 <ScalarProperty Name="ImageID" ColumnName="ID1" />
               </ComplexTypeMapping>
             </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="GetUnavailabilities" FunctionName="ZoliksModel.Store.GetUnavailabilities">
           </FunctionImportMapping>
           <EntitySetMapping Name="UserLogs">
             <EntityTypeMapping TypeName="ZoliksModel.UserLog">

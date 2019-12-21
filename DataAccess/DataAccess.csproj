@@ -152,7 +152,6 @@
     <Compile Include="Managers\TeacherSubjectManager.cs" />
     <Compile Include="Managers\TokenManager.cs" />
     <Compile Include="Managers\TransactionManager.cs" />
-    <Compile Include="Managers\UnavailabilityManager.cs" />
     <Compile Include="Managers\UserLogManager.cs" />
     <Compile Include="Managers\UserLoginManager.cs" />
     <Compile Include="Managers\UserManager.cs" />
@@ -229,9 +228,6 @@
       <DependentUpon>MainModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Transaction.cs">
-      <DependentUpon>MainModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Unavailability.cs">
       <DependentUpon>MainModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\User.cs">

@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="cfc689b9702e4af2acc85652c4311f83" Name="Main" ZoomLevel="15">
+      <Diagram DiagramId="cfc689b9702e4af2acc85652c4311f83" Name="Main" ZoomLevel="67">
         <EntityTypeShape EntityType="ZoliksModel.Transaction" Width="1.5" PointX="7.875" PointY="22.5" IsExpanded="true" />
         <EntityTypeShape EntityType="ZoliksModel.Zolik" Width="1.5" PointX="13.875" PointY="25.875" IsExpanded="true" />
         <AssociationConnector Association="ZoliksModel.FK_Transactions_Zoliky" ManuallyRouted="false" >
@@ -32,8 +32,6 @@
         <AssociationConnector Association="ZoliksModel.FK_Notifications_Projects" />
         <AssociationConnector Association="ZoliksModel.FK_Notifications_ToUser" ManuallyRouted="false" >
         </AssociationConnector>
-        <EntityTypeShape EntityType="ZoliksModel.Unavailability" Width="1.5" PointX="10.875" PointY="14.25" />
-        <AssociationConnector Association="ZoliksModel.FK_Unavailabilities_Projects" />
         <EntityTypeShape EntityType="ZoliksModel.Achievement" Width="1.5" PointX="8.625" PointY="16" />
         <EntityTypeShape EntityType="ZoliksModel.Rank" Width="1.5" PointX="3.5" PointY="13.75" />
         <EntityTypeShape EntityType="ZoliksModel.Subject" Width="1.5" PointX="1.125" PointY="22" />

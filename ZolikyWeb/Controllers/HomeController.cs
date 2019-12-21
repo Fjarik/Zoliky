@@ -73,75 +73,18 @@ namespace ZolikyWeb.Controllers
 #region Project Status
 
 		[HttpGet]
-		public async Task<ActionResult> Offline()
-		{
-			var res = await GetProjectStatusAsync();
-			var unv = new Unavailability() {
-				Description = "Probíhá údržba webu, vydržte prosím",
-				Reason = "Údržba",
-				From = DateTime.Now.AddMinutes(-5),
-				To = DateTime.Now.AddMinutes(5),
-				ProjectID = (int) Projects.WebNew
-			};
-			if (res.Content is Unavailability u) {
-				unv = u;
-			}
-
-			return View(unv);
-		}
-
-		[HttpGet]
 		[OutputCache(Duration = 120, VaryByParam = "none")]
-		public async Task<ActionResult> Status()
+		public ActionResult Status()
 		{
-			var res = await GetProjectStatusAsync();
+			var res = new WebStatus(PageStatus.Functional);
 			return Json(res, JsonRequestBehavior.AllowGet);
 		}
 
 		[HttpGet]
 		[OutputCache(Duration = 120, VaryByParam = "none")]
-		public async Task<ActionResult> IsDown()
+		public ActionResult IsDown()
 		{
-			var mgr = this.GetManager<UnavailabilityManager>();
-			var isUnavaible = await mgr.IsUnavailableAsync(Projects.Api);
-			if (!isUnavaible) {
-				return Content(false.ToString());
-			}
-
-			isUnavaible = await mgr.IsUnavailableAsync(Globals.Project);
-			return Content(isUnavaible.ToString());
-		}
-
-		private async Task<WebStatus> GetProjectStatusAsync()
-		{
-			var res = await GetProjectStatusAsync(Projects.Api);
-			if (!res.CanAccess) {
-				return res;
-			}
-
-			res = await GetProjectStatusAsync(Globals.Project);
-			return res;
-		}
-
-		private async Task<WebStatus> GetProjectStatusAsync(Projects project)
-		{
-			var mgr = this.GetManager<UnavailabilityManager>();
-			var isUnavaible = await mgr.IsUnavailableAsync(project);
-			if (!isUnavaible) {
-				return new WebStatus(PageStatus.Functional);
-			}
-
-			var res = mgr.GetFirst(project);
-			if (!res.IsSuccess) {
-				return new WebStatus(PageStatus.Limited, "Vyskytla se chyba při zjištování dostupnosti");
-			}
-
-			var unvs = res.Content;
-			if (unvs == null) {
-				return new WebStatus(PageStatus.Limited, "Vyskytla se chyba při zjištování dostupnosti");
-			}
-
-			return new WebStatus(PageStatus.NotAvailable, null, unvs);
+			return Content(false.ToString());
 		}
 
 #endregion

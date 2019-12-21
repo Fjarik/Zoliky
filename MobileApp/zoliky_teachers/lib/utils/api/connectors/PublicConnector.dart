@@ -4,8 +4,6 @@ import 'package:zoliky_teachers/utils/Singleton.dart';
 import 'package:zoliky_teachers/utils/api/connectors/MainClient.dart';
 import 'package:zoliky_teachers/utils/api/enums/Projects.dart';
 import 'package:zoliky_teachers/utils/api/enums/StatusCode.dart';
-import 'package:zoliky_teachers/utils/api/models/Unavailability.dart';
-import 'package:zoliky_teachers/utils/api/models/WebStatus.dart';
 import 'package:zoliky_teachers/utils/api/models/universal/MActionResult.dart';
 
 class PublicConnector {
@@ -25,6 +23,18 @@ class PublicConnector {
 
   PublicConnector() {
     cli = new MainClient();
+  }
+
+  Future<bool> getBoolAsync(String url) async {
+    if (url == null || url.isEmpty) {
+      return false;
+    }
+    var res = await cli.get(url);
+    var body = res.body;
+    if (body == null || body.isEmpty) {
+      return false;
+    }
+    return body.toLowerCase() == "true";
   }
 
   Future<MActionResult<String>> getToken(String name, String pwd) async {
@@ -98,24 +108,18 @@ class PublicConnector {
     return Future.delayed(Duration(seconds: 2), () => res.body);
   }
 
-  Future<WebStatus> checkStatusAsync() async {
-    String url = this.urlApi + "public/status";
-    url += "?projectId=${Projects.Flutter.value}";
-    var ws = WebStatus.unFunctional();
-    try {
-      var res = await cli.get(url);
-      String body = res.body;
-      if (body.isEmpty) {
-        throw new Error();
-      }
-      var _json = json.decode(body);
-      ws = WebStatus.fromJson(_json);
-      if (ws.content != null) {
-        ws.content = Unavailability.fromJson(ws.content);
-      }
-    } catch (ex) {
-      ws.content = ex;
-    }
-    return ws;
+  Future<bool> checkConnectionAsync() {
+    return getBoolAsync(this.urlApi + "public/connection");
+  }
+
+  Future<bool> checkDbConnectionAsync() {
+    return getBoolAsync(this.urlApi + "public/dbconnection");
+  }
+
+  Future<bool> checkConnectionsAsync() async {
+    var api = await this.checkConnectionAsync();
+    var db = await this.checkDbConnectionAsync();
+
+    return api && db;
   }
 }

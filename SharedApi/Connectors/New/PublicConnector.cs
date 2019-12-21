@@ -17,18 +17,6 @@ namespace SharedApi.Connectors.New
 
 		public PublicConnector(ApiUrl url = ApiUrl.Zoliky) : base(url) { }
 
-		public async Task<Version> GetWpfVersionAsync()
-		{
-			try {
-				return await base.GetVersionAsync($"{Url}/wpfversion");
-			} catch {
-#if (DEBUG)
-				throw;
-#endif
-				return null;
-			}
-		}
-
 		public Task<bool> CheckConnectionAsync()
 		{
 			return GetBoolAsync("public/connection");
@@ -45,20 +33,6 @@ namespace SharedApi.Connectors.New
 			bool db = await CheckDbConnectionAsync();
 
 			return (api && db);
-		}
-
-		public async Task<WebStatus> CheckStatusAsync(Projects project)
-		{
-			try {
-				var param = $"projectId={(int) project}";
-				var ws = await PublicRequest($"public/status?{param}").GetJsonAsync<WebStatus>();
-				return ws;
-			} catch {
-#if DEBUG
-				throw;
-#endif
-				return null;
-			}
 		}
 	}
 }

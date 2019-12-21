@@ -29,14 +29,6 @@ namespace DataAccess.Models
 
 #region Procedures
 
-		public IList<Unavailability> GetUnavailabilities(Projects project, DateTime? date = null)
-		{
-			if (date == null) {
-				date = DateTime.Now;
-			}
-			return this.GetUnavailabilities((int?) project, date).ToList();
-		}
-
 		public IList<GetTopStudents_Result> GetFakeStudents(bool onlyActive = true,
 															int? imageMaxSize = null,
 															params int[] excludeIds)
@@ -359,11 +351,6 @@ namespace DataAccess.Models
 			[JsonIgnore]
 			public Zolik Zolik { get; set; }
 		}
-	}
-
-	public partial class Unavailability : IDbEntity
-	{
-		public Projects? Project => (Projects?) ProjectID;
 	}
 
 	[MetadataType(typeof(UserMetaData))]

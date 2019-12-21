@@ -37,7 +37,6 @@ namespace DataAccess.Models
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<UserLogin> UserLogins { get; set; }
         public virtual DbSet<Token> Tokens { get; set; }
-        public virtual DbSet<Unavailability> Unavailabilities { get; set; }
         public virtual DbSet<Achievement> Achievements { get; set; }
         public virtual DbSet<Rank> Ranks { get; set; }
         public virtual DbSet<Subject> Subjects { get; set; }
@@ -153,7 +152,7 @@ namespace DataAccess.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetTopStudents_Result>("GetFakeStudents", imageMaxSizeParameter, defaultPhotoIdParameter, onlyActiveParameter);
         }
     
-        private ObjectResult<Unavailability> GetUnavailabilities(Nullable<int> projectId, Nullable<System.DateTime> date)
+        private int GetUnavailabilities(Nullable<int> projectId, Nullable<System.DateTime> date)
         {
             var projectIdParameter = projectId.HasValue ?
                 new ObjectParameter("projectId", projectId) :
@@ -163,20 +162,7 @@ namespace DataAccess.Models
                 new ObjectParameter("date", date) :
                 new ObjectParameter("date", typeof(System.DateTime));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Unavailability>("GetUnavailabilities", projectIdParameter, dateParameter);
-        }
-    
-        private ObjectResult<Unavailability> GetUnavailabilities(Nullable<int> projectId, Nullable<System.DateTime> date, MergeOption mergeOption)
-        {
-            var projectIdParameter = projectId.HasValue ?
-                new ObjectParameter("projectId", projectId) :
-                new ObjectParameter("projectId", typeof(int));
-    
-            var dateParameter = date.HasValue ?
-                new ObjectParameter("date", date) :
-                new ObjectParameter("date", typeof(System.DateTime));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Unavailability>("GetUnavailabilities", mergeOption, projectIdParameter, dateParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("GetUnavailabilities", projectIdParameter, dateParameter);
         }
     }
 }

@@ -121,50 +121,6 @@ namespace ZolikyUWP.Account
 				return;
 			}
 
-			var ws = await api.CheckStatusAsync(Projects.UWP);
-			if (ws == null) {
-				dialog.Content = "Nepodařilo se zjistit stav serverů. Zkuste to prosím později";
-				await dialog.ShowAsync();
-				return;
-			}
-#if !(DEBUG)
-			if (!ws.CanAccess) {
-				string title = "Server je nepřístupný";
-
-				switch (ws.Status) {
-					case PageStatus.Limited:
-						title = "Omezený přístup";
-						break;
-					case PageStatus.NotAvailable:
-						title = "Probíhá údržba";
-						if (ws.Content != null && !string.IsNullOrWhiteSpace(ws.Content.ToString())) {
-							var unv = JsonConvert.DeserializeObject<Unavailability>(ws.Content.ToString());
-							if (unv != null) {
-								dialog.Title = title;
-								dialog.Content =
-									$"Důvod: {unv.Reason} {Environment.NewLine}Přepokládaný konec: {unv.To}";
-								await dialog.ShowAsync();
-								return;
-							}
-						}
-
-						break;
-				}
-				dialog.Title = title;
-
-				if (string.IsNullOrWhiteSpace(ws.Message)) {
-					dialog.Content =
-						"Na severech aktuálně probíhá údržba a nelze se připojit. Zkuste to prosím později.";
-					await dialog.ShowAsync();
-					return;
-				}
-
-				dialog.Content = ws.Message;
-				await dialog.ShowAsync();
-				return;
-			}
-#endif
-
 #endregion
 
 			var login = TxtLogin.Text;
