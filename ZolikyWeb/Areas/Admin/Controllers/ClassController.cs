@@ -39,19 +39,7 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 			var schoolId = this.User.GetSchoolId();
 			//var schools = await this.GetSchoolAsync();
 
-			// Pouze škola registrovaného správce školy - Nemůže přidat třídu do cizí školy
-			var sMgr = this.GetManager<SchoolManager>();
-			var res = await sMgr.GetByIdAsync(schoolId);
-			if (!res.IsSuccess) {
-				this.AddErrorToastMessage("Nezdařilo se nalézt Vaši školu");
-				return RedirectToAction("Dashboard");
-			}
-
-			var schools = new List<School> {
-				res.Content
-			};
-
-			var model = ClassModel.CreateModel(schools);
+			var model = ClassModel.CreateModel();
 			return View("Edit", model);
 		}
 
@@ -64,9 +52,12 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 				return RedirectToAction("Dashboard");
 			}
 
+			var schoolId = this.User.GetSchoolId();
+			model.SchoolID = schoolId;
+
 			if (!model.IsValid) {
 				this.AddErrorToastMessage("Neplatné hodnoty");
-				return RedirectToAction("Edit");
+				return RedirectToAction("Create");
 			}
 
 			var res = await Mgr.CreateAsync(model.Name,

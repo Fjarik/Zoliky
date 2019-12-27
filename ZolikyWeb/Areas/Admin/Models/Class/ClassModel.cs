@@ -17,15 +17,6 @@ namespace ZolikyWeb.Areas.Admin.Models.Class
 		public override int ID { get; set; }
 		public override string ActionName { get; set; }
 
-		public List<DataAccess.Models.School> Schools { get; set; }
-
-		public IEnumerable<SelectListItem> SchoolList => this.Schools
-															 .OrderBy(x => x.Name)
-															 .Select(x => new SelectListItem {
-																 Text = $"{x.Name}, {x.Street}, {x.City}",
-																 Value = x.ID.ToString(),
-																 Disabled = false
-															 });
 
 		public List<string> StudentNames { get; set; }
 
@@ -78,12 +69,11 @@ namespace ZolikyWeb.Areas.Admin.Models.Class
 
 		public ClassModel() : base()
 		{
-			this.Schools = new List<DataAccess.Models.School>();
 			this.StudentNames = new List<string>();
 			this.AllowRemove = false;
 		}
 
-		public static ClassModel CreateModel(List<DataAccess.Models.School> allSchools)
+		public static ClassModel CreateModel()
 		{
 			var currentYear = DateTime.Today.Year;
 			return new ClassModel() {
@@ -91,7 +81,6 @@ namespace ZolikyWeb.Areas.Admin.Models.Class
 				ActionName = "Create",
 				AllowEdit = true,
 				IsCreate = true,
-				Schools = allSchools,
 				Since = new DateTime(currentYear, 9, 1),
 				Graduation = new DateTime(currentYear + 4, 5, 31)
 			};

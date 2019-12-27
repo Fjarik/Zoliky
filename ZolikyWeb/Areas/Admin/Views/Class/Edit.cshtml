@@ -141,17 +141,14 @@
 							<!-- item -->
 							<div class="col-md-6">
 								<div class="form-group row">
-									<label class="control-label text-right col-md-3">Škola</label>
-									<div class="col-md-9">
-										@Html.HiddenFor(x=> x.SchoolID)
-										@if (Model.IsCreate) {
-											@Html.DropDownListFor(x => x.SchoolID, Model.SchoolList, new {@class = "form-control custom-select", tabindex = 5})
-										} else {
+									@if (!Model.IsCreate) {
+										<label class="control-label text-right col-md-3">Škola</label>
+										<div class="col-md-9">
 											<span class="c-help" data-toggle="tooltip" data-original-title="Školu nelze změnit">
 												@Model.SchoolName
 											</span>
-										}
-									</div>
+										</div>
+									}
 								</div>
 							</div>
 							<!-- /item -->
