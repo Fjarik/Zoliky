@@ -1,9 +1,11 @@
-﻿@using hbehr.recaptcha
+﻿@using System.Web.Configuration
+@using hbehr.recaptcha
 @using ZolikyWeb.Tools
 @model ZolikyWeb.Models.Account.RegisterModel
 @{
 	ViewBag.Title = "Registrace";
 	Layout = "~/Views/Shared/Account/_LayoutAccount.cshtml";
+	var key = WebConfigurationManager.AppSettings["recaptcha-public-key"];
 }
 
 @section header {
@@ -155,10 +157,10 @@
 				</div>
 
 				<div class="mb-4 d-flex justify-content-center">
-					@ReCaptcha.GetCaptcha()
+					<div id="recaptcha" data-sitekey="@key"></div>
 				</div>
 			</section>
-			@Html.Hidden("Classes", Url.Action("GetClasses", "Account", new {Area = ""}))
+			@Html.Hidden("ClassesUrl", Url.Action("GetClasses", "Account", new {Area = ""}))
 			@Html.Hidden("LoginUrl", Url.Action("Login", "Account", new {Area = ""}))
 		}
 
@@ -168,5 +170,5 @@
 
 @section footer{
 	<script src="@Url.Content("~/assets/plugins/wizard/jquery.steps.min.js")"></script>
-	<script src="@Url.Content("~/Scripts/register.min.js")"></script>
+	<script src="@Url.Content("~/Scripts/register.min.js?cache=asasdfsa")"></script>
 }

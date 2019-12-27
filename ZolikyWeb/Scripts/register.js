@@ -282,6 +282,9 @@ $(() => {
 				$('.actions > ul > li:first-child').hide();
 				$("input[type='password']").val("");
 			}
+			if (newIndex === 2) {
+				grecaptcha.render("recaptcha");
+			}
 			return currentIndex > newIndex ||
 				//!(3 === newIndex && Number($("#age-2").val()) < 18) &&
 				(currentIndex < newIndex &&
@@ -297,7 +300,6 @@ $(() => {
 		},
 		onFinished: function(event, currentIndex) {
 			if (form.valid()) {
-				loading();
 				form.submit();
 			}
 		}
@@ -348,7 +350,7 @@ $(() => {
 	const $classContainer = $("#classContainer");
 	const $classSelect = $("#ClassId");
 	const $schoolSelect = $("#SchoolId");
-	const classesUrl = $("#Classes").val();
+	const classesUrl = $("#ClassesUrl").val();
 	let loading = false;
 	$schoolSelect.change(() => {
 		if (loading) {
