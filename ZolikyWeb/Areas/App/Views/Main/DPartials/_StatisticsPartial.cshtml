@@ -1,4 +1,6 @@
 ﻿@using SharedLibrary.Shared
+@model ZolikyWeb.Areas.App.Models.Main.DashboardModel
+
 <div class="card-header">
 	<div class="card-actions">
 		<a class="" data-action="collapse">
@@ -71,13 +73,23 @@
 			</span>
 		</div>
 	</div>
-	<div class="row">
+	<div class="row my-3">
 		<div class="col">
 			Přijatých jokérů
 		</div>
 		<div class="col-3 text-right">
 			<span class="label label-light-success" id="@SettingKeys.StatJokersAccepted">
 				0
+			</span>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col">
+			XP
+		</div>
+		<div class="col-3 text-right">
+			<span class="label label-light-primary">
+				@Model.XP
 			</span>
 		</div>
 	</div>

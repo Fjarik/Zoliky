@@ -1088,7 +1088,7 @@
             <Parameter Name="settingsKey" Mode="In" Type="String" />
             <Parameter Name="defaultPhotoId" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="GetTopStudentsXp" ReturnType="Collection(ZoliksModel.GetTopStudents_Result)" a:MethodAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration">
+          <FunctionImport Name="GetTopStudentsXp" ReturnType="Collection(ZoliksModel.GetTopStudentsXp_Result)" a:MethodAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration">
             <Parameter Name="top" Mode="In" Type="Int32" />
             <Parameter Name="imageMaxSize" Mode="In" Type="Int32" />
             <Parameter Name="classId" Mode="In" Type="Int32" />
@@ -1894,6 +1894,21 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <ComplexType Name="GetTopStudentsXp_Result">
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="Int32" Name="ClassID" Nullable="true" />
+          <Property Type="Int32" Name="SchoolID" Nullable="false" />
+          <Property Type="Int32" Name="ProfilePhotoID" Nullable="true" />
+          <Property Type="String" Name="ClassName" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="Name" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Lastname" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="XP" Nullable="false" />
+          <Property Type="String" Name="Hash" Nullable="true" MaxLength="330" />
+          <Property Type="String" Name="Base64" Nullable="true" />
+          <Property Type="String" Name="MIME" Nullable="true" MaxLength="20" />
+          <Property Type="Int32" Name="Size" Nullable="true" />
+          <Property Type="Int32" Name="ImageID" Nullable="true" />
+        </ComplexType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2145,15 +2160,15 @@
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="GetTopStudentsXp" FunctionName="ZoliksModel.Store.GetTopStudentsXp">
           <ResultMapping>
-              <ComplexTypeMapping TypeName="ZoliksModel.GetTopStudents_Result">
+              <ComplexTypeMapping TypeName="ZoliksModel.GetTopStudentsXp_Result">
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="ClassID" ColumnName="ClassID" />
+                <ScalarProperty Name="SchoolID" ColumnName="SchoolID" />
                 <ScalarProperty Name="ProfilePhotoID" ColumnName="ProfilePhotoID" />
                 <ScalarProperty Name="ClassName" ColumnName="ClassName" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Lastname" ColumnName="Lastname" />
                 <ScalarProperty Name="XP" ColumnName="XP" />
-                <ScalarProperty Name="ZolikCount" ColumnName="ZolikCount" />
                 <ScalarProperty Name="Hash" ColumnName="Hash" />
                 <ScalarProperty Name="Base64" ColumnName="Base64" />
                 <ScalarProperty Name="MIME" ColumnName="MIME" />

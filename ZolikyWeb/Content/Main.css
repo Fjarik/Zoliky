@@ -116,6 +116,15 @@ b, strong {
 	z-index: 1;
 }
 
+.img-profile-leaderboard {
+	width: 54px;
+	height: 54px;
+}
+
+.img-profile-leaderboard.wBorder {
+	border: 2px solid;
+}
+
 .soc {
 }
 

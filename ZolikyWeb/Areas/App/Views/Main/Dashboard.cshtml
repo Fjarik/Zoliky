@@ -50,7 +50,7 @@
 	<div class="col-lg-3 col-md-6">
 		<div class="card">
 			<div class="card-body">
-				<div class="d-flex flex-row">
+				<div class="d-flex flex-row" data-toggle="tooltip" data-placement="bottom" title="XP: @Model.XP">
 					<div class="round round-lg align-self-center round-success">
 						<i class="mdi mdi-trophy-award"></i>
 					</div>
@@ -85,13 +85,11 @@
 <!-- Row -->
 <div class="row">
 	<!-- Column -->
-	@*@if (Model.HasZoliks) {*@
 	<div class="col-xlg-3 col-lg-4 col-md-5">
 		<div class="card">
 			@Html.Partial("DPartials/_NewestZoliks", Model.Zoliky)
 		</div>
 	</div>
-	@* }  *@
 	<!-- /Column -->
 	<!-- Column -->
 	@if (Model.IsInClass) {
@@ -114,7 +112,7 @@
 	<!-- Column -->
 	<div class="col-xlg-3 col-lg-4 col-md-5">
 		<div class="card" id="statsDiv" style="display: none" data-drag="true">
-			@Html.Partial("DPartials/_StatisticsPartial")
+			@Html.Partial("DPartials/_StatisticsPartial", Model)
 		</div>
 	</div>
 	<!-- /Column -->
@@ -129,6 +127,24 @@
 		</div>
 	</div>
 	<!-- /Column -->
+	<!-- Column -->
+	@if (Model.IsInClass) {
+		<div class="col-xlg-3 col-lg-4 col-md-5" id="xpClassContainer" style="display: none;">
+			<div class="card NoSelectAll" data-drag="true">
+				@Html.Partial("DPartials/_ClassXpLeaderboard", Model)
+			</div>
+		</div>
+	}
+	<!-- /Column -->
+	<!-- Column -->
+	@if (!Model.IsPublic) {
+		<div class="col-xlg-3 col-lg-4 col-md-5" id="xpContainer" style="display: none;">
+			<div class="card NoSelectAll" data-drag="true">
+				@Html.Partial("DPartials/_XpLeaderboard")
+			</div>
+		</div>
+	}
+	<!-- /Column -->
 </div>
 <!-- /Row -->
 
@@ -142,7 +158,73 @@
 						$(`#${elm.Key}`).text(elm.Value);
 					});
 					$("#statsDiv").fadeIn();
+				}
+			);
+
+			const fillTable = (data, tbody) => {
+				data.forEach((elm) => {
+					const row = $("<tr>");
+
+					const img = $("<img>",
+						{
+							src: elm.imgUrl,
+							class: "img-circle img-profile-leaderboard wBorder",
+							alt: "Profilový obrázek"
+						}).css("border-color", elm.rank.Colour);
+
+					let td = $("<td>");
+					td.append(img);
+					row.append(td);
+
+					td = $("<td>").text(elm.fullName);
+					row.append(td);
+
+					const span = $("<span>",
+						{
+							class: "label label-light-info",
+							"data-toggle": "tooltip",
+							"data-placement": "bottom",
+							title: "Rank"
+						}).text(elm.rank.Title);
+					td = $("<td>",
+						{
+							align: "right"
+
+						});
+					td.append(span);
+					row.append(td);
+
+					tbody.append(row);
 				});
+			}
+
+			$.get('@Url.Action("GetClassXpLeaderboard")',
+				null,
+				(data) => {
+					const tbody = $("#xpClass");
+					const container = $("#xpClassContainer");
+
+					fillTable(data, tbody);
+
+					$('[data-toggle="tooltip"]').tooltip();
+					container.fadeIn();
+				}
+			);
+
+			
+			$.get('@Url.Action("GetXpLeaderboard")',
+				null,
+				(data) => {
+					const tbody = $("#xpSchool");
+					const container = $("#xpContainer");
+
+					fillTable(data, tbody);
+
+					$('[data-toggle="tooltip"]').tooltip();
+					container.fadeIn();
+				}
+			);
+
 		});
 	</script>
 }

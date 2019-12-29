@@ -14,12 +14,13 @@ using SharedLibrary.Shared;
 using SharedLibrary.Shared.ApiModels;
 using ZolikyWeb.Areas.App.Models;
 using ZolikyWeb.Areas.App.Models.Main;
+using ZolikyWeb.Models.Base;
 using ZolikyWeb.Tools;
 
 namespace ZolikyWeb.Areas.App.Controllers
 {
 	[Authorize]
-	public class MainController : Controller
+	public class MainController : OwnController<UserManager>
 	{
 		public ActionResult Index()
 		{
@@ -29,7 +30,6 @@ namespace ZolikyWeb.Areas.App.Controllers
 		public async Task<ActionResult> Dashboard()
 		{
 			var rankMgr = this.GetManager<RankManager>();
-			var uMgr = this.GetManager<UserManager>();
 			var user = await this.GetLoggedUserAsync();
 			var schoolId = this.User.GetSchoolId();
 			var isTester = this.User.Identity.IsTester();
@@ -38,10 +38,10 @@ namespace ZolikyWeb.Areas.App.Controllers
 			IList<GetTopStudents_Result> studentsClass = new List<GetTopStudents_Result>();
 			IList<GetTopStudents_Result> students = new List<GetTopStudents_Result>();
 			if (user.ClassID != null) {
-				studentsClass = uMgr.GetStudentsWithMostZoliks(schoolId, 5, user.ClassID, 1);
+				studentsClass = this.Mgr.GetStudentsWithMostZoliks(schoolId, 5, user.ClassID, 1);
 			}
 			if (!user.IsInRole(UserRoles.Public)) {
-				students = uMgr.GetStudentsWithMostZoliks(schoolId, 5, null, 1);
+				students = this.Mgr.GetStudentsWithMostZoliks(schoolId, 5, null, 1);
 			}
 
 			var count = zoliks.CountZoliks(isTester);
@@ -51,12 +51,13 @@ namespace ZolikyWeb.Areas.App.Controllers
 
 			var pMgr = this.GetManager<ProjectSettingManager>();
 			var specDate = await pMgr.GetStringValueAsync(null, ProjectSettingKeys.SpecialDate) ??
-						   DateTime.Now.ToString();
+						   DateTime.Now.ToString("dd.MM.yyyy");
 			var specTitle = await pMgr.GetStringValueAsync(null, ProjectSettingKeys.SpecialText) ?? "";
 
 			var model = new DashboardModel {
 				ZolikCount = count,
 				JokerCount = jokerCount,
+				XP = user.XP,
 				Rank = rank,
 				Zoliky = top,
 				SpecialDate = DateTime.Parse(specDate),
@@ -80,6 +81,7 @@ namespace ZolikyWeb.Areas.App.Controllers
 			return View();
 		}
 
+		// Cache - 5 minutes
 		[OutputCache(Duration = 60 * 5, VaryByParam = "c")]
 		public async Task<JsonResult> GetStatistics()
 		{
@@ -92,6 +94,54 @@ namespace ZolikyWeb.Areas.App.Controllers
 				x.Key,
 				x.Value
 			});
+
+			return Json(data, JsonRequestBehavior.AllowGet);
+		}
+
+		public async Task<JsonResult> GetClassXpLeaderboard()
+		{
+			var user = await this.GetLoggedUserAsync();
+			var schoolId = user.SchoolID;
+
+			if (user.ClassID == null) {
+				return Json("", JsonRequestBehavior.AllowGet);
+			}
+
+			var leaderboard = this.Mgr.GetStudentsWithMostXp(schoolId, 5, user.ClassID, 1);
+
+			var rMgr = this.GetManager<RankManager>();
+			var ranks = await rMgr.GetAllAsync();
+
+			var data = leaderboard.Select(x => new {
+				imgUrl = Url.GetProfilePhotoUrl(x.ID),
+				fullName = x.FullName,
+				xp = x.XP,
+				rank = ranks.GetRankByXP(x.XP),
+			}).ToList();
+
+			return Json(data, JsonRequestBehavior.AllowGet);
+		}
+
+		public async Task<JsonResult> GetXpLeaderboard()
+		{
+			var user = await this.GetLoggedUserAsync();
+			var schoolId = user.SchoolID;
+
+			if (user.IsInRole(UserRoles.Public)) {
+				return Json("", JsonRequestBehavior.AllowGet);
+			}
+
+			var leaderboard = this.Mgr.GetStudentsWithMostXp(schoolId, 5, null, 1);
+
+			var rMgr = this.GetManager<RankManager>();
+			var ranks = await rMgr.GetAllAsync();
+
+			var data = leaderboard.Select(x => new {
+				imgUrl = Url.GetProfilePhotoUrl(x.ID),
+				fullName = x.FullName,
+				xp = x.XP,
+				rank = ranks.GetRankByXP(x.XP),
+			}).ToList();
 
 			return Json(data, JsonRequestBehavior.AllowGet);
 		}

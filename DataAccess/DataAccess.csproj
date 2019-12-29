@@ -170,6 +170,9 @@
       <DependentUpon>MainModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Extends.cs" />
+    <Compile Include="Models\GetTopStudentsXp_Result.cs">
+      <DependentUpon>MainModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\GetTopStudents_Result.cs">
       <DependentUpon>MainModel.tt</DependentUpon>
     </Compile>

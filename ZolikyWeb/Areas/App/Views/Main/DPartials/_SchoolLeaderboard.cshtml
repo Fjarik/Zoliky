@@ -23,8 +23,8 @@
 		<tbody>
 			@foreach (var student in Model) {
 				<tr>
-					<td style="width: 40px">
-						<img src="@Url.GetProfilePhotoUrl(student.ID)" width="50" height="50" class="img-circle" alt="Profilový obrázek">
+					<td>
+						<img src="@Url.GetProfilePhotoUrl(student.ID)" class="img-circle img-profile-leaderboard" alt="Profilový obrázek">
 					</td>
 					<td>@student.FullName</td>
 					<td align="right">

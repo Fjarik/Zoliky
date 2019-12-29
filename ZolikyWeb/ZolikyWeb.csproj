@@ -1128,6 +1128,8 @@
     <Content Include="Areas\Admin\Views\Student\Import.cshtml" />
     <Content Include="Areas\Admin\Views\Student\Partials\_ImportResult.cshtml" />
     <Content Include="Areas\Global\Views\Admin\Partials\_QuickActions.cshtml" />
+    <Content Include="Areas\App\Views\Main\DPartials\_XpLeaderboard.cshtml" />
+    <Content Include="Areas\App\Views\Main\DPartials\_ClassXpLeaderboard.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />

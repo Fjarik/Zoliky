@@ -81,7 +81,7 @@ namespace DataAccess.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetTopStudents_Result>("GetTopStudents", topParameter, imageMaxSizeParameter, classIdParameter, schoolIdParameter, settingsKeyParameter, defaultPhotoIdParameter);
         }
     
-        private ObjectResult<GetTopStudents_Result> GetTopStudentsXp(Nullable<int> top, Nullable<int> imageMaxSize, Nullable<int> classId, Nullable<int> schoolId, string settingsKey, Nullable<int> defaultPhotoId)
+        private ObjectResult<GetTopStudentsXp_Result> GetTopStudentsXp(Nullable<int> top, Nullable<int> imageMaxSize, Nullable<int> classId, Nullable<int> schoolId, string settingsKey, Nullable<int> defaultPhotoId)
         {
             var topParameter = top.HasValue ?
                 new ObjectParameter("top", top) :
@@ -107,7 +107,7 @@ namespace DataAccess.Models
                 new ObjectParameter("defaultPhotoId", defaultPhotoId) :
                 new ObjectParameter("defaultPhotoId", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetTopStudents_Result>("GetTopStudentsXp", topParameter, imageMaxSizeParameter, classIdParameter, schoolIdParameter, settingsKeyParameter, defaultPhotoIdParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetTopStudentsXp_Result>("GetTopStudentsXp", topParameter, imageMaxSizeParameter, classIdParameter, schoolIdParameter, settingsKeyParameter, defaultPhotoIdParameter);
         }
     
         private ObjectResult<GetTopStudents_Result> GetStudents(Nullable<int> imageMaxSize, Nullable<int> classId, Nullable<int> schoolId, Nullable<int> defaultPhotoId, Nullable<bool> onlyActive)

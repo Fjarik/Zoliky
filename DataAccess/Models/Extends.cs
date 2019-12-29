@@ -108,10 +108,10 @@ namespace DataAccess.Models
 								  defaultPhotoId: Ext.DefaultProfilePhotoId);
 		}
 
-		public IList<GetTopStudents_Result> GetTopStudentsXp(int schoolId,
-															 int top = 5,
-															 int? classId = null,
-															 int? imageMaxSize = null)
+		public IList<GetTopStudentsXp_Result> GetTopStudentsXp(int schoolId,
+															   int top = 5,
+															   int? classId = null,
+															   int? imageMaxSize = null)
 		{
 			return GetTopStudentsXp(key: SettingKeys.LeaderboardXp,
 									schoolId: schoolId,
@@ -120,11 +120,11 @@ namespace DataAccess.Models
 									classId: classId).ToList();
 		}
 
-		private IEnumerable<GetTopStudents_Result> GetTopStudentsXp(string key,
-																	int schoolId,
-																	int top = 5,
-																	int? imageMaxSize = null,
-																	int? classId = null)
+		private IEnumerable<GetTopStudentsXp_Result> GetTopStudentsXp(string key,
+																	  int schoolId,
+																	  int top = 5,
+																	  int? imageMaxSize = null,
+																	  int? classId = null)
 		{
 			if (imageMaxSize == null) {
 				imageMaxSize = 1024 * 1024;
@@ -222,6 +222,36 @@ namespace DataAccess.Models
 		public GetTopStudents_Result() { }
 	}
 
+	public partial class GetTopStudentsXp_Result : IStudent<IImage>
+	{
+		public string FullName => $"{this.Name} {this.Lastname}";
+
+		private IImage _image;
+
+		private IImage GetImage()
+		{
+			if (this.ImageID == null || this.Size == null) {
+				return null;
+			}
+			return new Image() {
+				ID = (int) this.ImageID,
+				OwnerID = this.ID,
+				Hash = this.Hash,
+				Base64 = this.Base64,
+				MIME = this.MIME,
+				Size = (int) this.Size,
+			};
+		}
+
+		public IImage ProfilePhoto
+		{
+			get => this._image ?? (this._image = GetImage());
+			set => this._image = value;
+		}
+
+		public GetTopStudentsXp_Result() { }
+	}
+
 	[MetadataType(typeof(ImageMetadata))]
 	public partial class Image : IImage
 	{
@@ -256,7 +286,7 @@ namespace DataAccess.Models
 
 	public partial class ProjectSetting : ISettings { }
 
-	public partial class Rank : IDbEntity { }
+	public partial class Rank : IRank { }
 
 	[MetadataType(typeof(RoleMetadata))]
 	public partial class Role : IRole

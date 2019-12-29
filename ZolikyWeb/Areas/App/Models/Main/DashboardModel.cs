@@ -13,6 +13,7 @@ namespace ZolikyWeb.Areas.App.Models.Main
 		public int ZolikCount { get; set; } = 0;
 
 		public int JokerCount { get; set; } = 0;
+		public int XP { get; set; }
 
 		public string Rank { get; set; } = "Newbie";
 
@@ -95,6 +96,5 @@ namespace ZolikyWeb.Areas.App.Models.Main
 		public bool IsInClass => !string.IsNullOrWhiteSpace(this.ClassName);
 
 		public bool IsPublic => HttpContext.Current.User.IsInRole(UserRoles.Public);
-
 	}
 }

@@ -905,66 +905,14 @@ namespace DataAccess.Managers
 			return res;
 		}
 
-		public IList<GetTopStudents_Result> GetStudentsWithMostXp(int schoolId,
-																  int top = 5,
-																  int? classId = null,
-																  int? imageMaxSize = null)
+		public IList<GetTopStudentsXp_Result> GetStudentsWithMostXp(int schoolId,
+																	int top = 5,
+																	int? classId = null,
+																	int? imageMaxSize = null)
 		{
 			var res = _ctx.GetTopStudentsXp(top: top, classId: classId, schoolId: schoolId, imageMaxSize: imageMaxSize);
 			return res;
 		}
-
-		/*
-		[Obsolete]
-		public async Task<MActionResult<List<User>>> GetUsersWithMostZoliksAsync(int top = 5, int? classId = null)
-		{
-			var query = _ctx.Users
-							.AsNoTracking()
-							.Where(Extensions.HasTrueSetting(SettingKeys.LeaderboardZolik))
-							.Include(x => x.OriginalZoliks.Count);
-
-			if (classId != null) {
-				query = query.Where(x => x.ClassID == classId);
-			}
-			var res = await query.OrderByDescending(x => x.OriginalZoliks.AsQueryable().Count(Extensions.NonTesterZoliks()))
-								 .Take(top)
-								 .ToListAsync();
-			return new MActionResult<List<User>>(StatusCode.OK, res);
-		}
-		
-		[Obsolete]
-		public Task<List<Student<Image>>> GetStudentsWithMostZoliksAsync(int top = 5, int? classId = null)
-		{
-			var query = _ctx.Users
-							.AsNoTracking()
-							.Where(x => x.ClassID != null)
-							.Where(Extensions.HasTrueSetting(SettingKeys.LeaderboardZolik))
-							.Include(x => x.OriginalZoliks);
-
-			if (classId != null) {
-				query = query.Where(x => x.ClassID == classId);
-			}
-			return query.OrderByDescending(x => x.OriginalZoliks.AsQueryable().Count(Extensions.NonTesterZoliks()))
-						.SelectStudentAsync(top: top);
-		}
-
-		[Obsolete]
-		public Task<List<Student<Image>>> GetStudentsWithMostXpAsync(int top = 5, int? classId = null)
-		{
-			var query = _ctx.Users
-							.AsNoTracking()
-							.Where(x => x.ClassID != null)
-							.Where(Extensions.HasTrueSetting(SettingKeys.LeaderboardXp))
-							.Include(x => x.OriginalZoliks);
-
-			if (classId != null) {
-				query = query.Where(x => x.ClassID == classId);
-			}
-			return query.OrderByDescending(x => x.XP)
-						.Take(top)
-						.SelectStudentAsync();
-		}
-		*/
 
 #endregion
 

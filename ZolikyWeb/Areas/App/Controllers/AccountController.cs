@@ -8,7 +8,6 @@ using System.Web;
 using System.Web.Mvc;
 using DataAccess;
 using DataAccess.Managers;
-using DataAccess.Managers.New;
 using DataAccess.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
@@ -19,7 +18,6 @@ using ZolikyWeb.Areas.App.Models.Account;
 using ZolikyWeb.Models.Account;
 using ZolikyWeb.Models.Base;
 using ZolikyWeb.Tools;
-using ChangePasswordModel = ZolikyWeb.Areas.App.Models.Account.ChangePasswordModel;
 
 namespace ZolikyWeb.Areas.App.Controllers
 {

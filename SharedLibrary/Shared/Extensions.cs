@@ -152,6 +152,12 @@ namespace SharedLibrary.Shared
 			return res.Convert<T>();
 		}
 
+		public static T GetRankByXP<T>(this IEnumerable<T> enumberable,
+									   int xp) where T : class, IRank
+		{
+			return enumberable.SingleOrDefault(x => x.FromXP <= xp && xp <= (x.ToXP ?? int.MaxValue));
+		}
+
 #endregion
 
 #region DateTime extensions
