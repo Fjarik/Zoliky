@@ -197,6 +197,11 @@ namespace DataAccess
 			return GetValue<int>(identity, "publicId");
 		}
 
+		public static string GetEmail(this System.Security.Principal.IIdentity identity)
+		{
+			return GetValue<string>(identity, ClaimTypes.Email);
+		}
+
 		public static bool IsTester(this System.Security.Principal.IIdentity identity)
 		{
 			return GetValue<bool>(identity, "isTester");

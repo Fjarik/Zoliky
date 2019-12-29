@@ -1130,6 +1130,7 @@
     <Content Include="Areas\Global\Views\Admin\Partials\_QuickActions.cshtml" />
     <Content Include="Areas\App\Views\Main\DPartials\_XpLeaderboard.cshtml" />
     <Content Include="Areas\App\Views\Main\DPartials\_ClassXpLeaderboard.cshtml" />
+    <Content Include="Areas\App\Views\Account\SettingsPartial\_RemovePartial.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -1310,7 +1311,6 @@
     <Content Include="Areas\App\Views\Account\SettingsPartial\_ProfileSettingsPartial.cshtml" />
     <Content Include="Areas\App\Views\Account\SettingsPartial\_ProfilePhotoPartial.cshtml" />
     <Content Include="Areas\App\Views\Account\SettingsPartial\_GeneralChangePartial.cshtml" />
-    <Content Include="Areas\App\Views\Account\Remove.cshtml" />
     <Content Include="assets\plugins\footable\css\fonts\footable.eot" />
     <Content Include="assets\plugins\footable\css\fonts\footable.ttf" />
     <Content Include="assets\plugins\footable\css\fonts\footable.woff" />
@@ -1612,6 +1612,7 @@
     <Compile Include="Areas\Admin\Models\Zoliky\ZolikDashboardModel.cs" />
     <Compile Include="Areas\Admin\Models\Zoliky\ZolikModel.cs" />
     <Compile Include="Areas\Admin\Models\Zoliky\ZolikRemoveModel.cs" />
+    <Compile Include="Areas\App\Models\Account\RemoveModel.cs" />
     <Compile Include="Areas\Global\Controllers\NewsController.cs" />
     <Compile Include="Areas\Global\Controllers\SettingsController.cs" />
     <Compile Include="Areas\Global\Controllers\SubjectController.cs" />

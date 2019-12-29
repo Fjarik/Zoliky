@@ -11,6 +11,7 @@ using DataAccess.Managers;
 using DataAccess.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
+using SharedLibrary;
 using SharedLibrary.Enums;
 using SharedLibrary.Shared;
 using ZolikyWeb.Areas.App.Models;
@@ -245,14 +246,40 @@ namespace ZolikyWeb.Areas.App.Controllers
 			return SaveSettings(model?.Dictionary, 2);
 		}
 
-		/*
-		[HttpGet]
-		public ActionResult Remove()
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<ActionResult> Remove(RemoveModel model)
 		{
-			// TODO: Odstranění účtů
-			return View();
+			if (model == null || string.IsNullOrWhiteSpace(model.Password)) {
+				this.AddErrorToastMessage("Neplatné heslo");
+				return RedirectToAction("Settings", new {tabId = 1});
+			}
+			var pwd = model.Password;
+
+			var userName = this.User.Identity.GetEmail();
+
+			var pwdRes = await Mgr.LoginAsync(new Logins(userName, pwd, Projects.WebNew),
+											  this.Request.GetIPAddress(),
+											  false);
+			if (!pwdRes.IsSuccess) {
+				this.AddErrorToastMessage("Heslo není platné");
+				return RedirectToAction("Settings", new {tabId = 2});
+			}
+
+			var userId = this.User.Identity.GetId();
+
+			var res = await Mgr.DeactivateAsync(userId);
+			if (!res.IsSuccess) {
+				this.AddErrorToastMessage("Nezdařilo se uzamknout účet");
+				this.AddErrorToastMessage(res.GetStatusMessage());
+				return RedirectToAction("Settings", new {tabId = 2});
+			}
+
+			this.AddSuccessToastMessage("Účet byl úspěšně uzamčen");
+
+			this.GetManager<SignInManager>().SignOut();
+			return RedirectToAction("Login", "Account", new {Area = ""});
 		}
-		*/
 
 #endregion
 

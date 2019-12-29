@@ -4,7 +4,7 @@
 @using (Html.BeginForm("EditPrivacy", "Account", new {Area = "App"}, FormMethod.Post)) {
 	<h3>Soukromí</h3>
 	@Html.AntiForgeryToken()
-	<br/>
+	<br />
 	<ul class="list-unstyled">
 		<li class="media mb-0">
 			<div class="media-body row align-items-center">
@@ -13,7 +13,7 @@
 					<small>Přeji si, aby moji žolíci byli veřejně viditelní.</small>
 				</div>
 				<div class="col align-self-center">
-					@Html.CheckBoxSimple(x => x.ZolikVisible, new { @class = "js-switch" })
+					@Html.CheckBoxSimple(x => x.ZolikVisible, new {@class = "js-switch"})
 				</div>
 			</div>
 		</li>
@@ -24,7 +24,7 @@
 					<small>Přeji si, aby se počet mých žolíků zobrazoval v žebříčkách.</small>
 				</div>
 				<div class="col align-self-center">
-					@Html.CheckBoxSimple(x => x.ZolikLeaderboard, new { @class = "js-switch" })
+					@Html.CheckBoxSimple(x => x.ZolikLeaderboard, new {@class = "js-switch"})
 				</div>
 			</div>
 		</li>
@@ -35,7 +35,7 @@
 					<small>Přeji si, aby byl můj rank veřejně viditelný.</small>
 				</div>
 				<div class="col align-self-center">
-					@Html.CheckBoxSimple(x => x.RankVisible, new { @class = "js-switch" })
+					@Html.CheckBoxSimple(x => x.RankVisible, new {@class = "js-switch"})
 				</div>
 			</div>
 		</li>
@@ -43,18 +43,22 @@
 			<div class="media-body row align-items-center">
 				<div class="col col-md-9">
 					<h5 class="mt-0 mb-1">Žebříčky (XP)</h5>
-					<small>Přeji si, aby se počet mých <strong>XP</strong>éček zobrazoval v žebříčkách.</small>
+					<small>
+						Přeji si, aby se počet mých
+						<strong>XP</strong>éček zobrazoval v žebříčkách.
+					</small>
 				</div>
 				<div class="col align-self-center">
-					@Html.CheckBoxSimple(x => x.XpLeaderboard, new { @class = "js-switch" })
+					@Html.CheckBoxSimple(x => x.XpLeaderboard, new {@class = "js-switch"})
 				</div>
 			</div>
 		</li>
 	</ul>
 	<div class="d-flex justify-content-between">
-		<a href="@Url.Action("Remove", "Account", new {Area = "App"})" class="text-danger small">
-			Odstranit účet
+		<a data-toggle="modal" data-target="#modalRemove" class="text-danger small c-pointer">
+			Uzamknout účet
 		</a>
 		<button type="submit" class="btn btn-primary">Uložit</button>
 	</div>
 }
+@Html.Partial("SettingsPartial/_RemovePartial", Model.RemoveModel)

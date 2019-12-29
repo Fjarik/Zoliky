@@ -1,0 +1,40 @@
+﻿@using ZolikyWeb.Tools
+@model ZolikyWeb.Areas.App.Models.Account.RemoveModel
+
+<div id="modalRemove" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modalRemoveLabel" style="display: none;" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title" id="modalRemoveLabel">
+					Uzamčení účtu
+				</h4>
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			</div>
+			@using (Html.BeginForm("Remove", "Account", new {Area = "App"}, FormMethod.Post)) {
+				<div class="modal-body">
+					<p>
+						Opravdu si přejte uzamknout svůj účet?
+					</p>
+					<br />
+					<p class="text-muted">
+						Pokud si přejte svůj účet odstranit úplně, pošlete žádost na email podpora@@zoliky.eu
+					</p>
+					<br />
+					<p>Uzamčení účtu potvrďte svým heslem.</p>
+					<br />
+					@Html.AntiForgeryToken()
+
+					@Html.NoSelectLaberFor(x => x.Password)
+					@Html.MaterialPasswordFor(x => x.Password, 1)
+					@Html.ValidationMessageFor(x => x.Password)
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-white" data-dismiss="modal">Zavřít</button>
+					<button type="submit" class="btn btn-danger waves-effect">Uzamknout</button>
+				</div>
+			}
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>

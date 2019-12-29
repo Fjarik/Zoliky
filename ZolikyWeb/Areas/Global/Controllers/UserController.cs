@@ -112,7 +112,7 @@ namespace ZolikyWeb.Areas.Global.Controllers
 			var original = res.Content;
 
 			// Edit
-			if (!original.IsInRolesOr(UserRoles.Teacher, UserRoles.SchoolManager)) {
+			if (!original.IsInRolesOr(UserRoles.Teacher, UserRoles.SchoolManager) && model.ClassID > 0) {
 				original.ClassID = model.ClassID;
 			}
 			original.SchoolID = model.SchoolID;

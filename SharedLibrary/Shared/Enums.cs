@@ -34,6 +34,7 @@ namespace SharedLibrary.Enums
 		[Description("Windows aplikace(UWP)")]
 		UWP = 3,
 
+		[Obsolete("Use WebNew instead")]
 		[Description("Konzole správce(WPF)")]
 		WPF = 4,
 

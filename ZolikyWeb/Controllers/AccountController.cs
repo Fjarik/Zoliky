@@ -260,7 +260,7 @@ namespace ZolikyWeb.Controllers
 		public ActionResult Logout(string r)
 		{
 			SignInManager.SignOut();
-			this.AddSuccessToastMessage("Ohlášení proběhlo úspěšně");
+			this.AddSuccessToastMessage("Odhlášení proběhlo úspěšně");
 			if (Url.IsLocalUrl(r)) {
 				return Redirect(r);
 			}
