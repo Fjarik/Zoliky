@@ -86,7 +86,7 @@
 <div class="row">
 	<!-- Column -->
 	<div class="col-xlg-3 col-lg-4 col-md-5">
-		<div class="card">
+		<div class="card" style="height: 94%;">
 			@Html.Partial("DPartials/_NewestZoliks", Model.Zoliky)
 		</div>
 	</div>
@@ -211,7 +211,7 @@
 				}
 			);
 
-			
+
 			$.get('@Url.Action("GetXpLeaderboard")',
 				null,
 				(data) => {
@@ -227,4 +227,12 @@
 
 		});
 	</script>
+}
+
+@section styles {
+	<style type="text/css">
+		.table.v-middle {
+			margin-bottom: 0;
+		}
+	</style>
 }

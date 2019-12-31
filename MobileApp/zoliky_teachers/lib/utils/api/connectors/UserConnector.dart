@@ -1,7 +1,5 @@
 import 'dart:convert';
 
-import 'package:http/http.dart';
-import 'package:http_parser/http_parser.dart';
 import 'package:zoliky_teachers/utils/api/connectors/PublicConnector.dart';
 import 'package:zoliky_teachers/utils/api/enums/StatusCode.dart';
 import 'package:zoliky_teachers/utils/api/models/User.dart';
@@ -106,71 +104,4 @@ class UserConnector extends PublicConnector {
       return new MActionResult<User>().ctorWithexception(ex);
     }
   }
-
-  Future<bool> setMobileToken(String token) async {
-    if (token.isEmpty || this.usedToken.isEmpty) {
-      return false;
-    }
-    try {
-      var url = "$urlApi/user/mobiletoken";
-      var res = await cli.post(url,
-          headers: {"Authorization": "Bearer $usedToken"},
-          body: {"Token": token});
-
-      if (res.statusCode != 200) {
-        return false;
-      }
-      return res.body.toLowerCase() == "true";
-    } catch (ex) {
-      return false;
-    }
-  }
-
-  Future<bool> resetMobileToken() async {
-    if (this.usedToken.isEmpty) {
-      return false;
-    }
-    try {
-      var url = "$urlApi/user/resettoken";
-      var res =
-          await cli.post(url, headers: {"Authorization": "Bearer $usedToken"});
-      if (res.statusCode != 200) {
-        return false;
-      }
-      return res.body.toLowerCase() == "true";
-    } catch (ex) {
-      return false;
-    }
-  }
-
-  Future<bool> changeProfilePhoto(List<int> bytes, String mimeString) async {
-    if (this.usedToken.isEmpty) {
-      return false;
-    }
-    try {
-      var mime = MediaType.parse(mimeString);
-      var url = "$urlApi/user/changeprofilephoto";
-      var uri = Uri.parse(url);
-      var request = new MultipartRequest("POST", uri);
-      request.headers.putIfAbsent("Authorization", () => "Bearer $usedToken");
-      request.files.add(MultipartFile.fromBytes("file", bytes,
-          filename: 'fajl', contentType: mime));
-      var res = await request.send();
-
-      /*var res =
-          await cli.post(url, headers: {"Authorization": "Bearer $usedToken"});*/
-      if (res.statusCode != 200) {
-        return false;
-      }
-      var stream = res.stream.toStringStream();
-      var body = "";
-      await for (var value in stream) {
-        body += value;
-      }
-      return body.toLowerCase() == "true";
-    } catch (ex) {
-      return false;
-    }
-  }
-
 }
