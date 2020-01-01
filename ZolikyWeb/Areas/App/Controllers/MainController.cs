@@ -46,7 +46,7 @@ namespace ZolikyWeb.Areas.App.Controllers
 
 			var count = zoliks.CountZoliks(isTester);
 			var jokerCount = zoliks.CountZoliks(isTester, ZolikType.Joker);
-			var top = zoliks.SelectZoliks(isTester).Take(3);
+			var top = zoliks.SelectZoliks(isTester).Take(4);
 			var rank = await rankMgr.GetTitleAsync(user.XP);
 
 			var pMgr = this.GetManager<ProjectSettingManager>();

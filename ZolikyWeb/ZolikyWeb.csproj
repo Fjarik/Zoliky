@@ -183,8 +183,8 @@
       <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
-    <Reference Include="Z.EntityFramework.Extensions, Version=4.0.30.0, Culture=neutral, PublicKeyToken=59b66d028979105b, processorArchitecture=MSIL">
-      <HintPath>..\packages\Z.EntityFramework.Extensions.4.0.30\lib\net45\Z.EntityFramework.Extensions.dll</HintPath>
+    <Reference Include="Z.EntityFramework.Extensions, Version=4.0.34.0, Culture=neutral, PublicKeyToken=59b66d028979105b, processorArchitecture=MSIL">
+      <HintPath>..\packages\Z.EntityFramework.Extensions.4.0.34\lib\net45\Z.EntityFramework.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="Z.EntityFramework.Plus.EF6, Version=1.12.5.0, Culture=neutral, PublicKeyToken=59b66d028979105b, processorArchitecture=MSIL">
       <HintPath>..\packages\Z.EntityFramework.Plus.EF6.1.12.5\lib\net45\Z.EntityFramework.Plus.EF6.dll</HintPath>
@@ -1136,6 +1136,8 @@
     <Content Include="Scripts\jquery-3.4.1.min.js" />
     <Content Include="Scripts\jquery-3.4.1.slim.js" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.js" />
+    <Content Include="Scripts\jquery.quicksearch.js" />
+    <Content Include="Scripts\jquery.quicksearch.min.js" />
     <Content Include="Scripts\jquery.snowfall.js" />
     <Content Include="Scripts\jquery.snowfall.min.js">
       <DependentUpon>jquery.snowfall.js</DependentUpon>
@@ -1541,6 +1543,7 @@
     <Content Include="Scripts\fa-all.min.js" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.4.1.min.map" />
+    <Content Include="Scripts\jquery.quicksearch.min.js.map" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery-ui-1.12.1.js" />
     <Content Include="Scripts\jquery-ui-1.12.1.min.js" />

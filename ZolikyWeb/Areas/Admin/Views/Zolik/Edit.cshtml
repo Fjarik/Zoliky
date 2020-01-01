@@ -8,10 +8,6 @@
 	Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
-@section header {
-	<link href="@Url.Content("~/assets/plugins/select2/css/select2.min.css")" rel="stylesheet" />
-}
-
 <div class="row">
 	<div class="col">
 		<div class="card card-outline-info">
@@ -105,35 +101,26 @@
 							}
 						</div>
 						<!-- /row -->
-						<!-- row -->
-						<div class="row">
-							<!-- item -->
-							<div class="col-md-6">
-								<div class="form-group row">
-									<label class="control-label text-right col-md-3">
-										@if (Model.IsCreate) {
-											@:Vlastník
-										} else {
-											@:Aktuální vlastník
-										}
-									</label>
-									<div class="col-md-9">
-										<p class="form-control-static">
-											@if (Model.IsCreate) {
-												@Html.DropDownListFor(x => x.OwnerID, Model.StudentSelect, new { @class = "select2", tabindex = 2 })
-												@Html.ValidationMessageFor(x => x.OwnerID)
-											} else {
+						@if (!Model.IsCreate) {
+							<!-- row -->
+							<div class="row">
+								<!-- item -->
+								<div class="col-md-6">
+									<div class="form-group row">
+										<label class="control-label text-right col-md-3">
+											Aktuální vlastník
+										</label>
+										<div class="col-md-9">
+											<p class="form-control-static">
 												@Html.HiddenFor(x => x.OwnerID)
 												<span class="c-help" data-toggle="tooltip" data-original-title="@(Model.Owner.Class?.Name ?? "-")">
-													@(Model.Owner.FullName)
+													@Model.Owner.FullName
 												</span>
-											}
-										</p>
+											</p>
+										</div>
 									</div>
 								</div>
-							</div>
-							<!-- /item -->
-							@if (!Model.IsCreate) {
+								<!-- /item -->
 								<!-- item -->
 								<div class="col-md-6">
 									<div class="form-group row">
@@ -148,9 +135,9 @@
 									</div>
 								</div>
 								<!-- /item -->
-							}
-						</div>
-						<!-- /row -->
+							</div>
+							<!-- /row -->
+						}
 
 						@if (!Model.IsCreate) {
 							<!-- row -->
@@ -245,6 +232,13 @@
 											}
 										</div>
 									</div>
+								} else {
+									<div class="form-group row">
+										<label class="control-label text-right col-md-3">Vlastník/Vlastníci</label>
+										<div class="col-md-9">
+											@Html.ListBoxFor(x => x.StudentIds, Model.StudentSelect, new {multiple = "multiple", @class = "form-control", size = 8, id = "select-students"})
+										</div>
+									</div>
 								}
 							</div>
 							<!-- /item -->
@@ -335,11 +329,41 @@
 	@Html.Partial("_RemovePartial", Model.RemoveModel)
 }
 
+@section header {
+	<link type="text/css" href="@Url.Content("~/assets/plugins/multiselect/css/multi-select.min.css")" rel="stylesheet" />
+}
+
 @section footer {
-	<script src="@Url.Content("~/assets/plugins/select2/js/select2.full.min.js")"></script>
+	<script type="text/javascript" src="@Url.Content("~/Scripts/jquery.quicksearch.min.js")"></script>
+	<script type="text/javascript" src="@Url.Content("~/assets/plugins/multiselect/js/jquery.multi-select.min.js")"></script>
 	<script type="text/javascript">
 		$(() => {
-			$(".select2").select2();
+			$('#select-students').multiSelect({
+				selectableHeader: "<input type='text' class='form-control search-input' autocomplete='off' placeholder='Vyhledávání...'>",
+				selectionHeader: "<div class='custom-header'>Vybraní studenti</div>",
+				keepOrder: true,
+				afterInit: function (ms) {
+					const $selectableSearch = this.$selectableUl.prev();
+					const selectableSearchString =
+						'#' + this.$container.attr('id') + ' .ms-elem-selectable:not(.ms-selected)';
+
+					this.qs1 = $selectableSearch.quicksearch(selectableSearchString)
+						.on('keydown',
+							function(e) {
+								if (e.which === 40) {
+									this.$selectableUl.focus();
+									return false;
+								}
+							});
+				},
+				afterSelect: function() {
+					this.qs1.cache();
+				},
+				afterDeselect: function() {
+					this.qs1.cache();
+				},
+				cssClass: "w-100"
+			});
 		});
 	</script>
 }

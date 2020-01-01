@@ -536,9 +536,9 @@ namespace DataAccess.Models
 	[MetadataType(typeof(ZolikMetadata))]
 	public partial class Zolik : IZolik
 	{
-		public int SchoolID => this.Owner.SchoolID;
+		public int SchoolID => this.Owner?.SchoolID ?? 0;
 
-		public string SubjectName => this.Subject.Name;
+		public string SubjectName => this.Subject?.Name;
 
 		public string TeacherName => this.Teacher?.FullName;
 

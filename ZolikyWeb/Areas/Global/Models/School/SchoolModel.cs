@@ -106,6 +106,7 @@ namespace ZolikyWeb.Areas.Global.Models.School
 			this.SubjectIds = new List<int>() {
 				4
 			};
+			this.Classes = new List<Class>();
 			this.AllSubjects = new List<DataAccess.Models.Subject>();
 			this.Users = new List<DataAccess.Models.User>();
 			this.AllowRemove = false;

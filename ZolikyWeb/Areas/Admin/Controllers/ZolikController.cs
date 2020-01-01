@@ -6,6 +6,8 @@ using System.Web;
 using System.Web.Mvc;
 using DataAccess;
 using DataAccess.Managers;
+using DataAccess.Models;
+using SharedLibrary;
 using SharedLibrary.Enums;
 using SharedLibrary.Interfaces;
 using SharedLibrary.Shared;
@@ -89,33 +91,46 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 				return RedirectToAction("Dashboard");
 			}
 
+			if (!model.StudentIds.Any()) {
+				this.AddErrorToastMessage("Musíte vybrat minimálně jednoho studenta jako vlastníka");
+				return RedirectToAction("Create",
+										new {title = model?.Title, type = model?.Type, subjectId = model?.SubjectID});
+			}
+
 			if (!model.IsValid) {
 				this.AddErrorToastMessage("Neplatné hodnoty");
-				return RedirectToAction("Edit");
+				return RedirectToAction("Create");
 			}
 			var logged = await this.GetLoggedUserAsync();
 			var toId = model.OwnerID;
 			if (logged.ID == toId) {
 				this.AddErrorToastMessage("Nemůžete poslat žolíka sám sobě");
-				return RedirectToAction("Edit");
+				return RedirectToAction("Create");
 			}
 
-
-			var res = await Mgr.CreateAndTransferAsync(logged.ID,
-													   model.OwnerID,
+			MActionResult<Transaction> res = new MActionResult<Transaction>(StatusCode.InternalError);
+			foreach (var studentId in model.StudentIds) {
+				res = await Mgr.CreateAndTransferAsync(logged.ID,
+													   studentId,
 													   model.Type,
 													   model.SubjectID,
 													   model.Title,
 													   logged,
 													   model.AllowSplit);
+				if (!res.IsSuccess) {
+					this.AddErrorToastMessage($"Nezdařilo se vytvořit záznam. Chyba: {res.GetStatusMessage()}");
+					return RedirectToAction("Dashboard");
+				}
+			}
 
 			if (!res.IsSuccess) {
-				this.AddErrorToastMessage($"Nezdařilo se vytvořit záznam. Chyba: {res.GetStatusMessage()}");
+				this.AddErrorToastMessage($"Bylo vybráno málo studentů");
 				return RedirectToAction("Dashboard");
 			}
+
 			var original = res.Content;
 
-			this.AddSuccessToastMessage("Žolík byl úspěšně vytvořen");
+			this.AddSuccessToastMessage("Žolíci byli úspěšně vytvořeni");
 			return RedirectToAction("Detail", new {id = original.ZolikID});
 		}
 

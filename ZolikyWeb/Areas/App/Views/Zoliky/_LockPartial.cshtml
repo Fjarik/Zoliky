@@ -1,14 +1,14 @@
 ﻿@using ZolikyWeb.Tools
 @model ZolikyWeb.Areas.App.Models.Zoliky.ZolikLockModel
 
-<a title="Zamknout žolíka" data-toggle="modal" data-target="#modalLock" class="zolik-change">
+<a title="Zamknout žolíka" data-toggle="modal" data-target="@("#modalLock"+Model.ZolikId)" class="zolik-change">
 	<i class="mdi mdi-lock-outline"></i>
 </a>
-<div id="modalLock" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modalLockLabel" style="display: none;" aria-hidden="true">
+<div id="@("modalLock"+Model.ZolikId)" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="@("modalLockLabel"+Model.ZolikId)" style="display: none;" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h4 class="modal-title" id="modalLockLabel">
+				<h4 class="modal-title" id="@("modalLockLabel"+Model.ZolikId)">
 					Zamknout žolíka
 				</h4>
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>

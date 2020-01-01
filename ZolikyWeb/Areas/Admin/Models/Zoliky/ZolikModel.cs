@@ -24,8 +24,11 @@ namespace ZolikyWeb.Areas.Admin.Models.Zoliky
 
 		public override bool IsValid => (this.ID == -1 || this.ID > 0) &&
 										!string.IsNullOrWhiteSpace(this.Title) &&
-										this.OwnerID > 0 &&
-										this.SubjectID > 0;
+										//this.OwnerID > 0 &&
+										this.SubjectID > 0 &&
+										!this.IsCreate || (this.StudentIds.Any() &&
+														   this.StudentIds.All(x => x > 0)
+														  );
 
 #endregion
 
@@ -73,6 +76,8 @@ namespace ZolikyWeb.Areas.Admin.Models.Zoliky
 
 #region Model lists
 
+		public List<int> StudentIds { get; set; }
+
 		public IEnumerable<ZolikType> ZolikTypes { get; }
 
 		public IEnumerable<SelectListItem> TypeSelect => this.ZolikTypes
@@ -118,6 +123,8 @@ namespace ZolikyWeb.Areas.Admin.Models.Zoliky
 		public ZolikModel() : base()
 		{
 			this.AllowRemove = false;
+			this.Students = new List<IUser>();
+			this.StudentIds = new List<int>();
 		}
 
 		private ZolikModel(bool isTester = false) : this()
@@ -177,6 +184,9 @@ namespace ZolikyWeb.Areas.Admin.Models.Zoliky
 			this.Transactions = ent.Transactions;
 			this.Owner = ent.Owner;
 			this.Teacher = ent.Teacher;
+			this.StudentIds = new List<int> {
+				this.OwnerID
+			};
 
 			this.AllowRemove = allowRemove && this.Enabled;
 
