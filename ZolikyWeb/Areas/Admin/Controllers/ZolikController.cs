@@ -23,11 +23,12 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 			var sMgr = this.GetManager<SchoolManager>();
 
 			var schoolId = this.User.GetSchoolId();
+			var isTester = this.User.Identity.IsTester();
 
 			bool active = onlyEnabled != null;
 			var classes = await sMgr.GetClassesAsync(schoolId);
 
-			var res = await Mgr.GetSchoolZoliksAsync(schoolId, active);
+			var res = await Mgr.GetSchoolZoliksAsync(schoolId, active, isTester);
 			var model = new ZolikDashboardModel(res, classes, active, classId);
 			return View(model);
 		}
@@ -44,8 +45,9 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 			var sMgr = this.GetManager<SchoolManager>();
 			var subjects = await sMgr.GetSubjectsAsync(schoolId);
 			var students = await sMgr.GetStudentsAsync(schoolId, logged.ID);
+			var isTester = this.User.Identity.IsTester();
 
-			var model = ZolikModel.CreateModel(logged, subjects, students.ToList<IUser>());
+			var model = ZolikModel.CreateModel(logged, subjects, students.ToList<IUser>(), isTester);
 			if (!string.IsNullOrWhiteSpace(title)) {
 				model.Title = title;
 			}
@@ -175,7 +177,7 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 
 			var previousId = await Mgr.GetPreviousIdAsync(id);
 			var nextId = await Mgr.GetNextIdAsync(id);
-
+			var isTester = this.User.Identity.IsTester();
 
 			var sMgr = this.GetManager<SchoolManager>();
 
@@ -188,7 +190,7 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 				allowRemove = sRes.Content.AllowTeacherRemove;
 			}
 
-			var model = new ZolikModel(res.Content, subjects, allowRemove, allowEdit, previousId, nextId) {
+			var model = new ZolikModel(res.Content, subjects, allowRemove, allowEdit, previousId, nextId, isTester) {
 				ActionName = actionName
 			};
 

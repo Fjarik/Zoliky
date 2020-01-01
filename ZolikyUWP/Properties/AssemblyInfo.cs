@@ -11,7 +11,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Zoliky")]
 [assembly: AssemblyProduct("ZolikyUWP")]
-[assembly: AssemblyCopyright("Copyright © Zoliky 2019")]
+[assembly: AssemblyCopyright("Copyright © Zoliky 2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

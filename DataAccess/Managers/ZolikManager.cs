@@ -103,7 +103,9 @@ namespace DataAccess.Managers
 												 bool isTester = false,
 												 bool onlyEnabled = true)
 		{
-			var query = _ctx.Zoliky.Where(x => x.OwnerID == userId);
+			var date = Ext.SchoolYearStart;
+			var query = _ctx.Zoliky.Where(x => x.OwnerID == userId &&
+											   x.Created > date);
 			if (onlyEnabled) {
 				query = query.Where(x => x.Enabled);
 			}

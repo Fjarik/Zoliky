@@ -59,6 +59,7 @@ namespace DataAccess.Managers
 			return _ctx.News
 					   .Where(x => x.Expiration == null ||
 								   x.Expiration > DateTime.Now)
+					   .OrderByDescending(x => x.Created)
 					   .ToListAsync();
 		}
 

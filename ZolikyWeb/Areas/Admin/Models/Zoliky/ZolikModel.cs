@@ -73,9 +73,7 @@ namespace ZolikyWeb.Areas.Admin.Models.Zoliky
 
 #region Model lists
 
-		public IEnumerable<ZolikType> ZolikTypes => Enum.GetValues(typeof(ZolikType))
-														.Cast<ZolikType>()
-														.Where(x => !x.IsTesterType());
+		public IEnumerable<ZolikType> ZolikTypes { get; }
 
 		public IEnumerable<SelectListItem> TypeSelect => this.ZolikTypes
 															 .Select(x => new SelectListItem {
@@ -122,11 +120,22 @@ namespace ZolikyWeb.Areas.Admin.Models.Zoliky
 			this.AllowRemove = false;
 		}
 
+		private ZolikModel(bool isTester = false) : this()
+		{
+			var zTypes = Enum.GetValues(typeof(ZolikType))
+							 .Cast<ZolikType>();
+			if (!isTester) {
+				zTypes = zTypes.Where(x => !x.IsTesterType());
+			}
+			this.ZolikTypes = zTypes;
+		}
+
 		public static ZolikModel CreateModel(User teacher,
 											 List<DataAccess.Models.Subject> subjects,
-											 List<IUser> students)
+											 List<IUser> students,
+											 bool isTester = false)
 		{
-			return new ZolikModel {
+			return new ZolikModel(isTester) {
 				ID = -1,
 				OwnerID = -1,
 				SubjectID = -1,
@@ -148,7 +157,8 @@ namespace ZolikyWeb.Areas.Admin.Models.Zoliky
 						  bool allowRemove,
 						  bool allowEdit,
 						  int previousId,
-						  int nextId) : base(ent, allowEdit, previousId, nextId)
+						  int nextId,
+						  bool isTester = false) : base(ent, allowEdit, previousId, nextId)
 		{
 			this.ID = ent.ID;
 			this.OwnerID = ent.OwnerID;
@@ -171,6 +181,13 @@ namespace ZolikyWeb.Areas.Admin.Models.Zoliky
 			this.AllowRemove = allowRemove && this.Enabled;
 
 			this.Subjects = subjects;
+
+			var zTypes = Enum.GetValues(typeof(ZolikType))
+							 .Cast<ZolikType>();
+			if (!isTester) {
+				zTypes = zTypes.Where(x => !x.IsTesterType());
+			}
+			this.ZolikTypes = zTypes;
 
 			this.RemoveModel = new ZolikRemoveModel {
 				ID = this.ID,

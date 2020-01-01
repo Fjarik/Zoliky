@@ -1,5 +1,7 @@
 ﻿@using System.Web.Optimization
+@using DataAccess
 @using hbehr.recaptcha
+@using SharedLibrary.Shared
 @model ZolikyWeb.Models.Home.HomeModel
 @{
 	Layout = "~/Views/Shared/_Layout.cshtml";
@@ -56,7 +58,11 @@
 								</li>
 								<li>
 									@if (Request.IsAuthenticated) {
-										<a href="@Url.Action("Dashboard", "Main", new {Area = "App"})">Správa</a>
+										if (this.User.IsInRolesOr(UserRoles.Teacher, UserRoles.SchoolManager, UserRoles.Administrator)) {
+											<a href="@Url.Action("Dashboard", "Admin", new {Area = "Admin"})">Administrace</a>
+										} else {
+											<a href="@Url.Action("Dashboard", "Main", new {Area = "App"})">Správa</a>
+										}
 									} else {
 										<a href="@Url.Action("Login")">Přihlášení</a>
 									}

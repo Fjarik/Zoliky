@@ -124,7 +124,7 @@
 					<StackPanel Orientation="Horizontal"
 					            Grid.Row="10" Grid.Column="0">
 						<TextBlock Style="{ThemeResource SubtitleTextBlockStyle}"
-						           Text="© Žolíky 2018-" />
+						           Text="© Žolíky " />
 						<TextBlock Style="{ThemeResource SubtitleTextBlockStyle}"
 						           Text="{Binding CurrentYear}" />
 					</StackPanel>
@@ -179,7 +179,7 @@
 					<StackPanel Orientation="Horizontal"
 					            Grid.Row="8" Grid.Column="0">
 						<TextBlock Style="{ThemeResource SubtitleTextBlockStyle}"
-						           Text="© Žolíky 2018-" />
+						           Text="© Žolíky " />
 						<TextBlock Style="{ThemeResource SubtitleTextBlockStyle}"
 						           Text="{Binding CurrentYear}" />
 					</StackPanel>
