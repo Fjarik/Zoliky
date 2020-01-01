@@ -227,20 +227,20 @@ namespace DataAccess.Managers
 
 #region Transfer
 
-		public async Task<MActionResult<Transaction>> RemoveAsync(int zolikId, string reason, int userId)
+		public async Task<MActionResult<Transaction>> RemoveAsync(int zolikId, string reason, int teacherId)
 		{
-			if (userId < 1) {
+			if (teacherId < 1) {
 				return new MActionResult<Transaction>(StatusCode.NotValidID);
 			}
 			var uMgr = this.Context.Get<UserManager>();
-			var res = await uMgr.GetByIdAsync(userId);
+			var res = await uMgr.GetByIdAsync(teacherId);
 			if (!res.IsSuccess) {
 				return new MActionResult<Transaction>(res.Status);
 			}
 			return await RemoveAsync(zolikId, reason, res.Content);
 		}
 
-		private async Task<MActionResult<Transaction>> RemoveAsync(int zolikId, string reason, User user)
+		private async Task<MActionResult<Transaction>> RemoveAsync(int zolikId, string reason, User teacher)
 		{
 			if (zolikId < 1) {
 				return new MActionResult<Transaction>(StatusCode.NotValidID);
@@ -252,7 +252,7 @@ namespace DataAccess.Managers
 			if (ownerId < 1) {
 				return new MActionResult<Transaction>(StatusCode.NotValidID);
 			}
-			return await RemoveAsync(zolikId, ownerId, reason, user);
+			return await RemoveAsync(zolikId, ownerId, reason, teacher);
 		}
 
 		public async Task<MActionResult<Transaction>> RemoveAsync(int zolikId,

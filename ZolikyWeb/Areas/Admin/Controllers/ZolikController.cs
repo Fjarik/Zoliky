@@ -33,6 +33,26 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 			return View(model);
 		}
 
+		//public async Task<ActionResult> RemoveOld()
+		//{
+		//	var date = Ext.SchoolYearStart;
+		//	var all = await Mgr.GetAllAsync();
+		//	var a = all.Where(x => x.Enabled &&
+		//						   x.Created < date);
+		//	var teacherId = this.User.Identity.GetId();
+
+		//	foreach (var zolik in a) {
+		//		var res = await Mgr.RemoveAsync(zolik.ID, "Již neplatný žolík", teacherId);
+		//		if (!res.IsSuccess) {
+		//			this.AddErrorToastMessage("Vyskytla se chyba: " + res.GetStatusMessage());
+		//			return RedirectToAction("Dashboard");
+		//		}
+		//	}
+
+		//	this.AddSuccessToastMessage("Vše OK");
+		//	return RedirectToAction("Dashboard");
+		//}
+
 #region Create
 
 		public async Task<ActionResult> Create(string title = null, ZolikType? type = null, int? subjectId = null)
