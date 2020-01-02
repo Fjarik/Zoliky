@@ -8,7 +8,6 @@
 	<meta charset="utf-8" />
 	<meta name="description" content="Informační systém na správu žolíků na školách" />
 	@*<meta name="robots" content="noindex" />*@
-	<meta name="authors" content="Jiri Falta & Karel Koudelka" />
 	<meta name="application-name" content="@Globals.Name" data-version="@Globals.Version.ToString(3)" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<!-- /Meta -->
@@ -64,6 +63,9 @@
 
 	<!-- Scripts -->
 	@Scripts.Render("~/bundles/js/jquery")
+	<!-- Appzi: Capture Insightful Feedback -->
+	<script async src="https://w.appzi.io/bootstrap/bundle.js?token=1uo3k"></script>
+	<!-- /Appzi -->
 	@if (IsSectionDefined("scripts")) {
 		@RenderSection("scripts", false)
 	}
