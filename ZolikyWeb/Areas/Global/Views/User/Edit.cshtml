@@ -11,313 +11,343 @@
 
 
 <div class="row">
-<div class="col">
-<div class="card card-outline-info">
-<div class="card-header">
-	<h4 class="mb-0 text-white">
-		@if (Model.IsCreate) {
-			@:Vytvoření uživatele
-		} else {
-			if (Model.AllowEdit) {
-				@:Úprava uživatele
-			} else {
-				@:Detaily uživatele
-			}
-		}
-	</h4>
-</div>
-<div class="card-body">
-@using (Html.BeginForm(Model.ActionName, "User", new {Area = "Global"}, FormMethod.Post, new {@class = "form-horizontal"})) {
-	@Html.AntiForgeryToken()
-	@Html.SecureHiddenFor(x => x.ID)
-	<div class="form-body">
-	@Html.Partial("_PrevNextRecord", Model)
-	<h3 class="card-title">
-		Obecné
-	</h3>
-	<hr class="mt-0 m-b-40" />
-	<!-- row -->
-	<div class="row">
-		<!-- item -->
-		<div class="col-md-6">
-			<div class="form-group row">
-				<label class="control-label text-right col-md-3">ID</label>
-				<div class="col-md-9">
-					<p class="form-control-static text-right text-md-left">
-						@if (Model.IsCreate) {
-							@:Nový záznam
+	<div class="col">
+		<div class="card card-outline-info">
+			<div class="card-header">
+				<h4 class="mb-0 text-white">
+					@if (Model.IsCreate) {
+						@:Vytvoření uživatele
+					} else {
+						if (Model.AllowEdit) {
+							@:Úprava uživatele
 						} else {
-							@Model.ID
+							@:Detaily uživatele
 						}
-					</p>
-				</div>
+					}
+				</h4>
 			</div>
-		</div>
-		<!-- /item -->
-		<!-- item -->
-		<div class="col-md-6">
-			<div class="form-group row">
-				<label class="control-label text-right col-md-3">Přezdívka</label>
-				<div class="col-md-8">
-					@if (Model.AllowEdit) {
-						<div class="input-group">
-							@Html.MaterialTextBoxFor(x => x.Username, 1, "username", new Dictionary<string, object> {{"ID", "Username"}})
-							<div class="input-group-addon">
-								<button class="btn btn-secondary" type="button" id="btn-generate">
-									Generovat
-								</button>
+			<div class="card-body">
+				@using (Html.BeginForm(Model.ActionName, "User", new {Area = "Global"}, FormMethod.Post, new {@class = "form-horizontal"})) {
+					@Html.AntiForgeryToken()
+					@Html.SecureHiddenFor(x => x.ID)
+					<div class="form-body">
+					@Html.Partial("_PrevNextRecord", Model)
+					<h3 class="card-title">
+						Obecné
+					</h3>
+					<hr class="mt-0 m-b-40" />
+					<!-- row -->
+					<div class="row">
+						<!-- item -->
+						<div class="col-md-6">
+							<div class="form-group row">
+								<label class="control-label text-right col-md-3">ID</label>
+								<div class="col-md-9">
+									<p class="form-control-static text-right text-md-left">
+										@if (Model.IsCreate) {
+											@:Nový záznam
+										} else {
+											@Model.ID
+										}
+									</p>
+								</div>
 							</div>
 						</div>
-						@Html.ValidationMessageFor(x => x.Username)
-					} else {
-						<p class="form-control-static">
-							@(Model.Username)
-						</p>
-					}
-				</div>
-			</div>
-		</div>
-		<!-- /item -->
-	</div>
-	<!-- /row -->
-	<!-- row -->
-	<div class="row">
-		<!-- item -->
-		<div class="col-md-6">
-			<div class="form-group row">
-				<label class="control-label text-right col-md-3">Jméno</label>
-				<div class="col-md-9">
-					@if (Model.AllowEdit) {
-						@Html.MaterialTextBoxFor(x => x.Name, 2, "given-name", new Dictionary<string, object> {{"ID", "Firstname"}})
-						@Html.ValidationMessageFor(x => x.Name)
-					} else {
-						<p class="form-control-static">
-							@(Model.Name)
-						</p>
-					}
-				</div>
-			</div>
-		</div>
-		<!-- /item -->
-		<!-- item -->
-		<div class="col-md-6">
-			<div class="form-group row">
-				<label class="control-label text-right col-md-3">Příjmení</label>
-				<div class="col-md-8">
-					@if (Model.AllowEdit) {
-						@Html.MaterialTextBoxFor(x => x.Lastname, 3, "family-name", new Dictionary<string, object> {{"ID", "Lastname"}})
-						@Html.ValidationMessageFor(x => x.Lastname)
-					} else {
-						<p class="form-control-static">
-							@(Model.Lastname)
-						</p>
-					}
-				</div>
-			</div>
-		</div>
-		<!-- /item -->
-	</div>
-	<!-- /row -->
-
-	<h3 class="card-title">
-		Nastavení
-	</h3>
-	<hr class="mt-0 m-b-40" />
-	<!-- row -->
-	<div class="row">
-		<!-- item -->
-		<div class="col-md-6">
-			<div class="form-group row">
-				<label class="control-label text-right col-md-3">Email</label>
-				<div class="col-md-9">
-					@if (Model.AllowEdit) {
-						@Html.MaterialTextBoxFor(x => x.Email, 5, "email")
-						@Html.ValidationMessageFor(x => x.Email)
-					} else {
-						<p class="form-control-static">
-							@(Model.Email)
-						</p>
-					}
-				</div>
-			</div>
-		</div>
-		<!-- /item -->
-		<!-- item -->
-		<div class="col-md-6">
-			<div class="form-group row">
-				<label class="control-label text-right col-md-3">Pohlaví</label>
-				<div class="col-md-8">
-					@if (Model.AllowEdit) {
-						@Html.DropDownListFor(x => x.Sex, Model.GenderSelect, new {@class = "form-control custom-select", autocomplete = "sex", tabindex = 6})
-					} else {
-						<p class="form-control-static">
-							@Model.Sex.GetDescription()
-						</p>
-					}
-				</div>
-			</div>
-		</div>
-		<!-- /item -->
-	</div>
-	<!-- /row -->
-	<!-- row -->
-	<div class="row">
-		<!-- item -->
-		<div class="col-md-6">
-			<div class="form-group row">
-				<label class="control-label text-right col-md-3">Aktivní</label>
-				<div class="col-md-9">
-					@if (Model.AllowEdit) {
-						@Html.CheckBoxSimple(x => x.Enabled, new {@class = "filled-in chk-col-light-blue", tabindex = 5})
-						@Html.NoSelectLaberFor(x => x.Enabled)
-						@Html.ValidationMessageFor(x => x.Enabled)
-					} else {
-						<p class="form-control-static">
-							@(Model.Enabled ? "Ano" : "Ne")
-						</p>
-					}
-				</div>
-			</div>
-		</div>
-		<!-- /item -->
-		<!-- item -->
-		<div class="col-md-6">
-			<div class="form-group row">
-				@if (Model.IsCreate) {
-					<label class="control-label text-right col-md-3">Heslo</label>
-					<div class="col-md-8">
-						@if (Model.AllowEdit) {
-							@Html.MaterialPasswordFor(x => x.Password, 6, "new-password")
-							@Html.ValidationMessageFor(x => x.Password)
-						}
-					</div>
-				} else {
-					<label class="control-label text-right col-md-3">Email potvrzen</label>
-					<div class="col-md-8">
-						@if (Model.AllowEdit) {
-							@Html.CheckBoxSimple(x => x.EmailConfirmed, new {@class = "filled-in chk-col-light-blue", tabindex = 6})
-							@Html.NoSelectLaberFor(x => x.EmailConfirmed)
-							@Html.ValidationMessageFor(x => x.EmailConfirmed)
-						} else {
-							<p class="form-control-static">
-								@(Model.EmailConfirmed ? "Ano" : "Ne")
-							</p>
-						}
-					</div>
-				}
-			</div>
-		</div>
-		<!-- /item -->
-	</div>
-	<!-- /row -->
-
-	<h3 class="card-title">
-		Pokročilé
-	</h3>
-	<hr class="mt-0 m-b-40" />
-	<!-- row -->
-	<div class="row">
-		<!-- item -->
-		<div class="col-md-6">
-			<div class="form-group row">
-				<label class="control-label text-right col-md-3">Škola</label>
-				<div class="col-md-9">
-					@Html.HiddenFor(x => x.SchoolID)
-					@if (Model.AllowEdit) {
-						@Html.DropDownListFor(x => x.SchoolID, Model.SchoolSelect, new {@class = "form-control custom-select", id = "schools", tabindex = 7})
-					} else {
-						<span class="c-help" data-toggle="tooltip" data-original-title="Školu nelze změnit">
-							@Model.SchoolName
-						</span>
-					}
-				</div>
-			</div>
-		</div>
-		<!-- /item -->
-		<!-- item -->
-		<div class="col-md-6">
-			@if (!Model.IsTeacher) {
-				<div class="form-group row">
-					<label class="control-label text-right col-md-3">Třída</label>
-					<div class="col-md-9">
-						@if (Model.AllowEdit) {
-							<div class="linear-activity" title="Probíhá načítání" data-toggle="tooltip" style="display: none;">
-								<div class="indeterminate"></div>
+						<!-- /item -->
+						<!-- item -->
+						<div class="col-md-6">
+							<div class="form-group row">
+								<label class="control-label text-right col-md-3">Přezdívka</label>
+								<div class="col-md-8">
+									@if (Model.AllowEdit) {
+										<div class="input-group">
+											@Html.MaterialTextBoxFor(x => x.Username, 1, "username", new Dictionary<string, object> {{"ID", "Username"}})
+											<div class="input-group-addon">
+												<button class="btn btn-secondary" type="button" id="btn-generate">
+													Generovat
+												</button>
+											</div>
+										</div>
+										@Html.ValidationMessageFor(x => x.Username)
+									} else {
+										<p class="form-control-static">
+											@(Model.Username)
+										</p>
+									}
+								</div>
 							</div>
-							<div id="classContainer">
-								@Html.DropDownListFor(x => x.ClassID, Model.ClassSelect, new {@class = "form-control custom-select", id = "classes", tabindex = 8})
+						</div>
+						<!-- /item -->
+					</div>
+					<!-- /row -->
+					<!-- row -->
+					<div class="row">
+						<!-- item -->
+						<div class="col-md-6">
+							<div class="form-group row">
+								<label class="control-label text-right col-md-3">Jméno</label>
+								<div class="col-md-9">
+									@if (Model.AllowEdit) {
+										@Html.MaterialTextBoxFor(x => x.Name, 2, "given-name", new Dictionary<string, object> {{"ID", "Firstname"}})
+										@Html.ValidationMessageFor(x => x.Name)
+									} else {
+										<p class="form-control-static">
+											@(Model.Name)
+										</p>
+									}
+								</div>
 							</div>
-						} else {
-							<span class="c-help" data-toggle="tooltip" data-original-title="@Model.ClassDate">
-								@Model.ClassName
-							</span>
+						</div>
+						<!-- /item -->
+						<!-- item -->
+						<div class="col-md-6">
+							<div class="form-group row">
+								<label class="control-label text-right col-md-3">Příjmení</label>
+								<div class="col-md-8">
+									@if (Model.AllowEdit) {
+										@Html.MaterialTextBoxFor(x => x.Lastname, 3, "family-name", new Dictionary<string, object> {{"ID", "Lastname"}})
+										@Html.ValidationMessageFor(x => x.Lastname)
+									} else {
+										<p class="form-control-static">
+											@(Model.Lastname)
+										</p>
+									}
+								</div>
+							</div>
+						</div>
+						<!-- /item -->
+					</div>
+					<!-- /row -->
+					<!-- row -->
+					<div class="row">
+						<!-- item -->
+						<div class="col-md-6">
+							<div class="form-group row">
+								<label class="control-label text-right col-md-3">Datum registrace</label>
+								<div class="col-md-9">
+									<p class="form-control-static">
+										@Model.RegistrationDate.ToString("dd.MM.yyyy")
+									</p>
+								</div>
+							</div>
+						</div>
+						<!-- /item -->
+						@if (Model.LastLoginDate != null) {
+							<!-- item -->
+							<div class="col-md-6">
+								<div class="form-group row">
+									<label class="control-label text-right col-md-3">Poslední přihlášení</label>
+									<div class="col-md-8">
+										<p class="form-control-static">
+											@(Model.LastLoginDate?.ToString("dd.MM.yyyy"))
+										</p>
+									</div>
+								</div>
+							</div>
+							<!-- /item -->
 						}
 					</div>
-				</div>
-			}
-		</div>
-		<!-- /item -->
-	</div>
-	<!-- /row -->
-	<!-- row -->
-	<div class="row">
-		<!-- item -->
-		<div class="col-md-6">
-			<div class="form-group row">
-				<label class="control-label text-right col-md-3">Role</label>
-				<div class="col-md-9">
-					@if (Model.AllowEdit) {
-						@Html.ListBoxFor(x => x.RoleIds, Model.RoleList, new {multiple = "multiple", @class = "form-control", size = 8, id = "select-roles"})
-					} else {
-						@Html.ListBox("AAA", Model.RoleList, new {multiple = "multiple", @class = "form-control", size = 8, disabled = "disabled"})
-					}
-				</div>
-			</div>
-		</div>
-		<!-- /item -->
-		<!-- item -->
-		<div class="col-md-6">
+					<!-- /row -->	
 
-		</div>
-		<!-- /item -->
-	</div>
-	<!-- /row -->
-	</div>
-	<hr />
-	<div class="form-actions">
-		<div class="row">
-			<div class="col-md-6">
-				@if (Model.AllowEdit) {
-					<button type="submit" class="btn btn-primary" tabindex="5">
-						Uložit
-					</button>
-					if (!Model.IsCreate) {
-						<a href="@Url.Action("Detail", new {id = Model.ID})" class="btn btn-warning" tabindex="6">
-							Zobrazit pouze detaily
-						</a>
-					}
-				} else {
-					<a href="@Url.Action("Edit", new {id = Model.ID})" class="btn btn-primary" tabindex="6">
-						Režim úprav
-					</a>
+					<h3 class="card-title">
+						Nastavení
+					</h3>
+					<hr class="mt-0 m-b-40" />
+					<!-- row -->
+					<div class="row">
+						<!-- item -->
+						<div class="col-md-6">
+							<div class="form-group row">
+								<label class="control-label text-right col-md-3">Email</label>
+								<div class="col-md-9">
+									@if (Model.AllowEdit) {
+										@Html.MaterialTextBoxFor(x => x.Email, 5, "email")
+										@Html.ValidationMessageFor(x => x.Email)
+									} else {
+										<p class="form-control-static">
+											@(Model.Email)
+										</p>
+									}
+								</div>
+							</div>
+						</div>
+						<!-- /item -->
+						<!-- item -->
+						<div class="col-md-6">
+							<div class="form-group row">
+								<label class="control-label text-right col-md-3">Pohlaví</label>
+								<div class="col-md-8">
+									@if (Model.AllowEdit) {
+										@Html.DropDownListFor(x => x.Sex, Model.GenderSelect, new {@class = "form-control custom-select", autocomplete = "sex", tabindex = 6})
+									} else {
+										<p class="form-control-static">
+											@Model.Sex.GetDescription()
+										</p>
+									}
+								</div>
+							</div>
+						</div>
+						<!-- /item -->
+					</div>
+					<!-- /row -->
+					<!-- row -->
+					<div class="row">
+						<!-- item -->
+						<div class="col-md-6">
+							<div class="form-group row">
+								<label class="control-label text-right col-md-3">Aktivní</label>
+								<div class="col-md-9">
+									@if (Model.AllowEdit) {
+										@Html.CheckBoxSimple(x => x.Enabled, new {@class = "filled-in chk-col-light-blue", tabindex = 5})
+										@Html.NoSelectLaberFor(x => x.Enabled)
+										@Html.ValidationMessageFor(x => x.Enabled)
+									} else {
+										<p class="form-control-static">
+											@(Model.Enabled ? "Ano" : "Ne")
+										</p>
+									}
+								</div>
+							</div>
+						</div>
+						<!-- /item -->
+						<!-- item -->
+						<div class="col-md-6">
+							<div class="form-group row">
+								@if (Model.IsCreate) {
+									<label class="control-label text-right col-md-3">Heslo</label>
+									<div class="col-md-8">
+										@if (Model.AllowEdit) {
+											@Html.MaterialPasswordFor(x => x.Password, 6, "new-password")
+											@Html.ValidationMessageFor(x => x.Password)
+										}
+									</div>
+								} else {
+									<label class="control-label text-right col-md-3">Email potvrzen</label>
+									<div class="col-md-8">
+										@if (Model.AllowEdit) {
+											@Html.CheckBoxSimple(x => x.EmailConfirmed, new {@class = "filled-in chk-col-light-blue", tabindex = 6})
+											@Html.NoSelectLaberFor(x => x.EmailConfirmed)
+											@Html.ValidationMessageFor(x => x.EmailConfirmed)
+										} else {
+											<p class="form-control-static">
+												@(Model.EmailConfirmed ? "Ano" : "Ne")
+											</p>
+										}
+									</div>
+								}
+							</div>
+						</div>
+						<!-- /item -->
+					</div>
+					<!-- /row -->
+
+					<h3 class="card-title">
+						Pokročilé
+					</h3>
+					<hr class="mt-0 m-b-40" />
+					<!-- row -->
+					<div class="row">
+						<!-- item -->
+						<div class="col-md-6">
+							<div class="form-group row">
+								<label class="control-label text-right col-md-3">Škola</label>
+								<div class="col-md-9">
+									@Html.HiddenFor(x => x.SchoolID)
+									@if (Model.AllowEdit) {
+										@Html.DropDownListFor(x => x.SchoolID, Model.SchoolSelect, new {@class = "form-control custom-select", id = "schools", tabindex = 7})
+									} else {
+										<span class="c-help" data-toggle="tooltip" data-original-title="Školu nelze změnit">
+											@Model.SchoolName
+										</span>
+									}
+								</div>
+							</div>
+						</div>
+						<!-- /item -->
+						<!-- item -->
+						<div class="col-md-6">
+							@if (!Model.IsTeacher) {
+								<div class="form-group row">
+									<label class="control-label text-right col-md-3">Třída</label>
+									<div class="col-md-9">
+										@if (Model.AllowEdit) {
+											<div class="linear-activity" title="Probíhá načítání" data-toggle="tooltip" style="display: none;">
+												<div class="indeterminate"></div>
+											</div>
+											<div id="classContainer">
+												@Html.DropDownListFor(x => x.ClassID, Model.ClassSelect, new {@class = "form-control custom-select", id = "classes", tabindex = 8})
+											</div>
+										} else {
+											<span class="c-help" data-toggle="tooltip" data-original-title="@Model.ClassDate">
+												@Model.ClassName
+											</span>
+										}
+									</div>
+								</div>
+							}
+						</div>
+						<!-- /item -->
+					</div>
+					<!-- /row -->
+					<!-- row -->
+					<div class="row">
+						<!-- item -->
+						<div class="col-md-6">
+							<div class="form-group row">
+								<label class="control-label text-right col-md-3">Role</label>
+								<div class="col-md-9">
+									@if (Model.AllowEdit) {
+										@Html.ListBoxFor(x => x.RoleIds, Model.RoleList, new {multiple = "multiple", @class = "form-control", size = 8, id = "select-roles"})
+									} else {
+										@Html.ListBox("AAA", Model.RoleList, new {multiple = "multiple", @class = "form-control", size = 8, disabled = "disabled"})
+									}
+								</div>
+							</div>
+						</div>
+						<!-- /item -->
+						<!-- item -->
+						<div class="col-md-6">
+
+						</div>
+						<!-- /item -->
+					</div>
+					<!-- /row -->
+					</div>
+					<hr />
+					<div class="form-actions">
+						<div class="row">
+							<div class="col-md-6">
+								@if (Model.AllowEdit) {
+									<button type="submit" class="btn btn-primary" tabindex="5">
+										Uložit
+									</button>
+									if (!Model.IsCreate) {
+										<a href="@Url.Action("Detail", new {id = Model.ID})" class="btn btn-warning" tabindex="6">
+											Zobrazit pouze detaily
+										</a>
+									}
+								} else {
+									<a href="@Url.Action("Edit", new {id = Model.ID})" class="btn btn-primary" tabindex="6">
+										Režim úprav
+									</a>
+								}
+								<a href="@Url.Action("Dashboard")" class="btn btn-success" tabindex="7">
+									Zpět
+								</a>
+							</div>
+							<div class="col-md-6 text-right">
+								@if (Model.AllowRemove) {
+									<a href="#" class="text-danger" data-toggle="modal" data-target="#modalDelete">
+										Odstranit studenta
+									</a>
+								}
+							</div>
+						</div>
+					</div>
 				}
-				<a href="@Url.Action("Dashboard")" class="btn btn-success" tabindex="7">
-					Zpět
-				</a>
-			</div>
-			<div class="col-md-6 text-right">
-				@if (Model.AllowRemove) {
-					<a href="#" class="text-danger" data-toggle="modal" data-target="#modalDelete">
-						Odstranit studenta
-					</a>
-				}
 			</div>
 		</div>
 	</div>
-}
-</div>
-</div>
-</div>
 </div>
 
 @section header {

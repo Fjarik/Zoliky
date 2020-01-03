@@ -57,6 +57,13 @@ namespace ZolikyWeb.Areas.Global.Models.User
 		[RegularExpression(Ext.NameRegEx, ErrorMessage = "Příjmení není ve správném formátu")]
 		public string Lastname { get; set; }
 
+
+		[Display(Name = "Datum registrace")]
+		public DateTime RegistrationDate { get; set; }
+
+		[Display(Name = "Datum posledního přihlášení")]
+		public DateTime? LastLoginDate { get; set; }
+
 		[Required(ErrorMessage = "Musíte vybrat pohlaví")]
 		public Sex Sex { get; set; }
 
@@ -189,6 +196,8 @@ namespace ZolikyWeb.Areas.Global.Models.User
 			this.Enabled = ent.Enabled;
 			this.EmailConfirmed = ent.EmailConfirmed;
 			this.SchoolName = ent.SchoolName;
+			this.RegistrationDate = ent.MemberSince;
+			this.LastLoginDate = ent.LastLoginDate;
 			this.ClassName = ent.ClassName ?? "-";
 			this.RoleIds = ent.Roles.Select(x => x.ID).ToList();
 			this.ClassDate = $"{ent.Class?.Since.Year} - {ent.Class?.Graduation.Year}";

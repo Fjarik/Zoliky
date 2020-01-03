@@ -102,7 +102,7 @@ namespace DataAccess.Managers
 									  x.AchievementId == achId);
 		}
 
-		public async Task<MActionResult<AchievementUnlock>> UnlockAsync(int userId, int achId)
+		public async Task<MActionResult<AchievementUnlock>> UnlockAsync(int userId, int achId, int xp)
 		{
 			if (userId < 1 || achId < 1) {
 				return new MActionResult<AchievementUnlock>(StatusCode.NotValidID);
@@ -115,7 +115,7 @@ namespace DataAccess.Managers
 				AchievementId = achId,
 				When = DateTime.Now
 			};
-			return await this.CreateUnlockAsync(ent);
+			return await this.CreateUnlockAsync(ent, xp);
 		}
 
 		public async Task<MActionResult<Achievement>> CreateAsync(string title,
@@ -137,7 +137,7 @@ namespace DataAccess.Managers
 			return await base.CreateAsync(ent);
 		}
 
-		private async Task<MActionResult<AchievementUnlock>> CreateUnlockAsync(AchievementUnlock unlock)
+		private async Task<MActionResult<AchievementUnlock>> CreateUnlockAsync(AchievementUnlock unlock, int xp)
 		{
 			var ent = _ctx.AchievementUnlocks.Add(unlock);
 			var changes = await base.SaveAsync();
@@ -149,6 +149,13 @@ namespace DataAccess.Managers
 							.Include(x => x.Achievement)
 							.FirstOrDefaultAsync(x => x.UserId == ent.UserId &&
 													  x.AchievementId == ent.AchievementId);
+
+			var uMgr = this.Context.Get<UserManager>();
+			try {
+				await uMgr.AddXpAsync(xp, unlock.UserId);
+			} catch {
+				// ignored
+			}
 			return new MActionResult<AchievementUnlock>(StatusCode.OK, ent);
 		}
 
@@ -176,7 +183,7 @@ namespace DataAccess.Managers
 			if (val < 1 || val < ach.ValueToUnlock) {
 				return false;
 			}
-			var res = await this.UnlockAsync(userId, ach.ID);
+			var res = await this.UnlockAsync(userId, ach.ID, ach.XP);
 			return res.IsSuccess;
 		}
 
