@@ -7,6 +7,7 @@
                       xmlns:local="clr-namespace:RolesEditor"
                       xmlns:models="clr-namespace:DataAccess.Models;assembly=DataAccess"
                       mc:Ignorable="d"
+					  Loaded="MainWin_OnLoaded"
                       Title="Uživatelské role" MinHeight="450" Height="450" MinWidth="800" Width="800">
 	<Grid>
 		<Grid.ColumnDefinitions>

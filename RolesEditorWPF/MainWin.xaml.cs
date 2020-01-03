@@ -16,6 +16,8 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using DataAccess.Models;
 using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
+using SharedLibrary.Shared;
 
 namespace RolesEditor
 {
@@ -37,27 +39,50 @@ namespace RolesEditor
 				ChBoxRobot, ChBoxDeveloper,
 				ChBoxManager
 			};
-			BtnLoadUsers_Click(null, new RoutedEventArgs());
 		}
 
-		private void BtnLoadUsers_Click(object sender, RoutedEventArgs e)
+		private async void BtnLoadUsers_Click(object sender, RoutedEventArgs e)
 		{
+			await LoadStudents();
+		}
+
+		private async Task LoadStudents()
+		{
+			var controller = await this.ShowProgressAsync("Prosíme, čekejte", "Probíhá načítání");
 			ListUsers.Items.Clear();
 			using (var ent = new ZoliksEntities()) {
-				foreach (var user in ent.Users
-										.Include(x => x.Class)
-										.Include(x => x.Roles)
-										.OrderBy(x => x.Class.Name)
-										.ThenBy(x => x.Name)) {
+				var users = await ent.Users
+									 .Include(x => x.Class)
+									 .Include(x => x.Roles)
+									 .Where(x => x.ClassID == null ||
+												 x.Class.Enabled)
+									 .OrderBy(x => x.Class.Name)
+									 .ThenBy(x => x.Name)
+									 .ToListAsync();
+				foreach (var user in users) {
+					var school = user.SchoolName.Substring(0, 5);
+					var color = Brushes.Black;
+					if (user.IsInRole(UserRoles.Tester)) {
+						color = Brushes.Green;
+					}
+					if (!user.IsEnabled) {
+						color = Brushes.Red;
+					}
+					var cl = "";
+					if (user.Class != null) {
+						cl = $"({user.ClassName})";
+					}
 					ListUsers.Items.Add(new ListBoxItem() {
-						Content = $"{user.FullName} ({user.Class?.Name})",
-						Tag = user.ID
+						Content = $"{user.FullName} - {school} {cl}",
+						Tag = user.ID,
+						Foreground = color
 					});
 				}
 			}
 			foreach (var checkBox in _checkBoxes) {
 				checkBox.IsChecked = false;
 			}
+			await controller.CloseAsync();
 		}
 
 		private async void ListUsers_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -93,6 +118,7 @@ namespace RolesEditor
 				return;
 			}
 
+			var controller = await this.ShowProgressAsync("Prosíme, čekejte", "Probíhá ukládání", false);
 			IList<int> checkedIds = _checkBoxes.Where(x => x.IsChecked == true)
 											   .Select(x => int.Parse(x.Tag.ToString()))
 											   .ToList();
@@ -103,6 +129,7 @@ namespace RolesEditor
 			using (var ent = new ZoliksEntities()) {
 				var u = await ent.Users.Include(x => x.Roles).FirstOrDefaultAsync(x => x.ID == id);
 				if (u == null) {
+					await controller.CloseAsync();
 					return;
 				}
 
@@ -123,7 +150,13 @@ namespace RolesEditor
 				}
 				await ent.SaveChangesAsync();
 			}
-			BtnLoadUsers_Click(sender, e);
+			await controller.CloseAsync();
+			await LoadStudents();
+		}
+
+		private async void MainWin_OnLoaded(object sender, RoutedEventArgs e)
+		{
+			await LoadStudents();
 		}
 	}
 }
