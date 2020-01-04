@@ -135,6 +135,10 @@
 	<script type="text/javascript" src="@Url.Content("~/assets/plugins/dropify/js/dropify.min.js")"></script>
 	<script type="text/javascript">
 		window.onload = () => {
+			if(performance.navigation.type === 2){
+				location.reload(true);
+			}
+
 			const id = @Model.TabId;
 			const items = $("ul.nav.nav-tabs.tabs-vertical a.nav-link");
 			$(items[id - 1]).click();
