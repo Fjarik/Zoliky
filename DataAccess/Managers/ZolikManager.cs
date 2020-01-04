@@ -371,6 +371,9 @@ namespace DataAccess.Managers
 				await UpdateStatisticsAsync(fromId, toId, z.Type, type);
 
 				var notify = type.IsNotifyType() && toId != Ext.BankId; // Nespamovat email při odebírání 
+				if (z.Type.IsTesterType() && type == TransactionAssignment.NewAssignment) {
+					notify = false;
+				}
 				if (notify) {
 					var eMgr = Context.Get<MailManager>();
 					var email = await eMgr.NewZolikAsync(toId, z, tran);

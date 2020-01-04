@@ -67,6 +67,8 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 			var sMgr = this.GetManager<SchoolManager>();
 			var subjects = await sMgr.GetSubjectsAsync(schoolId);
 			var students = await sMgr.GetStudentsAsync(schoolId, logged.ID);
+			students = students.Where(x => x.Enabled)
+							   .ToList();
 			var isTester = this.User.Identity.IsTester();
 
 			var model = ZolikModel.CreateModel(logged, subjects, students.ToList<IUser>(), isTester);
