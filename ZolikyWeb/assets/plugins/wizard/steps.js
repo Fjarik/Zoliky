@@ -15,7 +15,6 @@ $(function() {
 			loading: "Načítání"
 		},
 		onFinished: function(event, currentIndex) {
-			console.log(window.location.href);
 			const url = window.location.href;
 			const last = url.lastIndexOf("Mobile");
 			window.location.href = url.substring(0, last);
