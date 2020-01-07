@@ -11,15 +11,17 @@ import 'package:zoliky_teachers/utils/Global.dart';
 import 'package:zoliky_teachers/utils/Singleton.dart';
 import 'package:zoliky_teachers/utils/api/connectors/ZolikConnector.dart';
 import 'package:zoliky_teachers/utils/api/models/Class.dart';
+import 'package:zoliky_teachers/utils/api/models/Subject.dart';
 import 'package:zoliky_teachers/utils/api/models/Zolik.dart';
 import 'package:zoliky_teachers/utils/enums/ZolikSort.dart';
 
 class _ZolikFilter {
   _ZolikFilter();
 
-  _ZolikFilter.content({this.classId, this.onlyMe});
+  _ZolikFilter.content({this.classId, this.onlyMe, this.subjectId});
 
   int classId;
+  int subjectId;
   bool onlyMe;
 }
 
@@ -29,6 +31,11 @@ class ZoliksPageState extends State<ZoliksPage> {
     _classes.add(Class()
       ..id = -1
       ..name = "Všechny");
+    _subjects.addAll(Global.subjects);
+    _subjects.add(Subject()
+      ..id = -1
+      ..name = "Všechny"
+      ..shortcut = "Všechny");
   }
 
   final FirebaseAnalytics analytics;
@@ -37,11 +44,19 @@ class ZoliksPageState extends State<ZoliksPage> {
   final RefreshController _rController = RefreshController();
 
   List<Class> _classes = List<Class>();
+  List<Subject> _subjects = List<Subject>();
 
   List<DropdownMenuItem<int>> get _dropClasses => _classes
       .map((c) => DropdownMenuItem<int>(
             value: c.id,
             child: Text(c.name),
+          ))
+      .toList();
+
+  List<DropdownMenuItem<int>> get _dropSubjects => _subjects
+      .map((x) => DropdownMenuItem<int>(
+            value: x.id,
+            child: Text(x.shortcut),
           ))
       .toList();
 
@@ -54,6 +69,7 @@ class ZoliksPageState extends State<ZoliksPage> {
   int classIdOnly = -1;
   ZolikSort sortBy = ZolikSort.id;
   bool onlyMe = false;
+  int subjectId = -1;
   bool ascending = false;
 
   @override
@@ -134,6 +150,7 @@ class ZoliksPageState extends State<ZoliksPage> {
       builder: (BuildContext ctx) {
         int selectedId = classIdOnly;
         bool onlyMee = onlyMe;
+        int sId = subjectId;
         return AlertDialog(
           title: Text("Filtrování žolíků"),
           content: StatefulBuilder(
@@ -161,6 +178,23 @@ class ZoliksPageState extends State<ZoliksPage> {
                         },
                       ),
                     ),
+                    Padding(
+                      padding: EdgeInsets.only(left: 16),
+                      child: Text("Podle předmětu:"),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(left: 16),
+                      child: DropdownButton<int>(
+                        items: _dropSubjects,
+                        hint: Text("Filtrování žolíků podle předmětu"),
+                        value: sId,
+                        onChanged: (int id) {
+                          sState(() {
+                            sId = id;
+                          });
+                        },
+                      ),
+                    ),
                     CheckboxListTile(
                       title: Text("Pouze mnou přidělené"),
                       subtitle: Text(
@@ -180,6 +214,12 @@ class ZoliksPageState extends State<ZoliksPage> {
           ),
           actions: <Widget>[
             FlatButton(
+              child: Text("Vymazat filtry"),
+              onPressed: () {
+                Navigator.of(ctx).pop<_ZolikFilter>(_ZolikFilter());
+              },
+            ),
+            FlatButton(
               child: Text("Zrušit"),
               onPressed: () {
                 Navigator.of(ctx).pop<_ZolikFilter>(null);
@@ -191,6 +231,7 @@ class ZoliksPageState extends State<ZoliksPage> {
                 Navigator.of(ctx).pop<_ZolikFilter>(_ZolikFilter.content(
                   classId: selectedId,
                   onlyMe: onlyMee,
+                  subjectId: sId,
                 ));
               },
             ),
@@ -202,8 +243,9 @@ class ZoliksPageState extends State<ZoliksPage> {
       return;
     }
     setState(() {
-      classIdOnly = res.classId;
-      onlyMe = res.onlyMe;
+      classIdOnly = res?.classId;
+      onlyMe = res?.onlyMe ?? false;
+      subjectId = res?.subjectId;
     });
   }
 
@@ -292,8 +334,11 @@ class ZoliksPageState extends State<ZoliksPage> {
             if (classIdOnly != null && classIdOnly != -1) {
               _z = _z.where((x) => x.ownerClassId == classIdOnly);
             }
-            if (onlyMe){
-              _z = _z.where((x)=> x.teacherId == Singleton().user.id);
+            if (onlyMe) {
+              _z = _z.where((x) => x.teacherId == Singleton().user.id);
+            }
+            if (subjectId != null && subjectId != -1) {
+              _z = _z.where((x) => x.subjectId == subjectId);
             }
             _zoliks = _z.toList();
 
