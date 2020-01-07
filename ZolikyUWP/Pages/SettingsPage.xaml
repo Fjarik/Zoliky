@@ -148,9 +148,8 @@
 					<StackPanel Orientation="Vertical"
 					            Grid.Row="0" Grid.Column="0">
 						<TextBlock Style="{ThemeResource TitleTextBlockStyle}"
-						           Text="Vývojáři:" />
+						           Text="Vývojář:" />
 						<TextBlock Text="Jiří Falta" />
-						<TextBlock Text="Karel Koudelka" />
 					</StackPanel>
 
 					<StackPanel Orientation="Vertical"
