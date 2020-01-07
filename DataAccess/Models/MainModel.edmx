@@ -55,9 +55,7 @@
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="OwnerID" Type="int" />
           <Property Name="Uploaded" Type="datetime" Nullable="false" />
-          <Property Name="URL" Type="nvarchar(max)" />
           <Property Name="Name" Type="varchar" MaxLength="50" />
-          <Property Name="Description" Type="nvarchar(max)" />
           <Property Name="Hash" Type="nvarchar" MaxLength="330" />
           <Property Name="Base64" Type="varchar(max)" />
           <Property Name="MIME" Type="varchar" MaxLength="20" />

@@ -14,6 +14,15 @@ import 'package:zoliky_teachers/utils/api/models/Class.dart';
 import 'package:zoliky_teachers/utils/api/models/Zolik.dart';
 import 'package:zoliky_teachers/utils/enums/ZolikSort.dart';
 
+class _ZolikFilter {
+  _ZolikFilter();
+
+  _ZolikFilter.content({this.classId, this.onlyMe});
+
+  int classId;
+  bool onlyMe;
+}
+
 class ZoliksPageState extends State<ZoliksPage> {
   ZoliksPageState(this.analytics, this.observer) {
     _classes.addAll(Global.classes);
@@ -44,6 +53,7 @@ class ZoliksPageState extends State<ZoliksPage> {
 
   int classIdOnly = -1;
   ZolikSort sortBy = ZolikSort.id;
+  bool onlyMe = false;
   bool ascending = false;
 
   @override
@@ -119,10 +129,11 @@ class ZoliksPageState extends State<ZoliksPage> {
   }
 
   Future<void> _filterClick() async {
-    var res = await showDialog<int>(
+    var res = await showDialog<_ZolikFilter>(
       context: context,
       builder: (BuildContext ctx) {
         int selectedId = classIdOnly;
+        bool onlyMee = onlyMe;
         return AlertDialog(
           title: Text("Filtrování žolíků"),
           content: StatefulBuilder(
@@ -133,14 +144,32 @@ class ZoliksPageState extends State<ZoliksPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    Text("Podle třídy:"),
-                    DropdownButton<int>(
-                      items: _dropClasses,
-                      hint: Text("Filtrování žolíků podle třídy"),
-                      value: selectedId,
-                      onChanged: (int id) {
+                    Padding(
+                      padding: EdgeInsets.only(left: 16),
+                      child: Text("Podle třídy:"),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(left: 16),
+                      child: DropdownButton<int>(
+                        items: _dropClasses,
+                        hint: Text("Filtrování žolíků podle třídy"),
+                        value: selectedId,
+                        onChanged: (int id) {
+                          sState(() {
+                            selectedId = id;
+                          });
+                        },
+                      ),
+                    ),
+                    CheckboxListTile(
+                      title: Text("Pouze mnou přidělené"),
+                      subtitle: Text(
+                        "Zobrazovat pouze žolíky, kteří byli přiděleni Vámi",
+                      ),
+                      value: onlyMee,
+                      onChanged: (bool val) {
                         sState(() {
-                          selectedId = id;
+                          onlyMee = val;
                         });
                       },
                     ),
@@ -153,13 +182,16 @@ class ZoliksPageState extends State<ZoliksPage> {
             FlatButton(
               child: Text("Zrušit"),
               onPressed: () {
-                Navigator.of(ctx).pop<int>(null);
+                Navigator.of(ctx).pop<_ZolikFilter>(null);
               },
             ),
             FlatButton(
               child: Text("OK"),
               onPressed: () {
-                Navigator.of(ctx).pop<int>(selectedId);
+                Navigator.of(ctx).pop<_ZolikFilter>(_ZolikFilter.content(
+                  classId: selectedId,
+                  onlyMe: onlyMee,
+                ));
               },
             ),
           ],
@@ -170,7 +202,8 @@ class ZoliksPageState extends State<ZoliksPage> {
       return;
     }
     setState(() {
-      classIdOnly = res;
+      classIdOnly = res.classId;
+      onlyMe = res.onlyMe;
     });
   }
 
@@ -258,6 +291,9 @@ class ZoliksPageState extends State<ZoliksPage> {
             }
             if (classIdOnly != null && classIdOnly != -1) {
               _z = _z.where((x) => x.ownerClassId == classIdOnly);
+            }
+            if (onlyMe){
+              _z = _z.where((x)=> x.teacherId == Singleton().user.id);
             }
             _zoliks = _z.toList();
 
