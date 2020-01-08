@@ -171,7 +171,7 @@ class ZolikCreatePageState extends State<ZolikCreatePage> {
             body: SingleChildScrollView(
               padding: EdgeInsets.only(bottom: 50),
               child: Padding(
-                padding: EdgeInsets.all(10),
+                padding: EdgeInsets.symmetric(horizontal: 5),
                 child: Container(
                   child: Form(
                     key: _formKey,

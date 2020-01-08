@@ -86,7 +86,9 @@ class LoginPageState extends State<LoginPage>
         _txtUsername.text = username;
       }
       var signIn = prefs.containsKey(SettingKeys.autoLogin) &&
-          prefs.getBool(SettingKeys.autoLogin);
+          prefs.getBool(SettingKeys.autoLogin) &&
+          prefs.containsKey(SettingKeys.biometics) &&
+          prefs.getBool(SettingKeys.biometics);
       if (autoLogin && signIn) {
         _initByTokenAsync(prefs).then((res) {
           _setLoading(false);

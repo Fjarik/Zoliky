@@ -141,7 +141,7 @@ class ZolikRemovePageState extends State<ZolikRemovePage> {
               padding: EdgeInsets.zero,
               scrollDirection: Axis.vertical,
               child: Padding(
-                padding: EdgeInsets.all(10),
+                padding: EdgeInsets.symmetric(horizontal: 5),
                 child: Container(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,

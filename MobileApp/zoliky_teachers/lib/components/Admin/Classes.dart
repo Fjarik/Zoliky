@@ -128,7 +128,7 @@ class ClassPageState extends State<ClassesPage> {
         ],
       ),
       body: Padding(
-        padding: EdgeInsets.all(10),
+        padding: EdgeInsets.symmetric(horizontal: 5),
         child: FutureBuilder(
           future: _future,
           builder: (BuildContext ctx, AsyncSnapshot<List<Class>> snapshot) {

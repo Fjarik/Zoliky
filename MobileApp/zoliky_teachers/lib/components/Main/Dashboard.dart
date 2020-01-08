@@ -42,7 +42,7 @@ class DashboardPageState extends State<DashboardPage> {
     return Stack(
       children: <Widget>[
         Padding(
-          padding: EdgeInsets.only(top: 10),
+          padding: EdgeInsets.only(top: 0),
           child: SmartRefresher(
             controller: _refreshController,
             enablePullDown: true,
