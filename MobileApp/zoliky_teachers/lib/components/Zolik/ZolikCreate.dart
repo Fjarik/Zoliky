@@ -64,6 +64,7 @@ class ZolikCreatePageState extends State<ZolikCreatePage> {
   int studentId;
   ZolikType zolikType;
   bool allowSplit = true;
+  int _stepIndex = 0;
 
   void _setLoading(bool value) {
     setState(() {
@@ -140,7 +141,7 @@ class ZolikCreatePageState extends State<ZolikCreatePage> {
   Widget build(BuildContext context) {
     return isLoading
         ? Scaffold(
-            body: Global.loading(),
+            body: Global.loading(text: "Vytváří se žolík"),
           )
         : Scaffold(
             key: _key,
@@ -170,17 +171,15 @@ class ZolikCreatePageState extends State<ZolikCreatePage> {
             ),
             body: SingleChildScrollView(
               padding: EdgeInsets.only(bottom: 50),
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 5),
-                child: Container(
-                  child: Form(
-                    key: _formKey,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        _detailLine("Vyučující:", content: logged.fullName),
-                        _detailLine("Udělen za:"),
-                        TextFormField(
+              child: Container(
+                child: Form(
+                  key: _formKey,
+                  child: Stepper(
+                    steps: [
+                      Step(
+                        title: Text("Důvod udělení"),
+                        subtitle: Text("Za co je žolík udělen"),
+                        content: TextFormField(
                           controller: _txtTitle,
                           focusNode: _focusTitle,
                           autocorrect: true,
@@ -195,7 +194,7 @@ class ZolikCreatePageState extends State<ZolikCreatePage> {
                             FocusScope.of(context).unfocus();
                           },
                           decoration: InputDecoration(
-                            hintText: "Zadejte, za je udělen",
+                            hintText: "Zadejte důvod udělení",
                           ),
                           onChanged: (String val) {
                             _formKey.currentState.validate();
@@ -210,43 +209,53 @@ class ZolikCreatePageState extends State<ZolikCreatePage> {
                             return null;
                           },
                         ),
-                        _divider("Nastavení žolíka:"),
-                        _detailLineWidget("Typ:", Container()),
-                        DropdownButtonFormField<ZolikType>(
-                          items: _dropTypes,
-                          value: zolikType,
-                          hint: Text("Vyberte druh žolíka"),
-                          onChanged: (ZolikType value) {
-                            _formKey.currentState.validate();
-                            setState(() {
-                              zolikType = value;
-                              allowSplit = value.isSplittable;
-                            });
-                          },
-                          validator: (ZolikType value) {
-                            if (value == null) {
-                              return "Musíte vybrat druh žolíka";
-                            }
-                            return null;
-                          },
-                        ),
-                        Visibility(
-                          visible: zolikType?.isSplittable ?? false,
-                          child: _detailLineWidget(
-                            "Povolit rozdělení",
-                            Switch(
-                              value: allowSplit,
-                              onChanged: (bool value) {
+                      ),
+                      Step(
+                        title: Text("Nastavení"),
+                        subtitle: Text("Typ žolíka"),
+                        content: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            DropdownButtonFormField<ZolikType>(
+                              items: _dropTypes,
+                              value: zolikType,
+                              hint: Text("Vyberte druh žolíka"),
+                              onChanged: (ZolikType value) {
+                                _formKey.currentState.validate();
                                 setState(() {
-                                  allowSplit = value;
+                                  zolikType = value;
+                                  allowSplit = value.isSplittable;
                                 });
                               },
+                              validator: (ZolikType value) {
+                                if (value == null) {
+                                  return "Musíte vybrat druh žolíka";
+                                }
+                                return null;
+                              },
                             ),
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          ),
+                            Visibility(
+                              visible: zolikType?.isSplittable ?? false,
+                              child: _detailLineWidget(
+                                "Povolit rozdělení",
+                                Switch(
+                                  value: allowSplit,
+                                  onChanged: (bool value) {
+                                    setState(() {
+                                      allowSplit = value;
+                                    });
+                                  },
+                                ),
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                              ),
+                            ),
+                          ],
                         ),
-                        _detailLineWidget("Předmět:", Container()),
-                        DropdownButtonFormField<int>(
+                      ),
+                      Step(
+                        title: Text("Předmět"),
+                        content: DropdownButtonFormField<int>(
                           items: _dropSubjects,
                           value: subjectId,
                           hint: Text("Vyberte předmět"),
@@ -266,52 +275,98 @@ class ZolikCreatePageState extends State<ZolikCreatePage> {
                             return null;
                           },
                         ),
-                        _divider("Příjemce:"),
-                        _detailLineWidget("Třída:", Container()),
-                        DropdownButtonFormField<int>(
-                          items: _dropClasses,
-                          value: classId,
-                          hint: Text("Vyberte třídu"),
-                          onChanged: (int value) {
-                            _formKey.currentState.validate();
-                            setState(() {
-                              classId = value;
-                              studentId = null;
-                            });
-                          },
-                          validator: (int value) {
-                            if (value == null) {
-                              return "Musíte vybrat třídu";
-                            }
-                            if (value < 1) {
-                              return "Musíte vybrat platnou třídu";
-                            }
-                            return null;
-                          },
+                      ),
+                      Step(
+                        title: Text("Příjemce"),
+                        content: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            _detailLineWidget("Třída:", Container()),
+                            DropdownButtonFormField<int>(
+                              items: _dropClasses,
+                              value: classId,
+                              hint: Text("Vyberte třídu"),
+                              onChanged: (int value) {
+                                _formKey.currentState.validate();
+                                setState(() {
+                                  classId = value;
+                                  studentId = null;
+                                });
+                              },
+                              validator: (int value) {
+                                if (value == null) {
+                                  return "Musíte vybrat třídu";
+                                }
+                                if (value < 1) {
+                                  return "Musíte vybrat platnou třídu";
+                                }
+                                return null;
+                              },
+                            ),
+                            _detailLineWidget("Vlastník:", Container()),
+                            DropdownButtonFormField<int>(
+                              items: _dropStudents,
+                              value: studentId,
+                              hint: Text("Vyberte studenta"),
+                              onChanged: (int value) {
+                                _formKey.currentState.validate();
+                                setState(() {
+                                  studentId = value;
+                                });
+                              },
+                              validator: (int value) {
+                                if (value == null) {
+                                  return "Musíte vybrat studenta";
+                                }
+                                if (value < 1) {
+                                  return "Musíte vybrat platného studenta";
+                                }
+                                return null;
+                              },
+                            ),
+                          ],
                         ),
-                        _detailLineWidget("Vlastník:", Container()),
-                        DropdownButtonFormField<int>(
-                          items: _dropStudents,
-                          value: studentId,
-                          hint: Text("Vyberte studenta"),
-                          onChanged: (int value) {
-                            _formKey.currentState.validate();
-                            setState(() {
-                              studentId = value;
-                            });
-                          },
-                          validator: (int value) {
-                            if (value == null) {
-                              return "Musíte vybrat studenta";
-                            }
-                            if (value < 1) {
-                              return "Musíte vybrat platného studenta";
-                            }
-                            return null;
-                          },
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
+                    currentStep: _stepIndex,
+                    onStepTapped: (index) {
+                      _focusTitle?.unfocus();
+                      setState(() {
+                        _stepIndex = index;
+                      });
+                    },
+                    onStepContinue: () {
+                      _focusTitle?.unfocus();
+                      setState(() {
+                        _stepIndex++;
+                      });
+                    },
+                    onStepCancel: () {
+                      _focusTitle?.unfocus();
+                      setState(() {
+                        _stepIndex = _stepIndex == 0 ? 0 : _stepIndex - 1;
+                      });
+                    },
+                    controlsBuilder: (BuildContext context,
+                        {VoidCallback onStepContinue,
+                        VoidCallback onStepCancel}) {
+                      return Row(
+                        children: <Widget>[
+                          _stepIndex != 0
+                              ? MaterialButton(
+                                  child: Text("Zpět"),
+                                  onPressed: onStepCancel,
+                                )
+                              : Container(),
+                          _stepIndex != 3
+                              ? MaterialButton(
+                                  child: Text("Pokračovat"),
+                                  onPressed: onStepContinue,
+                                )
+                              : Container(),
+                        ],
+                      );
+                    },
                   ),
                 ),
               ),
@@ -323,40 +378,6 @@ class ZolikCreatePageState extends State<ZolikCreatePage> {
               backgroundColor: Colors.blue,
             ),
           );
-  }
-
-  Widget _divider(String title) {
-    return Padding(
-      padding: EdgeInsets.only(top: 25),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(
-            title,
-            style: Theme.of(context).textTheme.title,
-          ),
-          Divider(
-            color: Colors.blue,
-            thickness: 2,
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _detailLine(String title, {String content}) {
-    return _detailLineWidget(
-      title,
-      content == null || content.isEmpty
-          ? Container()
-          : Text(
-              content,
-              style: TextStyle(
-                fontSize: 17,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-    );
   }
 
   Widget _detailLineWidget(String title, Widget content,

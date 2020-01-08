@@ -56,7 +56,9 @@ class ZoliksPageState extends State<ZoliksPage> {
   List<DropdownMenuItem<int>> get _dropSubjects => _subjects
       .map((x) => DropdownMenuItem<int>(
             value: x.id,
-            child: Text(x.shortcut),
+            child: Text(
+              x.name.length > 25 ? x.name.substring(0, 25) + "..." : x.name,
+            ),
           ))
       .toList();
 
@@ -186,7 +188,7 @@ class ZoliksPageState extends State<ZoliksPage> {
                       padding: EdgeInsets.only(left: 16),
                       child: DropdownButton<int>(
                         items: _dropSubjects,
-                        hint: Text("Filtrování žolíků podle předmětu"),
+                        hint: Text("Filtrování podle předmětu"),
                         value: sId,
                         onChanged: (int id) {
                           sState(() {

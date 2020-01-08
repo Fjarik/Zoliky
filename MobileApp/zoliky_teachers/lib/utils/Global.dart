@@ -109,7 +109,7 @@ class Global {
     return DateFormat(format).format(date);
   }
 
-  static Widget loading() {
+  static Widget loading({String text = ""}) {
     return Container(
       constraints: BoxConstraints(
         minHeight: 70,
@@ -121,6 +121,7 @@ class Global {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               CircularProgressIndicator(),
+              if (text != null && text.isNotEmpty) Text(text),
             ],
           ),
         ],

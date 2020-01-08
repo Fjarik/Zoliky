@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:connectivity/connectivity.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -288,6 +289,14 @@ class LoginPageState extends State<LoginPage>
       return;
     }
     _setLoading(true);
+    
+    var cn = await Connectivity().checkConnectivity();
+    if (cn == ConnectivityResult.none) {
+      _setLoading(false);
+      _showSnackbar("Nejste připojen k internetu");
+      return;
+    }
+
     final result = await facebookLogin.logIn(["email"]);
     var token = "";
     switch (result.status) {
@@ -321,6 +330,12 @@ class LoginPageState extends State<LoginPage>
       return;
     }
     _setLoading(true);
+    var cn = await Connectivity().checkConnectivity();
+    if (cn == ConnectivityResult.none) {
+      _setLoading(false);
+      _showSnackbar("Nejste připojen k internetu");
+      return;
+    }
     var signIn = GoogleSignIn(scopes: ["email"]);
     String token = "";
     try {
