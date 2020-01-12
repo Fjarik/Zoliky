@@ -216,9 +216,14 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 				return RedirectToAction("Dashboard");
 			}
 			var schoolId = this.User.GetSchoolId();
+			var zolik = res.Content;
+			if (zolik.SchoolID != schoolId) {
+				this.AddErrorToastMessage("Nemáte oprávnění upravovat tohoto žolíka");
+				return RedirectToAction("Dashboard");
+			}
 
-			var previousId = await Mgr.GetPreviousIdAsync(id);
-			var nextId = await Mgr.GetNextIdAsync(id);
+			var previousId = await Mgr.GetPreviousZolikIdAsync(id, schoolId);
+			var nextId = await Mgr.GetNextZolikIdAsync(id, schoolId);
 			var isTester = this.User.Identity.IsTester();
 
 			var sMgr = this.GetManager<SchoolManager>();
@@ -232,7 +237,7 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 				allowRemove = sRes.Content.AllowTeacherRemove;
 			}
 
-			var model = new ZolikModel(res.Content, subjects, allowRemove, allowEdit, previousId, nextId, isTester) {
+			var model = new ZolikModel(zolik, subjects, allowRemove, allowEdit, previousId, nextId, isTester) {
 				ActionName = actionName
 			};
 

@@ -663,6 +663,32 @@ namespace DataAccess.Managers
 
 #endregion
 
+#region Prev & Next
+
+		public Task<int> GetPreviousZolikIdAsync(int currentId, int schoolId)
+		{
+			return _ctx.Zoliky
+					   .Where(x => x.ID < currentId &&
+								   SharedLibrary.Shared.Extensions.TesterTypes.All(y => x.Type != y) &&
+								   x.Owner.SchoolID == schoolId)
+					   .OrderByDescending(x => x.ID)
+					   .Select(x => x.ID)
+					   .FirstOrDefaultAsync();
+		}
+
+		public Task<int> GetNextZolikIdAsync(int currentId, int schoolId)
+		{
+			return _ctx.Zoliky
+					   .Where(x => x.ID > currentId &&
+								   SharedLibrary.Shared.Extensions.TesterTypes.All(y => x.Type != y) &&
+								   x.Owner.SchoolID == schoolId)
+					   .OrderBy(x => x.ID)
+					   .Select(x => x.ID)
+					   .FirstOrDefaultAsync();
+		}
+
+#endregion
+
 #region Other (count)
 
 		public async Task<int> CountUserZoliksAsync(int userId,

@@ -28,9 +28,14 @@ namespace SharedLibrary.Shared
 
 #region Enum extensions
 
+		public static readonly ZolikType[] TesterTypes = {
+			ZolikType.Debug,
+			ZolikType.DebugJoker
+		};
+
 		public static bool IsTesterType(this ZolikType type)
 		{
-			return type == ZolikType.Debug || type == ZolikType.DebugJoker;
+			return TesterTypes.Contains(type);
 		}
 
 		public static bool IsSplittable(this ZolikType type)

@@ -154,11 +154,18 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 				this.AddErrorToastMessage("Neplatná škola");
 				return RedirectToAction("Dashboard");
 			}
-			var previousId = await Mgr.GetPreviousIdAsync(id);
-			var nextId = await Mgr.GetNextIdAsync(id);
+			var schoolId = this.User.GetSchoolId();
+			var cl = res.Content;
+			if (cl.SchoolID != schoolId) {
+				this.AddErrorToastMessage("Nemáte oprávnění upravovat tuto třídu");
+				return RedirectToAction("Dashboard");
+			}
+
+			var previousId = await Mgr.GetPreviousClassIdAsync(id, schoolId);
+			var nextId = await Mgr.GetNextClassIdAsync(id, schoolId);
 			var names = await Mgr.GetStudentNamesAsync(id);
 
-			var model = new ClassModel(res.Content, names, allowEdit, previousId, nextId) {
+			var model = new ClassModel(cl, names, allowEdit, previousId, nextId) {
 				ActionName = actionName
 			};
 

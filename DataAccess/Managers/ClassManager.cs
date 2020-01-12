@@ -158,13 +158,39 @@ namespace DataAccess.Managers
 				Name = name,
 				Since = since,
 				Graduation = graduation,
-				Colour =  colour,
+				Colour = colour,
 				Enabled = true
 			};
 			return await this.CreateAsync(c);
 		}
 
 #endregion
+
+#region Prev & Next
+
+		public Task<int> GetPreviousClassIdAsync(int currentId, int schoolId)
+		{
+			return _ctx.Classes
+					   .Where(x => x.ID < currentId &&
+								   x.SchoolID == schoolId)
+					   .OrderByDescending(x => x.ID)
+					   .Select(x => x.ID)
+					   .FirstOrDefaultAsync();
+		}
+
+		public Task<int> GetNextClassIdAsync(int currentId, int schoolId)
+		{
+			return _ctx.Classes
+					   .Where(x => x.ID > currentId &&
+								   x.SchoolID == schoolId)
+					   .OrderBy(x => x.ID)
+					   .Select(x => x.ID)
+					   .FirstOrDefaultAsync();
+		}
+
+#endregion
+
+#region Move
 
 		public async Task<MActionResult<Class>> MoveClassAsync(int id)
 		{
@@ -214,6 +240,10 @@ namespace DataAccess.Managers
 			return true;
 		}
 
+#endregion
+
+#region Check
+
 		public async Task<bool> CheckClassAsync(int id)
 		{
 			if (id < 1) {
@@ -249,6 +279,8 @@ namespace DataAccess.Managers
 			}
 			return true;
 		}
+
+#endregion
 
 		public async Task DeactivateClassAsync(Class c)
 		{

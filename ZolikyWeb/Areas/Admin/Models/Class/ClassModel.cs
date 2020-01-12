@@ -28,7 +28,6 @@ namespace ZolikyWeb.Areas.Admin.Models.Class
 															  });
 
 		public override bool IsValid => (this.ID == -1 || this.ID > 0) &&
-										SchoolID > 0 &&
 										!string.IsNullOrWhiteSpace(this.Name);
 
 #region Entity
