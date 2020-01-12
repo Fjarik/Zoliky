@@ -61,11 +61,16 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 		{
 			var logged = await this.GetLoggedUserAsync();
 			var schoolId = this.User.GetSchoolId();
-			//var schools = await this.GetSchoolAsync();
 
-			// Pouze škola registrovaného správce školy - Nemůže přidat třídu do cizí školy
 			var sMgr = this.GetManager<SchoolManager>();
-			var subjects = await sMgr.GetSubjectsAsync(schoolId);
+			List<Subject> subjects;
+			// Správce a vyšší může vytvořit žolíka z jakéhokoliv předmětu na škole
+			if (logged.IsInRolesOr(UserRoles.SchoolManager, UserRoles.Administrator, UserRoles.Developer)) {
+				subjects = await sMgr.GetSubjectsAsync(schoolId);
+			} else {
+				subjects = await sMgr.GetSubjectsByTeacherAsync(logged.ID);
+			}
+
 			var students = await sMgr.GetStudentsAsync(schoolId, logged.ID);
 			students = students.Where(x => x.Enabled)
 							   .ToList();

@@ -244,7 +244,7 @@
 							<!-- /item -->
 							@if (Model.Type.IsSplittable() || Model.IsCreate) {
 								<!-- item -->
-								<div class="col-md-6">
+								<div class="col-md-6" id="splitContainer">
 									<div class="form-group row">
 										<label class="control-label text-right col-md-3">Povolit rozdělení</label>
 										<div class="col-md-8">
@@ -338,11 +338,27 @@
 	<script type="text/javascript" src="@Url.Content("~/assets/plugins/multiselect/js/jquery.multi-select.min.js")"></script>
 	<script type="text/javascript">
 		$(() => {
+			const s = $("select#Type");
+
+			const checkType = () => {
+				const check = $("#splitContainer");
+
+				const current = parseInt(s.val());
+				if (current === 1 || current === 6) {
+					check.show();
+				} else {
+					check.hide();
+				}
+			};
+			checkType();
+			s.change(checkType);
+
 			$('#select-students').multiSelect({
-				selectableHeader: "<input type='text' class='form-control search-input' autocomplete='off' placeholder='Vyhledávání...'>",
+				selectableHeader:
+					"<input type='text' class='form-control search-input' autocomplete='off' placeholder='Vyhledávání...'>",
 				selectionHeader: "<div class='custom-header'>Vybraní studenti</div>",
 				keepOrder: true,
-				afterInit: function (ms) {
+				afterInit: function(ms) {
 					const $selectableSearch = this.$selectableUl.prev();
 					const selectableSearchString =
 						'#' + this.$container.attr('id') + ' .ms-elem-selectable:not(.ms-selected)';

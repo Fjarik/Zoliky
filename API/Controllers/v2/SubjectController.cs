@@ -51,5 +51,25 @@ namespace API.Controllers.v2
 
 			return Ok(res);
 		}
+
+		// GET: subject/getByTeacher
+		[HttpGet]
+		[Route("getbyteacher")]
+		[ResponseType(typeof(List<TeacherSubject>))]
+		public async Task<IHttpActionResult> GetByTeacher()
+		{
+			var teacherId = this.User.Identity.GetId();
+			var tMgr = this.GetManager<TeacherSubjectManager>();
+
+			var r = await tMgr.GetByTeacher(teacherId);
+
+			var res = r.Select(x => new {
+				x.TeacherID,
+				x.ClassID,
+				x.SubjectID,
+			}).ToList();
+
+			return Ok(res);
+		}
 	}
 }

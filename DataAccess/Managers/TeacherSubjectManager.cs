@@ -4,6 +4,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DataAccess.Managers.New.Interfaces;
 using DataAccess.Models;
 using JetBrains.Annotations;
 using Microsoft.AspNet.Identity.Owin;
@@ -13,7 +14,7 @@ using SharedLibrary.Enums;
 
 namespace DataAccess.Managers
 {
-	public class TeacherSubjectManager : BaseManager<TeacherSubject>, IDisposable
+	public class TeacherSubjectManager : BaseManager<TeacherSubject>, IManager, IDisposable
 	{
 		/// 
 		/// Fields
@@ -76,6 +77,13 @@ namespace DataAccess.Managers
 					   .ToListAsync();
 		}
 
+		public Task<List<TeacherSubject>> GetByTeacher(int teacherId)
+		{
+			return _ctx.TeacherSubjects
+					   .Where(x => x.TeacherID == teacherId)
+					   .ToListAsync();
+		}
+
 		public Task<List<Class>> GetTeacherClassesAsync(int teacherId)
 		{
 			return _ctx.TeacherSubjects
@@ -115,8 +123,8 @@ namespace DataAccess.Managers
 		}
 
 		public async Task<bool> DeleteAsync(int teacherId,
-											 int subjectId,
-											 int classId)
+											int subjectId,
+											int classId)
 		{
 			var ent = await this.GetAsync(teacherId, subjectId, classId);
 			if (ent == null) {
@@ -126,7 +134,7 @@ namespace DataAccess.Managers
 		}
 
 		public Task<int> DeleteAsync(int teacherId,
-									  int subjectId)
+									 int subjectId)
 		{
 			return _ctx.TeacherSubjects
 					   .Where(x => x.TeacherID == teacherId &&

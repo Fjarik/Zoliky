@@ -315,6 +315,17 @@ namespace DataAccess.Managers
 					   .ToListAsync();
 		}
 
+		public Task<List<Subject>> GetSubjectsByTeacherAsync(int teacherId)
+		{
+			return _ctx.TeacherSubjects
+					   .Include(x => x.Subject)
+					   .Where(x => x.TeacherID == teacherId)
+					   .Select(x => x.Subject)
+					   .Distinct()
+					   .OrderBy(x => x.Name)
+					   .ToListAsync();
+		}
+
 		public async Task<MActionResult<School>> CreateAsync(SchoolTypes type,
 															 string name,
 															 string street,
