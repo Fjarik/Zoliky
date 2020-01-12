@@ -8,24 +8,27 @@ import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zoliky_teachers/pages/Account/LoginPage.dart';
 import 'package:zoliky_teachers/utils/SettingKeys.dart';
+import 'package:zoliky_teachers/utils/Singleton.dart';
 import 'package:zoliky_teachers/utils/api/connectors/ClassConnector.dart';
 import 'package:zoliky_teachers/utils/api/connectors/StudentConnector.dart';
 import 'package:zoliky_teachers/utils/api/connectors/SubjectConnector.dart';
+import 'package:zoliky_teachers/utils/api/enums/UserRoles.dart';
 import 'package:zoliky_teachers/utils/api/models/Class.dart';
-import 'package:zoliky_teachers/utils/api/models/Rank.dart';
 import 'package:zoliky_teachers/utils/api/models/Student.dart';
 import 'package:zoliky_teachers/utils/api/models/Subject.dart';
+import 'package:zoliky_teachers/utils/api/models/User.dart';
+import 'package:zoliky_teachers/utils/api/models/universal/TeacherSubject.dart';
 
 class Global {
   static List<Class> _classes = new List<Class>();
   static List<Student> _students = new List<Student>();
   static List<Subject> _subjects = new List<Subject>();
-  static List<Rank> _ranks = new List<Rank>();
+  static List<TeacherSubject> _tSubjects = new List<TeacherSubject>();
 
   static List<Class> get classes => _classes;
   static List<Student> get students => _students;
   static List<Subject> get subjects => _subjects;
-  static List<Rank> get ranks => _ranks;
+  static List<TeacherSubject> get tSubjects => _tSubjects;
 
   static Class getClassById(int id) {
     if (classes.length < 1 || id == null) {
@@ -44,19 +47,20 @@ class Global {
       ..name = "0.A";
   }
 
-  static Rank getRankByXp(int xp) {
-    if (ranks.isNotEmpty) {
-      return ranks.firstWhere(
-              (x) => x.fromXP <= xp && xp <= (x.toXP ?? 2147483647)) ??
-          ranks.first;
-    }
-    return null;
+  static void _clear() {
+    _classes = new List();
+    _students = new List();
+    _subjects = new List();
+    _tSubjects = new List();
   }
 
   static Future loadApp(String token) async {
+    _clear();
+
     _classes = await _loadClasses(token);
     _students = await _loadStudents(token);
     _subjects = await _loadSubjects(token);
+    _tSubjects = await _loadTeacherSubjects(token);
   }
 
   static Future<List<Class>> _loadClasses(String token) async {
@@ -91,6 +95,31 @@ class Global {
     return res ?? new List<Subject>();
   }
 
+  static Future<List<TeacherSubject>> _loadTeacherSubjects(String token) async {
+    if (token == null || token.isEmpty) {
+      return new List<TeacherSubject>();
+    }
+    var mgr = new SubjectConnector(token);
+    var res = await mgr.getTeacherSubjectsAsync();
+    return res ?? new List<TeacherSubject>();
+  }
+
+  static List<Subject> getSubjects(User teacher, int classId) {
+    if (teacher.isInRolesOr([
+      UserRole.SchoolManager,
+      UserRole.Administrator,
+      UserRole.Developer,
+    ])) {
+      return subjects;
+    }
+
+    var subjectIds = tSubjects
+        .where((x) => x.teacherId == teacher.id && x.classId == classId)
+        .map((x) => x.subjectId);
+
+    return subjects.where((x) => subjectIds.any((y) => x.id == y)).toList();
+  }
+
   static bool get isInDebugMode {
     bool inDebugMode = false;
     assert(inDebugMode = true);
@@ -121,7 +150,11 @@ class Global {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               CircularProgressIndicator(),
-              if (text != null && text.isNotEmpty) Text(text),
+              if (text != null && text.isNotEmpty)
+                Padding(
+                  padding: EdgeInsets.only(top: 10),
+                  child: Text(text),
+                ),
             ],
           ),
         ],
@@ -157,6 +190,7 @@ class Global {
   static Future<void> logOut(BuildContext context,
       {FirebaseAnalytics analytics, FirebaseAnalyticsObserver observer}) async {
     var prefs = await SharedPreferences.getInstance();
+    Singleton().clear();
     await prefs.remove(SettingKeys.lastToken);
     await prefs.remove(SettingKeys.biometics);
     Route r = MaterialPageRoute(

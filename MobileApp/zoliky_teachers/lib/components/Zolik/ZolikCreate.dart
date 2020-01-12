@@ -8,6 +8,7 @@ import 'package:zoliky_teachers/utils/Singleton.dart';
 import 'package:zoliky_teachers/utils/api/connectors/ZolikConnector.dart';
 import 'package:zoliky_teachers/utils/api/enums/ZolikType.dart';
 import 'package:zoliky_teachers/utils/api/models/Class.dart';
+import 'package:zoliky_teachers/utils/api/models/Subject.dart';
 import 'package:zoliky_teachers/utils/api/models/User.dart';
 import 'package:zoliky_teachers/utils/api/models/universal/ZolikCreateModel.dart';
 
@@ -34,7 +35,7 @@ class ZolikCreatePageState extends State<ZolikCreatePage> {
           ))
       .toList();
 
-  List<DropdownMenuItem<int>> get _dropSubjects => Global.subjects
+  List<DropdownMenuItem<int>> get _dropSubjects => subjects
       .map((x) => DropdownMenuItem<int>(
             value: x.id,
             child: Text(x.name),
@@ -65,6 +66,7 @@ class ZolikCreatePageState extends State<ZolikCreatePage> {
   ZolikType zolikType;
   bool allowSplit = true;
   int _stepIndex = 0;
+  List<Subject> subjects;
 
   void _setLoading(bool value) {
     setState(() {
@@ -110,6 +112,7 @@ class ZolikCreatePageState extends State<ZolikCreatePage> {
     }
 
     if (Navigator.of(context).canPop()) {
+      Singleton().changed = true;
       Navigator.of(context).popUntil(ModalRoute.withName("/dashboard"));
     }
   }
@@ -126,6 +129,7 @@ class ZolikCreatePageState extends State<ZolikCreatePage> {
   @override
   void initState() {
     this.classId = _classes.first.id;
+    this.subjects = Global.getSubjects(logged, classId);
     super.initState();
   }
 
@@ -254,29 +258,6 @@ class ZolikCreatePageState extends State<ZolikCreatePage> {
                         ),
                       ),
                       Step(
-                        title: Text("Předmět"),
-                        content: DropdownButtonFormField<int>(
-                          items: _dropSubjects,
-                          value: subjectId,
-                          hint: Text("Vyberte předmět"),
-                          onChanged: (int value) {
-                            _formKey.currentState.validate();
-                            setState(() {
-                              subjectId = value;
-                            });
-                          },
-                          validator: (int value) {
-                            if (value == null) {
-                              return "Musíte vybrat předmět";
-                            }
-                            if (value < 1) {
-                              return "Musíte vybrat platný předmět";
-                            }
-                            return null;
-                          },
-                        ),
-                      ),
-                      Step(
                         title: Text("Příjemce"),
                         content: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -289,6 +270,8 @@ class ZolikCreatePageState extends State<ZolikCreatePage> {
                               onChanged: (int value) {
                                 _formKey.currentState.validate();
                                 setState(() {
+                                  subjects =
+                                      Global.getSubjects(logged, classId);
                                   classId = value;
                                   studentId = null;
                                 });
@@ -325,6 +308,31 @@ class ZolikCreatePageState extends State<ZolikCreatePage> {
                               },
                             ),
                           ],
+                        ),
+                      ),
+                      Step(
+                        title: Text("Předmět"),
+                        subtitle: Text(
+                            "Vyberte příjemce a poté až předmět, ze kterého je udělen"),
+                        content: DropdownButtonFormField<int>(
+                          items: _dropSubjects,
+                          value: subjectId,
+                          hint: Text("Vyberte předmět"),
+                          onChanged: (int value) {
+                            _formKey.currentState.validate();
+                            setState(() {
+                              subjectId = value;
+                            });
+                          },
+                          validator: (int value) {
+                            if (value == null) {
+                              return "Musíte vybrat předmět";
+                            }
+                            if (value < 1) {
+                              return "Musíte vybrat platný předmět";
+                            }
+                            return null;
+                          },
                         ),
                       ),
                     ],

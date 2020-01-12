@@ -64,9 +64,10 @@ class ZoliksPageState extends State<ZoliksPage> {
 
   ZolikConnector get _zConnector => ZolikConnector(Singleton().token);
 
-  Future<List<Zolik>> get _future => Singleton().zoliks.isEmpty
-      ? _zConnector.getSchoolZoliks()
-      : Future.value(Singleton().zoliks);
+  Future<List<Zolik>> get _future =>
+      Singleton().zoliks.isEmpty || Singleton().changed
+          ? _zConnector.getSchoolZoliks()
+          : Future.value(Singleton().zoliks);
 
   int classIdOnly = -1;
   ZolikSort sortBy = ZolikSort.id;
@@ -327,7 +328,7 @@ class ZoliksPageState extends State<ZoliksPage> {
               return Global.loading();
             }
             var _zoliks = List<Zolik>();
-
+            Singleton().changed = false;
             Iterable<Zolik> _z;
             if (snapshot.data != null) {
               Singleton().zoliks = snapshot.data;

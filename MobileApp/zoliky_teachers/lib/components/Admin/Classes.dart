@@ -6,6 +6,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:zoliky_teachers/pages/Administration/ClassesPages.dart';
 import 'package:zoliky_teachers/utils/Global.dart';
 import 'package:zoliky_teachers/utils/Singleton.dart';
+import 'package:zoliky_teachers/utils/api/connectors/StatisticsConnector.dart';
 import 'package:zoliky_teachers/utils/api/models/Class.dart';
 import 'package:zoliky_teachers/utils/enums/ClassSort.dart';
 
@@ -19,8 +20,16 @@ class ClassPageState extends State<ClassesPage> {
 
   String get token => Singleton().token;
 
-  Future<List<Class>> get _future => (this.refresh || Global.classes.isEmpty)
-      ? Global.loadAndSetClasses(token)
+  Future<List<Class>> con() async {
+    var sCon = StatisticsConnector(token);
+    Singleton().classLeaderboard = await sCon.getClassLeaderboardAsync();
+    return await Global.loadAndSetClasses(token);
+  }
+
+  Future<List<Class>> get _future => (this.refresh ||
+          Global.classes.isEmpty ||
+          Singleton().classLeaderboard.isEmpty)
+      ? con()
       : Future.value(Global.classes);
 
   bool refresh = false;

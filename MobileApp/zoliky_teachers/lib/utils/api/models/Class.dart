@@ -14,7 +14,7 @@ class Class implements IDbObject {
   double get zolikCount =>
       Singleton()
           .classLeaderboard
-          ?.firstWhere((x) => x.label == this.name)
+          ?.firstWhere((x) => x.label == this.name, orElse: () => null)
           ?.data ??
       0.0;
 

@@ -9,11 +9,20 @@ class Singleton {
 
   bool darkmode = false;
   bool biometrics = false;
+  bool changed = false;
   String token = "";
   User user;
   List<Zolik> zoliks;
   List<Student> students;
   List<ClassLeaderboardData> classLeaderboard;
+
+  void clear() {
+    token = "";
+    user = null;
+    zoliks = new List();
+    students = new List();
+    classLeaderboard = new List();
+  }
 
   factory Singleton() {
     return _singleton;

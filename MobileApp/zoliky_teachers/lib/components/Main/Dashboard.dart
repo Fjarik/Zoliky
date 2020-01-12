@@ -26,6 +26,7 @@ class DashboardPageState extends State<DashboardPage> {
   final Future<void> Function(Pages page, {String title}) changePage;
 
   bool showMenuItems = true;
+  bool refresh = false;
 
   @override
   void initState() {
@@ -49,7 +50,9 @@ class DashboardPageState extends State<DashboardPage> {
             enablePullUp: false,
             onRefresh: () async {
               await Future.delayed(Duration(milliseconds: 500));
-              setState(() {});
+              setState(() {
+                refresh = true;
+              });
               _refreshController.refreshCompleted();
             },
             child: StaggeredGridView.count(
@@ -244,7 +247,7 @@ class DashboardPageState extends State<DashboardPage> {
                   },
                 ),
                 FutureBuilder(
-                  future: Singleton().classLeaderboard.isEmpty
+                  future: Singleton().classLeaderboard.isEmpty || refresh
                       ? _sConnector.getClassLeaderboardAsync()
                       : Future.value(Singleton().classLeaderboard),
                   builder: (context,
@@ -257,7 +260,7 @@ class DashboardPageState extends State<DashboardPage> {
                       list = snapshot.data;
                     }
                     Singleton().classLeaderboard = list;
-
+                    refresh = false;
                     var series = [
                       charts.Series<ClassLeaderboardData, String>(
                           domainFn: (ClassLeaderboardData data, _) =>
