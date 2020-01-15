@@ -161,6 +161,8 @@ namespace ZolikyWeb.Controllers
 		[OfflineActionFilter(Active = false)]
 		public ActionResult ExternalLogin(string provider, string r)
 		{
+			ControllerContext?.HttpContext?.Session?.RemoveAll();
+
 			return new ChallengeResult(provider, Url.Action("ExternalLoginCallback", "Account", new {r}));
 		}
 
