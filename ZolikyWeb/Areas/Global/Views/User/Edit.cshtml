@@ -120,18 +120,20 @@
 					<!-- /row -->
 					<!-- row -->
 					<div class="row">
-						<!-- item -->
-						<div class="col-md-6">
-							<div class="form-group row">
-								<label class="control-label text-right col-md-3">Datum registrace</label>
-								<div class="col-md-9">
-									<p class="form-control-static">
-										@Model.RegistrationDate.ToString("dd.MM.yyyy")
-									</p>
+						@if (!Model.IsCreate) {
+							<!-- item -->
+							<div class="col-md-6">
+								<div class="form-group row">
+									<label class="control-label text-right col-md-3">Datum registrace</label>
+									<div class="col-md-9">
+										<p class="form-control-static">
+											@Model.RegistrationDate.ToString("dd.MM.yyyy")
+										</p>
+									</div>
 								</div>
 							</div>
-						</div>
-						<!-- /item -->
+							<!-- /item -->
+						}
 						@if (Model.LastLoginDate != null) {
 							<!-- item -->
 							<div class="col-md-6">

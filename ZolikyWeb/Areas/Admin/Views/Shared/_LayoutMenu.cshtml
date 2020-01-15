@@ -34,9 +34,9 @@
 			<li>
 				<a href="@Url.Action("Create", "Zolik", new {Area = "Admin"})">Vytvoření</a>
 			</li>
-			<li>
+			@*<li>
 				<a href="@Url.Action("Edit", "Zolik", new {Area = "Admin"})">Úpravy</a>
-			</li>
+			</li>*@
 		</ul>
 	</li>
 	<li>
@@ -51,9 +51,9 @@
 			<li>
 				<a href="@Url.Action("Create", "Student", new {Area = "Admin"})">Vytvoření</a>
 			</li>
-			<li>
+			@*<li>
 				<a href="@Url.Action("Edit", "Student", new {Area = "Admin"})">Úpravy</a>
-			</li>
+			</li>*@
 			@if (this.User.IsInRolesOr(UserRoles.SchoolManager, UserRoles.Administrator, UserRoles.Developer)) {
 				<li>
 					<a href="@Url.Action("Import", "Student", new {Area = "Admin"})">Import</a>
@@ -73,9 +73,9 @@
 			<li>
 				<a href="@Url.Action("Create", "Class", new {Area = "Admin"})">Vytvoření</a>
 			</li>
-			<li>
+			@*<li>
 				<a href="@Url.Action("Edit", "Class", new {Area = "Admin"})">Úpravy</a>
-			</li>
+			</li>*@
 		</ul>
 	</li>
 	@if (this.User.IsInRolesOr(UserRoles.SchoolManager, UserRoles.Administrator, UserRoles.Developer)) {
