@@ -707,7 +707,8 @@ namespace DataAccess.Managers
 			var setSettings = new List<string> {
 				SettingKeys.LeaderboardZolik,
 				SettingKeys.VisibleRank,
-				SettingKeys.VisibleZolik
+				SettingKeys.VisibleZolik,
+				SettingKeys.LeaderboardXp
 			};
 			if (newsletter) {
 				setSettings.Add(SettingKeys.Newsletter);
