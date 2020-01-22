@@ -46,7 +46,7 @@
 					</td>
 					<td>
 						@if (!string.IsNullOrWhiteSpace(transaction.Message) &&
-							 transaction.Typ == TransactionAssignment.ZerziRemoval ||
+							 transaction.Typ == TransactionAssignment.Removal ||
 							 transaction.Typ == TransactionAssignment.Split ||
 							 transaction.Typ == TransactionAssignment.NewAssignment) {
 							@transaction.Message

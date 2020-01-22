@@ -275,7 +275,7 @@ namespace DataAccess.Managers
 									  toId: Ext.BankId,
 									  zolikId: zolikId,
 									  message: reason,
-									  TransactionAssignment.ZerziRemoval);
+									  TransactionAssignment.Removal);
 			return await this.TransferAsync(zp, teacher);
 		}
 
@@ -340,19 +340,19 @@ namespace DataAccess.Managers
 			if (!(await uMgr.IdExistsAsync(fromId)) || !(await uMgr.IdExistsAsync(toId))) {
 				return new MActionResult<Transaction>(StatusCode.NotValidID);
 			}
-			if (type != TransactionAssignment.ZerziRemoval &&
+			if (type != TransactionAssignment.Removal &&
 				type != TransactionAssignment.NewAssignment &&
 				!z.CanBeTransfered) {
 				return new MActionResult<Transaction>(StatusCode.CannotTransfer);
 			}
 
-			if (type == TransactionAssignment.ZerziRemoval) {
+			if (type == TransactionAssignment.Removal) {
 				toId = Ext.BankId; // Remove -> to Bank
 			}
 
 			z.OwnerID = toId;
 			z.OwnerSince = DateTime.Now;
-			if (type == TransactionAssignment.ZerziRemoval) {
+			if (type == TransactionAssignment.Removal) {
 				z.Enabled = false;
 			}
 			try {
@@ -401,7 +401,7 @@ namespace DataAccess.Managers
 
 		private async Task UpdateStatisticsAsync(int fromId, int toId, ZolikType type, TransactionAssignment tranType)
 		{
-			if (tranType == TransactionAssignment.ZerziRemoval || tranType == TransactionAssignment.Split) {
+			if (tranType == TransactionAssignment.Removal || tranType == TransactionAssignment.Split) {
 				return;
 			}
 
@@ -479,7 +479,7 @@ namespace DataAccess.Managers
 			var msg = "Rozdělen na žolíky";
 			var res = await this.TransferToBankAsync(fromId: toId,
 													 zolikId: zolik.ID,
-													 type: TransactionAssignment.ZerziRemoval,
+													 type: TransactionAssignment.Removal,
 													 message: msg);
 			if (!res.IsSuccess) {
 				return new MActionResult<List<Transaction>>(res.Status);

@@ -38,7 +38,7 @@
 							<td>@ent.From</td>
 							<td>@ent.To</td>
 							<td>
-								<span class="label label-table @(ent.Typ == TransactionAssignment.ZerziRemoval ? "label-danger" : "label-success") ">
+								<span class="label label-table @(ent.Typ == TransactionAssignment.Removal ? "label-danger" : "label-success") ">
 									@ent.Typ.GetDescription()
 								</span>
 							</td>

@@ -59,7 +59,7 @@ namespace SharedLibrary.Shared
 
 		public static bool IsNotifyType(this TransactionAssignment type)
 		{
-			return type != TransactionAssignment.ZerziRemoval && type != TransactionAssignment.Split;
+			return type != TransactionAssignment.Removal && type != TransactionAssignment.Split;
 		}
 
 #endregion

@@ -112,12 +112,12 @@ namespace SharedLibrary.Enums
 		NewAssignment = 2,
 
 		[Description("Odebrání")]
-		ZerziRemoval = 3,
+		Removal = 3,
 
 		[Description("NFC")]
 		NFC = 4,
 
-		[Description("Rozklad jokéra")]
+		[Description("Rozklad Jokéra")]
 		Split = 5
 	}
 

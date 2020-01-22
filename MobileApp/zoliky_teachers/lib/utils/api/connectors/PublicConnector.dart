@@ -10,12 +10,7 @@ class PublicConnector {
   final String urlApi = "https://api.zoliky.eu/";
   // final String urlApi = "http://169.254.106.111:93/";
 
-  String get _defaultName => "user";
-  String get _defaultPassword => "It9ac8kw";
   String get _currentProject => Projects.FlutterTeacher.value.toString();
-
-  Future<String> get loginToken async =>
-      (await getToken(_defaultName, _defaultPassword)).content;
 
   MainClient cli;
 
