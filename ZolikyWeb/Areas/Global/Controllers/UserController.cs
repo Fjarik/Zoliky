@@ -173,6 +173,7 @@ namespace ZolikyWeb.Areas.Global.Controllers
 
 			var loggedId = this.User.Identity.GetId();
 			if (loggedId == id) {
+				this.AddErrorToastMessage("Nemůžete upravovat sebe samotného");
 				allowEdit = false;
 			}
 
@@ -270,5 +271,31 @@ namespace ZolikyWeb.Areas.Global.Controllers
 		}
 
 #endregion
+
+		[ValidateAntiForgeryToken]
+		[ValidateSecureHiddenInputs(nameof(ChangePwdModel.UserID))]
+		public async Task<ActionResult> ChangePassword(ChangePwdModel model)
+		{
+			if (model == null || !model.IsValid) {
+				this.AddErrorToastMessage("Neplatná data");
+				return RedirectToAction("Edit", new {id = model?.UserID});
+			}
+			var userId = model.UserID;
+
+			var validation = await Mgr.PasswordValidator.ValidateAsync(model.Password);
+			foreach (var error in validation.Errors) {
+				this.AddErrorToastMessage(error);
+				return RedirectToAction("Edit", new {id = model.UserID});
+			}
+
+			var res = await Mgr.ChangePasswordAsync(userId, model.Password);
+			if (!res.IsSuccess) {
+				this.AddErrorToastMessage(res.GetStatusMessage());
+				return RedirectToAction("Edit", new {id = model.UserID});
+			}
+
+			this.AddSuccessToastMessage("Heslo úspěšně změněno");
+			return RedirectToAction("Edit", new {id = userId});
+		}
 	}
 }

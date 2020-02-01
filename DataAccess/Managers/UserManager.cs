@@ -992,6 +992,18 @@ namespace DataAccess.Managers
 			return await ChangePasswordAsync(logged, newPwd);
 		}
 
+		public async Task<MActionResult<User>> ChangePasswordAsync(int userId, string newPassword)
+		{
+			if (userId < 1) {
+				return new MActionResult<User>(StatusCode.NotValidID);
+			}
+			var res = await this.GetByIdAsync(userId);
+			if (!res.IsSuccess && res.Status != StatusCode.NotEnabled) {
+				return res;
+			}
+			return await ChangePasswordAsync(res.Content, newPassword);
+		}
+
 		private async Task<MActionResult<User>> ChangePasswordAsync(User user, string newPassword)
 		{
 			if (string.IsNullOrWhiteSpace(newPassword)) {

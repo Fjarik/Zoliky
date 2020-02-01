@@ -1,0 +1,41 @@
+﻿@model ZolikyWeb.Areas.Global.Models.User.ChangePwdModel
+@using ZolikyWeb.Tools
+
+<div id="modalChange" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modalChangeLabel" style="display: none;" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title" id="modalChangeLabel">
+					Změnit heslo
+				</h4>
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			</div>
+			@using (Html.BeginForm("ChangePassword", "User", new { Area = "Global" }, FormMethod.Post)) {
+				<div class="modal-body">
+					@Html.AntiForgeryToken()
+					@Html.SecureHiddenFor(x => x.UserID)
+					<div class="mb-4 ">
+						@Html.NoSelectLaberFor(x => x.Password)
+
+						@Html.MaterialPasswordFor(x => x.Password, 1, "new-password")
+
+						@Html.ValidationMessageFor(x => x.Password)
+					</div>
+					<div class="mb-4 ">
+						@Html.NoSelectLaberFor(x => x.PasswordRepeat)
+
+						@Html.MaterialPasswordFor(x => x.PasswordRepeat, 2, "new-password")
+
+						@Html.ValidationMessageFor(x => x.PasswordRepeat)
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-white" data-dismiss="modal">Zrušit</button>
+					<button type="submit" class="btn btn-info waves-effect">Potvrdit</button>
+				</div>
+			}
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>

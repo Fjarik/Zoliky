@@ -146,6 +146,8 @@ namespace ZolikyWeb.Areas.Global.Models.User
 
 #endregion
 
+		public ChangePwdModel ChangePwd => new ChangePwdModel(this.ID);
+
 		public override bool IsValid => (this.ID == -1 || this.ID > 0) &&
 										!Methods.AreNullOrWhiteSpace(this.Username,
 																	 this.Name,

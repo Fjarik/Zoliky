@@ -309,7 +309,11 @@
 						<!-- /item -->
 						<!-- item -->
 						<div class="col-md-6">
-
+							@if (Model.AllowEdit) {
+								<div class="form-group text-center">
+									<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalChange" tabindex="4" title="Rozdělit">Změnit heslo</button>
+								</div>
+							}
 						</div>
 						<!-- /item -->
 					</div>
@@ -346,6 +350,9 @@
 							</div>
 						</div>
 					</div>
+				}
+				@if (Model.AllowEdit) {
+					@Html.Partial("_ChangePwd", Model.ChangePwd)
 				}
 			</div>
 		</div>
