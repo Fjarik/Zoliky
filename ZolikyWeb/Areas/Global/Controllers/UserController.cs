@@ -53,17 +53,18 @@ namespace ZolikyWeb.Areas.Global.Controllers
 					timeS = x.MemberSince.GetJsTimestamp(),
 					regIp = x.RegistrationIp
 				},
-				lastLogin = x.LastLogin == null
-								? new {
-									date = "",
-									timeS = 0.0,
-									project = ""
-								}
-								: new {
-									date = x.LastLogin.Date.ToString("dd.MM.yyyy"),
-									timeS = x.LastLogin.Date.GetJsTimestamp(),
-									project = ((Projects) x.LastLogin.ProjectID).GetDescription()
-								},
+				school = x.SchoolName,
+				//lastLogin = x.LastLogin == null
+				//				? new {
+				//					date = "",
+				//					timeS = 0.0,
+				//					project = ""
+				//				}
+				//				: new {
+				//					date = x.LastLogin.Date.ToString("dd.MM.yyyy"),
+				//					timeS = x.LastLogin.Date.GetJsTimestamp(),
+				//					project = ((Projects) x.LastLogin.ProjectID).GetDescription()
+				//				},
 				x.IsBanned,
 				x.IsEnabled,
 				actions = new {

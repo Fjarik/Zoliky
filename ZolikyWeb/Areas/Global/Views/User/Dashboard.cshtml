@@ -56,6 +56,21 @@
 						}
 					},
 					{
+						title: "Škola",
+						type: "html",
+						className: "text-truncate",
+						data: "school",
+						render: (data) => {
+							if (!data) {
+								return "-";
+							}
+							if (data.length < 33) {
+								return data;
+							}
+							return `<span class="c-help" data-toggle="tooltip" data-original-title="${data}">${data.substr(0, 33)}...</span>`;
+						}
+					},
+					{
 						title: "Role",
 						data: "roles",
 						type: "html",
@@ -84,23 +99,23 @@
 							}
 						}
 					},
-					{
-						title: "Poslední přihlášení",
-						type: "html ",
-						data: "lastLogin",
-						searchable: false,
-						render: {
-							_: "timeS",
-							display: (data) => {
-								if (!data) {
-									return "";
-								}
-								return `<span class="c-help" data-toggle="tooltip" data-original-title="${data.project
-									}">${data.date}</span>`;
-							}
-						}
+					//{
+					//	title: "Poslední přihlášení",
+					//	type: "html ",
+					//	data: "lastLogin",
+					//	searchable: false,
+					//	render: {
+					//		_: "timeS",
+					//		display: (data) => {
+					//			if (!data) {
+					//				return "";
+					//			}
+					//			return `<span class="c-help" data-toggle="tooltip" data-original-title="${data.project
+					//				}">${data.date}</span>`;
+					//		}
+					//	}
 
-					},
+					//},
 					{
 						title: "Akce",
 						type: "html",
