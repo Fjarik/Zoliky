@@ -35,13 +35,13 @@ namespace ZolikyWeb.Areas.App.Controllers
 			var isTester = this.User.Identity.IsTester();
 			var zoliks = user.OriginalZoliks.Where(x => x.Enabled).OrderByDescending(x => x.OwnerSince).ToList();
 			var className = user.ClassName;
-			IList<GetTopStudents_Result> studentsClass = new List<GetTopStudents_Result>();
-			IList<GetTopStudents_Result> students = new List<GetTopStudents_Result>();
+			var studentsClass = new List<GetTopStudents_Result>();
+			var students = new List<GetTopStudents_Result>();
 			if (user.ClassID != null) {
-				studentsClass = this.Mgr.GetStudentsWithMostZoliks(schoolId, 5, user.ClassID, 1);
+				studentsClass = await this.Mgr.GetStudentsWithMostZoliks(schoolId, 5, user.ClassID, 1);
 			}
 			if (!user.IsInRole(UserRoles.Public)) {
-				students = this.Mgr.GetStudentsWithMostZoliks(schoolId, 5, null, 1);
+				students = await this.Mgr.GetStudentsWithMostZoliks(schoolId, 5, null, 1);
 			}
 
 			var count = zoliks.CountZoliks(isTester);
@@ -107,7 +107,7 @@ namespace ZolikyWeb.Areas.App.Controllers
 				return Json("", JsonRequestBehavior.AllowGet);
 			}
 
-			var leaderboard = this.Mgr.GetStudentsWithMostXp(schoolId, 5, user.ClassID, 1);
+			var leaderboard = await this.Mgr.GetStudentsWithMostXp(schoolId, 5, user.ClassID, 1);
 
 			var rMgr = this.GetManager<RankManager>();
 			var ranks = await rMgr.GetAllAsync();
@@ -131,7 +131,7 @@ namespace ZolikyWeb.Areas.App.Controllers
 				return Json("", JsonRequestBehavior.AllowGet);
 			}
 
-			var leaderboard = this.Mgr.GetStudentsWithMostXp(schoolId, 5, null, 1);
+			var leaderboard = await this.Mgr.GetStudentsWithMostXp(schoolId, 5, null, 1);
 
 			var rMgr = this.GetManager<RankManager>();
 			var ranks = await rMgr.GetAllAsync();

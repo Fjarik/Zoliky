@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using JetBrains.Annotations;
@@ -27,114 +28,112 @@ namespace DataAccess.Models
 
 #endregion
 
-#region Procedures
+#region Funcs
 
-		public IList<GetTopStudents_Result> GetFakeStudents(bool onlyActive = true,
-															int? imageMaxSize = null,
-															params int[] excludeIds)
+		public IQueryable<GetTopStudents_Result> GetFakeStudents(bool onlyActive = true,
+																 int? imageMaxSize = null,
+																 params int[] excludeIds)
 		{
 			return this.GetFakeStudents(onlyActive: onlyActive,
 										imageMaxSize: imageMaxSize)
-					   .Where(x => excludeIds.All(y => x.ID != y))
-					   .ToList();
+					   .Where(x => excludeIds.All(y => x.ID != y));
 		}
 
-		private IEnumerable<GetTopStudents_Result> GetFakeStudents(bool onlyActive,
-																   int? imageMaxSize = null)
+		private IQueryable<GetTopStudents_Result> GetFakeStudents(bool onlyActive,
+																  int? imageMaxSize = null)
 		{
 			if (imageMaxSize == null) {
 				imageMaxSize = 1024 * 1024;
 			}
-			return GetFakeStudents(imageMaxSize: imageMaxSize,
-								   defaultPhotoId: Ext.DefaultProfilePhotoId,
-								   onlyActive: onlyActive);
+			return GetFakeStudentsFn(imageMaxSize: imageMaxSize,
+									 defaultPhotoId: Ext.DefaultProfilePhotoId,
+									 onlyActive: onlyActive);
 		}
 
-		public IList<GetTopStudents_Result> GetStudents(bool onlyActive,
-														int schoolId,
-														int? imageMaxSize = null,
-														int? classId = null,
-														params int[] excludeIds)
+		public IQueryable<GetTopStudents_Result> GetStudents(bool onlyActive,
+															 int schoolId,
+															 int? imageMaxSize = null,
+															 int? classId = null,
+															 params int[] excludeIds)
 		{
 			return this.GetStudents(onlyActive: onlyActive,
 									schoolId: schoolId,
 									imageMaxSize: imageMaxSize,
 									classId: classId)
-					   .Where(x => excludeIds.All(y => x.ID != y))
-					   .ToList();
+					   .Where(x => excludeIds.All(y => x.ID != y));
 		}
 
-		private IEnumerable<GetTopStudents_Result> GetStudents(bool onlyActive,
-															   int schoolId,
-															   int? imageMaxSize = null,
-															   int? classId = null)
+		private IQueryable<GetTopStudents_Result> GetStudents(bool onlyActive,
+															  int schoolId,
+															  int? imageMaxSize = null,
+															  int? classId = null)
 		{
 			if (imageMaxSize == null) {
 				imageMaxSize = 1024 * 1024;
 			}
-			return GetStudents(imageMaxSize: imageMaxSize,
-							   classId: classId,
-							   schoolId: schoolId,
-							   defaultPhotoId: Ext.DefaultProfilePhotoId,
-							   onlyActive: onlyActive);
+			return GetStudentsFn(imageMaxSize: imageMaxSize,
+								 classId: classId,
+								 schoolId: schoolId,
+								 defaultPhotoId: Ext.DefaultProfilePhotoId,
+								 onlyActive: onlyActive);
 		}
 
-		public IList<GetTopStudents_Result> GetTopStudents(int schoolId,
-														   int top = 5,
-														   int? classId = null,
-														   int? imageMaxSize = null)
+		public IQueryable<GetTopStudents_Result> GetTopStudents(int schoolId,
+																int top = 5,
+																int? classId = null,
+																int? imageMaxSize = null)
 		{
 			return GetTopStudents(key: SettingKeys.LeaderboardZolik,
 								  schoolId: schoolId,
 								  top: top,
 								  imageMaxSize: imageMaxSize,
-								  classId: classId).ToList();
+								  classId: classId);
 		}
 
-		private IEnumerable<GetTopStudents_Result> GetTopStudents(string key,
-																  int schoolId,
-																  int top = 5,
-																  int? imageMaxSize = null,
-																  int? classId = null)
+		private IQueryable<GetTopStudents_Result> GetTopStudents(string key,
+																 int schoolId,
+																 int top = 5,
+																 int? imageMaxSize = null,
+																 int? classId = null)
 		{
 			if (imageMaxSize == null) {
 				imageMaxSize = 1024 * 1024;
 			}
-			return GetTopStudents(top: top,
-								  imageMaxSize: imageMaxSize,
-								  classId: classId,
-								  schoolId: schoolId,
-								  settingsKey: key,
-								  defaultPhotoId: Ext.DefaultProfilePhotoId);
-		}
-
-		public IList<GetTopStudentsXp_Result> GetTopStudentsXp(int schoolId,
-															   int top = 5,
-															   int? classId = null,
-															   int? imageMaxSize = null)
-		{
-			return GetTopStudentsXp(key: SettingKeys.LeaderboardXp,
-									schoolId: schoolId,
-									top: top,
-									imageMaxSize: imageMaxSize,
-									classId: classId).ToList();
-		}
-
-		private IEnumerable<GetTopStudentsXp_Result> GetTopStudentsXp(string key,
-																	  int schoolId,
-																	  int top = 5,
-																	  int? imageMaxSize = null,
-																	  int? classId = null)
-		{
-			if (imageMaxSize == null) {
-				imageMaxSize = 1024 * 1024;
-			}
-			return GetTopStudentsXp(top: top,
+			return GetTopStudentsFn(top: top,
 									imageMaxSize: imageMaxSize,
 									classId: classId,
 									schoolId: schoolId,
 									settingsKey: key,
 									defaultPhotoId: Ext.DefaultProfilePhotoId);
+		}
+
+		public IQueryable<GetTopStudentsXp_Result> GetTopStudentsXp(int schoolId,
+																	int top = 5,
+																	int? classId = null,
+																	int? imageMaxSize = null)
+		{
+			return GetTopStudentsXp(key: SettingKeys.LeaderboardXp,
+									schoolId: schoolId,
+									top: top,
+									imageMaxSize: imageMaxSize,
+									classId: classId);
+		}
+
+		private IQueryable<GetTopStudentsXp_Result> GetTopStudentsXp(string key,
+																	 int schoolId,
+																	 int top = 5,
+																	 int? imageMaxSize = null,
+																	 int? classId = null)
+		{
+			if (imageMaxSize == null) {
+				imageMaxSize = 1024 * 1024;
+			}
+			return GetTopStudentsXpFn(top: top,
+									  imageMaxSize: imageMaxSize,
+									  classId: classId,
+									  schoolId: schoolId,
+									  settingsKey: key,
+									  defaultPhotoId: Ext.DefaultProfilePhotoId);
 		}
 	}
 

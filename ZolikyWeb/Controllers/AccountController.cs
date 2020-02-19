@@ -649,7 +649,7 @@ namespace ZolikyWeb.Controllers
 
 		[Authorize]
 		[HttpPost]
-		public ActionResult GetStudents(StudentsDrop model)
+		public async Task<ActionResult> GetStudents(StudentsDrop model)
 		{
 			if (User.IsInRole(UserRoles.Public)) {
 				return AccessDenied();
@@ -659,7 +659,7 @@ namespace ZolikyWeb.Controllers
 			}
 			var schoolId = this.User.Identity.GetSchoolId();
 			var loggedId = this.User.Identity.GetId();
-			var students = Mgr.GetStudents(schoolId, loggedId);
+			var students = await Mgr.GetStudents(schoolId, loggedId);
 			if (students == null || students.Count < 1) {
 				return AccessDenied();
 			}

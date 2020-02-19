@@ -28,13 +28,13 @@ namespace API.Controllers.v2
 		[HttpGet]
 		[Route("getstudents")]
 		[ResponseType(typeof(List<Student<Image>>))]
-		public IHttpActionResult GetStudents([FromUri] int? classId = null,
-											 [FromUri] int? imageMaxSize = null,
-											 [FromUri] bool onlyActive = true)
+		public async Task<IHttpActionResult> GetStudents([FromUri] int? classId = null,
+														[FromUri] int? imageMaxSize = null,
+														[FromUri] bool onlyActive = true)
 		{
 			var schoolId = this.User.Identity.GetSchoolId();
 
-			var res = Mgr.GetStudents(schoolId, classId: classId, imageMaxSize: imageMaxSize, onlyActive: onlyActive);
+			var res = await Mgr.GetStudents(schoolId, classId: classId, imageMaxSize: imageMaxSize, onlyActive: onlyActive);
 			return Ok(res);
 		}
 
@@ -42,13 +42,13 @@ namespace API.Controllers.v2
 		[HttpGet]
 		[Route("gettop")]
 		[ResponseType(typeof(List<Student<Image>>))]
-		public IHttpActionResult GetStudentsWithMostZoliks([FromUri] int? classId = null,
-														   [FromUri] int top = 5,
-														   [FromUri] int? imageMaxSize = null)
+		public async Task<IHttpActionResult> GetStudentsWithMostZoliks([FromUri] int? classId = null,
+																	   [FromUri] int top = 5,
+																	   [FromUri] int? imageMaxSize = null)
 		{
 			var schoolId = this.User.Identity.GetSchoolId();
 
-			var res = Mgr.GetStudentsWithMostZoliks(schoolId, top, classId, imageMaxSize);
+			var res = await Mgr.GetStudentsWithMostZoliks(schoolId, top, classId, imageMaxSize);
 			return Ok(res);
 		}
 
@@ -56,13 +56,13 @@ namespace API.Controllers.v2
 		[HttpGet]
 		[Route("gettopxp")]
 		[ResponseType(typeof(List<Student<Image>>))]
-		public IHttpActionResult GetStudentsWithMostXp([FromUri] int? classId = null,
-													   [FromUri] int top = 5,
-													   [FromUri] int? imageMaxSize = null)
+		public async Task<IHttpActionResult> GetStudentsWithMostXp([FromUri] int? classId = null,
+																  [FromUri] int top = 5,
+																  [FromUri] int? imageMaxSize = null)
 		{
 			var schoolId = this.User.Identity.GetSchoolId();
 
-			var res = Mgr.GetStudentsWithMostXp(schoolId, top, classId, imageMaxSize);
+			var res = await Mgr.GetStudentsWithMostXp(schoolId, top, classId, imageMaxSize);
 			return Ok(res);
 		}
 
@@ -70,10 +70,10 @@ namespace API.Controllers.v2
 		[HttpGet]
 		[Route("getfake")]
 		[ResponseType(typeof(List<Student<Image>>))]
-		public IHttpActionResult GetFakeStudents([FromUri] int? imageMaxSize = null,
-												 [FromUri] bool onlyActive = true)
+		public async Task<IHttpActionResult> GetFakeStudents([FromUri] int? imageMaxSize = null,
+															[FromUri] bool onlyActive = true)
 		{
-			var res = Mgr.GetFakeStudents(imageMaxSize, onlyActive);
+			var res = await Mgr.GetFakeStudents(imageMaxSize, onlyActive);
 			return Ok(res);
 		}
 	}

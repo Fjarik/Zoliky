@@ -734,12 +734,64 @@
           <Parameter Name="defaultPhotoId" Type="int" Mode="In" />
           <Parameter Name="onlyActive" Type="bit" Mode="In" />
         </Function>
+        <Function Name="GetFakeStudentsFn" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="imageMaxSize" Type="int" Mode="In" />
+          <Parameter Name="defaultPhotoId" Type="int" Mode="In" />
+          <Parameter Name="onlyActive" Type="bit" Mode="In" />
+          <ReturnType>
+            <CollectionType>
+              <RowType>
+                <Property Name="ID" Type="int" Nullable="false" />
+                <Property Name="ClassID" Type="int" />
+                <Property Name="SchoolID" Type="int" Nullable="false" />
+                <Property Name="ProfilePhotoID" Type="int" />
+                <Property Name="ClassName" Type="varchar" MaxLength="1" />
+                <Property Name="Name" Type="varchar" MaxLength="50" />
+                <Property Name="Lastname" Type="varchar" MaxLength="50" />
+                <Property Name="XP" Type="int" Nullable="false" />
+                <Property Name="ZolikCount" Type="int" />
+                <Property Name="ID1" Type="int" />
+                <Property Name="Hash" Type="nvarchar" MaxLength="330" />
+                <Property Name="Base64" Type="varchar(max)" />
+                <Property Name="MIME" Type="varchar" MaxLength="20" />
+                <Property Name="Size" Type="int" />
+              </RowType>
+            </CollectionType>
+          </ReturnType>
+        </Function>
         <Function Name="GetStudents" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="imageMaxSize" Type="int" Mode="In" />
           <Parameter Name="classId" Type="int" Mode="In" />
           <Parameter Name="schoolId" Type="int" Mode="In" />
           <Parameter Name="defaultPhotoId" Type="int" Mode="In" />
           <Parameter Name="onlyActive" Type="bit" Mode="In" />
+        </Function>
+        <Function Name="GetStudentsFn" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="imageMaxSize" Type="int" Mode="In" />
+          <Parameter Name="classId" Type="int" Mode="In" />
+          <Parameter Name="schoolId" Type="int" Mode="In" />
+          <Parameter Name="defaultPhotoId" Type="int" Mode="In" />
+          <Parameter Name="onlyActive" Type="bit" Mode="In" />
+          <ReturnType>
+            <CollectionType>
+              <RowType>
+                <Property Name="ID" Type="int" Nullable="false" />
+                <Property Name="ClassID" Type="int" />
+                <Property Name="SchoolID" Type="int" Nullable="false" />
+                <Property Name="ProfilePhotoID" Type="int" />
+                <Property Name="ClassName" Type="varchar" MaxLength="10" />
+                <Property Name="Name" Type="varchar" MaxLength="50" />
+                <Property Name="Lastname" Type="varchar" MaxLength="50" />
+                <Property Name="XP" Type="int" Nullable="false" />
+                <Property Name="ZolikCount" Type="int" />
+                <Property Name="ID1" Type="int" />
+                <Property Name="Hash" Type="nvarchar" MaxLength="330" />
+                <Property Name="Base64" Type="varchar(max)" />
+                <Property Name="MIME" Type="varchar" MaxLength="20" />
+                <Property Name="Size" Type="int" />
+              </RowType>
+            </CollectionType>
+          </ReturnType>
         </Function>
         <Function Name="GetTopStudents" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="top" Type="int" Mode="In" />
@@ -749,6 +801,34 @@
           <Parameter Name="settingsKey" Type="nvarchar(max)" Mode="In" />
           <Parameter Name="defaultPhotoId" Type="int" Mode="In" />
         </Function>
+        <Function Name="GetTopStudentsFn" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="top" Type="int" Mode="In" />
+          <Parameter Name="imageMaxSize" Type="int" Mode="In" />
+          <Parameter Name="classId" Type="int" Mode="In" />
+          <Parameter Name="schoolId" Type="int" Mode="In" />
+          <Parameter Name="settingsKey" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="defaultPhotoId" Type="int" Mode="In" />
+          <ReturnType>
+            <CollectionType>
+              <RowType>
+                <Property Name="ID" Type="int" Nullable="false" />
+                <Property Name="ClassID" Type="int" />
+                <Property Name="SchoolID" Type="int" Nullable="false" />
+                <Property Name="ProfilePhotoID" Type="int" />
+                <Property Name="ClassName" Type="varchar" MaxLength="10" />
+                <Property Name="Name" Type="varchar" MaxLength="50" />
+                <Property Name="Lastname" Type="varchar" MaxLength="50" />
+                <Property Name="XP" Type="int" Nullable="false" />
+                <Property Name="ZolikCount" Type="int" />
+                <Property Name="PhotoID" Type="int" />
+                <Property Name="Hash" Type="nvarchar" MaxLength="330" />
+                <Property Name="Base64" Type="varchar(max)" />
+                <Property Name="MIME" Type="varchar" MaxLength="20" />
+                <Property Name="Size" Type="int" />
+              </RowType>
+            </CollectionType>
+          </ReturnType>
+        </Function>
         <Function Name="GetTopStudentsXp" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="top" Type="int" Mode="In" />
           <Parameter Name="imageMaxSize" Type="int" Mode="In" />
@@ -756,6 +836,33 @@
           <Parameter Name="schoolId" Type="int" Mode="In" />
           <Parameter Name="settingsKey" Type="nvarchar(max)" Mode="In" />
           <Parameter Name="defaultPhotoId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GetTopStudentsXpFn" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="top" Type="int" Mode="In" />
+          <Parameter Name="imageMaxSize" Type="int" Mode="In" />
+          <Parameter Name="classId" Type="int" Mode="In" />
+          <Parameter Name="schoolId" Type="int" Mode="In" />
+          <Parameter Name="settingsKey" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="defaultPhotoId" Type="int" Mode="In" />
+          <ReturnType>
+            <CollectionType>
+              <RowType>
+                <Property Name="ID" Type="int" Nullable="false" />
+                <Property Name="ClassID" Type="int" />
+                <Property Name="SchoolID" Type="int" Nullable="false" />
+                <Property Name="ProfilePhotoID" Type="int" />
+                <Property Name="ClassName" Type="varchar" MaxLength="10" />
+                <Property Name="Name" Type="varchar" MaxLength="50" />
+                <Property Name="Lastname" Type="varchar" MaxLength="50" />
+                <Property Name="XP" Type="int" Nullable="false" />
+                <Property Name="ID1" Type="int" />
+                <Property Name="Hash" Type="nvarchar" MaxLength="330" />
+                <Property Name="Base64" Type="varchar(max)" />
+                <Property Name="MIME" Type="varchar" MaxLength="20" />
+                <Property Name="Size" Type="int" />
+              </RowType>
+            </CollectionType>
+          </ReturnType>
         </Function>
         <EntityContainer Name="ZoliksModelStoreContainer">
           <EntitySet Name="Achievements" EntityType="Self.Achievements" Schema="dbo" store:Type="Tables" />
@@ -1078,38 +1185,6 @@
             <End Role="User" EntitySet="Users" />
             <End Role="UserSetting" EntitySet="UserSettings" />
           </AssociationSet>
-          <FunctionImport Name="GetTopStudents" ReturnType="Collection(ZoliksModel.GetTopStudents_Result)" a:MethodAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration">
-            <Parameter Name="top" Mode="In" Type="Int32" />
-            <Parameter Name="imageMaxSize" Mode="In" Type="Int32" />
-            <Parameter Name="classId" Mode="In" Type="Int32" />
-            <Parameter Name="schoolId" Mode="In" Type="Int32" />
-            <Parameter Name="settingsKey" Mode="In" Type="String" />
-            <Parameter Name="defaultPhotoId" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="GetTopStudentsXp" ReturnType="Collection(ZoliksModel.GetTopStudentsXp_Result)" a:MethodAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration">
-            <Parameter Name="top" Mode="In" Type="Int32" />
-            <Parameter Name="imageMaxSize" Mode="In" Type="Int32" />
-            <Parameter Name="classId" Mode="In" Type="Int32" />
-            <Parameter Name="schoolId" Mode="In" Type="Int32" />
-            <Parameter Name="settingsKey" Mode="In" Type="String" />
-            <Parameter Name="defaultPhotoId" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="GetStudents" ReturnType="Collection(ZoliksModel.GetTopStudents_Result)" a:MethodAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration">
-            <Parameter Name="imageMaxSize" Mode="In" Type="Int32" />
-            <Parameter Name="classId" Mode="In" Type="Int32" />
-            <Parameter Name="schoolId" Mode="In" Type="Int32" />
-            <Parameter Name="defaultPhotoId" Mode="In" Type="Int32" />
-            <Parameter Name="onlyActive" Mode="In" Type="Boolean" />
-          </FunctionImport>
-          <FunctionImport Name="GetFakeStudents" ReturnType="Collection(ZoliksModel.GetTopStudents_Result)" a:MethodAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration">
-            <Parameter Name="imageMaxSize" Mode="In" Type="Int32" />
-            <Parameter Name="defaultPhotoId" Mode="In" Type="Int32" />
-            <Parameter Name="onlyActive" Mode="In" Type="Boolean" />
-          </FunctionImport>
-          <FunctionImport Name="GetUnavailabilities" a:MethodAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration">
-            <Parameter Name="projectId" Mode="In" Type="Int32" />
-            <Parameter Name="date" Mode="In" Type="DateTime" />
-          </FunctionImport>
           <EntitySet Name="UserLogs" EntityType="ZoliksModel.UserLog" />
           <AssociationSet Name="FK_UserLogs_Users" Association="ZoliksModel.FK_UserLogs_Users">
             <End Role="User" EntitySet="Users" />
@@ -1178,6 +1253,34 @@
             <End Role="Subject" EntitySet="Subjects" />
             <End Role="SchoolSubject" EntitySet="SchoolSubjects" />
           </AssociationSet>
+          <FunctionImport Name="GetTopStudentsFn" IsComposable="true" ReturnType="Collection(ZoliksModel.GetTopStudents_Result)">
+            <Parameter Name="top" Mode="In" Type="Int32" />
+            <Parameter Name="imageMaxSize" Mode="In" Type="Int32" />
+            <Parameter Name="classId" Mode="In" Type="Int32" />
+            <Parameter Name="schoolId" Mode="In" Type="Int32" />
+            <Parameter Name="settingsKey" Mode="In" Type="String" />
+            <Parameter Name="defaultPhotoId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetTopStudentsXpFn" IsComposable="true" ReturnType="Collection(ZoliksModel.GetTopStudentsXp_Result)">
+            <Parameter Name="top" Mode="In" Type="Int32" />
+            <Parameter Name="imageMaxSize" Mode="In" Type="Int32" />
+            <Parameter Name="classId" Mode="In" Type="Int32" />
+            <Parameter Name="schoolId" Mode="In" Type="Int32" />
+            <Parameter Name="settingsKey" Mode="In" Type="String" />
+            <Parameter Name="defaultPhotoId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetStudentsFn" IsComposable="true" ReturnType="Collection(ZoliksModel.GetTopStudents_Result)">
+            <Parameter Name="imageMaxSize" Mode="In" Type="Int32" />
+            <Parameter Name="classId" Mode="In" Type="Int32" />
+            <Parameter Name="schoolId" Mode="In" Type="Int32" />
+            <Parameter Name="defaultPhotoId" Mode="In" Type="Int32" />
+            <Parameter Name="onlyActive" Mode="In" Type="Boolean" />
+          </FunctionImport>
+          <FunctionImport Name="GetFakeStudentsFn" IsComposable="true" ReturnType="Collection(ZoliksModel.GetTopStudents_Result)">
+            <Parameter Name="imageMaxSize" Mode="In" Type="Int32" />
+            <Parameter Name="defaultPhotoId" Mode="In" Type="Int32" />
+            <Parameter Name="onlyActive" Mode="In" Type="Boolean" />
+          </FunctionImport>
           </EntityContainer>
         <EntityType Name="Class">
           <Key>
@@ -2137,82 +2240,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="GetTopStudents" FunctionName="ZoliksModel.Store.GetTopStudents">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="ZoliksModel.GetTopStudents_Result">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="ClassID" ColumnName="ClassID" />
-                <ScalarProperty Name="ProfilePhotoID" ColumnName="ProfilePhotoID" />
-                <ScalarProperty Name="ClassName" ColumnName="ClassName" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Lastname" ColumnName="Lastname" />
-                <ScalarProperty Name="XP" ColumnName="XP" />
-                <ScalarProperty Name="ZolikCount" ColumnName="ZolikCount" />
-                <ScalarProperty Name="Hash" ColumnName="Hash" />
-                <ScalarProperty Name="Base64" ColumnName="Base64" />
-                <ScalarProperty Name="MIME" ColumnName="MIME" />
-                <ScalarProperty Name="Size" ColumnName="Size" />
-                <ScalarProperty Name="ImageID" ColumnName="ID1" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="GetTopStudentsXp" FunctionName="ZoliksModel.Store.GetTopStudentsXp">
-          <ResultMapping>
-              <ComplexTypeMapping TypeName="ZoliksModel.GetTopStudentsXp_Result">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="ClassID" ColumnName="ClassID" />
-                <ScalarProperty Name="SchoolID" ColumnName="SchoolID" />
-                <ScalarProperty Name="ProfilePhotoID" ColumnName="ProfilePhotoID" />
-                <ScalarProperty Name="ClassName" ColumnName="ClassName" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Lastname" ColumnName="Lastname" />
-                <ScalarProperty Name="XP" ColumnName="XP" />
-                <ScalarProperty Name="Hash" ColumnName="Hash" />
-                <ScalarProperty Name="Base64" ColumnName="Base64" />
-                <ScalarProperty Name="MIME" ColumnName="MIME" />
-                <ScalarProperty Name="Size" ColumnName="Size" />
-                <ScalarProperty Name="ImageID" ColumnName="ID1" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="GetStudents" FunctionName="ZoliksModel.Store.GetStudents">
-          <ResultMapping>
-              <ComplexTypeMapping TypeName="ZoliksModel.GetTopStudents_Result">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="ClassID" ColumnName="ClassID" />
-                <ScalarProperty Name="ProfilePhotoID" ColumnName="ProfilePhotoID" />
-                <ScalarProperty Name="ClassName" ColumnName="ClassName" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Lastname" ColumnName="Lastname" />
-                <ScalarProperty Name="XP" ColumnName="XP" />
-                <ScalarProperty Name="ZolikCount" ColumnName="ZolikCount" />
-                <ScalarProperty Name="Hash" ColumnName="Hash" />
-                <ScalarProperty Name="Base64" ColumnName="Base64" />
-                <ScalarProperty Name="MIME" ColumnName="MIME" />
-                <ScalarProperty Name="Size" ColumnName="Size" />
-                <ScalarProperty Name="ImageID" ColumnName="ID1" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="GetFakeStudents" FunctionName="ZoliksModel.Store.GetFakeStudents">
-          <ResultMapping>
-              <ComplexTypeMapping TypeName="ZoliksModel.GetTopStudents_Result">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="ClassID" ColumnName="ClassID" />
-                <ScalarProperty Name="ProfilePhotoID" ColumnName="ProfilePhotoID" />
-                <ScalarProperty Name="ClassName" ColumnName="ClassName" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Lastname" ColumnName="Lastname" />
-                <ScalarProperty Name="XP" ColumnName="XP" />
-                <ScalarProperty Name="ZolikCount" ColumnName="ZolikCount" />
-                <ScalarProperty Name="Hash" ColumnName="Hash" />
-                <ScalarProperty Name="Base64" ColumnName="Base64" />
-                <ScalarProperty Name="MIME" ColumnName="MIME" />
-                <ScalarProperty Name="Size" ColumnName="Size" />
-                <ScalarProperty Name="ImageID" ColumnName="ID1" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
           <EntitySetMapping Name="UserLogs">
             <EntityTypeMapping TypeName="ZoliksModel.UserLog">
               <MappingFragment StoreEntitySet="UserLogs">
@@ -2299,6 +2326,85 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="GetTopStudentsFn" FunctionName="ZoliksModel.Store.GetTopStudentsFn">
+          <ResultMapping>
+              <ComplexTypeMapping TypeName="ZoliksModel.GetTopStudents_Result">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="ClassID" ColumnName="ClassID" />
+                <ScalarProperty Name="ProfilePhotoID" ColumnName="ProfilePhotoID" />
+                <ScalarProperty Name="ClassName" ColumnName="ClassName" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Lastname" ColumnName="Lastname" />
+                <ScalarProperty Name="XP" ColumnName="XP" />
+                <ScalarProperty Name="ZolikCount" ColumnName="ZolikCount" />
+                <ScalarProperty Name="Hash" ColumnName="Hash" />
+                <ScalarProperty Name="Base64" ColumnName="Base64" />
+                <ScalarProperty Name="MIME" ColumnName="MIME" />
+                <ScalarProperty Name="Size" ColumnName="Size" />
+                <ScalarProperty Name="ImageID" ColumnName="PhotoID" />
+                <ScalarProperty Name="SchoolID" ColumnName="SchoolID" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetTopStudentsXpFn" FunctionName="ZoliksModel.Store.GetTopStudentsXpFn">
+          <ResultMapping>
+              <ComplexTypeMapping TypeName="ZoliksModel.GetTopStudentsXp_Result">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="ClassID" ColumnName="ClassID" />
+                <ScalarProperty Name="SchoolID" ColumnName="SchoolID" />
+                <ScalarProperty Name="ProfilePhotoID" ColumnName="ProfilePhotoID" />
+                <ScalarProperty Name="ClassName" ColumnName="ClassName" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Lastname" ColumnName="Lastname" />
+                <ScalarProperty Name="XP" ColumnName="XP" />
+                <ScalarProperty Name="Hash" ColumnName="Hash" />
+                <ScalarProperty Name="Base64" ColumnName="Base64" />
+                <ScalarProperty Name="MIME" ColumnName="MIME" />
+                <ScalarProperty Name="Size" ColumnName="Size" />
+                <ScalarProperty Name="ImageID" ColumnName="ID1" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetStudentsFn" FunctionName="ZoliksModel.Store.GetStudentsFn">
+          <ResultMapping>
+              <ComplexTypeMapping TypeName="ZoliksModel.GetTopStudents_Result">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="ClassID" ColumnName="ClassID" />
+                <ScalarProperty Name="ProfilePhotoID" ColumnName="ProfilePhotoID" />
+                <ScalarProperty Name="ClassName" ColumnName="ClassName" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Lastname" ColumnName="Lastname" />
+                <ScalarProperty Name="XP" ColumnName="XP" />
+                <ScalarProperty Name="ZolikCount" ColumnName="ZolikCount" />
+                <ScalarProperty Name="Hash" ColumnName="Hash" />
+                <ScalarProperty Name="Base64" ColumnName="Base64" />
+                <ScalarProperty Name="MIME" ColumnName="MIME" />
+                <ScalarProperty Name="Size" ColumnName="Size" />
+                <ScalarProperty Name="ImageID" ColumnName="ID1" />
+                <ScalarProperty Name="SchoolID" ColumnName="SchoolID" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetFakeStudentsFn" FunctionName="ZoliksModel.Store.GetFakeStudentsFn">
+          <ResultMapping>
+              <ComplexTypeMapping TypeName="ZoliksModel.GetTopStudents_Result">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="ClassID" ColumnName="ClassID" />
+                <ScalarProperty Name="ProfilePhotoID" ColumnName="ProfilePhotoID" />
+                <ScalarProperty Name="ClassName" ColumnName="ClassName" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Lastname" ColumnName="Lastname" />
+                <ScalarProperty Name="XP" ColumnName="XP" />
+                <ScalarProperty Name="ZolikCount" ColumnName="ZolikCount" />
+                <ScalarProperty Name="Hash" ColumnName="Hash" />
+                <ScalarProperty Name="Base64" ColumnName="Base64" />
+                <ScalarProperty Name="MIME" ColumnName="MIME" />
+                <ScalarProperty Name="Size" ColumnName="Size" />
+                <ScalarProperty Name="ImageID" ColumnName="ID1" />
+                <ScalarProperty Name="SchoolID" ColumnName="SchoolID" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

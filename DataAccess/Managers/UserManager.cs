@@ -846,29 +846,31 @@ namespace DataAccess.Managers
 			return new MActionResult<List<User>>(StatusCode.OK, users);
 		}
 
-		public IList<IStudent> GetStudents(int schoolId, params int[] excludeIds)
+		public async Task<List<IStudent>> GetStudents(int schoolId, params int[] excludeIds)
 		{
-			return this.GetStudents(schoolId, null, imageMaxSize: 1, true, excludeIds).ToList<IStudent>();
+			var res = await this.GetStudents(schoolId, null, imageMaxSize: 1, true, excludeIds);
+			return res.ToList<IStudent>();
 		}
 
-		public IList<GetTopStudents_Result> GetStudents(int schoolId,
+		public Task<List<GetTopStudents_Result>> GetStudents(int schoolId,
 														int? classId = null,
 														int? imageMaxSize = null,
 														bool onlyActive = true,
 														params int[] excludeIds)
 		{
-			return _ctx.GetStudents(onlyActive, schoolId, imageMaxSize, classId, excludeIds);
+			return _ctx.GetStudents(onlyActive, schoolId, imageMaxSize, classId, excludeIds).ToListAsync();
 		}
 
-		public IList<IStudent> GetFakeStudents(params int[] excludeIds)
+		public async Task<List<IStudent>> GetFakeStudents(params int[] excludeIds)
 		{
-			return this.GetFakeStudents(1, true, excludeIds).ToList<IStudent>();
+			var res = await this.GetFakeStudents(1, true, excludeIds);
+			return res.ToList<IStudent>();
 		}
 
-		public IList<GetTopStudents_Result> GetFakeStudents(int? imageMaxSize = null, bool onlyActive = true,
+		public Task<List<GetTopStudents_Result>> GetFakeStudents(int? imageMaxSize = null, bool onlyActive = true,
 															params int[] excludeIds)
 		{
-			return _ctx.GetFakeStudents(onlyActive, imageMaxSize, excludeIds);
+			return _ctx.GetFakeStudents(onlyActive, imageMaxSize, excludeIds).ToListAsync();
 		}
 
 		public Task<int> GetPreviousStudentIdAsync(int currentId, int schoolId)
@@ -897,22 +899,28 @@ namespace DataAccess.Managers
 
 #region Social methods (Most zoliks,...)
 
-		public IList<GetTopStudents_Result> GetStudentsWithMostZoliks(int schoolId,
-																	  int top = 5,
-																	  int? classId = null,
-																	  int? imageMaxSize = null)
+		public Task<List<GetTopStudents_Result>> GetStudentsWithMostZoliks(int schoolId,
+																		   int top = 5,
+																		   int? classId = null,
+																		   int? imageMaxSize = null)
 		{
-			var res = _ctx.GetTopStudents(top: top, classId: classId, schoolId: schoolId, imageMaxSize: imageMaxSize);
-			return res;
+			return _ctx.GetTopStudents(top: top,
+									   classId: classId,
+									   schoolId: schoolId,
+									   imageMaxSize: imageMaxSize)
+					   .ToListAsync();
 		}
 
-		public IList<GetTopStudentsXp_Result> GetStudentsWithMostXp(int schoolId,
-																	int top = 5,
-																	int? classId = null,
-																	int? imageMaxSize = null)
+		public Task<List<GetTopStudentsXp_Result>> GetStudentsWithMostXp(int schoolId,
+																		 int top = 5,
+																		 int? classId = null,
+																		 int? imageMaxSize = null)
 		{
-			var res = _ctx.GetTopStudentsXp(top: top, classId: classId, schoolId: schoolId, imageMaxSize: imageMaxSize);
-			return res;
+			return _ctx.GetTopStudentsXp(top: top,
+										 classId: classId,
+										 schoolId: schoolId,
+										 imageMaxSize: imageMaxSize)
+					   .ToListAsync();
 		}
 
 #endregion

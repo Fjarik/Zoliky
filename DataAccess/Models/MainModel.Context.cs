@@ -52,7 +52,8 @@ namespace DataAccess.Models
         public virtual DbSet<ProjectSetting> ProjectSettings { get; set; }
         public virtual DbSet<SchoolSubject> SchoolSubjects { get; set; }
     
-        private ObjectResult<GetTopStudents_Result> GetTopStudents(Nullable<int> top, Nullable<int> imageMaxSize, Nullable<int> classId, Nullable<int> schoolId, string settingsKey, Nullable<int> defaultPhotoId)
+        [DbFunction("ZoliksEntities", "GetTopStudentsFn")]
+        public virtual IQueryable<GetTopStudents_Result> GetTopStudentsFn(Nullable<int> top, Nullable<int> imageMaxSize, Nullable<int> classId, Nullable<int> schoolId, string settingsKey, Nullable<int> defaultPhotoId)
         {
             var topParameter = top.HasValue ?
                 new ObjectParameter("top", top) :
@@ -78,10 +79,11 @@ namespace DataAccess.Models
                 new ObjectParameter("defaultPhotoId", defaultPhotoId) :
                 new ObjectParameter("defaultPhotoId", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetTopStudents_Result>("GetTopStudents", topParameter, imageMaxSizeParameter, classIdParameter, schoolIdParameter, settingsKeyParameter, defaultPhotoIdParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<GetTopStudents_Result>("[ZoliksEntities].[GetTopStudentsFn](@top, @imageMaxSize, @classId, @schoolId, @settingsKey, @defaultPhotoId)", topParameter, imageMaxSizeParameter, classIdParameter, schoolIdParameter, settingsKeyParameter, defaultPhotoIdParameter);
         }
     
-        private ObjectResult<GetTopStudentsXp_Result> GetTopStudentsXp(Nullable<int> top, Nullable<int> imageMaxSize, Nullable<int> classId, Nullable<int> schoolId, string settingsKey, Nullable<int> defaultPhotoId)
+        [DbFunction("ZoliksEntities", "GetTopStudentsXpFn")]
+        public virtual IQueryable<GetTopStudentsXp_Result> GetTopStudentsXpFn(Nullable<int> top, Nullable<int> imageMaxSize, Nullable<int> classId, Nullable<int> schoolId, string settingsKey, Nullable<int> defaultPhotoId)
         {
             var topParameter = top.HasValue ?
                 new ObjectParameter("top", top) :
@@ -107,10 +109,11 @@ namespace DataAccess.Models
                 new ObjectParameter("defaultPhotoId", defaultPhotoId) :
                 new ObjectParameter("defaultPhotoId", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetTopStudentsXp_Result>("GetTopStudentsXp", topParameter, imageMaxSizeParameter, classIdParameter, schoolIdParameter, settingsKeyParameter, defaultPhotoIdParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<GetTopStudentsXp_Result>("[ZoliksEntities].[GetTopStudentsXpFn](@top, @imageMaxSize, @classId, @schoolId, @settingsKey, @defaultPhotoId)", topParameter, imageMaxSizeParameter, classIdParameter, schoolIdParameter, settingsKeyParameter, defaultPhotoIdParameter);
         }
     
-        private ObjectResult<GetTopStudents_Result> GetStudents(Nullable<int> imageMaxSize, Nullable<int> classId, Nullable<int> schoolId, Nullable<int> defaultPhotoId, Nullable<bool> onlyActive)
+        [DbFunction("ZoliksEntities", "GetStudentsFn")]
+        public virtual IQueryable<GetTopStudents_Result> GetStudentsFn(Nullable<int> imageMaxSize, Nullable<int> classId, Nullable<int> schoolId, Nullable<int> defaultPhotoId, Nullable<bool> onlyActive)
         {
             var imageMaxSizeParameter = imageMaxSize.HasValue ?
                 new ObjectParameter("imageMaxSize", imageMaxSize) :
@@ -132,10 +135,11 @@ namespace DataAccess.Models
                 new ObjectParameter("onlyActive", onlyActive) :
                 new ObjectParameter("onlyActive", typeof(bool));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetTopStudents_Result>("GetStudents", imageMaxSizeParameter, classIdParameter, schoolIdParameter, defaultPhotoIdParameter, onlyActiveParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<GetTopStudents_Result>("[ZoliksEntities].[GetStudentsFn](@imageMaxSize, @classId, @schoolId, @defaultPhotoId, @onlyActive)", imageMaxSizeParameter, classIdParameter, schoolIdParameter, defaultPhotoIdParameter, onlyActiveParameter);
         }
     
-        private ObjectResult<GetTopStudents_Result> GetFakeStudents(Nullable<int> imageMaxSize, Nullable<int> defaultPhotoId, Nullable<bool> onlyActive)
+        [DbFunction("ZoliksEntities", "GetFakeStudentsFn")]
+        public virtual IQueryable<GetTopStudents_Result> GetFakeStudentsFn(Nullable<int> imageMaxSize, Nullable<int> defaultPhotoId, Nullable<bool> onlyActive)
         {
             var imageMaxSizeParameter = imageMaxSize.HasValue ?
                 new ObjectParameter("imageMaxSize", imageMaxSize) :
@@ -149,20 +153,7 @@ namespace DataAccess.Models
                 new ObjectParameter("onlyActive", onlyActive) :
                 new ObjectParameter("onlyActive", typeof(bool));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetTopStudents_Result>("GetFakeStudents", imageMaxSizeParameter, defaultPhotoIdParameter, onlyActiveParameter);
-        }
-    
-        private int GetUnavailabilities(Nullable<int> projectId, Nullable<System.DateTime> date)
-        {
-            var projectIdParameter = projectId.HasValue ?
-                new ObjectParameter("projectId", projectId) :
-                new ObjectParameter("projectId", typeof(int));
-    
-            var dateParameter = date.HasValue ?
-                new ObjectParameter("date", date) :
-                new ObjectParameter("date", typeof(System.DateTime));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("GetUnavailabilities", projectIdParameter, dateParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<GetTopStudents_Result>("[ZoliksEntities].[GetFakeStudentsFn](@imageMaxSize, @defaultPhotoId, @onlyActive)", imageMaxSizeParameter, defaultPhotoIdParameter, onlyActiveParameter);
         }
     }
 }

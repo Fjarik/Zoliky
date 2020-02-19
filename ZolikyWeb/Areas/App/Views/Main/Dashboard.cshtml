@@ -85,7 +85,7 @@
 <!-- Row -->
 <div class="row">
 	<!-- Column -->
-	<div class="col-xlg-3 col-lg-4 col-md-5">
+	<div class="col-xlg-3 col-lg-4 col-md-6">
 		<div class="card" style="min-height: 56%;">
 			@Html.Partial("DPartials/_NewestZoliks", Model.Zoliky)
 		</div>
@@ -93,8 +93,8 @@
 	<!-- /Column -->
 	<!-- Column -->
 	@if (Model.IsInClass) {
-		<div class="col-xlg-3 col-lg-4 col-md-5">
-			<div class="card NoSelectAll" data-drag="true">
+		<div class="col-xlg-3 col-lg-4 col-md-6">
+			<div class="card NoSelectAll" data-drag="true" style="min-width: 310px;">
 				@Html.Partial("DPartials/_ClassLeaderboard", Model)
 			</div>
 		</div>
@@ -102,26 +102,26 @@
 	<!-- /Column -->
 	<!-- Column -->
 	@if (!Model.IsPublic) {
-		<div class="col-xlg-3 col-lg-4 col-md-5">
-			<div class="card NoSelectAll" data-drag="true">
+		<div class="col-xlg-3 col-lg-4 col-md-6">
+			<div class="card NoSelectAll" data-drag="true" style="min-width: 310px;">
 				@Html.Partial("DPartials/_SchoolLeaderboard", Model.Leaderboard)
 			</div>
 		</div>
 	}
 	<!-- /Column -->
 	<!-- Column -->
-	<div class="col-xlg-3 col-lg-4 col-md-5">
-		<div class="card" id="statsDiv" style="display: none" data-drag="true">
+	<div class="col-xlg-3 col-lg-4 col-md-6">
+		<div class="card" id="statsDiv" style="display: none;" data-drag="true">
 			@Html.Partial("DPartials/_StatisticsPartial", Model)
 		</div>
 	</div>
 	<!-- /Column -->
-</div>
+	<!-- </div> -->
 <!-- /Row -->
 <!-- Row -->
-<div class="row">
+<!-- <div class="row"> -->
 	<!-- Column -->
-	<div class="col-xlg-3 col-lg-4 col-md-5">
+	<div class="col-xlg-3 col-lg-4 col-md-6">
 		<div class="card" data-drag="true">
 			@Html.Partial("DPartials/_Completed")
 		</div>
@@ -129,8 +129,8 @@
 	<!-- /Column -->
 	<!-- Column -->
 	@if (Model.IsInClass) {
-		<div class="col-xlg-3 col-lg-4 col-md-5" id="xpClassContainer" style="display: none;">
-			<div class="card NoSelectAll" data-drag="true">
+		<div class="col-xlg-3 col-lg-4 col-md-6" id="xpClassContainer" style="display: none;">
+			<div class="card NoSelectAll" data-drag="true" style="min-width: 310px;">
 				@Html.Partial("DPartials/_ClassXpLeaderboard", Model)
 			</div>
 		</div>
@@ -138,8 +138,8 @@
 	<!-- /Column -->
 	<!-- Column -->
 	@if (!Model.IsPublic) {
-		<div class="col-xlg-3 col-lg-4 col-md-5" id="xpContainer" style="display: none;">
-			<div class="card NoSelectAll" data-drag="true">
+		<div class="col-xlg-3 col-lg-4 col-md-6" id="xpContainer" style="display: none;">
+			<div class="card NoSelectAll" data-drag="true" style="min-width: 310px;">
 				@Html.Partial("DPartials/_XpLeaderboard")
 			</div>
 		</div>
