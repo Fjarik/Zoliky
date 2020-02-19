@@ -729,11 +729,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Function Name="GetFakeStudents" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="imageMaxSize" Type="int" Mode="In" />
-          <Parameter Name="defaultPhotoId" Type="int" Mode="In" />
-          <Parameter Name="onlyActive" Type="bit" Mode="In" />
-        </Function>
         <Function Name="GetFakeStudentsFn" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="imageMaxSize" Type="int" Mode="In" />
           <Parameter Name="defaultPhotoId" Type="int" Mode="In" />
@@ -758,13 +753,6 @@
               </RowType>
             </CollectionType>
           </ReturnType>
-        </Function>
-        <Function Name="GetStudents" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="imageMaxSize" Type="int" Mode="In" />
-          <Parameter Name="classId" Type="int" Mode="In" />
-          <Parameter Name="schoolId" Type="int" Mode="In" />
-          <Parameter Name="defaultPhotoId" Type="int" Mode="In" />
-          <Parameter Name="onlyActive" Type="bit" Mode="In" />
         </Function>
         <Function Name="GetStudentsFn" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="imageMaxSize" Type="int" Mode="In" />
@@ -793,14 +781,6 @@
             </CollectionType>
           </ReturnType>
         </Function>
-        <Function Name="GetTopStudents" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="top" Type="int" Mode="In" />
-          <Parameter Name="imageMaxSize" Type="int" Mode="In" />
-          <Parameter Name="classId" Type="int" Mode="In" />
-          <Parameter Name="schoolId" Type="int" Mode="In" />
-          <Parameter Name="settingsKey" Type="nvarchar(max)" Mode="In" />
-          <Parameter Name="defaultPhotoId" Type="int" Mode="In" />
-        </Function>
         <Function Name="GetTopStudentsFn" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="top" Type="int" Mode="In" />
           <Parameter Name="imageMaxSize" Type="int" Mode="In" />
@@ -828,14 +808,6 @@
               </RowType>
             </CollectionType>
           </ReturnType>
-        </Function>
-        <Function Name="GetTopStudentsXp" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="top" Type="int" Mode="In" />
-          <Parameter Name="imageMaxSize" Type="int" Mode="In" />
-          <Parameter Name="classId" Type="int" Mode="In" />
-          <Parameter Name="schoolId" Type="int" Mode="In" />
-          <Parameter Name="settingsKey" Type="nvarchar(max)" Mode="In" />
-          <Parameter Name="defaultPhotoId" Type="int" Mode="In" />
         </Function>
         <Function Name="GetTopStudentsXpFn" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="top" Type="int" Mode="In" />

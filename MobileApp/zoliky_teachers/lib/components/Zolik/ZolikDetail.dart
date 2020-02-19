@@ -88,7 +88,7 @@ class ZolikDetailState extends State<ZolikDetailPage> {
                   left: 8,
                 ),
                 child: Text(
-                  "Transakce:",
+                  "Pohyby:",
                   style: TextStyle(
                     fontSize: 18,
                   ),

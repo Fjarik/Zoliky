@@ -100,7 +100,7 @@ class ZoliksPageState extends State<ZoliksPage> {
           "Výchozí": ZolikSort.id,
           "Data vytvoření": ZolikSort.created,
           "Třídy": ZolikSort.className,
-          "Poslední transakce": ZolikSort.lastTransfer
+          "Poslední pohyby": ZolikSort.lastTransfer
         };
         return AlertDialog(
           title: Text("Řazení žolíků"),

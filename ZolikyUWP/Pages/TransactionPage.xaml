@@ -33,7 +33,7 @@
 						</Grid.ColumnDefinitions>
 
 						<TextBlock Grid.Row="0" Grid.Column="0"
-						           Text="Typ transakce: "
+						           Text="Druh: "
 						           FontWeight="SemiBold" />
 						<TextBlock Grid.Row="0" Grid.Column="2"
 						           Text="{Binding TypeString}"
