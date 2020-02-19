@@ -18,7 +18,7 @@ namespace DataAccess.Managers
 	{
 #region Fields
 
-		protected readonly ZoliksEntities _ctx;
+		protected ZoliksEntities _ctx { get; private set; }
 		protected readonly IOwinContext Context;
 
 #endregion
@@ -83,6 +83,11 @@ namespace DataAccess.Managers
 				}
 				return 0;
 			}
+		}
+
+		public void SetManualContext(ZoliksEntities ctx)
+		{
+			this._ctx = ctx;
 		}
 
 #endregion

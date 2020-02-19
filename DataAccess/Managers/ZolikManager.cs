@@ -336,8 +336,9 @@ namespace DataAccess.Managers
 																	 string message)
 		{
 			//using (var transaction = _ctx.Database.BeginTransaction()) {
-			//var transaction = _ctx.Database.BeginTransaction();
+			var transaction = _ctx.Database.BeginTransaction();
 			var uMgr = Context.Get<UserManager>();
+			uMgr.SetManualContext(_ctx);
 			if (!(await uMgr.IdExistsAsync(fromId)) || !(await uMgr.IdExistsAsync(toId))) {
 				return new MActionResult<Transaction>(StatusCode.NotValidID);
 			}
@@ -360,6 +361,7 @@ namespace DataAccess.Managers
 				await this.SaveAsync(z);
 
 				var tMgr = Context.Get<TransactionManager>();
+				tMgr.SetManualContext(_ctx);
 				var tranRes = await tMgr.CreateAsync(fromId, toId, z.ID, message, type);
 
 				bool xp = await uMgr.AddXpAsync(5, fromId, toId);
@@ -388,10 +390,10 @@ namespace DataAccess.Managers
 					var nMgr = Context.Get<NotificationManager>();
 					await nMgr.NewZolikAsync(toId, z.Title);
 				}
-				//transaction.Commit();
+				transaction.Commit();
 				return new MActionResult<Transaction>(StatusCode.OK, tran);
 			} catch (Exception ex) {
-				//transaction.Rollback();
+				transaction.Rollback();
 #if DEBUG
 				throw;
 #else
