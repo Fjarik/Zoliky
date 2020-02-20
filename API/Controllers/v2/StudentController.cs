@@ -29,12 +29,16 @@ namespace API.Controllers.v2
 		[Route("getstudents")]
 		[ResponseType(typeof(List<Student<Image>>))]
 		public async Task<IHttpActionResult> GetStudents([FromUri] int? classId = null,
-														[FromUri] int? imageMaxSize = null,
-														[FromUri] bool onlyActive = true)
+														 [FromUri] int? imageMaxSize = null,
+														 [FromUri] bool onlyActive = true)
 		{
 			var schoolId = this.User.Identity.GetSchoolId();
+			var isTester = this.User.Identity.IsTester();
 
-			var res = await Mgr.GetStudents(schoolId, classId: classId, imageMaxSize: imageMaxSize, onlyActive: onlyActive);
+			var res = await Mgr.GetStudents(schoolId, classId: classId,
+											imageMaxSize: imageMaxSize,
+											incTesterZoliks: isTester,
+											onlyActive: onlyActive);
 			return Ok(res);
 		}
 
@@ -47,8 +51,9 @@ namespace API.Controllers.v2
 																	   [FromUri] int? imageMaxSize = null)
 		{
 			var schoolId = this.User.Identity.GetSchoolId();
+			var isTester = this.User.Identity.IsTester();
 
-			var res = await Mgr.GetStudentsWithMostZoliks(schoolId, top, classId, imageMaxSize);
+			var res = await Mgr.GetStudentsWithMostZoliks(schoolId, top, classId, isTester, imageMaxSize);
 			return Ok(res);
 		}
 
@@ -57,8 +62,8 @@ namespace API.Controllers.v2
 		[Route("gettopxp")]
 		[ResponseType(typeof(List<Student<Image>>))]
 		public async Task<IHttpActionResult> GetStudentsWithMostXp([FromUri] int? classId = null,
-																  [FromUri] int top = 5,
-																  [FromUri] int? imageMaxSize = null)
+																   [FromUri] int top = 5,
+																   [FromUri] int? imageMaxSize = null)
 		{
 			var schoolId = this.User.Identity.GetSchoolId();
 
@@ -71,7 +76,7 @@ namespace API.Controllers.v2
 		[Route("getfake")]
 		[ResponseType(typeof(List<Student<Image>>))]
 		public async Task<IHttpActionResult> GetFakeStudents([FromUri] int? imageMaxSize = null,
-															[FromUri] bool onlyActive = true)
+															 [FromUri] bool onlyActive = true)
 		{
 			var res = await Mgr.GetFakeStudents(imageMaxSize, onlyActive);
 			return Ok(res);
