@@ -11,6 +11,7 @@ namespace SharedApi.Models
 		public int SubjectID { get; set; }
 		public int TeacherID { get; set; }
 		public int OriginalOwnerID { get; set; }
+		public int TypeID { get; set; }
 		public ZolikType Type { get; set; }
 		public string Title { get; set; }
 		public bool Enabled { get; set; }

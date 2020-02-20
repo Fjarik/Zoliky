@@ -146,7 +146,7 @@ namespace DataAccess.Managers
 							.ToListAsync();
 
 			return res.Select(x => new ZolikTypesData {
-						  Label = x.Key.GetDescription(),
+						  Label = x.Key.FriendlyName,
 						  Count = x.Count()
 					  })
 					  .ToList();
@@ -156,8 +156,7 @@ namespace DataAccess.Managers
 		{
 			return _ctx.Zoliky
 					   .Where(x => x.Owner.Roles.All(y => y.Name != UserRoles.HiddenStudent) &&
-								   x.Type != ZolikType.Debug &&
-								   x.Type != ZolikType.DebugJoker &&
+								   !x.Type.IsTestType &&
 								   x.Enabled);
 		}
 
@@ -166,8 +165,7 @@ namespace DataAccess.Managers
 			return _ctx.Zoliky
 					   .Where(x => x.OriginalOwner.SchoolID == schoolId &&
 								   x.Owner.Roles.All(y => y.Name != UserRoles.HiddenStudent) &&
-								   x.Type != ZolikType.Debug &&
-								   x.Type != ZolikType.DebugJoker &&
+								   !x.Type.IsTestType &&
 								   x.Enabled);
 		}
 
@@ -180,8 +178,7 @@ namespace DataAccess.Managers
 									 .Select(x => new {
 										 classId = x.Key,
 										 count = x.Select(y => y.OriginalZoliks
-																.Where(z => z.Type != ZolikType.Debug &&
-																			z.Type != ZolikType.DebugJoker)
+																.Where(z => !z.Type.IsTestType)
 																.Count(z => z.Enabled)).Sum()
 									 })
 									 .ToListAsync();
@@ -205,6 +202,20 @@ namespace DataAccess.Managers
 					   .Where(x => x.ID == schoolId)
 					   .Select(x => x.Type)
 					   .FirstOrDefaultAsync();
+		}
+
+		public async Task<List<ZolikType>> GetSchoolZolikTypesAsync(int schoolId, bool isTester = false)
+		{
+			var school = await _ctx.Schools
+								   .Select(x => new {
+									   ID = x.ID,
+									   types = x.ZolikTypes,
+								   })
+								   .FirstAsync(x => x.ID == schoolId);
+			if (isTester) {
+				return school.types.ToList();
+			}
+			return school.types.Where(x => !x.IsTestType).ToList();
 		}
 
 		public async Task<List<User>> GetSchoolTeachersAsync(int schoolId, bool onlyActive = true)

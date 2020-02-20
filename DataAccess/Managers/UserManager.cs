@@ -848,17 +848,24 @@ namespace DataAccess.Managers
 
 		public async Task<List<IStudent>> GetStudents(int schoolId, params int[] excludeIds)
 		{
-			var res = await this.GetStudents(schoolId, null, imageMaxSize: 1, true, excludeIds);
+			var res = await this.GetStudents(schoolId, null, imageMaxSize: 1, false, true, excludeIds);
 			return res.ToList<IStudent>();
 		}
 
 		public Task<List<GetTopStudents_Result>> GetStudents(int schoolId,
-														int? classId = null,
-														int? imageMaxSize = null,
-														bool onlyActive = true,
-														params int[] excludeIds)
+															 int? classId = null,
+															 int? imageMaxSize = null,
+															 bool incTesterZoliks = false,
+															 bool onlyActive = true,
+															 params int[] excludeIds)
 		{
-			return _ctx.GetStudents(onlyActive, schoolId, imageMaxSize, classId, excludeIds).ToListAsync();
+			return _ctx.GetStudents(onlyActive,
+									schoolId,
+									imageMaxSize,
+									incTesterZoliks,
+									classId,
+									excludeIds)
+					   .ToListAsync();
 		}
 
 		public async Task<List<IStudent>> GetFakeStudents(params int[] excludeIds)
@@ -868,7 +875,7 @@ namespace DataAccess.Managers
 		}
 
 		public Task<List<GetTopStudents_Result>> GetFakeStudents(int? imageMaxSize = null, bool onlyActive = true,
-															params int[] excludeIds)
+																 params int[] excludeIds)
 		{
 			return _ctx.GetFakeStudents(onlyActive, imageMaxSize, excludeIds).ToListAsync();
 		}
@@ -902,11 +909,13 @@ namespace DataAccess.Managers
 		public Task<List<GetTopStudents_Result>> GetStudentsWithMostZoliks(int schoolId,
 																		   int top = 5,
 																		   int? classId = null,
+																		   bool incTester = false,
 																		   int? imageMaxSize = null)
 		{
 			return _ctx.GetTopStudents(top: top,
 									   classId: classId,
 									   schoolId: schoolId,
+									   incTester: incTester,
 									   imageMaxSize: imageMaxSize)
 					   .ToListAsync();
 		}

@@ -110,7 +110,7 @@ namespace DataAccess.Managers
 				query = query.Where(x => x.Enabled);
 			}
 			if (!isTester) {
-				query = query.Where(x => x.Type != ZolikType.Debug && x.Type != ZolikType.DebugJoker);
+				query = query.Where(x => !x.Type.IsTestType);
 			}
 			query = query.OrderByDescending(x => x.OwnerSince);
 			return query;
@@ -130,8 +130,7 @@ namespace DataAccess.Managers
 				query = query.Where(x => x.Enabled);
 			}
 			if (!includeTester) {
-				query = query.Where(x => x.Type != ZolikType.Debug &&
-										 x.Type != ZolikType.DebugJoker);
+				query = query.Where(x => !x.Type.IsTestType);
 			}
 			query = query.OrderByDescending(x => x.Enabled)
 						 .ThenBy(x => x.ID);
@@ -142,18 +141,18 @@ namespace DataAccess.Managers
 
 		public Task<MActionResult<Zolik>> CreateAsync(int teacherId,
 													  int originalOwnerId,
-													  ZolikType type,
+													  int typeId,
 													  int subjectId,
 													  string title,
 													  bool allowSplit = true)
 		{
-			return CreateAsync(teacherId, teacherId, originalOwnerId, type, subjectId, title, allowSplit);
+			return CreateAsync(teacherId, teacherId, originalOwnerId, typeId, subjectId, title, allowSplit);
 		}
 
 		private async Task<MActionResult<Zolik>> CreateAsync(int teacherId,
 															 int ownerId,
 															 int originalOwnerId,
-															 ZolikType type,
+															 int typeId,
 															 int subjectId,
 															 string title,
 															 bool allowSplit = true)
@@ -165,7 +164,8 @@ namespace DataAccess.Managers
 				return new MActionResult<Zolik>(StatusCode.InvalidInput);
 			}
 
-			if (!type.IsSplittable()) {
+			var isSplittable = (await _ctx.ZolikType.FindAsync(typeId))?.IsSplittable;
+			if (isSplittable != true) {
 				allowSplit = false;
 			}
 
@@ -174,7 +174,7 @@ namespace DataAccess.Managers
 				OwnerID = ownerId,
 				SubjectID = subjectId,
 				OriginalOwnerID = originalOwnerId,
-				Type = type,
+				TypeID = typeId,
 				Title = title,
 				OwnerSince = DateTime.Now,
 				Created = DateTime.Now,
@@ -194,7 +194,7 @@ namespace DataAccess.Managers
 
 			return await CreateAndTransferAsync(p.TeacherID,
 												p.ToID,
-												p.Type,
+												p.TypeID,
 												p.SubjectID,
 												p.Title,
 												logged,
@@ -203,7 +203,7 @@ namespace DataAccess.Managers
 
 		public async Task<MActionResult<Transaction>> CreateAndTransferAsync(int teacherId,
 																			 int toId,
-																			 ZolikType type,
+																			 int typeId,
 																			 int subjectId,
 																			 string title,
 																			 User logged,
@@ -213,7 +213,7 @@ namespace DataAccess.Managers
 				return new MActionResult<Transaction>(StatusCode.InvalidInput);
 			}
 
-			var res = await this.CreateAsync(teacherId, toId, type, subjectId, title, allowSplit);
+			var res = await this.CreateAsync(teacherId, toId, typeId, subjectId, title, allowSplit);
 			if (!res.IsSuccess) {
 				return new MActionResult<Transaction>(res.Status);
 			}
@@ -371,10 +371,10 @@ namespace DataAccess.Managers
 				}
 				var tran = tranRes.Content;
 
-				await UpdateStatisticsAsync(fromId, toId, z.Type, type);
+				await UpdateStatisticsAsync(fromId, toId, z.TypeID, type);
 
 				var notify = type.IsNotifyType() && toId != Ext.BankId; // Nespamovat email při odebírání 
-				if (z.Type.IsTesterType() && type == TransactionAssignment.NewAssignment) {
+				if (z.Type.IsTestType && type == TransactionAssignment.NewAssignment) {
 					notify = false;
 				}
 				if (notify) {
@@ -403,30 +403,33 @@ namespace DataAccess.Managers
 			//}
 		}
 
-		private async Task UpdateStatisticsAsync(int fromId, int toId, ZolikType type, TransactionAssignment tranType)
+		private async Task UpdateStatisticsAsync(int fromId, int toId, int typeId, TransactionAssignment tranType)
 		{
-			if (tranType == TransactionAssignment.Removal || tranType == TransactionAssignment.Split) {
+			if (tranType == TransactionAssignment.Removal || tranType == TransactionAssignment.Split ||
+				typeId < 0 || !Enum.IsDefined(typeof(ZolikType), typeId)) {
 				return;
 			}
 
 			var sMgr = Context.Get<StatisticsManager>();
 
+			var type = (ZolikTypes) typeId;
+
 			switch (type) {
-				case ZolikType.Normal:
+				case ZolikTypes.Normal:
 					await sMgr.IncreaseValueAsync(fromId, SettingKeys.StatZoliksSent);
 					if (tranType != TransactionAssignment.NewAssignment) {
 						await sMgr.IncreaseValueAsync(toId, SettingKeys.StatZoliksAccepted);
 					}
 					await sMgr.IncreaseValueAsync(toId, SettingKeys.StatZoliksReceived);
 					break;
-				case ZolikType.Joker:
+				case ZolikTypes.Joker:
 					await sMgr.IncreaseValueAsync(fromId, SettingKeys.StatJokersSent);
 					if (tranType != TransactionAssignment.NewAssignment) {
 						await sMgr.IncreaseValueAsync(toId, SettingKeys.StatJokersAccepted);
 					}
 					await sMgr.IncreaseValueAsync(toId, SettingKeys.StatJokersReceived);
 					break;
-				case ZolikType.Black:
+				case ZolikTypes.Black:
 					await sMgr.IncreaseValueAsync(toId, SettingKeys.StatBlackReceived);
 					break;
 			}
@@ -449,7 +452,7 @@ namespace DataAccess.Managers
 			return await this.SplitAsync(zolik, logged);
 		}
 
-		private async Task<MActionResult<List<Transaction>>> SplitAsync(IZolik zolik, User logged)
+		private async Task<MActionResult<List<Transaction>>> SplitAsync(Zolik zolik, User logged)
 		{
 			if (zolik == null || logged == null) {
 				return new MActionResult<List<Transaction>>(StatusCode.InvalidInput);
@@ -464,7 +467,7 @@ namespace DataAccess.Managers
 			return await this.SplitAsync(logged.ID, zolik);
 		}
 
-		private async Task<MActionResult<List<Transaction>>> SplitAsync(int toId, IZolik zolik)
+		private async Task<MActionResult<List<Transaction>>> SplitAsync(int toId, Zolik zolik)
 		{
 			if (zolik == null) {
 				return new MActionResult<List<Transaction>>(StatusCode.InvalidInput);
@@ -475,7 +478,7 @@ namespace DataAccess.Managers
 			if (!zolik.IsSplittable) {
 				return new MActionResult<List<Transaction>>(StatusCode.CannotSplit);
 			}
-			var type = zolik.Type.GetSplitType();
+			var type = zolik.Type.SplitsToID;
 			if (type == null) {
 				return new MActionResult<List<Transaction>>(StatusCode.CannotSplit);
 			}
@@ -494,14 +497,14 @@ namespace DataAccess.Managers
 
 			return await this.SplitAsync(toId: toId,
 										 joker: zolik,
-										 toType: (ZolikType) type,
+										 toType: (int) type,
 										 count: count,
 										 deleteTran: delete);
 		}
 
 		private async Task<MActionResult<List<Transaction>>> SplitAsync(int toId,
 																		IZolik joker,
-																		ZolikType toType,
+																		int toType,
 																		int count,
 																		Transaction deleteTran)
 		{
@@ -523,7 +526,7 @@ namespace DataAccess.Managers
 		private async Task<MActionResult<List<Transaction>>> SplitAsync(int teacherId,
 																		int toId,
 																		int originalOwnerId,
-																		ZolikType toType,
+																		int toType,
 																		int subjectId,
 																		string title,
 																		string tMessage,
@@ -565,7 +568,7 @@ namespace DataAccess.Managers
 		private Task<MActionResult<Transaction>> BankCreateAndTransferAsync(int teacherId,
 																			int toId,
 																			int originalOwnerId,
-																			ZolikType toType,
+																			int toType,
 																			int subjectId,
 																			string title,
 																			string tMessage)
@@ -585,14 +588,14 @@ namespace DataAccess.Managers
 																			  int fromId,
 																			  int toId,
 																			  int originalOwnerId,
-																			  ZolikType toType,
+																			  int toType,
 																			  int subjectId,
 																			  string title,
 																			  string tMessage)
 		{
 			var res = await this.CreateAsync(teacherId: teacherId,
 											 originalOwnerId: originalOwnerId,
-											 type: toType,
+											 typeId: toType,
 											 subjectId: subjectId,
 											 title: title,
 											 allowSplit: false);
@@ -673,7 +676,7 @@ namespace DataAccess.Managers
 		{
 			return _ctx.Zoliky
 					   .Where(x => x.ID < currentId &&
-								   SharedLibrary.Shared.Extensions.TesterTypes.All(y => x.Type != y) &&
+								   !x.Type.IsTestType &&
 								   x.Owner.SchoolID == schoolId)
 					   .OrderByDescending(x => x.ID)
 					   .Select(x => x.ID)
@@ -684,7 +687,7 @@ namespace DataAccess.Managers
 		{
 			return _ctx.Zoliky
 					   .Where(x => x.ID > currentId &&
-								   SharedLibrary.Shared.Extensions.TesterTypes.All(y => x.Type != y) &&
+								   !x.Type.IsTestType &&
 								   x.Owner.SchoolID == schoolId)
 					   .OrderBy(x => x.ID)
 					   .Select(x => x.ID)
@@ -697,7 +700,7 @@ namespace DataAccess.Managers
 
 		public async Task<int> CountUserZoliksAsync(int userId,
 													bool incTester = false,
-													ZolikType? type = null)
+													int? typeId = null)
 		{
 			if (userId < 1) {
 				return 0;
@@ -705,10 +708,10 @@ namespace DataAccess.Managers
 
 			var query = _ctx.Zoliky.Where(x => x.OwnerID == userId && x.Enabled);
 			if (!incTester) {
-				query = query.Where(x => x.Type != ZolikType.Debug && x.Type != ZolikType.DebugJoker);
+				query = query.Where(x => !x.Type.IsTestType);
 			}
-			if (type != null) {
-				query = query.Where(x => x.Type == type);
+			if (typeId != null) {
+				query = query.Where(x => x.TypeID == typeId);
 			}
 
 			return await query.CountAsync();
@@ -719,8 +722,7 @@ namespace DataAccess.Managers
 			var z = await _ctx.Zoliky
 							  .Where(x => x.Enabled &&
 										  x.Owner.Roles.All(y => y.Name != UserRoles.HiddenStudent) &&
-										  x.Type != ZolikType.Debug &&
-										  x.Type != ZolikType.DebugJoker)
+										  !x.Type.IsTestType)
 							  .Select(x => x.OwnerID)
 							  .ToListAsync();
 			return z;

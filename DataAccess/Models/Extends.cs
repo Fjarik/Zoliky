@@ -53,12 +53,14 @@ namespace DataAccess.Models
 		public IQueryable<GetTopStudents_Result> GetStudents(bool onlyActive,
 															 int schoolId,
 															 int? imageMaxSize = null,
+															 bool incTesterZoliks = false,
 															 int? classId = null,
 															 params int[] excludeIds)
 		{
 			return this.GetStudents(onlyActive: onlyActive,
 									schoolId: schoolId,
 									imageMaxSize: imageMaxSize,
+									incTesterZoliks: incTesterZoliks,
 									classId: classId)
 					   .Where(x => excludeIds.All(y => x.ID != y));
 		}
@@ -66,6 +68,7 @@ namespace DataAccess.Models
 		private IQueryable<GetTopStudents_Result> GetStudents(bool onlyActive,
 															  int schoolId,
 															  int? imageMaxSize = null,
+															  bool incTesterZoliks = false,
 															  int? classId = null)
 		{
 			if (imageMaxSize == null) {
@@ -75,18 +78,21 @@ namespace DataAccess.Models
 								 classId: classId,
 								 schoolId: schoolId,
 								 defaultPhotoId: Ext.DefaultProfilePhotoId,
-								 onlyActive: onlyActive);
+								 onlyActive: onlyActive,
+								 incTester: incTesterZoliks);
 		}
 
 		public IQueryable<GetTopStudents_Result> GetTopStudents(int schoolId,
 																int top = 5,
 																int? classId = null,
+																bool incTester = false,
 																int? imageMaxSize = null)
 		{
 			return GetTopStudents(key: SettingKeys.LeaderboardZolik,
 								  schoolId: schoolId,
 								  top: top,
 								  imageMaxSize: imageMaxSize,
+								  incTester: incTester,
 								  classId: classId);
 		}
 
@@ -94,6 +100,7 @@ namespace DataAccess.Models
 																 int schoolId,
 																 int top = 5,
 																 int? imageMaxSize = null,
+																 bool incTester = false,
 																 int? classId = null)
 		{
 			if (imageMaxSize == null) {
@@ -104,7 +111,8 @@ namespace DataAccess.Models
 									classId: classId,
 									schoolId: schoolId,
 									settingsKey: key,
-									defaultPhotoId: Ext.DefaultProfilePhotoId);
+									defaultPhotoId: Ext.DefaultProfilePhotoId,
+									incTester: incTester);
 		}
 
 		public IQueryable<GetTopStudentsXp_Result> GetTopStudentsXp(int schoolId,
@@ -373,7 +381,7 @@ namespace DataAccess.Models
 
 		public string ZolikTitle => this.Zolik?.Title;
 
-		public ZolikType ZolikType => Zolik?.Type ?? ZolikType.Normal;
+		public ZolikType ZolikType => Zolik?.Type;
 
 		private sealed class TransactionMetaData
 		{
@@ -533,7 +541,7 @@ namespace DataAccess.Models
 	public partial class UserSetting : IUserSetting { }
 
 	[MetadataType(typeof(ZolikMetadata))]
-	public partial class Zolik : IZolik
+	public partial class Zolik : IZolik<ZolikType>
 	{
 		public int SchoolID => this.Owner?.SchoolID ?? 0;
 
@@ -549,9 +557,9 @@ namespace DataAccess.Models
 
 		public bool IsLocked => !string.IsNullOrWhiteSpace(this.Lock);
 
-		public bool CanBeTransfered => this.Enabled && !this.IsLocked && this.Type != ZolikType.Black;
+		public bool CanBeTransfered => this.Enabled && !this.IsLocked && this.Type.AllowGive;
 
-		public bool IsSplittable => this.Enabled && this.AllowSplit && this.Type.IsSplittable();
+		public bool IsSplittable => this.Enabled && this.AllowSplit && this.Type.IsSplittable;
 
 		private sealed class ZolikMetadata
 		{
@@ -573,5 +581,10 @@ namespace DataAccess.Models
 			[JsonIgnore]
 			public ICollection<Transaction> Transactions { get; set; }
 		}
+	}
+
+	public partial class ZolikType : IZolikType
+	{
+		public ZolikType() { }
 	}
 }

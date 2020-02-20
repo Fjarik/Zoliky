@@ -25,7 +25,7 @@ namespace DataAccess.Models
         public int SubjectID { get; set; }
         public int TeacherID { get; set; }
         public int OriginalOwnerID { get; set; }
-        public SharedLibrary.Enums.ZolikType Type { get; set; }
+        public int TypeID { get; set; }
         public string Title { get; set; }
         public bool Enabled { get; set; }
         public System.DateTime OwnerSince { get; set; }
@@ -39,5 +39,6 @@ namespace DataAccess.Models
         public virtual ICollection<Transaction> Transactions { get; set; }
         public virtual User Owner { get; set; }
         public virtual User Teacher { get; set; }
+        public virtual ZolikType Type { get; set; }
     }
 }

@@ -20,6 +20,7 @@ namespace DataAccess.Models
             this.Classes = new HashSet<Class>();
             this.Users = new HashSet<User>();
             this.SchoolSubjects = new HashSet<SchoolSubject>();
+            this.ZolikTypes = new HashSet<ZolikType>();
         }
     
         public int ID { get; set; }
@@ -37,5 +38,7 @@ namespace DataAccess.Models
         public virtual ICollection<User> Users { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SchoolSubject> SchoolSubjects { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ZolikType> ZolikTypes { get; set; }
     }
 }

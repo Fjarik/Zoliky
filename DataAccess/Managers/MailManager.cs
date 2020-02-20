@@ -255,7 +255,7 @@ namespace DataAccess.Managers
 			return await SendAsync(email);
 		}
 
-		public async Task<bool> NewZolikAsync(int userId, IZolik zolik, ITransaction tran)
+		public async Task<bool> NewZolikAsync(int userId, Zolik zolik, ITransaction tran)
 		{
 			var res = await this.GetUserAsync(userId);
 			if (res == null) {
@@ -264,7 +264,7 @@ namespace DataAccess.Managers
 			return await NewZolikAsync(res, zolik, tran);
 		}
 
-		public async Task<bool> NewZolikAsync(IUser to, IZolik zolik, ITransaction tran)
+		public async Task<bool> NewZolikAsync(IUser to, Zolik zolik, ITransaction tran)
 		{
 			if (to == null || zolik == null || tran == null) {
 				return false;
@@ -273,16 +273,7 @@ namespace DataAccess.Managers
 
 			body = body.Replace("#FullName#", to.FullName);
 
-			string zType = "Žolík";
-			switch (zolik.Type) {
-				case ZolikType.Black:
-				case ZolikType.Joker:
-					zType = zolik.Type.GetDescription();
-					break;
-				case ZolikType.Debug:
-					zType += " (testovací)";
-					break;
-			}
+			string zType = zolik.Type.FriendlyName;
 
 			body = body.Replace("#ZolikType#", zType);
 			body = body.Replace("#ZolikName#", zolik.Title);

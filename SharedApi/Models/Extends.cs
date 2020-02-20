@@ -62,11 +62,11 @@ namespace SharedApi.Models
 
 		public string ZolikTitle { get; set; }
 
-		public ZolikType? ZolikType { get; set; }
+		public ZolikType ZolikType { get; set; }
 
 		public string DirectionFull { get; set; }
 
-		public string ZolikTypeString => this.ZolikType?.GetDescription();
+		public string ZolikTypeString => this.ZolikType.FriendlyName;
 		public string TypeString => this.Typ.GetDescription();
 
 		public Transaction() { }
@@ -152,9 +152,9 @@ namespace SharedApi.Models
 
 	public partial class UserSetting : IUserSetting { }
 
-	public partial class Zolik : IZolik
+	public partial class Zolik : IZolik<ZolikType>
 	{
-		public string TypeText => this.Type.GetDescription();
+		public string TypeText => this.Type.FriendlyName;
 		public string SubjectName { get; set; }
 		public string TeacherName { get; set; }
 

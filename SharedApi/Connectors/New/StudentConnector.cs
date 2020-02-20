@@ -58,6 +58,7 @@ namespace SharedApi.Connectors.New
 				if (classId != null) {
 					url += $"?classId={classId}";
 				}
+
 				var res = await Request(url).GetJsonAsync<List<Student<Image>>>();
 				return res;
 			} catch {

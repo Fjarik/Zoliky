@@ -164,6 +164,14 @@
           <Property Name="SubjectID" Type="int" Nullable="false" />
           <Property Name="Bypass" Type="bit" />
         </EntityType>
+        <EntityType Name="SchoolZolikTypes">
+          <Key>
+            <PropertyRef Name="SchoolID" />
+            <PropertyRef Name="ZolikTypeID" />
+          </Key>
+          <Property Name="SchoolID" Type="int" Nullable="false" />
+          <Property Name="ZolikTypeID" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="Subjects">
           <Key>
             <PropertyRef Name="ID" />
@@ -280,6 +288,18 @@
           <Property Name="Value" Type="nvarchar" MaxLength="500" />
           <Property Name="Changed" Type="datetime" Nullable="false" />
         </EntityType>
+        <EntityType Name="ZolikTypes">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SplitsToID" Type="int" />
+          <Property Name="Name" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="FriendlyName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="IsSplittable" Type="bit" Nullable="false" />
+          <Property Name="IsTestType" Type="bit" Nullable="false" />
+          <Property Name="AllowGive" Type="bit" Nullable="false" />
+        </EntityType>
         <EntityType Name="Zoliky">
           <Key>
             <PropertyRef Name="ID" />
@@ -289,7 +309,7 @@
           <Property Name="SubjectID" Type="int" Nullable="false" />
           <Property Name="OwnerID" Type="int" Nullable="false" />
           <Property Name="OriginalOwnerID" Type="int" Nullable="false" />
-          <Property Name="Type" Type="tinyint" Nullable="false" />
+          <Property Name="Type" Type="int" Nullable="false" />
           <Property Name="Title" Type="nvarchar(max)" Nullable="false" />
           <Property Name="OwnerSince" Type="datetime" Nullable="false" />
           <Property Name="Created" Type="datetime" Nullable="false" />
@@ -474,6 +494,30 @@
             </Principal>
             <Dependent Role="SchoolSubjects">
               <PropertyRef Name="SubjectID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SchoolZolikTypes_Schools">
+          <End Role="Schools" Type="Self.Schools" Multiplicity="1" />
+          <End Role="SchoolZolikTypes" Type="Self.SchoolZolikTypes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Schools">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="SchoolZolikTypes">
+              <PropertyRef Name="SchoolID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SchooZoliklTypes_ZolikTypes">
+          <End Role="ZolikTypes" Type="Self.ZolikTypes" Multiplicity="1" />
+          <End Role="SchoolZolikTypes" Type="Self.SchoolZolikTypes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ZolikTypes">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="SchoolZolikTypes">
+              <PropertyRef Name="ZolikTypeID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -681,6 +725,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_ZolikTypes_SplitsTo">
+          <End Role="ZolikTypes" Type="Self.ZolikTypes" Multiplicity="0..1" />
+          <End Role="ZolikTypes1" Type="Self.ZolikTypes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ZolikTypes">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ZolikTypes1">
+              <PropertyRef Name="SplitsToID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Zoliky_OriginalOwner">
           <End Role="Users" Type="Self.Users" Multiplicity="1" />
           <End Role="Zoliky" Type="Self.Zoliky" Multiplicity="*" />
@@ -729,6 +785,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Zoliky_Types">
+          <End Role="ZolikTypes" Type="Self.ZolikTypes" Multiplicity="1" />
+          <End Role="Zoliky" Type="Self.Zoliky" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ZolikTypes">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Zoliky">
+              <PropertyRef Name="Type" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Function Name="GetFakeStudentsFn" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="imageMaxSize" Type="int" Mode="In" />
           <Parameter Name="defaultPhotoId" Type="int" Mode="In" />
@@ -760,6 +828,7 @@
           <Parameter Name="schoolId" Type="int" Mode="In" />
           <Parameter Name="defaultPhotoId" Type="int" Mode="In" />
           <Parameter Name="onlyActive" Type="bit" Mode="In" />
+          <Parameter Name="incTester" Type="bit" Mode="In" />
           <ReturnType>
             <CollectionType>
               <RowType>
@@ -788,6 +857,7 @@
           <Parameter Name="schoolId" Type="int" Mode="In" />
           <Parameter Name="settingsKey" Type="nvarchar(max)" Mode="In" />
           <Parameter Name="defaultPhotoId" Type="int" Mode="In" />
+          <Parameter Name="incTester" Type="bit" Mode="In" />
           <ReturnType>
             <CollectionType>
               <RowType>
@@ -851,6 +921,7 @@
           <EntitySet Name="Roles" EntityType="Self.Roles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Schools" EntityType="Self.Schools" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SchoolSubjects" EntityType="Self.SchoolSubjects" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SchoolZolikTypes" EntityType="Self.SchoolZolikTypes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Subjects" EntityType="Self.Subjects" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TeacherSubjects" EntityType="Self.TeacherSubjects" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tokens" EntityType="Self.Tokens" Schema="dbo" store:Type="Tables" />
@@ -861,6 +932,7 @@
           <EntitySet Name="UserRoles" EntityType="Self.UserRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserSettings" EntityType="Self.UserSettings" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ZolikTypes" EntityType="Self.ZolikTypes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Zoliky" EntityType="Self.Zoliky" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_AchievementUnlocks_Achievements" Association="Self.FK_AchievementUnlocks_Achievements">
             <End Role="Achievements" EntitySet="Achievements" />
@@ -921,6 +993,14 @@
           <AssociationSet Name="FK_SchoolSubjects_Subjects" Association="Self.FK_SchoolSubjects_Subjects">
             <End Role="Subjects" EntitySet="Subjects" />
             <End Role="SchoolSubjects" EntitySet="SchoolSubjects" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SchoolZolikTypes_Schools" Association="Self.FK_SchoolZolikTypes_Schools">
+            <End Role="Schools" EntitySet="Schools" />
+            <End Role="SchoolZolikTypes" EntitySet="SchoolZolikTypes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SchooZoliklTypes_ZolikTypes" Association="Self.FK_SchooZoliklTypes_ZolikTypes">
+            <End Role="ZolikTypes" EntitySet="ZolikTypes" />
+            <End Role="SchoolZolikTypes" EntitySet="SchoolZolikTypes" />
           </AssociationSet>
           <AssociationSet Name="FK_TeacherSubjects_Classes" Association="Self.FK_TeacherSubjects_Classes">
             <End Role="Classes" EntitySet="Classes" />
@@ -990,6 +1070,10 @@
             <End Role="Users" EntitySet="Users" />
             <End Role="UserSettings" EntitySet="UserSettings" />
           </AssociationSet>
+          <AssociationSet Name="FK_ZolikTypes_SplitsTo" Association="Self.FK_ZolikTypes_SplitsTo">
+            <End Role="ZolikTypes" EntitySet="ZolikTypes" />
+            <End Role="ZolikTypes1" EntitySet="ZolikTypes" />
+          </AssociationSet>
           <AssociationSet Name="FK_Zoliky_OriginalOwner" Association="Self.FK_Zoliky_OriginalOwner">
             <End Role="Users" EntitySet="Users" />
             <End Role="Zoliky" EntitySet="Zoliky" />
@@ -1004,6 +1088,10 @@
           </AssociationSet>
           <AssociationSet Name="FK_Zoliky_Teacher" Association="Self.FK_Zoliky_Teacher">
             <End Role="Users" EntitySet="Users" />
+            <End Role="Zoliky" EntitySet="Zoliky" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Zoliky_Types" Association="Self.FK_Zoliky_Types">
+            <End Role="ZolikTypes" EntitySet="ZolikTypes" />
             <End Role="Zoliky" EntitySet="Zoliky" />
           </AssociationSet>
         </EntityContainer>
@@ -1035,7 +1123,7 @@
           <Property Name="SubjectID" Type="Int32" Nullable="false" />
           <Property Name="TeacherID" Type="Int32" Nullable="false" />
           <Property Name="OriginalOwnerID" Type="Int32" Nullable="false" />
-          <Property Name="Type" Type="ZoliksModel.ZolikType" Nullable="false" />
+          <Property Name="TypeID" Type="Int32" Nullable="false" />
           <Property Name="Title" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Enabled" Type="Boolean" Nullable="false" />
           <Property Name="OwnerSince" Type="DateTime" Precision="3" Nullable="false" />
@@ -1047,6 +1135,7 @@
           <Property Name="AllowSplit" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Owner" Relationship="ZoliksModel.FK_Zoliky_Users" FromRole="Zolik" ToRole="User" />
           <NavigationProperty Name="Teacher" Relationship="ZoliksModel.FK_Zoliky_Teacher" FromRole="Zolik" ToRole="User" />
+          <NavigationProperty Name="Type" Relationship="ZoliksModel.FK_Zoliky_Types" FromRole="Zolik" ToRole="ZolikType1" />
         </EntityType>
         <Association Name="FK_Transactions_Zoliky">
           <End Role="Zoliky" Type="ZoliksModel.Zolik" Multiplicity="1" />
@@ -1232,6 +1321,7 @@
             <Parameter Name="schoolId" Mode="In" Type="Int32" />
             <Parameter Name="settingsKey" Mode="In" Type="String" />
             <Parameter Name="defaultPhotoId" Mode="In" Type="Int32" />
+            <Parameter Name="incTester" Mode="In" Type="Boolean" />
           </FunctionImport>
           <FunctionImport Name="GetTopStudentsXpFn" IsComposable="true" ReturnType="Collection(ZoliksModel.GetTopStudentsXp_Result)">
             <Parameter Name="top" Mode="In" Type="Int32" />
@@ -1247,12 +1337,26 @@
             <Parameter Name="schoolId" Mode="In" Type="Int32" />
             <Parameter Name="defaultPhotoId" Mode="In" Type="Int32" />
             <Parameter Name="onlyActive" Mode="In" Type="Boolean" />
+            <Parameter Name="incTester" Mode="In" Type="Boolean" />
           </FunctionImport>
           <FunctionImport Name="GetFakeStudentsFn" IsComposable="true" ReturnType="Collection(ZoliksModel.GetTopStudents_Result)">
             <Parameter Name="imageMaxSize" Mode="In" Type="Int32" />
             <Parameter Name="defaultPhotoId" Mode="In" Type="Int32" />
             <Parameter Name="onlyActive" Mode="In" Type="Boolean" />
           </FunctionImport>
+          <EntitySet Name="ZolikType" EntityType="ZoliksModel.ZolikType" />
+          <AssociationSet Name="FK_Zoliky_Types" Association="ZoliksModel.FK_Zoliky_Types">
+            <End Role="ZolikType1" EntitySet="ZolikType" />
+            <End Role="Zolik" EntitySet="Zoliky" />
+          </AssociationSet>
+          <AssociationSet Name="SchoolZolikTypes" Association="ZoliksModel.SchoolZolikTypes">
+            <End Role="School" EntitySet="Schools" />
+            <End Role="ZolikType" EntitySet="ZolikType" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ZolikTypes_SplitsTo" Association="ZoliksModel.FK_ZolikTypes_SplitsTo">
+            <End Role="ZolikType" EntitySet="ZolikType" />
+            <End Role="ZolikType1" EntitySet="ZolikType" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="Class">
           <Key>
@@ -1520,7 +1624,6 @@
         <EnumType Name="UserPermission" a:ExternalTypeName="SharedLibrary.Enums.UserPermission" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" IsFlags="false" UnderlyingType="Byte" >
           </EnumType>
         <EnumType Name="TransactionAssignment" a:ExternalTypeName="SharedLibrary.Enums.TransactionAssignment" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" UnderlyingType="Byte" />
-        <EnumType Name="ZolikType" a:ExternalTypeName="SharedLibrary.Enums.ZolikType" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" UnderlyingType="Byte" />
         <EntityType Name="Achievement">
           <Key>
             <PropertyRef Name="ID" />
@@ -1780,6 +1883,7 @@
           <Property Name="AllowTeacherRemove" Type="Boolean" Nullable="false" />
           <Property Name="AllowZolikSplik" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="SchoolSubjects" Relationship="ZoliksModel.FK_SchoolSubjects_Schools" FromRole="School" ToRole="SchoolSubject" />
+          <NavigationProperty Name="ZolikTypes" Relationship="ZoliksModel.SchoolZolikTypes" FromRole="School" ToRole="ZolikType" />
         </EntityType>
         <Association Name="FK_Classes_Schools">
           <End Type="ZoliksModel.School" Role="School" Multiplicity="1" />
@@ -1982,6 +2086,47 @@
           <Property Type="Int32" Name="Size" Nullable="true" />
           <Property Type="Int32" Name="ImageID" Nullable="true" />
         </ComplexType>
+        <EntityType Name="ZolikType">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SplitsToID" Type="Int32" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="FriendlyName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IsSplittable" Type="Boolean" Nullable="false" />
+          <Property Name="IsTestType" Type="Boolean" Nullable="false" />
+          <Property Name="AllowGive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="SplitsTo" Relationship="ZoliksModel.FK_ZolikTypes_SplitsTo" FromRole="ZolikType1" ToRole="ZolikType" />
+        </EntityType>
+        <Association Name="FK_Zoliky_Types">
+          <End Type="ZoliksModel.ZolikType" Role="ZolikType1" Multiplicity="1" />
+          <End Type="ZoliksModel.Zolik" Role="Zolik" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ZolikType1">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Zolik">
+              <PropertyRef Name="TypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SchoolZolikTypes">
+          <End Type="ZoliksModel.School" Role="School" Multiplicity="*" />
+          <End Type="ZoliksModel.ZolikType" Role="ZolikType" Multiplicity="*" />
+        </Association>
+        <Association Name="FK_ZolikTypes_SplitsTo">
+          <End Type="ZoliksModel.ZolikType" Role="ZolikType" Multiplicity="0..1" />
+          <End Type="ZoliksModel.ZolikType" Role="ZolikType1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ZolikType">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ZolikType1">
+              <PropertyRef Name="SplitsToID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2013,7 +2158,7 @@
                 <ScalarProperty Name="OwnerSince" ColumnName="OwnerSince" />
                 <ScalarProperty Name="Enabled" ColumnName="Enabled" />
                 <ScalarProperty Name="Title" ColumnName="Title" />
-                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="TypeID" ColumnName="Type" />
                 <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 </MappingFragment>
@@ -2377,6 +2522,27 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <EntitySetMapping Name="ZolikType">
+            <EntityTypeMapping TypeName="ZoliksModel.ZolikType">
+              <MappingFragment StoreEntitySet="ZolikTypes">
+                <ScalarProperty Name="SplitsToID" ColumnName="SplitsToID" />
+                <ScalarProperty Name="AllowGive" ColumnName="AllowGive" />
+                <ScalarProperty Name="IsTestType" ColumnName="IsTestType" />
+                <ScalarProperty Name="IsSplittable" ColumnName="IsSplittable" />
+                <ScalarProperty Name="FriendlyName" ColumnName="FriendlyName" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="SchoolZolikTypes" TypeName="ZoliksModel.SchoolZolikTypes" StoreEntitySet="SchoolZolikTypes">
+            <EndProperty Name="ZolikType">
+              <ScalarProperty Name="ID" ColumnName="ZolikTypeID" />
+            </EndProperty>
+            <EndProperty Name="School">
+              <ScalarProperty Name="ID" ColumnName="SchoolID" />
+            </EndProperty>
+          </AssociationSetMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

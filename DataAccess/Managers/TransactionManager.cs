@@ -62,7 +62,7 @@ namespace DataAccess.Managers
 
 			var query = _ctx.Transactions.Where(x => x.FromID == userID || x.ToID == userID);
 			if (!isTester) {
-				query = query.Where(x => x.Zolik.Type != ZolikType.Debug && x.Zolik.Type != ZolikType.DebugJoker);
+				query = query.Where(x => !x.Zolik.Type.IsTestType);
 			}
 
 			query = query.OrderByDescending(x => x.Date);
@@ -116,7 +116,7 @@ namespace DataAccess.Managers
 
 			var query = _ctx.Transactions.Where(x => x.FromID == userId || x.ToID == userId);
 			if (!incTester) {
-				query = query.Where(x => x.Zolik.Type != ZolikType.Debug && x.Zolik.Type != ZolikType.DebugJoker);
+				query = query.Where(x => !x.Zolik.Type.IsTestType);
 			}
 
 			return await query.CountAsync();

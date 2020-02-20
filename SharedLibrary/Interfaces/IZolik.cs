@@ -12,7 +12,6 @@ namespace SharedLibrary.Interfaces
 		int TeacherID { get; set; }
 		int OriginalOwnerID { get; set; }
 
-		ZolikType Type { get; set; }
 		string Title { get; set; }
 		DateTime OwnerSince { get; set; }
 		DateTime Created { get; set; }
@@ -21,5 +20,11 @@ namespace SharedLibrary.Interfaces
 		bool IsLocked { get; }
 		bool CanBeTransfered { get; }
 		bool IsSplittable { get; }
+	}
+
+	public interface IZolik<TZolikType> : IZolik where TZolikType : IZolikType
+	{
+		int TypeID { get; set; }
+		TZolikType Type { get; set; }
 	}
 }

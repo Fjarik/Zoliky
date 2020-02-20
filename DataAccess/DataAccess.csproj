@@ -157,6 +157,7 @@
     <Compile Include="Managers\UserManager.cs" />
     <Compile Include="Managers\UserSettingManager.cs" />
     <Compile Include="Managers\ZolikManager.cs" />
+    <Compile Include="Managers\ZolikTypeManager.cs" />
     <Compile Include="Models\Achievement.cs">
       <DependentUpon>MainModel.tt</DependentUpon>
     </Compile>
@@ -249,6 +250,9 @@
       <DependentUpon>MainModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Zolik.cs">
+      <DependentUpon>MainModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ZolikType.cs">
       <DependentUpon>MainModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Other\ClassLeaderboard.cs" />

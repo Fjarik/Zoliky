@@ -51,9 +51,10 @@ namespace DataAccess.Models
         public virtual DbSet<AchievementUnlock> AchievementUnlocks { get; set; }
         public virtual DbSet<ProjectSetting> ProjectSettings { get; set; }
         public virtual DbSet<SchoolSubject> SchoolSubjects { get; set; }
+        public virtual DbSet<ZolikType> ZolikType { get; set; }
     
         [DbFunction("ZoliksEntities", "GetTopStudentsFn")]
-        public virtual IQueryable<GetTopStudents_Result> GetTopStudentsFn(Nullable<int> top, Nullable<int> imageMaxSize, Nullable<int> classId, Nullable<int> schoolId, string settingsKey, Nullable<int> defaultPhotoId)
+        public virtual IQueryable<GetTopStudents_Result> GetTopStudentsFn(Nullable<int> top, Nullable<int> imageMaxSize, Nullable<int> classId, Nullable<int> schoolId, string settingsKey, Nullable<int> defaultPhotoId, Nullable<bool> incTester)
         {
             var topParameter = top.HasValue ?
                 new ObjectParameter("top", top) :
@@ -79,7 +80,11 @@ namespace DataAccess.Models
                 new ObjectParameter("defaultPhotoId", defaultPhotoId) :
                 new ObjectParameter("defaultPhotoId", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<GetTopStudents_Result>("[ZoliksEntities].[GetTopStudentsFn](@top, @imageMaxSize, @classId, @schoolId, @settingsKey, @defaultPhotoId)", topParameter, imageMaxSizeParameter, classIdParameter, schoolIdParameter, settingsKeyParameter, defaultPhotoIdParameter);
+            var incTesterParameter = incTester.HasValue ?
+                new ObjectParameter("incTester", incTester) :
+                new ObjectParameter("incTester", typeof(bool));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<GetTopStudents_Result>("[ZoliksEntities].[GetTopStudentsFn](@top, @imageMaxSize, @classId, @schoolId, @settingsKey, @defaultPhotoId, @incTester)", topParameter, imageMaxSizeParameter, classIdParameter, schoolIdParameter, settingsKeyParameter, defaultPhotoIdParameter, incTesterParameter);
         }
     
         [DbFunction("ZoliksEntities", "GetTopStudentsXpFn")]
@@ -113,7 +118,7 @@ namespace DataAccess.Models
         }
     
         [DbFunction("ZoliksEntities", "GetStudentsFn")]
-        public virtual IQueryable<GetTopStudents_Result> GetStudentsFn(Nullable<int> imageMaxSize, Nullable<int> classId, Nullable<int> schoolId, Nullable<int> defaultPhotoId, Nullable<bool> onlyActive)
+        public virtual IQueryable<GetTopStudents_Result> GetStudentsFn(Nullable<int> imageMaxSize, Nullable<int> classId, Nullable<int> schoolId, Nullable<int> defaultPhotoId, Nullable<bool> onlyActive, Nullable<bool> incTester)
         {
             var imageMaxSizeParameter = imageMaxSize.HasValue ?
                 new ObjectParameter("imageMaxSize", imageMaxSize) :
@@ -135,7 +140,11 @@ namespace DataAccess.Models
                 new ObjectParameter("onlyActive", onlyActive) :
                 new ObjectParameter("onlyActive", typeof(bool));
     
-            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<GetTopStudents_Result>("[ZoliksEntities].[GetStudentsFn](@imageMaxSize, @classId, @schoolId, @defaultPhotoId, @onlyActive)", imageMaxSizeParameter, classIdParameter, schoolIdParameter, defaultPhotoIdParameter, onlyActiveParameter);
+            var incTesterParameter = incTester.HasValue ?
+                new ObjectParameter("incTester", incTester) :
+                new ObjectParameter("incTester", typeof(bool));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<GetTopStudents_Result>("[ZoliksEntities].[GetStudentsFn](@imageMaxSize, @classId, @schoolId, @defaultPhotoId, @onlyActive, @incTester)", imageMaxSizeParameter, classIdParameter, schoolIdParameter, defaultPhotoIdParameter, onlyActiveParameter, incTesterParameter);
         }
     
         [DbFunction("ZoliksEntities", "GetFakeStudentsFn")]

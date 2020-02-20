@@ -28,35 +28,6 @@ namespace SharedLibrary.Shared
 
 #region Enum extensions
 
-		public static readonly ZolikType[] TesterTypes = {
-			ZolikType.Debug,
-			ZolikType.DebugJoker
-		};
-
-		public static bool IsTesterType(this ZolikType type)
-		{
-			return TesterTypes.Contains(type);
-		}
-
-		public static bool IsSplittable(this ZolikType type)
-		{
-			return type == ZolikType.Joker || type == ZolikType.DebugJoker;
-		}
-
-		public static ZolikType? GetSplitType(this ZolikType type)
-		{
-			if (!type.IsSplittable()) {
-				return null;
-			}
-			switch (type) {
-				case ZolikType.DebugJoker:
-					return ZolikType.Debug;
-				case ZolikType.Joker:
-					return ZolikType.Normal;
-			}
-			return null;
-		}
-
 		public static bool IsNotifyType(this TransactionAssignment type)
 		{
 			return type != TransactionAssignment.Removal && type != TransactionAssignment.Split;
@@ -107,28 +78,31 @@ namespace SharedLibrary.Shared
 
 #region Enumerable extensions
 
-		public static int CountZoliks(this IEnumerable<IZolik> enumerable,
-									  bool incTester = false,
-									  ZolikType? type = null)
+		public static int CountZoliks<TZolikType>(this IEnumerable<IZolik<TZolikType>> enumerable,
+												  bool incTester = false,
+												  int? typeId = null)
+			where TZolikType : IZolikType
 		{
 			if (!incTester) {
-				enumerable = enumerable.Where(x => !x.Type.IsTesterType());
+				enumerable = enumerable.Where(x => !x.Type.IsTestType);
 			}
-			if (type != null) {
-				enumerable = enumerable.Where(x => x.Type == type);
+			if (typeId != null) {
+				enumerable = enumerable.Where(x => x.TypeID == typeId);
 			}
 			return enumerable.Count();
 		}
 
-		public static IEnumerable<IZolik> SelectZoliks(this IEnumerable<IZolik> enumerable,
-													   bool incTester = false,
-													   ZolikType? type = null)
+		public static IEnumerable<TZolik> SelectZoliks<TZolik, TZolikType>(this IEnumerable<TZolik> enumerable,
+																		   bool incTester = false,
+																		   int? typeId = null)
+			where TZolikType : IZolikType
+			where TZolik : IZolik<TZolikType>
 		{
 			if (!incTester) {
-				enumerable = enumerable.Where(x => !x.Type.IsTesterType());
+				enumerable = enumerable.Where(x => !x.Type.IsTestType);
 			}
-			if (type != null) {
-				enumerable = enumerable.Where(x => x.Type == type);
+			if (typeId != null) {
+				enumerable = enumerable.Where(x => x.TypeID == typeId);
 			}
 			return enumerable;
 		}

@@ -65,7 +65,7 @@ namespace DataAccess.Managers
 			return await this.NewZolikAsync(res.Content, fromId, toId);
 		}
 
-		public async Task<bool> NewZolikAsync(IZolik z, int fromId, int toId)
+		public async Task<bool> NewZolikAsync(Zolik z, int fromId, int toId)
 		{
 			if (toId < 1 || fromId < 1) {
 				return false;
@@ -75,7 +75,7 @@ namespace DataAccess.Managers
 			return await this.NewZolikAsync(z, name, toId);
 		}
 
-		private async Task<bool> NewZolikAsync(IZolik z, string fromName, int toId)
+		private async Task<bool> NewZolikAsync(Zolik z, string fromName, int toId)
 		{
 			if (toId < 1) {
 				return false;
@@ -88,17 +88,17 @@ namespace DataAccess.Managers
 			return await this.NewZolikAsync(z, fromName, res.Content);
 		}
 
-		private async Task<bool> NewZolikAsync(IZolik z, string fromName, ICollection<UserSetting> settings)
+		private async Task<bool> NewZolikAsync(Zolik z, string fromName, ICollection<UserSetting> settings)
 		{
 			string key = SettingKeys.MobileToken;
 			if (settings == null || settings.All(x => x.Key != key)) {
 				return false;
 			}
-			return await this.NewZolikAsync(z.Type.GetDescription().ToLower(), z.Title, fromName, z,
+			return await this.NewZolikAsync(z.Type.FriendlyName.ToLower(), z.Title, fromName, z,
 											settings.GetStringValue(key));
 		}
 
-		private async Task<bool> NewZolikAsync(string type, string zTitle, string fromName, IZolik data, string token)
+		private async Task<bool> NewZolikAsync(string type, string zTitle, string fromName, Zolik data, string token)
 		{
 			if (string.IsNullOrWhiteSpace(token) || string.IsNullOrWhiteSpace(fromName)) {
 				return false;

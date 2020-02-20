@@ -158,16 +158,7 @@ namespace DataAccess
 				System.IO.File.ReadAllText(HttpContext.Current.Server.MapPath("~/EmailTemplates/NewZolicek.html"));
 			body = body.Replace("#FullName#", to.FullName);
 
-			string zType = "Žolík";
-			switch (zolik.Type) {
-				case ZolikType.Black:
-				case ZolikType.Joker:
-					zType = zolik.Type.GetDescription();
-					break;
-				case ZolikType.Debug:
-					zType += " (testovací)";
-					break;
-			}
+			string zType = zolik.Type.FriendlyName;
 
 			body = body.Replace("#ZolikType#", zType);
 			body = body.Replace("#ZolikName#", zolik.Title);

@@ -148,22 +148,22 @@ namespace SharedLibrary.Enums
 		Dev = 3
 	}
 
-	public enum ZolikType : byte
+	public enum ZolikTypes : int
 	{
 		[Description("Normální žolík")]
-		Normal = 0,
+		Normal = 1, // 0, //10->1
 
 		[Description("Jokér")]
-		Joker = 1,
+		Joker = 2, //1,//11->2
 
 		[Description("Černý Petr")]
-		Black = 2,
+		Black = 3, //2,//12->3
 
 		[Description("Testovací žolík")]
-		Debug = 5,
+		Debug = 4, //5,//15->4
 
 		[Description("Testovací jokér")]
-		DebugJoker = 6,
+		DebugJoker = 5, //6,//16->5
 	}
 
 	public enum PageStatus : int

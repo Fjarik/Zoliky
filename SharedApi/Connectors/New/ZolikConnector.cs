@@ -31,7 +31,7 @@ namespace SharedApi.Connectors.New
 
 		public Task<MActionResult<Transaction>> CreateAndTransferAsync(int teacherId,
 																	   int toId,
-																	   ZolikType type,
+																	   int type,
 																	   int subjectId,
 																	   string title,
 																	   bool allowSplit)
@@ -40,7 +40,7 @@ namespace SharedApi.Connectors.New
 				TeacherID = teacherId,
 				ToID = toId,
 				SubjectID = subjectId,
-				Type = type,
+				TypeID = type,
 				Title = title,
 				AllowSplit = allowSplit
 			};

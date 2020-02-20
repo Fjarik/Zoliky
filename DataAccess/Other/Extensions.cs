@@ -46,6 +46,7 @@ namespace DataAccess
 			app.CreatePerOwinContext<UserManager>(UserManager.Create);
 			app.CreatePerOwinContext<UserSettingManager>(UserSettingManager.Create);
 			app.CreatePerOwinContext<ZolikManager>(ZolikManager.Create);
+			app.CreatePerOwinContext<ZolikTypeManager>(ZolikTypeManager.Create);
 
 			app.CreatePerOwinContext<FirebaseManager>(FirebaseManager.Create);
 			app.CreatePerOwinContext<MailManager>(MailManager.Create);
@@ -144,7 +145,7 @@ namespace DataAccess
 
 		public static Expression<Func<Zolik, bool>> NonTesterZoliks()
 		{
-			return x => x.Type != ZolikType.Debug && x.Type != ZolikType.DebugJoker;
+			return x => !x.Type.IsTestType;
 		}
 
 		public static Expression<Func<Ban, bool>> IsActive()
