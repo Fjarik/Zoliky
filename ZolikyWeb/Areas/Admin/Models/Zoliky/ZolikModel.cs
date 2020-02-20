@@ -46,6 +46,8 @@ namespace ZolikyWeb.Areas.Admin.Models.Zoliky
 		public int OriginalOwnerID { get; set; }
 
 		[Required(ErrorMessage = "Musíte vybrat typ")]
+		public int TypeID { get; set; }
+
 		public ZolikType Type { get; set; }
 
 		[Required(ErrorMessage = "Musíte zadat, za co byl žolík udělen")]
@@ -82,8 +84,8 @@ namespace ZolikyWeb.Areas.Admin.Models.Zoliky
 
 		public IEnumerable<SelectListItem> TypeSelect => this.ZolikTypes
 															 .Select(x => new SelectListItem {
-																 Value = ((int) x).ToString(),
-																 Text = x.GetDescription(),
+																 Value = (x.ID).ToString(),
+																 Text = x.FriendlyName,
 																 Disabled = false
 															 });
 
@@ -127,22 +129,21 @@ namespace ZolikyWeb.Areas.Admin.Models.Zoliky
 			this.StudentIds = new List<int>();
 		}
 
-		private ZolikModel(bool isTester = false) : this()
+		private ZolikModel(IEnumerable<ZolikType> zTypes, bool isTester = false) : this()
 		{
-			var zTypes = Enum.GetValues(typeof(ZolikType))
-							 .Cast<ZolikType>();
 			if (!isTester) {
-				zTypes = zTypes.Where(x => !x.IsTesterType());
+				zTypes = zTypes.Where(x => !x.IsTestType);
 			}
 			this.ZolikTypes = zTypes;
 		}
 
 		public static ZolikModel CreateModel(User teacher,
+											 List<ZolikType> types,
 											 List<DataAccess.Models.Subject> subjects,
 											 List<IUser> students,
 											 bool isTester = false)
 		{
-			return new ZolikModel(isTester) {
+			return new ZolikModel(types, isTester) {
 				ID = -1,
 				OwnerID = -1,
 				SubjectID = -1,
@@ -152,7 +153,7 @@ namespace ZolikyWeb.Areas.Admin.Models.Zoliky
 				Teacher = teacher,
 				Subjects = subjects,
 				Students = students,
-				Type = ZolikType.Normal,
+				TypeID = types.First().ID,
 				Enabled = true,
 				AllowSplit = true,
 				AllowRemove = false
@@ -160,6 +161,7 @@ namespace ZolikyWeb.Areas.Admin.Models.Zoliky
 		}
 
 		public ZolikModel(Zolik ent,
+						  IEnumerable<ZolikType> zTypes,
 						  List<DataAccess.Models.Subject> subjects,
 						  bool allowRemove,
 						  bool allowEdit,
@@ -172,6 +174,7 @@ namespace ZolikyWeb.Areas.Admin.Models.Zoliky
 			this.SubjectID = ent.SubjectID;
 			this.TeacherID = ent.TeacherID;
 			this.OriginalOwnerID = ent.OriginalOwnerID;
+			this.TypeID = ent.Type.ID;
 			this.Type = ent.Type;
 			this.Title = ent.Title;
 			this.Enabled = ent.Enabled;
@@ -192,10 +195,8 @@ namespace ZolikyWeb.Areas.Admin.Models.Zoliky
 
 			this.Subjects = subjects;
 
-			var zTypes = Enum.GetValues(typeof(ZolikType))
-							 .Cast<ZolikType>();
 			if (!isTester) {
-				zTypes = zTypes.Where(x => !x.IsTesterType());
+				zTypes = zTypes.Where(x => !x.IsTestType);
 			}
 			this.ZolikTypes = zTypes;
 

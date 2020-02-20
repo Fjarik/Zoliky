@@ -1,5 +1,4 @@
-﻿@using SharedLibrary.Enums
-@model IEnumerable<SharedLibrary.Interfaces.IZolik>
+﻿@model IEnumerable<DataAccess.Models.Zolik>
 
 <div class="card-header p-4 bg-info">
 	<h4 class="text-white card-title">Žolíci</h4>
@@ -21,7 +20,7 @@
 				<a href="@Url.Action("Dashboard", "Zoliky", new {Area = "App", id = zolik.ID})">
 					<div class="mail-contnet">
 						<h5>@zolik.Title</h5>
-						<span class="mail-desc">(@zolik.Type.GetDescription()) @zolik.OwnerSince.ToShortDateString()</span>
+						<span class="mail-desc">(@zolik.Type.FriendlyName) @zolik.OwnerSince.ToShortDateString()</span>
 					</div>
 				</a>
 				<!-- /Zolik -->

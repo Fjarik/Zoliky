@@ -38,15 +38,15 @@ namespace ZolikyWeb.Areas.App.Controllers
 			var studentsClass = new List<GetTopStudents_Result>();
 			var students = new List<GetTopStudents_Result>();
 			if (user.ClassID != null) {
-				studentsClass = await this.Mgr.GetStudentsWithMostZoliks(schoolId, 5, user.ClassID, 1);
+				studentsClass = await this.Mgr.GetStudentsWithMostZoliks(schoolId, 5, user.ClassID, isTester, 1);
 			}
 			if (!user.IsInRole(UserRoles.Public)) {
-				students = await this.Mgr.GetStudentsWithMostZoliks(schoolId, 5, null, 1);
+				students = await this.Mgr.GetStudentsWithMostZoliks(schoolId, 5, null, isTester, 1);
 			}
 
 			var count = zoliks.CountZoliks(isTester);
-			var jokerCount = zoliks.CountZoliks(isTester, ZolikType.Joker);
-			var top = zoliks.SelectZoliks(isTester).Take(4);
+			var jokerCount = zoliks.CountZoliks(isTester, (int) ZolikTypes.Joker);
+			var top = zoliks.SelectZoliks<Zolik, ZolikType>(isTester).Take(4);
 			var rank = await rankMgr.GetTitleAsync(user.XP);
 
 			var pMgr = this.GetManager<ProjectSettingManager>();

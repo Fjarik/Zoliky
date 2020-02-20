@@ -57,7 +57,7 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 
 #region Create
 
-		public async Task<ActionResult> Create(string title = null, ZolikType? type = null, int? subjectId = null)
+		public async Task<ActionResult> Create(string title = null, int? type = null, int? subjectId = null)
 		{
 			var logged = await this.GetLoggedUserAsync();
 			var schoolId = this.User.GetSchoolId();
@@ -75,13 +75,14 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 			students = students.Where(x => x.Enabled)
 							   .ToList();
 			var isTester = this.User.Identity.IsTester();
+			var types = await sMgr.GetSchoolZolikTypesAsync(schoolId, isTester);
 
-			var model = ZolikModel.CreateModel(logged, subjects, students.ToList<IUser>(), isTester);
+			var model = ZolikModel.CreateModel(logged, types, subjects, students.ToList<IUser>(), isTester);
 			if (!string.IsNullOrWhiteSpace(title)) {
 				model.Title = title;
 			}
-			if (type != null) {
-				model.Type = (ZolikType) type;
+			if (type != null && types.Any(x=> x.ID == type)) {
+				model.TypeID = (int) type;
 			}
 			if (subjectId != null) {
 				model.SubjectID = (int) subjectId;
@@ -101,7 +102,7 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 			if (!model.StudentIds.Any()) {
 				this.AddErrorToastMessage("Musíte vybrat minimálně jednoho studenta jako vlastníka");
 				return RedirectToAction("Create",
-										new {title = model?.Title, type = model?.Type, subjectId = model?.SubjectID});
+										new {title = model?.Title, type = model?.TypeID, subjectId = model?.SubjectID});
 			}
 
 			if (!model.IsValid) {
@@ -119,7 +120,7 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 			foreach (var studentId in model.StudentIds) {
 				res = await Mgr.CreateAndTransferAsync(logged.ID,
 													   studentId,
-													   model.Type,
+													   model.TypeID,
 													   model.SubjectID,
 													   model.Title,
 													   logged,
@@ -175,7 +176,7 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 
 			// Edit
 			original.Title = model.Title;
-			original.Type = model.Type;
+			original.TypeID = model.TypeID;
 			original.SubjectID = model.SubjectID;
 			original.Enabled = model.Enabled;
 			original.AllowSplit = model.AllowSplit;
@@ -229,7 +230,7 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 			var sMgr = this.GetManager<SchoolManager>();
 
 			var subjects = await sMgr.GetSubjectsAsync(schoolId);
-
+			var types = await sMgr.GetSchoolZolikTypesAsync(schoolId, isTester);
 
 			var sRes = await sMgr.GetByIdAsync(schoolId);
 			var allowRemove = false;
@@ -237,7 +238,7 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 				allowRemove = sRes.Content.AllowTeacherRemove;
 			}
 
-			var model = new ZolikModel(zolik, subjects, allowRemove, allowEdit, previousId, nextId, isTester) {
+			var model = new ZolikModel(zolik, types, subjects, allowRemove, allowEdit, previousId, nextId, isTester) {
 				ActionName = actionName
 			};
 

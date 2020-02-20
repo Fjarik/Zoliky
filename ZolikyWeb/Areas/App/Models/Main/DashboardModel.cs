@@ -27,7 +27,7 @@ namespace ZolikyWeb.Areas.App.Models.Main
 
 		private int SpecialDateDiff => (this.SpecialDate - DateTime.Today).Days;
 
-		public IEnumerable<IZolik> Zoliky { get; set; }
+		public IEnumerable<Zolik> Zoliky { get; set; }
 
 		public string ClassName { get; set; }
 		public IEnumerable<GetTopStudents_Result> LeaderboardClass { get; set; }

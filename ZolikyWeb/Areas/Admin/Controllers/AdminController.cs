@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -26,19 +27,21 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 		public async Task<ActionResult> Dashboard()
 		{
 			var schoolId = this.User.GetSchoolId();
+			var isTester = this.User.Identity.IsTester();
 
 			var students = await Mgr.GetStudentCountAsync(schoolId);
 			var teachers = await Mgr.GetTeacherCountAsync(schoolId);
 			var zoliks = await Mgr.GetZolikCountAsync(schoolId);
 			var classes = await Mgr.GetClassLeaderboardAsync(schoolId);
 			var subjects = await Mgr.GetSubjectsAsync(schoolId);
+			var types = await Mgr.GetSchoolZolikTypesAsync(schoolId, isTester);
 
 			var pMgr = this.GetManager<ProjectSettingManager>();
 			var specDate = await pMgr.GetStringValueAsync(null, ProjectSettingKeys.SpecialDate) ??
-						   DateTime.Now.ToString();
+						   DateTime.Now.ToString(CultureInfo.CurrentCulture);
 			var specTitle = await pMgr.GetStringValueAsync(null, ProjectSettingKeys.SpecialText) ?? "";
 
-			var model = new DashboardModel(subjects) {
+			var model = new DashboardModel(types, subjects) {
 				SchoolStudentsCount = students,
 				SchoolTeachersCount = teachers,
 				SchoolZoliksCount = zoliks,

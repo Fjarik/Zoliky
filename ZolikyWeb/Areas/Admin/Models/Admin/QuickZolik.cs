@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using DataAccess.Models;
 using SharedLibrary.Enums;
 using SharedLibrary.Shared;
 using ZolikyWeb.Tools;
@@ -18,7 +19,7 @@ namespace ZolikyWeb.Areas.Admin.Models.Admin
 		public string Title { get; set; }
 
 		[Required(ErrorMessage = "Musíte vybrat typ")]
-		public ZolikType Type { get; set; }
+		public int TypeID { get; set; }
 
 		[Required(ErrorMessage = "Musíte vybrat předmět")]
 		[Range(1, int.MaxValue)]
@@ -27,15 +28,14 @@ namespace ZolikyWeb.Areas.Admin.Models.Admin
 #region Lists
 
 		public List<DataAccess.Models.Subject> Subjects { get; set; }
+		public List<DataAccess.Models.ZolikType> Types { get; set; }
 
-		public IEnumerable<ZolikType> ZolikTypes => Enum.GetValues(typeof(ZolikType))
-														.Cast<ZolikType>()
-														.Where(x => !x.IsTesterType());
+		public IEnumerable<ZolikType> ZolikTypes => Types.Where(x => !x.IsTestType);
 
 		public IEnumerable<SelectListItem> TypeSelect => this.ZolikTypes
 															 .Select(x => new SelectListItem {
-																 Value = ((int) x).ToString(),
-																 Text = x.GetDescription(),
+																 Value = (x.ID).ToString(),
+																 Text = x.FriendlyName,
 																 Disabled = false
 															 });
 
@@ -55,8 +55,9 @@ namespace ZolikyWeb.Areas.Admin.Models.Admin
 
 		public QuickZolik() { }
 
-		public QuickZolik(List<DataAccess.Models.Subject> subjects)
+		public QuickZolik(List<DataAccess.Models.ZolikType> types, List<DataAccess.Models.Subject> subjects)
 		{
+			this.Types = types;
 			this.Subjects = subjects;
 		}
 	}

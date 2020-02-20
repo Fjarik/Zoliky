@@ -35,16 +35,24 @@ namespace ZolikyWeb.Areas.App.Models.Zoliky
 
 		public bool IsValid => (ToID > 0 && ZolikID > 0 && !string.IsNullOrWhiteSpace(this.Message));
 
-		public IList<SelectListItem> ZolikSelect => this.Zoliks.Select(x => new SelectListItem() {
-			Value = x.ID.ToString(),
-			Text = $@"{(x.IsLocked ? "(zamčený) " : "")}{x.Title} ({x.Type.GetDescription()})",
-			Disabled = !x.CanBeTransfered,
-			Selected = x.ID == ZolikID
-		}).ToList();
+		public IList<SelectListItem> ZolikSelect => this.Zoliks
+														.Select(x => new SelectListItem() {
+															Value = x.ID.ToString(),
+															Text =
+																$@"{(x.IsLocked ? "(zamčený) " : "")}{x.Title} ({x.Type.FriendlyName})",
+															Disabled = !x.CanBeTransfered,
+															Selected = x.ID == ZolikID
+														})
+														.ToList();
 
 		public IList<SelectListItem> StudentSelect => new List<SelectListItem>();
 
-		public string ZolikyJson => JsonConvert.SerializeObject(this.Zoliks);
+		public string ZolikyJson => JsonConvert.SerializeObject(this.Zoliks.Select(x => new {
+			ID = x.ID,
+			Type = x.Type.FriendlyName,
+			Since = x.OwnerSince,
+			Title = x.Title
+		}));
 
 		public ZolikTransferModel()
 		{

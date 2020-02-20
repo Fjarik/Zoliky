@@ -16,8 +16,8 @@
 			@Html.ValidationMessageFor(x => x.Title)
 		</div>
 		<div class="form-group">
-			@Html.DropDownListFor(x => x.Type, Model.TypeSelect, new {@class = "form-control custom-select", tabindex = 2})
-			@Html.ValidationMessageFor(x => x.Type)
+			@Html.DropDownListFor(x => x.TypeID, Model.TypeSelect, new {@class = "form-control custom-select", tabindex = 2})
+			@Html.ValidationMessageFor(x => x.TypeID)
 		</div>
 		<div class="form-group">
 			@Html.DropDownListFor(x => x.SubjectID, Model.SubjectSelect, new {@class = "form-control custom-select", tabindex = 3})

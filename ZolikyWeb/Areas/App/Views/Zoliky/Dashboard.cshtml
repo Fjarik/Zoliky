@@ -32,7 +32,7 @@
 											@(zolik.IsLocked ? $"({zolik.Lock})" : "")
 										</span>
 									</td>
-									<td>@zolik.Type.GetDescription()</td>
+									<td>@zolik.Type.FriendlyName</td>
 									<td>@zolik.OwnerSince.ToString("dd.MM.yyyy HH:mm")</td>
 									<td>@zolik.Teacher.FullName</td>
 									<td>@zolik.Subject.Name</td>

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using DataAccess;
+using DataAccess.Models;
 
 namespace ZolikyWeb.Areas.Admin.Models.Admin
 {
@@ -26,11 +27,12 @@ namespace ZolikyWeb.Areas.Admin.Models.Admin
 
 #endregion
 
-		public DashboardModel() : this(new List<DataAccess.Models.Subject>()) { }
+		public DashboardModel() : this(new List<ZolikType>(), new List<DataAccess.Models.Subject>()) { }
 
-		public DashboardModel(List<DataAccess.Models.Subject> subjects)
+		public DashboardModel(List<ZolikType> types,
+							  List<DataAccess.Models.Subject> subjects)
 		{
-			this.QuickZolik = new QuickZolik(subjects);
+			this.QuickZolik = new QuickZolik(types, subjects);
 		}
 
 		private string GetSpecDateText(int diff)

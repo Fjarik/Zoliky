@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using DataAccess.Models;
 using SharedLibrary.Enums;
 using SharedLibrary.Interfaces;
 using SharedLibrary.Shared.ApiModels;
@@ -25,11 +26,11 @@ namespace ZolikyWeb.Areas.App.Models.Zoliky
 
 		public ZolikLockModel() { }
 
-		public ZolikLockModel(IZolik zolik)
+		public ZolikLockModel(Zolik zolik)
 		{
 			this.ZolikId = zolik.ID;
 			this.Title = zolik.Title;
-			this.Type = zolik.Type.GetDescription();
+			this.Type = zolik.Type.FriendlyName;
 		}
 	}
 }

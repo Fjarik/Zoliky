@@ -55,7 +55,7 @@ namespace ZolikyWeb.Areas.Admin.Controllers
 								   since = x.Class.Since.Year,
 								   grad = x.Class.Graduation.Year
 							   },
-							   zolikCount = x.OriginalZoliks.Count(y => !y.Type.IsTesterType() && y.Enabled),
+							   zolikCount = x.OriginalZoliks.Count(y => !y.Type.IsTestType && y.Enabled),
 							   memberSince = new {
 								   date = x.MemberSince.ToString("dd.MM.yyyy"),
 								   timeS = x.MemberSince.GetJsTimestamp(),

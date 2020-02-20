@@ -58,10 +58,3 @@ function loading() {
 function submitClosest() {
 	$(this).closest('form').submit();
 }
-
-const zolikTypes = {
-	0: "Normální žolík",
-	1: "Jokér",
-	2: "Černý Petr",
-	5: "Testovací žolík"
-};
