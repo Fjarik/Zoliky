@@ -49,7 +49,7 @@
 						          Glyph="&#xF246;" />
 					</NavigationViewItem.Icon>
 				</NavigationViewItem>
-				<NavigationViewItem Content="Pohyby" Tag="Transactions">
+				<NavigationViewItem Content="Převody" Tag="Transactions">
 					<NavigationViewItem.Icon>
 						<SymbolIcon Symbol="57660" />
 					</NavigationViewItem.Icon>

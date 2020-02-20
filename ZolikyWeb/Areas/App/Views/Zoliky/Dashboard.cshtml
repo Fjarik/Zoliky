@@ -19,6 +19,7 @@
 								<th data-hide="all">Vyučující</th>
 								<th data-hide="all">Předmět</th>
 								<th data-hide="all">Původní vlastník</th>
+								@*<th data-hide="all">Pohyby</th>*@
 								<th>Akce</th>
 							</tr>
 						</thead>
@@ -36,6 +37,9 @@
 									<td>@zolik.Teacher.FullName</td>
 									<td>@zolik.Subject.Name</td>
 									<td>@zolik.OriginalOwner.FullName</td>
+									@*<td style="width: 100%">
+										@Html.Partial("_TransPartial", zolik.Transactions)
+									</td>*@
 									<td>
 										@Html.Partial("_ZolikActionsPartial", zolik)
 									</td>
@@ -49,7 +53,15 @@
 	</div>
 </div>
 
+@*
+@section header {
+
+	<link type="text/css" href="@Url.Content("~/Content/Timeline.css")" />
+	<link type="text/css" href="@Url.Content("~/assets/plugins/horizontal-timeline/css/horizontal-timeline.css")" />
+}*@
+
 @section scripts {
+	@*<script type="text/javascript" language="javascript" href="@Url.Content("~/assets/plugins/horizontal-timeline/js/horizontal-timeline.js")"></script>*@
 
 	<script type="text/javascript">
 		$(() => {

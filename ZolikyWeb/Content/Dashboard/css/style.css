@@ -5106,7 +5106,7 @@ User card page
 Timeline page
 ******************/
 
-.timeline {
+/*.timeline {
 	position: relative;
 	padding: 20px 0 20px;
 	list-style: none;
@@ -5252,13 +5252,13 @@ Timeline page
 
 .timeline-body > p + p {
 	margin-top: 5px;
-}
+}*/
 
 /*******************
 Horizontal Timeline page
 ******************/
 
-.cd-horizontal-timeline .events a {
+/*.cd-horizontal-timeline .events a {
 	padding-bottom: 6px;
 	color: #009efb;
 }
@@ -5300,7 +5300,7 @@ Horizontal Timeline page
 .dd3-handle:before {
 	color: #67757c;
 	top: 7px;
-}
+}*/
 
 /*******************
 ribbons page

@@ -57,7 +57,7 @@ namespace ZolikyWeb.Models.Base
 
 		protected TManager Mgr => _mgr ?? (_mgr = this.GetManager<TManager>());
 
-		protected async Task<IList<Zolik>> GetUserZoliksAsync()
+		protected async Task<List<Zolik>> GetUserZoliksAsync()
 		{
 			var mgr = this.GetManager<ZolikManager>();
 			if (!this.IsAuthenticated()) {

@@ -27,7 +27,7 @@ namespace ZolikyWeb.Areas.App.Controllers
 
 			var res = await Mgr.UserTransactionsAsync(id, tester);
 			if (!res.IsSuccess) {
-				this.AddErrorToastMessage("Nezdařilo se načíst pohyby");
+				this.AddErrorToastMessage("Nezdařilo se načíst převody");
 				return RedirectToApp();
 			}
 			return View(res.Content);
