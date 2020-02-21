@@ -12,11 +12,13 @@ import 'package:zoliky_teachers/utils/Singleton.dart';
 import 'package:zoliky_teachers/utils/api/connectors/ClassConnector.dart';
 import 'package:zoliky_teachers/utils/api/connectors/StudentConnector.dart';
 import 'package:zoliky_teachers/utils/api/connectors/SubjectConnector.dart';
+import 'package:zoliky_teachers/utils/api/connectors/ZolikConnector.dart';
 import 'package:zoliky_teachers/utils/api/enums/UserRoles.dart';
 import 'package:zoliky_teachers/utils/api/models/Class.dart';
 import 'package:zoliky_teachers/utils/api/models/Student.dart';
 import 'package:zoliky_teachers/utils/api/models/Subject.dart';
 import 'package:zoliky_teachers/utils/api/models/User.dart';
+import 'package:zoliky_teachers/utils/api/models/ZolikType.dart';
 import 'package:zoliky_teachers/utils/api/models/universal/TeacherSubject.dart';
 
 class Global {
@@ -24,11 +26,13 @@ class Global {
   static List<Student> _students = new List<Student>();
   static List<Subject> _subjects = new List<Subject>();
   static List<TeacherSubject> _tSubjects = new List<TeacherSubject>();
+  static List<ZolikType> _types = new List<ZolikType>();
 
   static List<Class> get classes => _classes;
   static List<Student> get students => _students;
   static List<Subject> get subjects => _subjects;
   static List<TeacherSubject> get tSubjects => _tSubjects;
+  static List<ZolikType> get types => _types;
 
   static Class getClassById(int id) {
     if (classes.length < 1 || id == null) {
@@ -47,11 +51,20 @@ class Global {
       ..name = "0.A";
   }
 
+  static ZolikType getTypeById(int id) {
+    if (types.length < 1 || id == null) {
+      return null;
+    }
+    return types.firstWhere((x) => x.id == id);
+  }
+
+
   static void _clear() {
     _classes = new List();
     _students = new List();
     _subjects = new List();
     _tSubjects = new List();
+    _types = new List();
   }
 
   static Future loadApp(String token) async {
@@ -61,6 +74,16 @@ class Global {
     _students = await _loadStudents(token);
     _subjects = await _loadSubjects(token);
     _tSubjects = await _loadTeacherSubjects(token);
+    _types = await _loadZolikTypes(token);
+  }
+
+  static Future<List<ZolikType>> _loadZolikTypes(String token) async {
+    if (token == null || token.isEmpty) {
+      return new List<ZolikType>();
+    }
+    var mgr = new ZolikConnector(token);
+    var res = await mgr.getTypesAsync();
+    return res ?? new List<ZolikType>();
   }
 
   static Future<List<Class>> _loadClasses(String token) async {

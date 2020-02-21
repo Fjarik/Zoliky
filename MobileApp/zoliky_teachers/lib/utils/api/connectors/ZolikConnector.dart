@@ -4,6 +4,7 @@ import 'package:zoliky_teachers/utils/api/connectors/PublicConnector.dart';
 import 'package:zoliky_teachers/utils/api/enums/StatusCode.dart';
 import 'package:zoliky_teachers/utils/api/models/Transaction.dart';
 import 'package:zoliky_teachers/utils/api/models/Zolik.dart';
+import 'package:zoliky_teachers/utils/api/models/ZolikType.dart';
 import 'package:zoliky_teachers/utils/api/models/universal/MActionResult.dart';
 import 'package:zoliky_teachers/utils/api/models/universal/ZolikCreateModel.dart';
 import 'package:zoliky_teachers/utils/api/models/universal/ZolikRemoveModel.dart';
@@ -181,6 +182,36 @@ class ZolikConnector extends PublicConnector {
       return zoliks;
     } catch (ex) {
       return List<Zolik>();
+    }
+  }
+
+
+    Future<List<ZolikType>> getTypesAsync() async {
+    try {
+      var url = "$urlApi/zolik/getTypes";
+      var res =
+          await cli.get(url, headers: {"Authorization": "Bearer $usedToken"});
+
+      if (res.statusCode != 200) {
+        return List<ZolikType>();
+      }
+
+      String body = res.body;
+
+      if (body.isEmpty) {
+        return List<ZolikType>();
+      }
+
+      var _json = json.decode(body);
+
+      var content = List<Map<String, dynamic>>.from(_json);
+      var types = new List<ZolikType>();
+      if (content != null && content.length > 0) {
+        content.forEach((map) => types.add(ZolikType.fromJson(map)));
+      }
+      return types;
+    } catch (ex) {
+      return List<ZolikType>();
     }
   }
 }

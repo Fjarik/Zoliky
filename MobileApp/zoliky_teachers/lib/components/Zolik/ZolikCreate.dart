@@ -6,10 +6,10 @@ import 'package:zoliky_teachers/pages/Administration/Zolik/ZolikCreatePage.dart'
 import 'package:zoliky_teachers/utils/Global.dart';
 import 'package:zoliky_teachers/utils/Singleton.dart';
 import 'package:zoliky_teachers/utils/api/connectors/ZolikConnector.dart';
-import 'package:zoliky_teachers/utils/api/enums/ZolikType.dart';
 import 'package:zoliky_teachers/utils/api/models/Class.dart';
 import 'package:zoliky_teachers/utils/api/models/Subject.dart';
 import 'package:zoliky_teachers/utils/api/models/User.dart';
+import 'package:zoliky_teachers/utils/api/models/ZolikType.dart';
 import 'package:zoliky_teachers/utils/api/models/universal/ZolikCreateModel.dart';
 
 class ZolikCreatePageState extends State<ZolikCreatePage> {
@@ -28,10 +28,10 @@ class ZolikCreatePageState extends State<ZolikCreatePage> {
 
   List<Class> get _classes => Global.classes;
 
-  List<DropdownMenuItem<ZolikType>> get _dropTypes => ZolikType.values
+  List<DropdownMenuItem<ZolikType>> get _dropTypes => Global.types
       .map((x) => DropdownMenuItem<ZolikType>(
             value: x,
-            child: Text(x.name),
+            child: Text(x.friendlyName),
           ))
       .toList();
 
@@ -98,7 +98,7 @@ class ZolikCreatePageState extends State<ZolikCreatePage> {
       toId: this.studentId,
       subjectId: this.subjectId,
       title: title,
-      type: this.zolikType,
+      typeId: this.zolikType.id,
       allowSplit: allow,
     );
 
