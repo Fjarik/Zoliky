@@ -209,8 +209,19 @@ namespace DataAccess.Managers
 																			 User logged,
 																			 bool allowSplit = true)
 		{
+			if (logged == null || logged.SchoolID < 1) {
+				return new MActionResult<Transaction>(StatusCode.InvalidInput);
+			}
+
 			if (teacherId == toId) {
 				return new MActionResult<Transaction>(StatusCode.InvalidInput);
+			}
+
+			var sMgr = this.Context.Get<SchoolManager>();
+			var allowedTypes = await sMgr.GetSchoolZolikTypesAsync(logged.SchoolID, true);
+			if (allowedTypes.All(x => x.ID != typeId)) {
+				// Vytváří druh žolíka, kterého jeho škola nepodporuje
+				return new MActionResult<Transaction>(StatusCode.InsufficientPermissions);
 			}
 
 			var res = await this.CreateAsync(teacherId, toId, typeId, subjectId, title, allowSplit);

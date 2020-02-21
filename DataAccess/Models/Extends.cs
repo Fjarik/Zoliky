@@ -379,9 +379,9 @@ namespace DataAccess.Models
 
 		public string To => this.toUser?.FullName;
 
-		public string ZolikTitle => this.Zolik?.Title;
+		public string ZolikTitle => this.Zolik.Title;
 
-		public ZolikType ZolikType => Zolik?.Type;
+		public int ZolikTypeID => Zolik.TypeID;
 
 		private sealed class TransactionMetaData
 		{

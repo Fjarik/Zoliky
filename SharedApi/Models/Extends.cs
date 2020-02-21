@@ -62,11 +62,10 @@ namespace SharedApi.Models
 
 		public string ZolikTitle { get; set; }
 
-		public ZolikType ZolikType { get; set; }
+		public int ZolikTypeID { get; set; }
 
 		public string DirectionFull { get; set; }
 
-		public string ZolikTypeString => this.ZolikType.FriendlyName;
 		public string TypeString => this.Typ.GetDescription();
 
 		public Transaction() { }
