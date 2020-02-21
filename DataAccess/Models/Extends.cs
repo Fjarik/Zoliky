@@ -579,12 +579,25 @@ namespace DataAccess.Models
 			public Subject Subject { get; set; }
 
 			[JsonIgnore]
+			public ZolikType Type { get; set; }
+
+			[JsonIgnore]
 			public ICollection<Transaction> Transactions { get; set; }
 		}
 	}
 
+	[MetadataType(typeof(ZolikTypeMetadata))]
 	public partial class ZolikType : IZolikType
 	{
 		public ZolikType() { }
+
+		private sealed class ZolikTypeMetadata
+		{
+			[JsonIgnore]
+			public int? SplitsToID { get; set; }
+
+			[JsonIgnore]
+			public ZolikType SplitsTo { get; set; }
+		}
 	}
 }

@@ -94,6 +94,27 @@ namespace API.Controllers.v2
 			}
 		}
 
+#region Zolik types
+
+		// GET /zolik/gettypes
+		[HttpGet]
+		[Route("gettypes")]
+		[ResponseType(typeof(List<ZolikType>))]
+		public async Task<IHttpActionResult> GetTypes()
+		{
+			try {
+				var sMgr = this.GetManager<SchoolManager>();
+				var schoolId = this.User.Identity.GetSchoolId();
+
+				var res = await sMgr.GetSchoolZolikTypesAsync(schoolId, false);
+				return Ok(res);
+			} catch (Exception ex) {
+				return Ok(new List<ZolikType>());
+			}
+		}
+
+#endregion
+
 #region Transfer & Split
 
 		// POST /zolik/transfer
