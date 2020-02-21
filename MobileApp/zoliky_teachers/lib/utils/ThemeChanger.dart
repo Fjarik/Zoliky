@@ -5,9 +5,9 @@ class ThemeChanger with ChangeNotifier {
 
   ThemeData _theme;
 
-  getTheme() => this._theme;
+  ThemeData getTheme() => this._theme;
 
-  setTheme(ThemeData newTheme) {
+  void setTheme(ThemeData newTheme) {
     this._theme = newTheme;
 
     notifyListeners();

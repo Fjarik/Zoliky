@@ -106,7 +106,7 @@ namespace API.Controllers.v2
 				var sMgr = this.GetManager<SchoolManager>();
 				var schoolId = this.User.Identity.GetSchoolId();
 
-				var res = await sMgr.GetSchoolZolikTypesAsync(schoolId, false);
+				var res = await sMgr.GetSchoolZolikTypesAsync(schoolId, true);
 				return Ok(res);
 			} catch (Exception ex) {
 				return Ok(new List<ZolikType>());
