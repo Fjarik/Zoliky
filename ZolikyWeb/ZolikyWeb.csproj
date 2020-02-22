@@ -183,14 +183,14 @@
       <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
-    <Reference Include="Z.EntityFramework.Extensions, Version=4.0.35.0, Culture=neutral, PublicKeyToken=59b66d028979105b, processorArchitecture=MSIL">
-      <HintPath>..\packages\Z.EntityFramework.Extensions.4.0.35\lib\net45\Z.EntityFramework.Extensions.dll</HintPath>
+    <Reference Include="Z.EntityFramework.Extensions, Version=4.0.50.0, Culture=neutral, PublicKeyToken=59b66d028979105b, processorArchitecture=MSIL">
+      <HintPath>..\packages\Z.EntityFramework.Extensions.4.0.50\lib\net45\Z.EntityFramework.Extensions.dll</HintPath>
     </Reference>
-    <Reference Include="Z.EntityFramework.Plus.EF6, Version=1.12.6.0, Culture=neutral, PublicKeyToken=59b66d028979105b, processorArchitecture=MSIL">
-      <HintPath>..\packages\Z.EntityFramework.Plus.EF6.1.12.6\lib\net45\Z.EntityFramework.Plus.EF6.dll</HintPath>
+    <Reference Include="Z.EntityFramework.Plus.EF6, Version=1.12.13.0, Culture=neutral, PublicKeyToken=59b66d028979105b, processorArchitecture=MSIL">
+      <HintPath>..\packages\Z.EntityFramework.Plus.EF6.1.12.13\lib\net45\Z.EntityFramework.Plus.EF6.dll</HintPath>
     </Reference>
-    <Reference Include="Z.Expressions.Eval, Version=3.0.11.0, Culture=neutral, PublicKeyToken=59b66d028979105b, processorArchitecture=MSIL">
-      <HintPath>..\packages\Z.Expressions.Eval.3.0.11\lib\net45\Z.Expressions.Eval.dll</HintPath>
+    <Reference Include="Z.Expressions.Eval, Version=3.1.6.0, Culture=neutral, PublicKeyToken=59b66d028979105b, processorArchitecture=MSIL">
+      <HintPath>..\packages\Z.Expressions.Eval.3.1.6\lib\net45\Z.Expressions.Eval.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -375,6 +375,8 @@
     </Content>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Chart.css" />
+    <Content Include="Content\Chart.min.css" />
     <Content Include="Content\dashboard.css" />
     <Content Include="Content\Dashboard\css\animate.css" />
     <Content Include="Content\Dashboard\css\colors\blue-dark.css" />
@@ -1145,6 +1147,9 @@
     <Content Include="Scripts\jquery.snowfall.min.js">
       <DependentUpon>jquery.snowfall.js</DependentUpon>
     </Content>
+    <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\js-cookie\js.cookie-2.2.1.min.js" />
     <Content Include="Scripts\js-cookie\js.cookie.js" />
     <Content Include="Scripts\jscolor.min.js">
@@ -1547,13 +1552,10 @@
     <Content Include="Scripts\jquery-3.4.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.4.1.min.map" />
     <Content Include="Scripts\jquery.quicksearch.min.js.map" />
-    <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery-ui-1.12.1.js" />
     <Content Include="Scripts\jquery-ui-1.12.1.min.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
-    <Content Include="Scripts\jquery.validate.js" />
-    <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\lightbox.min.js" />
