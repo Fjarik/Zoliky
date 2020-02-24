@@ -283,6 +283,7 @@
     <None Include="App.Config">
       <SubType>Designer</SubType>
     </None>
+    <Content Include="connections.config" />
     <None Include="Models\MainModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>MainModel.Context.cs</LastGenOutput>

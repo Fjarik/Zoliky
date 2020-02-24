@@ -1136,6 +1136,7 @@
     <Content Include="Areas\App\Views\Account\SettingsPartial\_RemovePartial.cshtml" />
     <Content Include="Areas\Global\Views\User\_ChangePwd.cshtml" />
     <Content Include="Areas\App\Views\Zoliky\_TransPartial.cshtml" />
+    <Content Include="connections.config" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />

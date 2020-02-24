@@ -330,3 +330,8 @@ ASALocalRun/
 .mfractor/
 
 ZolikyWeb/[Cc]ontent/temp_csv/*.csv
+API/connections.config
+
+DataAccess/connections.config
+
+ZolikyWeb/connections.config
