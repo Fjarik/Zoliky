@@ -237,9 +237,6 @@
     <Compile Include="Models\User.cs">
       <DependentUpon>MainModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\UserLog.cs">
-      <DependentUpon>MainModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\UserLogin.cs">
       <DependentUpon>MainModel.tt</DependentUpon>
     </Compile>

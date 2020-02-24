@@ -60,22 +60,7 @@ namespace SharedLibrary.Enums
 		[Description("Mobilní aplikace pro vyučující")]
 		TeacherApp = 11,
 	}
-
-	public enum Subjects : int
-	{
-		[Description("Počítačová grafika")]
-		PF = 1,
-
-		[Description("Tělesná výchova")]
-		TV = 2,
-
-		[Description("Cvičení z počítačové grafiky")]
-		CG = 2,
-
-		[Description("Jiný")]
-		Other = 4,
-	}
-
+	
 	public enum SchoolTypes : byte
 	{
 		[Description("Základní škola")]
@@ -105,17 +90,11 @@ namespace SharedLibrary.Enums
 		[Description("Dárek")]
 		Gift = 0,
 
-		[Description("QR kód")]
-		QR = 1,
-
 		[Description("Přiřazení")]
 		NewAssignment = 2,
 
 		[Description("Odebrání")]
 		Removal = 3,
-
-		[Description("NFC")]
-		NFC = 4,
 
 		[Description("Rozklad Jokéra")]
 		Split = 5
@@ -170,15 +149,6 @@ namespace SharedLibrary.Enums
 	{
 		[Description("je plně funkční")]
 		Functional = 0,
-
-		[Description("funguje pouze v omezeném režimu")]
-		Limited = 1,
-
-		[Description("je aktuálně nefunkční. Na opravě se pracuje")]
-		Unfunctional = 2,
-
-		[Description("je dočasně v údržbě")]
-		NotAvailable = 3
 	}
 
 	public enum StatusCode : int
@@ -234,13 +204,7 @@ namespace SharedLibrary.Enums
 		Email = 2,
 		Guid = 3
 	}
-
-	public enum Teachers : int
-	{
-		Zerzan = 1,
-		Admin = 22,
-	}
-
+	
 	public enum ApiUrl : byte
 	{
 		Localhost = 1,

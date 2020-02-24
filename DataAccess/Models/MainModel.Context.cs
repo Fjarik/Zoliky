@@ -43,7 +43,6 @@ namespace DataAccess.Models
         public virtual DbSet<UserSetting> UserSettings { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<UserLoginToken> UserLoginTokens { get; set; }
-        public virtual DbSet<UserLog> UserLogs { get; set; }
         public virtual DbSet<TeacherSubject> TeacherSubjects { get; set; }
         public virtual DbSet<School> Schools { get; set; }
         public virtual DbSet<Password> Passwords { get; set; }

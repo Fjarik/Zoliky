@@ -22,7 +22,6 @@ namespace DataAccess.Models
             this.OriginalZoliks = new HashSet<Zolik>();
             this.LoginTokens = new HashSet<UserLoginToken>();
             this.Logins = new HashSet<UserLogin>();
-            this.UserLogs = new HashSet<UserLog>();
             this.Teaching = new HashSet<TeacherSubject>();
             this.Bans = new HashSet<Ban>();
             this.AchievementUnlocks = new HashSet<AchievementUnlock>();
@@ -63,8 +62,6 @@ namespace DataAccess.Models
         public virtual ICollection<UserLoginToken> LoginTokens { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserLogin> Logins { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        private ICollection<UserLog> UserLogs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TeacherSubject> Teaching { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

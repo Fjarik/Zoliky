@@ -75,6 +75,32 @@ namespace SharedLibrary.Shared
 		// Kolik žolíků získal od Zerzána
 		public static string StatZoliksZerzan => "StatZoliksZerzan";
 
+		public static string GetZolikKey(string typeName, ZolikStat stat)
+		{
+			var key = $"Stat{typeName}s";
+			switch (stat) {
+				case ZolikStat.Received:
+					key += "Received";
+					break;
+				case ZolikStat.Accepted:
+					key += "Accepted";
+					break;
+				case ZolikStat.Sent:
+					key += "Sent";
+					break;
+				default:
+					throw new ArgumentOutOfRangeException(nameof(stat), stat, null);
+			}
+			return key;
+		}
+
 #endregion
+
+		public enum ZolikStat
+		{
+			Received,
+			Accepted,
+			Sent,
+		}
 	}
 }
