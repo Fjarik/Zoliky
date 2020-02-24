@@ -42,7 +42,6 @@ namespace DataAccess
 			app.CreatePerOwinContext<TokenManager>(TokenManager.Create);
 			app.CreatePerOwinContext<TransactionManager>(TransactionManager.Create);
 			app.CreatePerOwinContext<UserLoginManager>(UserLoginManager.Create);
-			app.CreatePerOwinContext<UserLogManager>(UserLogManager.Create);
 			app.CreatePerOwinContext<UserManager>(UserManager.Create);
 			app.CreatePerOwinContext<UserSettingManager>(UserSettingManager.Create);
 			app.CreatePerOwinContext<ZolikManager>(ZolikManager.Create);

@@ -152,7 +152,6 @@
     <Compile Include="Managers\TeacherSubjectManager.cs" />
     <Compile Include="Managers\TokenManager.cs" />
     <Compile Include="Managers\TransactionManager.cs" />
-    <Compile Include="Managers\UserLogManager.cs" />
     <Compile Include="Managers\UserLoginManager.cs" />
     <Compile Include="Managers\UserManager.cs" />
     <Compile Include="Managers\UserSettingManager.cs" />

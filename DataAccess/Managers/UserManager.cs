@@ -110,8 +110,6 @@ namespace DataAccess.Managers
 
 				var settings = await _ctx.UserSettings.Where(x => x.UserID == id).DeleteAsync();
 
-				var logs = await _ctx.UserLogs.Where(x => x.UserID == id).DeleteAsync();
-
 				var bans = await _ctx.Bans.Where(x => x.UserID == id).DeleteAsync();
 
 				var teacherSubs = await _ctx.TeacherSubjects.Where(x => x.TeacherID == id).DeleteAsync();
