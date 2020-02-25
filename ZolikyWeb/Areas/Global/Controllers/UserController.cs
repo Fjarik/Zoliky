@@ -20,14 +20,27 @@ namespace ZolikyWeb.Areas.Global.Controllers
 	{
 #region User list (Dashboard)
 
-		public ActionResult Dashboard()
+		public async Task<ActionResult> Dashboard(int schoolId = 0)
 		{
-			return View();
+			var sMgr = this.GetManager<SchoolManager>();
+
+			var schools = await sMgr.GetAllAsync();
+
+			var model = new DashboardModel(schools, schoolId);
+
+			return View(model);
 		}
 
-		public async Task<JsonResult> UsersJson()
+		public async Task<JsonResult> UsersJson(int schoolId = 0)
 		{
-			var users = (await this.Mgr.GetAllAsync()).Where(x => !x.IsInRolesOr(UserRoles.Robot, UserRoles.LoginOnly));
+			IEnumerable<User> users;
+			if (schoolId < 1) {
+				users = await Mgr.GetAllAsync();
+			} else {
+				users = await Mgr.GetAllAsync(schoolId);
+			}
+
+			users = users.Where(x => !x.IsInRolesOr(UserRoles.Robot, UserRoles.LoginOnly));
 
 			var res = users.Select(x => new {
 				//options = new { },

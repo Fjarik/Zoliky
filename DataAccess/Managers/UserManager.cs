@@ -288,6 +288,17 @@ namespace DataAccess.Managers
 			return res;
 		}
 
+		public Task<List<User>> GetAllAsync(int schoolId)
+		{
+			if (schoolId < 1) {
+				throw new ArgumentOutOfRangeException(nameof(schoolId), schoolId, "ID must be greater than 0");
+			}
+
+			return this._ctx.Users
+					   .Where(x => x.SchoolID == schoolId)
+					   .ToListAsync();
+		}
+
 #endregion
 
 #region Login

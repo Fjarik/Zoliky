@@ -1663,6 +1663,7 @@
     <Compile Include="Areas\Global\Controllers\UserController.cs" />
     <Compile Include="Areas\Global\GlobalAreaRegistration.cs" />
     <Compile Include="Areas\Global\Models\User\ChangePwdModel.cs" />
+    <Compile Include="Areas\Global\Models\User\DashboardModel.cs" />
     <Compile Include="Areas\Global\Models\User\UserModel.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Areas\App\Controllers\MainController.cs" />
