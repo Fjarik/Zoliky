@@ -347,7 +347,7 @@ namespace DataAccess.Managers
 																	 string message)
 		{
 			//using (var transaction = _ctx.Database.BeginTransaction()) {
-			var transaction = _ctx.Database.BeginTransaction();
+			//var transaction = _ctx.Database.BeginTransaction();
 			var uMgr = Context.Get<UserManager>();
 			uMgr.SetManualContext(_ctx);
 			if (!(await uMgr.IdExistsAsync(fromId)) || !(await uMgr.IdExistsAsync(toId))) {
@@ -401,10 +401,10 @@ namespace DataAccess.Managers
 					var nMgr = Context.Get<NotificationManager>();
 					await nMgr.NewZolikAsync(toId, z.Title);
 				}
-				transaction.Commit();
+				//transaction.Commit();
 				return new MActionResult<Transaction>(StatusCode.OK, tran);
 			} catch (Exception ex) {
-				transaction.Rollback();
+				//transaction.Rollback();
 #if DEBUG
 				throw;
 #else
@@ -417,11 +417,12 @@ namespace DataAccess.Managers
 		private async Task UpdateStatisticsAsync(int fromId, int toId, int typeId, TransactionAssignment tranType)
 		{
 			if (tranType == TransactionAssignment.Removal || tranType == TransactionAssignment.Split ||
-				typeId < 0 || !Enum.IsDefined(typeof(ZolikType), typeId)) {
+				typeId < 0 || !Enum.IsDefined(typeof(ZolikTypes), typeId)) {
 				return;
 			}
 
 			var sMgr = Context.Get<StatisticsManager>();
+			sMgr.SetManualContext(this._ctx);
 
 			var type = (ZolikTypes) typeId;
 
