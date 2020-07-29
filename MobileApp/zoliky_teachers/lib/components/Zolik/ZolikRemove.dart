@@ -171,7 +171,7 @@ class ZolikRemovePageState extends State<ZolikRemovePage> {
                       ),
                       Text(
                         "Obecné informace:",
-                        style: Theme.of(context).textTheme.title,
+                        style: Theme.of(context).textTheme.headline6,
                       ),
                       Divider(
                         color: Colors.blue,

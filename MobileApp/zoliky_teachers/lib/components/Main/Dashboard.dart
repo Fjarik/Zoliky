@@ -231,7 +231,7 @@ class DashboardPageState extends State<DashboardPage> {
                             innerPadding: 18,
                             titleStyleSpec: charts.TextStyleSpec(
                               color: charts.ColorUtil.fromDartColor(
-                                  Theme.of(context).textTheme.body1.color),
+                                  Theme.of(context).textTheme.bodyText2.color),
                             ),
                             subTitleStyleSpec: charts.TextStyleSpec(
                               fontSize: 14,
@@ -288,7 +288,7 @@ class DashboardPageState extends State<DashboardPage> {
                               innerPadding: 18,
                               titleStyleSpec: charts.TextStyleSpec(
                                 color: charts.ColorUtil.fromDartColor(
-                                    Theme.of(context).textTheme.body1.color),
+                                    Theme.of(context).textTheme.bodyText2.color),
                               ),
                               subTitleStyleSpec: charts.TextStyleSpec(
                                 fontSize: 14,

@@ -236,7 +236,7 @@ class SettingsPageState extends State<SettingsPage> {
                   padding: EdgeInsets.symmetric(vertical: 10),
                   child: Text(
                     "Vývojář:",
-                    style: Theme.of(context).textTheme.title,
+                    style: Theme.of(context).textTheme.headline6,
                   ),
                 ),
                 Padding(
@@ -247,7 +247,7 @@ class SettingsPageState extends State<SettingsPage> {
                   padding: EdgeInsets.symmetric(vertical: 10),
                   child: Text(
                     "Aktuální verze:",
-                    style: Theme.of(context).textTheme.title,
+                    style: Theme.of(context).textTheme.headline6,
                   ),
                 ),
                 Padding(
@@ -270,7 +270,7 @@ class SettingsPageState extends State<SettingsPage> {
                   padding: EdgeInsets.symmetric(vertical: 10),
                   child: Text(
                     "Kontakt:",
-                    style: Theme.of(context).textTheme.title,
+                    style: Theme.of(context).textTheme.headline6,
                   ),
                 ),
                 Padding(
@@ -295,7 +295,7 @@ class SettingsPageState extends State<SettingsPage> {
                   padding: EdgeInsets.symmetric(vertical: 10),
                   child: Text(
                     "Závěřečná ustanovení:",
-                    style: Theme.of(context).textTheme.title,
+                    style: Theme.of(context).textTheme.headline6,
                   ),
                 ),
                 Padding(
