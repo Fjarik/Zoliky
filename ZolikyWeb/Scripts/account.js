@@ -66,9 +66,11 @@
 	/* /Login (Social) */
 
 	/* Snowing */
-	$.snowfall.start({
-		content: '<i class="fas fa-snowflake"></i>',
-	});
+	if ($.snowfall) {
+		$.snowfall.start({
+			content: '<i class="fas fa-snowflake"></i>',
+		});
+	}
 	/* /Snowing */
 
 });
