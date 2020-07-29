@@ -38,7 +38,7 @@ namespace DataAccess
 			//_client = new WebClient();
 
 			cli = new FlurlClient(UrlApi).EnableCookies().AllowAnyHttpStatus().WithTimeout(TimeSpan.FromSeconds(30));
-			cli.Headers.Add("Api-User-Agent", "ZolikBot/1.0 (https://www.zoliky.eu; Autor: Jiří Falta)");
+			cli.Headers.Add("Api-User-Agent", "ZolikBot/1.0 (http://www.zoliky.eu; Autor: Jiří Falta)");
 			Logged = Login();
 		}
 

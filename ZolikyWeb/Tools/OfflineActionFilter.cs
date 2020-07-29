@@ -34,7 +34,7 @@ namespace ZolikyWeb.Tools
 			var uri = filterContext.HttpContext?.Request?.Url;
 			var url = "";
 			if (uri != null) {
-				url += $"https://{uri.Host}:{uri.Port}";
+				url += $"http://{uri.Host}:{uri.Port}";
 			}
 			var helper = new OfflineHelper(url);
 			helper.Init();

@@ -340,7 +340,7 @@ namespace ZolikyWeb.Controllers
 			if (classId == 0) {
 				classId = null;
 			}
-			var url = Url.Action("Activate", "Account", new {Area = ""}, "https");
+			var url = Url.Action("Activate", "Account", new {Area = ""});
 			MActionResult<User> res;
 			if (m.IsExternal) {
 				res = await Mgr.RegisterExternalAsync(m.Email,
@@ -421,7 +421,7 @@ namespace ZolikyWeb.Controllers
 				this.AddErrorToastMessage("Údajně jste robot!");
 				return View(model);
 			}
-			var url = Url.Action("ChangePassword", "Account", new {Area = ""}, "https");
+			var url = Url.Action("ChangePassword", "Account", new {Area = ""});
 			var res = await Mgr.ForgotPasswordAsync(model.Email, url);
 			if (res.IsSuccess || res.Status == StatusCode.NotFound) {
 				// Neinformovat, že daný uživatel neexistuje
@@ -568,7 +568,7 @@ namespace ZolikyWeb.Controllers
 				this.AddErrorToastMessage("Údajně jste robot!");
 				return View(model);
 			}
-			var url = Url.Action("Activate", "Account", new {Area = ""}, "https");
+			var url = Url.Action("Activate", "Account", new {Area = ""});
 			var res = await Mgr.ResendActivationAsync(model.Email, url);
 			if (res.IsSuccess || res.Status == StatusCode.NotFound || res.Status == StatusCode.NotEnabled) {
 				// Neinformovat, že daný uživatel neexistuje

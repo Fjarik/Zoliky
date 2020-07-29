@@ -220,7 +220,7 @@ namespace ZolikyUWP.Account
 
 		private async void LinkRegister_Click(object sender, RoutedEventArgs e)
 		{
-			string url = @"https://www.zoliky.eu/Register";
+			string url = @"http://www.zoliky.eu/Register";
 
 			var uri = new Uri(url);
 

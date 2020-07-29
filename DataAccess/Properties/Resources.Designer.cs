@@ -93,7 +93,7 @@ namespace DataAccess.Properties {
         ///&lt;body&gt;
         ///	&lt;div&gt;
         ///		&lt;p&gt;
-        ///			Následující uživatel se zaregistroval na &lt;a href=&quot;https://www.zoliky.eu/Login&quot;&gt;Žolíkách&lt;/a&gt; &lt;br /&gt;
+        ///			Následující uživatel se zaregistroval na &lt;a href=&quot;http://www.zoliky.eu/Login&quot;&gt;Žolíkách&lt;/a&gt; &lt;br /&gt;
         ///		&lt;/p&gt;
         ///		&lt;br /&gt;
         ///		&lt;p&gt;

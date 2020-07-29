@@ -50,6 +50,6 @@
 	],
 	"theme_color": "#ffffff",
 	"background_color": "#ffffff",
-	"start_url": "https://www.zoliky.eu/",
+	"start_url": "http://www.zoliky.eu/",
 	"display": "standalone"
 }

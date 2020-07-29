@@ -55,7 +55,7 @@ namespace SharedApi.Connectors.New
 				_url = "http://localhost:93/";
 			}
 			_cli = new FlurlClient(_url).EnableCookies().AllowAnyHttpStatus().WithTimeout(DefaultTimeout);
-			_cli.Headers.Add("User-Agent", $"ZolikApiConnector/{Version} (https://www.zoliky.eu; Autor: Jiří Falta)");
+			_cli.Headers.Add("User-Agent", $"ZolikApiConnector/{Version} (http://www.zoliky.eu; Autor: Jiří Falta)");
 			_cli.Headers.Add("api-version", Version.ToString());
 			if (!_cli.Headers.ContainsKey("projectId")) {
 				_cli.Headers.Add("projectId", CurrentProject);
