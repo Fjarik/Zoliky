@@ -1789,7 +1789,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>11472</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>https://localhost:492/</IISUrl>
+          <IISUrl>http://localhost:92/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

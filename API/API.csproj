@@ -167,6 +167,7 @@
     <Content Include="Scripts\bootstrap.min.js.map" />
     <Content Include="Content\bootstrap.min.css.map" />
     <Content Include="connections.config" />
+    <None Include="Properties\PublishProfiles\Hosting.pubxml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
