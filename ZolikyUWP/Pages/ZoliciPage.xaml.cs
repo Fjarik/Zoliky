@@ -172,7 +172,7 @@ namespace ZolikyUWP.Pages
 
 		private async Task<bool> GiveAsync(int zolikId)
 		{
-			var url = $"http://www.zoliky.eu/App/Zoliky/Transfer?id={zolikId}";
+			var url = $"https://www.zoliky.eu/App/Zoliky/Transfer?id={zolikId}";
 
 			var uri = new Uri(url);
 
@@ -182,7 +182,7 @@ namespace ZolikyUWP.Pages
 
 		private async Task<bool> SplitAsync(int zolikId)
 		{
-			var url = $"http://www.zoliky.eu/App/Zoliky/Split?id={zolikId}";
+			var url = $"https://www.zoliky.eu/App/Zoliky/Split?id={zolikId}";
 
 			var uri = new Uri(url);
 

@@ -106,7 +106,7 @@ namespace DataAccess
 				return false;
 			}
 
-			string url = $"http://www.zoliky.eu/ForgetPwd?{Ext.Queries.Token}={token}";
+			string url = $"https://www.zoliky.eu/ForgetPwd?{Ext.Queries.Token}={token}";
 
 			string body =
 				System.IO.File.ReadAllText(HttpContext.Current.Server.MapPath("~/EmailTemplates/ForgottenPassword.html"));
@@ -130,7 +130,7 @@ namespace DataAccess
 			if (to == null || string.IsNullOrWhiteSpace(token)) {
 				return false;
 			}
-			string activateUrl = $"http://www.zoliky.eu/Login?{Ext.Queries.Activate}={token}";
+			string activateUrl = $"https://www.zoliky.eu/Login?{Ext.Queries.Activate}={token}";
 			string body =
 				System.IO.File.ReadAllText(HttpContext.Current.Server.MapPath("~/EmailTemplates/RegisterAccount.html"));
 			body = body.Replace("#FullName#", to.FullName);

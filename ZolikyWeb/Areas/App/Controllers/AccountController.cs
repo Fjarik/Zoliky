@@ -175,7 +175,7 @@ namespace ZolikyWeb.Areas.App.Controllers
 
 		private async Task<ActionResult> ChangeEmailAsync(int userId, string newEmail)
 		{
-			var url = Url.Action("ChangeEmail", "Account", new {Area = ""});
+			var url = Url.Action("ChangeEmail", "Account", new {Area = ""}, "https");
 			var res = await Mgr.ChangeEmailAsync(userId, newEmail, url);
 			if (res.IsSuccess) {
 				this.AddSuccessToastMessage("Potvrzovací email byl odeslán na zadaný email");

@@ -202,7 +202,7 @@ namespace DataAccess.Managers
 				return false;
 			}
 
-			//string url = $"http://www.zoliky.eu/ForgetPwd?{SharedGlobals.Queries.Token}={token}";
+			//string url = $"https://www.zoliky.eu/ForgetPwd?{SharedGlobals.Queries.Token}={token}";
 
 			string body = DataAccess.Properties.Resources.ForgottenPassword;
 
@@ -235,7 +235,7 @@ namespace DataAccess.Managers
 			if (to == null || string.IsNullOrWhiteSpace(activateUrl)) {
 				return false;
 			}
-			//string activateUrl = $"http://www.zoliky.eu/Login?{Ext.Queries.Activate}={token}";
+			//string activateUrl = $"https://www.zoliky.eu/Login?{Ext.Queries.Activate}={token}";
 
 			string body = DataAccess.Properties.Resources.RegisterAccount;
 
